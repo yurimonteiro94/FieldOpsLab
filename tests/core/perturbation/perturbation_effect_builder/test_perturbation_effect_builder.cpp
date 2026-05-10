@@ -25,8 +25,10 @@ void test_perturbation_effect_builder() {
         EffectType::ADD_TRAVEL_DELAY
     );
 
-    FIELDOPS_EXPECT_EQ(effects[0].occurrence_time, 90);
-    FIELDOPS_EXPECT_EQ(effects[0].delay_duration, 25);
+    FIELDOPS_EXPECT_EQ(effects[0].occurrence_time, 125);
+    FIELDOPS_EXPECT_EQ(effects[0].from_location_id, "task_A_location");
+    FIELDOPS_EXPECT_EQ(effects[0].to_location_id, "task_C_location");
+    FIELDOPS_EXPECT_EQ(effects[0].delay_duration, 50);
 
     FIELDOPS_EXPECT_EQ(
         effects[1].effect_id,
@@ -38,7 +40,7 @@ void test_perturbation_effect_builder() {
         EffectType::ADD_SERVICE_DELAY
     );
 
-    FIELDOPS_EXPECT_EQ(effects[1].occurrence_time, 100);
+    FIELDOPS_EXPECT_EQ(effects[1].occurrence_time, 130);
     FIELDOPS_EXPECT_EQ(effects[1].delay_duration, 30);
 
     Perturbation unknown_perturbation;

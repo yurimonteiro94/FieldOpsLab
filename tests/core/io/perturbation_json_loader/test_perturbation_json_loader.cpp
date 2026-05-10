@@ -23,8 +23,23 @@ void test_perturbation_json_loader() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        plan.perturbations[0].occurrence_time,
+        125
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        plan.perturbations[0].from_location_id,
+        "task_A_location"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        plan.perturbations[0].to_location_id,
+        "task_C_location"
+    );
+
+    FIELDOPS_EXPECT_EQ(
         plan.perturbations[0].delay_duration,
-        25
+        50
     );
 
     FIELDOPS_EXPECT_EQ(
@@ -34,6 +49,11 @@ void test_perturbation_json_loader() {
 
     FIELDOPS_EXPECT_TRUE(
         plan.perturbations[1].type == PerturbationType::SERVICE_DELAY
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        plan.perturbations[1].occurrence_time,
+        130
     );
 
     FIELDOPS_EXPECT_EQ(
