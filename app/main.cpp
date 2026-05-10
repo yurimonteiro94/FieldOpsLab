@@ -5,6 +5,8 @@
 #include "core/instance/instance/instance.h"
 #include "core/instance/instance_validator/instance_validator.h"
 #include "core/io/instance_json_loader/instance_json_loader.h"
+#include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
+#include "core/solution/solution/solution.h"
 
 int main(int argc, char* argv[]) {
     std::string instance_path = "data/instances/sample_instance_001.json";
@@ -28,6 +30,15 @@ int main(int argc, char* argv[]) {
         if (!validation.is_valid()) {
             return 1;
         }
+
+        std::cout << "\nBuilding initial solution with "
+                  << "greedy_earliest_feasible_heuristic_v1"
+                  << "...\n\n";
+
+        Solution solution =
+            build_initial_solution_greedy_earliest_feasible(instance);
+
+        print_solution_summary(solution);
 
         return 0;
     } catch (const std::exception& error) {

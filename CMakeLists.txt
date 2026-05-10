@@ -11,6 +11,8 @@ add_executable(fieldops_lab
     core/instance/instance/instance.cpp
     core/instance/instance_validator/instance_validator.cpp
     core/io/instance_json_loader/instance_json_loader.cpp
+    core/solution/solution/solution.cpp
+    core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.cpp
 )
 
 target_include_directories(fieldops_lab PRIVATE
