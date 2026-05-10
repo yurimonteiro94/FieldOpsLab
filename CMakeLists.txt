@@ -8,4 +8,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(fieldops_lab
     app/main.cpp
+    core/instance/instance.cpp
+    core/io/instance_json_loader.cpp
+)
+
+target_include_directories(fieldops_lab PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/external
 )

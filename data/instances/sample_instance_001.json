@@ -1,0 +1,112 @@
+{
+  "instance_id": "sample_instance_001",
+  "name": "Small FieldOps Lab sample instance",
+  "description": "Small synthetic instance for initial development tests.",
+  "time_unit": "minutes",
+  "planning_horizon": {
+    "start": 0,
+    "end": 600
+  },
+  "locations": [
+    {
+      "id": "depot",
+      "name": "Base",
+      "address": "Base operacional",
+      "latitude": -23.55052,
+      "longitude": -46.633308
+    },
+    {
+      "id": "task_A_location",
+      "name": "Cliente A",
+      "address": "Cliente A",
+      "latitude": -23.56052,
+      "longitude": -46.643308
+    },
+    {
+      "id": "task_B_location",
+      "name": "Cliente B",
+      "address": "Cliente B",
+      "latitude": -23.57052,
+      "longitude": -46.653308
+    },
+    {
+      "id": "task_C_location",
+      "name": "Cliente C",
+      "address": "Cliente C",
+      "latitude": -23.58052,
+      "longitude": -46.663308
+    }
+  ],
+  "technicians": [
+    {
+      "id": "tech_1",
+      "name": "Tecnico 1",
+      "start_location_id": "depot",
+      "end_location_id": "depot",
+      "available_from": 0,
+      "available_to": 600,
+      "skills": ["basic"]
+    },
+    {
+      "id": "tech_2",
+      "name": "Tecnico 2",
+      "start_location_id": "depot",
+      "end_location_id": "depot",
+      "available_from": 0,
+      "available_to": 600,
+      "skills": ["basic"]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task_A",
+      "name": "Tarefa A",
+      "location_id": "task_A_location",
+      "service_duration": 60,
+      "time_window_start": 60,
+      "time_window_end": 240,
+      "required_skills": ["basic"],
+      "priority": 1
+    },
+    {
+      "id": "task_B",
+      "name": "Tarefa B",
+      "location_id": "task_B_location",
+      "service_duration": 45,
+      "time_window_start": 120,
+      "time_window_end": 360,
+      "required_skills": ["basic"],
+      "priority": 1
+    },
+    {
+      "id": "task_C",
+      "name": "Tarefa C",
+      "location_id": "task_C_location",
+      "service_duration": 50,
+      "time_window_start": 180,
+      "time_window_end": 480,
+      "required_skills": ["basic"],
+      "priority": 1
+    }
+  ],
+  "travel_matrix": {
+    "location_ids": [
+      "depot",
+      "task_A_location",
+      "task_B_location",
+      "task_C_location"
+    ],
+    "durations": [
+      [0, 20, 30, 40],
+      [20, 0, 15, 25],
+      [30, 15, 0, 18],
+      [40, 25, 18, 0]
+    ],
+    "distances": [
+      [0, 8.0, 12.0, 16.0],
+      [8.0, 0, 5.0, 9.0],
+      [12.0, 5.0, 0, 6.0],
+      [16.0, 9.0, 6.0, 0]
+    ]
+  }
+}
