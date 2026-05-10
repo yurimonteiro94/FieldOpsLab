@@ -10,6 +10,7 @@ void test_solution_metrics();
 void test_simulation_timeline();
 void test_perturbation();
 void test_effect();
+void test_travel_delay_perturbation();
 
 struct TestCase {
     std::string name;
@@ -24,7 +25,8 @@ int main() {
         {"SolutionMetrics", test_solution_metrics},
         {"SimulationTimeline", test_simulation_timeline},
         {"Perturbation", test_perturbation},
-        {"Effect", test_effect}
+        {"Effect", test_effect},
+        {"TravelDelayPerturbation", test_travel_delay_perturbation}
     };
 
     int failed_tests = 0;
