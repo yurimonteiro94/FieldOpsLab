@@ -8,6 +8,8 @@
 #include "core/io/solution_result_json_writer/solution_result_json_writer.h"
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
 #include "core/metrics/solution_metrics/solution_metrics.h"
+#include "core/simulation/simulation_engine/simulation_engine.h"
+#include "core/simulation/simulation_event/simulation_event.h"
 #include "core/solution/solution/solution.h"
 
 int main(int argc, char* argv[]) {
@@ -50,6 +52,16 @@ int main(int argc, char* argv[]) {
         std::cout << "\n";
         SolutionMetrics metrics = calculate_solution_metrics(instance, solution);
         print_solution_metrics(metrics);
+
+        std::cout << "\nBuilding simulation timeline...\n\n";
+
+        SimulationTimeline timeline =
+            build_simulation_timeline_from_solution(instance, solution);
+
+        print_simulation_timeline_summary(timeline);
+
+        std::cout << "\n";
+        print_simulation_events(timeline.events);
 
         write_solution_result_to_json(
             instance,

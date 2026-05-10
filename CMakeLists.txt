@@ -15,6 +15,8 @@ add_executable(fieldops_lab
     core/solution/solution/solution.cpp
     core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.cpp
     core/metrics/solution_metrics/solution_metrics.cpp
+    core/simulation/simulation_event/simulation_event.cpp
+    core/simulation/simulation_engine/simulation_engine.cpp
 )
 
 target_include_directories(fieldops_lab PRIVATE
