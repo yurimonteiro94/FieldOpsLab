@@ -6,6 +6,7 @@
 #include "core/instance/instance_validator/instance_validator.h"
 #include "core/io/instance_json_loader/instance_json_loader.h"
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
+#include "core/metrics/solution_metrics/solution_metrics.h"
 #include "core/solution/solution/solution.h"
 
 int main(int argc, char* argv[]) {
@@ -39,6 +40,10 @@ int main(int argc, char* argv[]) {
             build_initial_solution_greedy_earliest_feasible(instance);
 
         print_solution_summary(solution);
+
+        std::cout << "\n";
+        SolutionMetrics metrics = calculate_solution_metrics(instance, solution);
+        print_solution_metrics(metrics);
 
         return 0;
     } catch (const std::exception& error) {
