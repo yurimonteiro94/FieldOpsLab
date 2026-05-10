@@ -10,5 +10,6 @@ void write_solution_result_to_json(
     const Instance& instance,
     const Solution& solution,
     const SolutionMetrics& metrics,
-    const std::string& output_path
+    const std::string& output_path,
+    const std::string& result_type = "solution_result"
 );

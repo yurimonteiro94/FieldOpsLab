@@ -59,7 +59,8 @@ void write_solution_result_to_json(
     const Instance& instance,
     const Solution& solution,
     const SolutionMetrics& metrics,
-    const std::string& output_path
+    const std::string& output_path,
+    const std::string& result_type
 ) {
     json routes = json::array();
 
@@ -68,7 +69,7 @@ void write_solution_result_to_json(
     }
 
     json result = {
-        {"result_type", "initial_solution_result"},
+        {"result_type", result_type},
         {"instance_id", instance.instance_id},
         {"instance_name", instance.name},
         {"solution_id", solution.solution_id},
