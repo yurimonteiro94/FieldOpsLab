@@ -11,6 +11,7 @@ void test_simulation_timeline();
 void test_perturbation();
 void test_effect();
 void test_travel_delay_perturbation();
+void test_service_delay_perturbation();
 
 struct TestCase {
     std::string name;
@@ -26,7 +27,8 @@ int main() {
         {"SimulationTimeline", test_simulation_timeline},
         {"Perturbation", test_perturbation},
         {"Effect", test_effect},
-        {"TravelDelayPerturbation", test_travel_delay_perturbation}
+        {"TravelDelayPerturbation", test_travel_delay_perturbation},
+        {"ServiceDelayPerturbation", test_service_delay_perturbation}
     };
 
     int failed_tests = 0;
