@@ -5,15 +5,21 @@
 #include "core/instance/instance/instance.h"
 #include "core/instance/instance_validator/instance_validator.h"
 #include "core/io/instance_json_loader/instance_json_loader.h"
+#include "core/io/solution_result_json_writer/solution_result_json_writer.h"
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
 #include "core/metrics/solution_metrics/solution_metrics.h"
 #include "core/solution/solution/solution.h"
 
 int main(int argc, char* argv[]) {
     std::string instance_path = "data/instances/sample_instance_001.json";
+    std::string output_path = "data/results/sample_solution_result_001.json";
 
     if (argc >= 2) {
         instance_path = argv[1];
+    }
+
+    if (argc >= 3) {
+        output_path = argv[2];
     }
 
     try {
@@ -44,6 +50,15 @@ int main(int argc, char* argv[]) {
         std::cout << "\n";
         SolutionMetrics metrics = calculate_solution_metrics(instance, solution);
         print_solution_metrics(metrics);
+
+        write_solution_result_to_json(
+            instance,
+            solution,
+            metrics,
+            output_path
+        );
+
+        std::cout << "\nResult written to: " << output_path << "\n";
 
         return 0;
     } catch (const std::exception& error) {
