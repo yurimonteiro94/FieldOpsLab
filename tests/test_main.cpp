@@ -8,6 +8,8 @@ void test_instance_validator();
 void test_greedy_earliest_feasible_heuristic();
 void test_solution_metrics();
 void test_simulation_timeline();
+void test_perturbation();
+void test_effect();
 
 struct TestCase {
     std::string name;
@@ -20,7 +22,9 @@ int main() {
         {"InstanceValidator", test_instance_validator},
         {"GreedyEarliestFeasibleHeuristic", test_greedy_earliest_feasible_heuristic},
         {"SolutionMetrics", test_solution_metrics},
-        {"SimulationTimeline", test_simulation_timeline}
+        {"SimulationTimeline", test_simulation_timeline},
+        {"Perturbation", test_perturbation},
+        {"Effect", test_effect}
     };
 
     int failed_tests = 0;
