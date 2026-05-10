@@ -8,9 +8,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(fieldops_lab
     app/main.cpp
-    core/instance/instance.cpp
-    core/instance/instance_validator.cpp
-    core/io/instance_json_loader.cpp
+    core/instance/instance/instance.cpp
+    core/instance/instance_validator/instance_validator.cpp
+    core/io/instance_json_loader/instance_json_loader.cpp
 )
 
 target_include_directories(fieldops_lab PRIVATE

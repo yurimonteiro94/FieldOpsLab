@@ -2,9 +2,9 @@
 #include <iostream>
 #include <string>
 
-#include "core/instance/instance.h"
-#include "core/instance/instance_validator.h"
-#include "core/io/instance_json_loader.h"
+#include "core/instance/instance/instance.h"
+#include "core/instance/instance_validator/instance_validator.h"
+#include "core/io/instance_json_loader/instance_json_loader.h"
 
 int main(int argc, char* argv[]) {
     std::string instance_path = "data/instances/sample_instance_001.json";

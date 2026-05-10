@@ -1,4 +1,4 @@
-#include "core/instance/instance_validator.h"
+#include "core/instance/instance_validator/instance_validator.h"
 
 #include <iostream>
 #include <string>

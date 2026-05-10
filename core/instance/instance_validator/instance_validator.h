@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "core/instance/instance.h"
+#include "core/instance/instance/instance.h"
 
 struct ValidationResult {
     std::vector<std::string> errors;

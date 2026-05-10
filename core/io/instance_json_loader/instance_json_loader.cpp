@@ -1,4 +1,4 @@
-#include "core/io/instance_json_loader.h"
+#include "core/io/instance_json_loader/instance_json_loader.h"
 
 #include <fstream>
 #include <sstream>
