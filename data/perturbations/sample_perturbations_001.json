@@ -1,0 +1,29 @@
+{
+  "perturbation_plan_id": "sample_perturbations_001",
+  "name": "Small sample perturbation plan",
+  "description": "Sample perturbation plan with travel delay and service delay.",
+  "perturbations": [
+    {
+      "perturbation_id": "travel_delay_001",
+      "type": "TRAVEL_DELAY",
+      "occurrence_time": 90,
+      "technician_id": "tech_1",
+      "task_id": "task_A",
+      "from_location_id": "depot",
+      "to_location_id": "task_A_location",
+      "delay_duration": 25,
+      "description": "Travel delay between depot and task A."
+    },
+    {
+      "perturbation_id": "service_delay_001",
+      "type": "SERVICE_DELAY",
+      "occurrence_time": 100,
+      "technician_id": "tech_2",
+      "task_id": "task_B",
+      "from_location_id": "",
+      "to_location_id": "task_B_location",
+      "delay_duration": 30,
+      "description": "Service delay during task B."
+    }
+  ]
+}

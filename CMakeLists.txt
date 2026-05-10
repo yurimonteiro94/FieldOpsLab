@@ -12,6 +12,7 @@ set(FIELDOPS_CORE_SOURCES
     core/instance/instance/instance.cpp
     core/instance/instance_validator/instance_validator.cpp
     core/io/instance_json_loader/instance_json_loader.cpp
+    core/io/perturbation_json_loader/perturbation_json_loader.cpp
     core/io/solution_result_json_writer/solution_result_json_writer.cpp
     core/io/simulation_timeline_json_writer/simulation_timeline_json_writer.cpp
     core/solution/solution/solution.cpp
@@ -46,6 +47,7 @@ add_executable(fieldops_tests
     tests/test_main.cpp
     tests/core/instance/instance/test_travel_matrix.cpp
     tests/core/instance/instance_validator/test_instance_validator.cpp
+    tests/core/io/perturbation_json_loader/test_perturbation_json_loader.cpp
     tests/core/method/greedy_earliest_feasible_heuristic/test_greedy_earliest_feasible_heuristic.cpp
     tests/core/metrics/solution_metrics/test_solution_metrics.cpp
     tests/core/simulation/simulation_engine/test_simulation_timeline.cpp

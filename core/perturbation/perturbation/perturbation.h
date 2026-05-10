@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 enum class PerturbationType {
     TRAVEL_DELAY,
@@ -11,6 +12,10 @@ enum class PerturbationType {
 };
 
 std::string perturbation_type_to_string(PerturbationType type);
+
+PerturbationType perturbation_type_from_string(
+    const std::string& type
+);
 
 struct Perturbation {
     std::string perturbation_id;
@@ -28,6 +33,14 @@ struct Perturbation {
     int delay_duration = 0;
 
     std::string description;
+};
+
+struct PerturbationPlan {
+    std::string perturbation_plan_id;
+    std::string name;
+    std::string description;
+
+    std::vector<Perturbation> perturbations;
 };
 
 bool is_delay_perturbation(const Perturbation& perturbation);
