@@ -24,6 +24,7 @@ set(FIELDOPS_CORE_SOURCES
     core/perturbation/effect/effect.cpp
     core/perturbation/travel_delay_perturbation/travel_delay_perturbation.cpp
     core/perturbation/service_delay_perturbation/service_delay_perturbation.cpp
+    core/perturbation/perturbation_effect_builder/perturbation_effect_builder.cpp
 )
 
 add_library(fieldops_core STATIC
@@ -55,6 +56,7 @@ add_executable(fieldops_tests
     tests/core/perturbation/effect/test_effect.cpp
     tests/core/perturbation/travel_delay_perturbation/test_travel_delay_perturbation.cpp
     tests/core/perturbation/service_delay_perturbation/test_service_delay_perturbation.cpp
+    tests/core/perturbation/perturbation_effect_builder/test_perturbation_effect_builder.cpp
 )
 
 target_link_libraries(fieldops_tests PRIVATE

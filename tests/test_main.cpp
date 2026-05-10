@@ -13,6 +13,7 @@ void test_effect();
 void test_travel_delay_perturbation();
 void test_service_delay_perturbation();
 void test_perturbation_json_loader();
+void test_perturbation_effect_builder();
 
 struct TestCase {
     std::string name;
@@ -30,7 +31,8 @@ int main() {
         {"Effect", test_effect},
         {"TravelDelayPerturbation", test_travel_delay_perturbation},
         {"ServiceDelayPerturbation", test_service_delay_perturbation},
-        {"PerturbationJsonLoader", test_perturbation_json_loader}
+        {"PerturbationJsonLoader", test_perturbation_json_loader},
+        {"PerturbationEffectBuilder", test_perturbation_effect_builder}
     };
 
     int failed_tests = 0;
