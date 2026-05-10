@@ -5,6 +5,7 @@
 #include "core/instance/instance/instance.h"
 #include "core/instance/instance_validator/instance_validator.h"
 #include "core/io/instance_json_loader/instance_json_loader.h"
+#include "core/io/simulation_timeline_json_writer/simulation_timeline_json_writer.h"
 #include "core/io/solution_result_json_writer/solution_result_json_writer.h"
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
 #include "core/metrics/solution_metrics/solution_metrics.h"
@@ -14,14 +15,21 @@
 
 int main(int argc, char* argv[]) {
     std::string instance_path = "data/instances/sample_instance_001.json";
-    std::string output_path = "data/results/sample_solution_result_001.json";
+    std::string solution_output_path =
+        "data/results/sample_solution_result_001.json";
+    std::string timeline_output_path =
+        "data/results/sample_timeline_001.json";
 
     if (argc >= 2) {
         instance_path = argv[1];
     }
 
     if (argc >= 3) {
-        output_path = argv[2];
+        solution_output_path = argv[2];
+    }
+
+    if (argc >= 4) {
+        timeline_output_path = argv[3];
     }
 
     try {
@@ -67,10 +75,21 @@ int main(int argc, char* argv[]) {
             instance,
             solution,
             metrics,
-            output_path
+            solution_output_path
         );
 
-        std::cout << "\nResult written to: " << output_path << "\n";
+        write_simulation_timeline_to_json(
+            timeline,
+            timeline_output_path
+        );
+
+        std::cout << "\nSolution result written to: "
+                  << solution_output_path
+                  << "\n";
+
+        std::cout << "Simulation timeline written to: "
+                  << timeline_output_path
+                  << "\n";
 
         return 0;
     } catch (const std::exception& error) {
