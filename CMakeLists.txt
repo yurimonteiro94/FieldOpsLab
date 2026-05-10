@@ -6,8 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(fieldops_lab
-    app/main.cpp
+enable_testing()
+
+set(FIELDOPS_CORE_SOURCES
     core/instance/instance/instance.cpp
     core/instance/instance_validator/instance_validator.cpp
     core/io/instance_json_loader/instance_json_loader.cpp
@@ -20,7 +21,41 @@ add_executable(fieldops_lab
     core/simulation/simulation_engine/simulation_engine.cpp
 )
 
-target_include_directories(fieldops_lab PRIVATE
+add_library(fieldops_core STATIC
+    ${FIELDOPS_CORE_SOURCES}
+)
+
+target_include_directories(fieldops_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/external
+)
+
+add_executable(fieldops_lab
+    app/main.cpp
+)
+
+target_link_libraries(fieldops_lab PRIVATE
+    fieldops_core
+)
+
+add_executable(fieldops_tests
+    tests/test_main.cpp
+    tests/core/instance/instance/test_travel_matrix.cpp
+    tests/core/instance/instance_validator/test_instance_validator.cpp
+    tests/core/method/greedy_earliest_feasible_heuristic/test_greedy_earliest_feasible_heuristic.cpp
+    tests/core/metrics/solution_metrics/test_solution_metrics.cpp
+    tests/core/simulation/simulation_engine/test_simulation_timeline.cpp
+)
+
+target_link_libraries(fieldops_tests PRIVATE
+    fieldops_core
+)
+
+add_test(
+    NAME fieldops_tests
+    COMMAND fieldops_tests
+)
+
+set_tests_properties(fieldops_tests PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
