@@ -40,4 +40,9 @@ void test_perturbation_json_loader() {
         plan.perturbations[1].delay_duration,
         30
     );
+
+    FIELDOPS_EXPECT_TRUE(
+        perturbation_type_from_string("INVALID_TYPE") ==
+        PerturbationType::UNKNOWN
+    );
 }
