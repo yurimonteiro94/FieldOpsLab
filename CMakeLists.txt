@@ -10,6 +10,7 @@ enable_testing()
 
 set(FIELDOPS_CORE_SOURCES
     core/analysis/solution_comparison/solution_comparison.cpp
+    core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.cpp
     core/experiment/no_replanning_experiment/no_replanning_experiment.cpp
     core/instance/instance/instance.cpp
     core/instance/instance_validator/instance_validator.cpp
@@ -55,6 +56,7 @@ target_link_libraries(fieldops_lab PRIVATE
 add_executable(fieldops_tests
     tests/test_main.cpp
     tests/core/analysis/solution_comparison/test_solution_comparison.cpp
+    tests/core/experiment/no_replanning_batch_experiment/test_no_replanning_batch_experiment.cpp
     tests/core/experiment/no_replanning_experiment/test_no_replanning_experiment.cpp
     tests/core/instance/instance/test_travel_matrix.cpp
     tests/core/instance/instance_validator/test_instance_validator.cpp

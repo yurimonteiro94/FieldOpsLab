@@ -20,6 +20,7 @@ void test_solution_comparison_json_writer();
 void test_no_replanning_experiment();
 void test_no_replanning_experiment_result_json_writer();
 void test_no_replanning_experiment_summary_csv_writer();
+void test_no_replanning_batch_experiment();
 void test_policy();
 void test_no_replanning_policy();
 
@@ -47,6 +48,7 @@ int main() {
         {"NoReplanningExperiment", test_no_replanning_experiment},
         {"NoReplanningExperimentResultJsonWriter", test_no_replanning_experiment_result_json_writer},
         {"NoReplanningExperimentSummaryCsvWriter", test_no_replanning_experiment_summary_csv_writer},
+        {"NoReplanningBatchExperiment", test_no_replanning_batch_experiment},
         {"Policy", test_policy},
         {"NoReplanningPolicy", test_no_replanning_policy}
     };
