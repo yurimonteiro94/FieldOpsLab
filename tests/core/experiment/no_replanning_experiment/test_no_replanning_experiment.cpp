@@ -70,6 +70,15 @@ void test_no_replanning_experiment() {
 
     FIELDOPS_EXPECT_TRUE(!result.policy_decision.should_replan());
     FIELDOPS_EXPECT_TRUE(!result.has_replanning_request);
+    FIELDOPS_EXPECT_TRUE(result.has_replanning_result);
+
+    FIELDOPS_EXPECT_EQ(
+        result.replanning_result.status,
+        ReplanningResultStatus::NOT_REQUESTED
+    );
+
+    FIELDOPS_EXPECT_TRUE(!result.replanning_result.has_new_solution());
+    FIELDOPS_EXPECT_TRUE(!result.replanning_result.is_successful());
 
     FIELDOPS_EXPECT_EQ(
         policy_decision_type_to_string(result.policy_decision.type),
@@ -151,6 +160,30 @@ void test_no_replanning_experiment() {
 
     FIELDOPS_EXPECT_TRUE(threshold_result.policy_decision.should_replan());
     FIELDOPS_EXPECT_TRUE(threshold_result.has_replanning_request);
+    FIELDOPS_EXPECT_TRUE(threshold_result.has_replanning_result);
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_result.status,
+        ReplanningResultStatus::NOT_IMPLEMENTED
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_result.request_id,
+        "test_threshold_experiment_001_replanning_request"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_result.result_id,
+        "test_threshold_experiment_001_replanning_result"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        !threshold_result.replanning_result.has_new_solution()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        !threshold_result.replanning_result.is_successful()
+    );
 
     FIELDOPS_EXPECT_TRUE(
         std::filesystem::exists(

@@ -109,6 +109,40 @@ void test_no_replanning_experiment_result_json_writer() {
         1
     );
 
+    FIELDOPS_EXPECT_TRUE(
+        data.at("has_replanning_result").get<bool>()
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_result").at("result_id").get<std::string>(),
+        "json_writer_experiment_001_replanning_result"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_result").at("request_id").get<std::string>(),
+        "json_writer_experiment_001_replanning_request"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_result").at("status").get<std::string>(),
+        "NOT_IMPLEMENTED"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_result").at("has_new_solution").get<bool>(),
+        false
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_result").at("is_successful").get<bool>(),
+        false
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_result").at("counts").at("candidate_task_count").get<int>(),
+        1
+    );
+
     FIELDOPS_EXPECT_EQ(
         data.at("planned").at("metrics").at("total_travel_time").get<int>(),
         145

@@ -15,6 +15,7 @@
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
 #include "core/perturbation/perturbation_effect_builder/perturbation_effect_builder.h"
 #include "core/replanning/replanning_request/replanning_request.h"
+#include "core/replanning/replanning_result/replanning_result.h"
 #include "core/simulation/no_replanning_execution/no_replanning_execution.h"
 #include "core/simulation/simulation_state/simulation_state.h"
 
@@ -65,14 +66,15 @@ static std::string build_replanning_request_id(
     return build_experiment_run_label(metadata) + "_replanning_request";
 }
 
-static void maybe_build_replanning_request(
-    NoReplanningExperimentResult& result
+static std::string build_replanning_result_id(
+    const ExperimentMetadata& metadata
 ) {
-    if (!result.policy_decision.should_replan()) {
-        result.has_replanning_request = false;
-        return;
-    }
+    return build_experiment_run_label(metadata) + "_replanning_result";
+}
 
+static ReplanningRequest build_internal_replanning_request(
+    const NoReplanningExperimentResult& result
+) {
     SimulationSnapshot snapshot =
         build_simulation_snapshot_from_solution(
             result.instance,
@@ -80,14 +82,34 @@ static void maybe_build_replanning_request(
             result.policy_decision.decision_time
         );
 
-    result.replanning_request =
-        build_replanning_request_from_snapshot(
-            snapshot,
-            result.policy_decision,
-            build_replanning_request_id(result.metadata)
+    return build_replanning_request_from_snapshot(
+        snapshot,
+        result.policy_decision,
+        build_replanning_request_id(result.metadata)
+    );
+}
+
+static void build_replanning_artifacts(
+    NoReplanningExperimentResult& result
+) {
+    ReplanningRequest internal_request =
+        build_internal_replanning_request(result);
+
+    if (result.policy_decision.should_replan()) {
+        result.replanning_request = internal_request;
+        result.has_replanning_request = true;
+    } else {
+        result.has_replanning_request = false;
+    }
+
+    result.replanning_result =
+        build_not_implemented_replanning_result(
+            internal_request,
+            build_replanning_result_id(result.metadata),
+            "replanning_not_implemented_v1"
         );
 
-    result.has_replanning_request = true;
+    result.has_replanning_result = true;
 }
 
 static void export_no_replanning_experiment_results(
@@ -256,15 +278,23 @@ NoReplanningExperimentResult run_no_replanning_experiment(
         print_policy_decision(result.policy_decision);
     }
 
-    maybe_build_replanning_request(result);
+    build_replanning_artifacts(result);
 
     if (config.verbose && result.has_replanning_request) {
         std::cout << "\nReplanning request generated.\n";
         print_replanning_request_summary(result.replanning_request);
+    }
 
-        std::cout << "\nA replanning execution engine is not implemented yet, "
-                  << "so this experiment will continue with "
-                  << "the no-replanning execution baseline.\n";
+    if (config.verbose && result.has_replanning_result) {
+        std::cout << "\nReplanning result generated.\n";
+        print_replanning_result_summary(result.replanning_result);
+
+        if (result.replanning_result.status ==
+            ReplanningResultStatus::NOT_IMPLEMENTED) {
+            std::cout << "\nA replanning execution engine is not implemented yet, "
+                      << "so this experiment will continue with "
+                      << "the no-replanning execution baseline.\n";
+        }
     }
 
     if (config.verbose) {

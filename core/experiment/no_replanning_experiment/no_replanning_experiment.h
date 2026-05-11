@@ -13,6 +13,7 @@
 #include "core/policy/policy/policy.h"
 #include "core/policy/policy_evaluator/policy_evaluator.h"
 #include "core/replanning/replanning_request/replanning_request.h"
+#include "core/replanning/replanning_result/replanning_result.h"
 #include "core/simulation/simulation_engine/simulation_engine.h"
 #include "core/solution/solution/solution.h"
 
@@ -71,6 +72,9 @@ struct NoReplanningExperimentResult {
 
     bool has_replanning_request = false;
     ReplanningRequest replanning_request;
+
+    bool has_replanning_result = false;
+    ReplanningResult replanning_result;
 
     Solution executed_solution;
     SolutionMetrics executed_metrics;

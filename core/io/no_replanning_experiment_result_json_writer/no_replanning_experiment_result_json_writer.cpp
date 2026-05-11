@@ -133,6 +133,30 @@ static json replanning_request_to_json(
     };
 }
 
+static json replanning_result_to_json(
+    const ReplanningResult& result
+) {
+    return {
+        {"result_id", result.result_id},
+        {"request_id", result.request_id},
+        {"method_id", result.method_id},
+        {"status", replanning_result_status_to_string(result.status)},
+        {"message", result.message},
+        {"decision_time", result.decision_time},
+        {"has_new_solution", result.has_new_solution()},
+        {"is_successful", result.is_successful()},
+        {"generated_solution_id", result.generated_solution_id},
+        {"counts", {
+            {"completed_task_count", result.completed_task_count},
+            {"locked_task_count", result.locked_task_count},
+            {"candidate_task_count", result.candidate_task_count},
+            {"available_technician_count", result.available_technician_count},
+            {"busy_technician_count", result.busy_technician_count},
+            {"finished_technician_count", result.finished_technician_count}
+        }}
+    };
+}
+
 void write_no_replanning_experiment_result_to_json(
     const NoReplanningExperimentResult& result,
     const std::string& output_path,
@@ -143,6 +167,13 @@ void write_no_replanning_experiment_result_to_json(
     if (result.has_replanning_request) {
         replanning_request_data =
             replanning_request_to_json(result.replanning_request);
+    }
+
+    json replanning_result_data = nullptr;
+
+    if (result.has_replanning_result) {
+        replanning_result_data =
+            replanning_result_to_json(result.replanning_result);
     }
 
     json data = {
@@ -164,6 +195,8 @@ void write_no_replanning_experiment_result_to_json(
         {"policy_decision", policy_decision_to_json(result.policy_decision)},
         {"has_replanning_request", result.has_replanning_request},
         {"replanning_request", replanning_request_data},
+        {"has_replanning_result", result.has_replanning_result},
+        {"replanning_result", replanning_result_data},
         {"planned", {
             {"solution_id", result.planned_solution.solution_id},
             {"method_id", result.planned_solution.method_id},
