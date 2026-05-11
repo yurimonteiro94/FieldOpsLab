@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "core/io/instance_json_loader/instance_json_loader.h"
+#include "core/io/no_replanning_experiment_result_json_writer/no_replanning_experiment_result_json_writer.h"
 #include "core/io/perturbation_json_loader/perturbation_json_loader.h"
 #include "core/io/simulation_timeline_json_writer/simulation_timeline_json_writer.h"
 #include "core/io/solution_comparison_json_writer/solution_comparison_json_writer.h"
@@ -92,6 +93,12 @@ static void export_no_replanning_experiment_results(
         result.comparison,
         config.comparison_output_path,
         "planned_vs_executed_no_replanning_comparison"
+    );
+
+    write_no_replanning_experiment_result_to_json(
+        result,
+        config.experiment_result_output_path,
+        "no_replanning_experiment_result"
     );
 }
 
@@ -263,6 +270,10 @@ NoReplanningExperimentResult run_no_replanning_experiment(
 
         std::cout << "Solution comparison written to: "
                   << config.comparison_output_path
+                  << "\n";
+
+        std::cout << "Experiment result written to: "
+                  << config.experiment_result_output_path
                   << "\n";
     }
 

@@ -37,6 +37,10 @@ static NoReplanningExperimentConfig build_config_from_arguments(
         config.comparison_output_path = argv[7];
     }
 
+    if (argc >= 9) {
+        config.experiment_result_output_path = argv[8];
+    }
+
     return config;
 }
 
