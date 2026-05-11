@@ -54,6 +54,23 @@ static void read_policy_config_from_json(
             );
 }
 
+static void read_replanning_engine_config_from_json(
+    const json& data,
+    NoReplanningExperimentConfig& config
+) {
+    config.replanning_engine_config.method_id =
+        data.value(
+            "replanning_method_id",
+            config.replanning_engine_config.method_id
+        );
+
+    config.replanning_engine_config.result_id =
+        data.value(
+            "replanning_result_id",
+            config.replanning_engine_config.result_id
+        );
+}
+
 static NoReplanningExperimentConfig read_experiment_config_from_json(
     const json& data
 ) {
@@ -75,6 +92,7 @@ static NoReplanningExperimentConfig read_experiment_config_from_json(
         data.value("notes", config.metadata.notes);
 
     read_policy_config_from_json(data, config);
+    read_replanning_engine_config_from_json(data, config);
 
     config.instance_path =
         data.value("instance_path", config.instance_path);

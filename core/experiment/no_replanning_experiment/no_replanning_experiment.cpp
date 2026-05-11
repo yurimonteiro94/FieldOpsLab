@@ -89,8 +89,24 @@ static ReplanningRequest build_internal_replanning_request(
     );
 }
 
+static ReplanningEngineConfig build_replanning_engine_config_for_run(
+    const NoReplanningExperimentConfig& config,
+    const ExperimentMetadata& metadata
+) {
+    ReplanningEngineConfig replanning_engine_config =
+        config.replanning_engine_config;
+
+    if (replanning_engine_config.result_id == "replanning_result") {
+        replanning_engine_config.result_id =
+            build_replanning_result_id(metadata);
+    }
+
+    return replanning_engine_config;
+}
+
 static void build_replanning_artifacts(
-    NoReplanningExperimentResult& result
+    NoReplanningExperimentResult& result,
+    const NoReplanningExperimentConfig& config
 ) {
     ReplanningRequest internal_request =
         build_internal_replanning_request(result);
@@ -102,13 +118,11 @@ static void build_replanning_artifacts(
         result.has_replanning_request = false;
     }
 
-    ReplanningEngineConfig replanning_engine_config;
-
-    replanning_engine_config.method_id =
-        "replanning_not_implemented_v1";
-
-    replanning_engine_config.result_id =
-        build_replanning_result_id(result.metadata);
+    ReplanningEngineConfig replanning_engine_config =
+        build_replanning_engine_config_for_run(
+            config,
+            result.metadata
+        );
 
     result.replanning_result =
         run_replanning_engine(
@@ -203,6 +217,9 @@ NoReplanningExperimentResult run_no_replanning_experiment(
         std::cout << "Policy ID: "
                   << config.policy_config.policy_id
                   << "\n";
+        std::cout << "Replanning method ID: "
+                  << config.replanning_engine_config.method_id
+                  << "\n";
         std::cout << "Loading instance: " << config.instance_path << "\n\n";
     }
 
@@ -285,7 +302,7 @@ NoReplanningExperimentResult run_no_replanning_experiment(
         print_policy_decision(result.policy_decision);
     }
 
-    build_replanning_artifacts(result);
+    build_replanning_artifacts(result, config);
 
     if (config.verbose && result.has_replanning_request) {
         std::cout << "\nReplanning request generated.\n";

@@ -77,6 +77,11 @@ void test_no_replanning_experiment() {
         ReplanningResultStatus::NOT_REQUESTED
     );
 
+    FIELDOPS_EXPECT_EQ(
+        result.replanning_result.method_id,
+        "replanning_not_implemented_v1"
+    );
+
     FIELDOPS_EXPECT_TRUE(!result.replanning_result.has_new_solution());
     FIELDOPS_EXPECT_TRUE(!result.replanning_result.is_successful());
 
@@ -145,6 +150,9 @@ void test_no_replanning_experiment() {
         .threshold_delay_config
         .total_delay_threshold = 60;
 
+    threshold_config.replanning_engine_config.method_id =
+        "replanning_not_implemented_v1";
+
     threshold_config.replanning_request_output_path =
         "data/results/test_threshold_replanning_request.json";
 
@@ -165,6 +173,11 @@ void test_no_replanning_experiment() {
     FIELDOPS_EXPECT_EQ(
         threshold_result.replanning_result.status,
         ReplanningResultStatus::NOT_IMPLEMENTED
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_result.method_id,
+        "replanning_not_implemented_v1"
     );
 
     FIELDOPS_EXPECT_EQ(
@@ -225,5 +238,63 @@ void test_no_replanning_experiment() {
     FIELDOPS_EXPECT_EQ(
         threshold_result.replanning_request.candidate_task_count(),
         1
+    );
+
+    NoReplanningExperimentConfig unknown_method_config;
+
+    unknown_method_config.metadata.experiment_id =
+        "test_unknown_replanning_method_001";
+
+    unknown_method_config.metadata.scenario_id =
+        "test_unknown_replanning_method_scenario_001";
+
+    unknown_method_config.metadata.replication_id = 1;
+    unknown_method_config.metadata.seed = 9101;
+
+    unknown_method_config.policy_config.policy_id =
+        "threshold_delay_replanning_policy_v1";
+
+    unknown_method_config.policy_config
+        .threshold_delay_config
+        .max_single_delay_threshold = 30;
+
+    unknown_method_config.policy_config
+        .threshold_delay_config
+        .total_delay_threshold = 60;
+
+    unknown_method_config.replanning_engine_config.method_id =
+        "unknown_replanning_method_v1";
+
+    unknown_method_config.verbose = false;
+    unknown_method_config.export_results = false;
+
+    NoReplanningExperimentResult unknown_method_result =
+        run_no_replanning_experiment(unknown_method_config);
+
+    FIELDOPS_EXPECT_TRUE(
+        unknown_method_result.policy_decision.should_replan()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        unknown_method_result.has_replanning_request
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        unknown_method_result.has_replanning_result
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        unknown_method_result.replanning_result.status,
+        ReplanningResultStatus::FAILED
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        unknown_method_result.replanning_result.method_id,
+        "unknown_replanning_method_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        unknown_method_result.replanning_result.result_id,
+        "test_unknown_replanning_method_001_replanning_result"
     );
 }

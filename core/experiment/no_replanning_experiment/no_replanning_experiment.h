@@ -12,6 +12,7 @@
 #include "core/perturbation/perturbation/perturbation.h"
 #include "core/policy/policy/policy.h"
 #include "core/policy/policy_evaluator/policy_evaluator.h"
+#include "core/replanning/replanning_engine/replanning_engine.h"
 #include "core/replanning/replanning_request/replanning_request.h"
 #include "core/replanning/replanning_result/replanning_result.h"
 #include "core/simulation/simulation_engine/simulation_engine.h"
@@ -21,6 +22,7 @@ struct NoReplanningExperimentConfig {
     ExperimentMetadata metadata;
 
     PolicyEvaluationConfig policy_config;
+    ReplanningEngineConfig replanning_engine_config;
 
     std::string instance_path = "data/instances/sample_instance_001.json";
 

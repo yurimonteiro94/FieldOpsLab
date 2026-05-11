@@ -30,6 +30,11 @@ void test_no_replanning_batch_config_json_loader() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        config.experiments[0].replanning_engine_config.method_id,
+        "replanning_not_implemented_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
         config.experiments[0].perturbation_plan_path,
         "data/perturbations/sample_perturbations_light_001.json"
     );
@@ -42,6 +47,11 @@ void test_no_replanning_batch_config_json_loader() {
     FIELDOPS_EXPECT_EQ(
         config.experiments[3].policy_config.policy_id,
         "threshold_delay_replanning_policy_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[3].replanning_engine_config.method_id,
+        "replanning_not_implemented_v1"
     );
 
     FIELDOPS_EXPECT_EQ(
@@ -78,6 +88,11 @@ void test_no_replanning_batch_config_json_loader() {
     FIELDOPS_EXPECT_EQ(
         config.experiments[5].replanning_request_output_path,
         "data/results/sample_replanning_request_001.json"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[5].replanning_engine_config.method_id,
+        "replanning_not_implemented_v1"
     );
 
     FIELDOPS_EXPECT_TRUE(!config.verbose);
