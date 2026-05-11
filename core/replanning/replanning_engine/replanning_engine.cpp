@@ -1,5 +1,7 @@
 #include "core/replanning/replanning_engine/replanning_engine.h"
 
+#include "core/replanning/greedy_replanning_solver/greedy_replanning_solver.h"
+
 static void copy_request_counts_to_result(
     ReplanningResult& result,
     const ReplanningRequest& request
@@ -37,6 +39,26 @@ static ReplanningResult build_unknown_method_result(
     return result;
 }
 
+static ReplanningResult run_greedy_method(
+    const ReplanningRequest& request,
+    const ReplanningEngineConfig& config
+) {
+    GreedyReplanningSolverConfig greedy_config;
+
+    greedy_config.method_id = config.method_id;
+    greedy_config.result_id = config.result_id;
+
+    if (config.result_id == "replanning_result") {
+        greedy_config.generated_solution_id =
+            request.request_id + "_greedy_replanned_solution";
+    } else {
+        greedy_config.generated_solution_id =
+            config.result_id + "_solution";
+    }
+
+    return run_greedy_replanning_solver(request, greedy_config);
+}
+
 ReplanningResult run_replanning_engine(
     const ReplanningRequest& request,
     const ReplanningEngineConfig& config
@@ -47,6 +69,10 @@ ReplanningResult run_replanning_engine(
             config.result_id,
             config.method_id
         );
+    }
+
+    if (config.method_id == "greedy_replanning_solver_v1") {
+        return run_greedy_method(request, config);
     }
 
     return build_unknown_method_result(request, config);

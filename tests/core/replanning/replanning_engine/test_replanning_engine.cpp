@@ -24,13 +24,13 @@ void test_replanning_engine() {
     ReplanningRequest work_request =
         make_replanning_engine_test_request();
 
-    ReplanningEngineConfig config;
+    ReplanningEngineConfig not_implemented_config;
 
-    config.method_id = "replanning_not_implemented_v1";
-    config.result_id = "test_replanning_engine_result_001";
+    not_implemented_config.method_id = "replanning_not_implemented_v1";
+    not_implemented_config.result_id = "test_replanning_engine_result_001";
 
     ReplanningResult not_implemented_result =
-        run_replanning_engine(work_request, config);
+        run_replanning_engine(work_request, not_implemented_config);
 
     FIELDOPS_EXPECT_EQ(
         not_implemented_result.result_id,
@@ -67,7 +67,10 @@ void test_replanning_engine() {
     not_requested_request.policy_decision = "DO_NOT_REPLAN";
 
     ReplanningResult not_requested_result =
-        run_replanning_engine(not_requested_request, config);
+        run_replanning_engine(
+            not_requested_request,
+            not_implemented_config
+        );
 
     FIELDOPS_EXPECT_EQ(
         not_requested_result.status,
@@ -80,12 +83,46 @@ void test_replanning_engine() {
     no_work_request.candidate_task_ids.clear();
 
     ReplanningResult no_work_result =
-        run_replanning_engine(no_work_request, config);
+        run_replanning_engine(
+            no_work_request,
+            not_implemented_config
+        );
 
     FIELDOPS_EXPECT_EQ(
         no_work_result.status,
         ReplanningResultStatus::NO_WORK
     );
+
+    ReplanningEngineConfig greedy_config;
+
+    greedy_config.method_id = "greedy_replanning_solver_v1";
+    greedy_config.result_id = "test_greedy_engine_result_001";
+
+    ReplanningResult greedy_result =
+        run_replanning_engine(work_request, greedy_config);
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_result.result_id,
+        "test_greedy_engine_result_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_result.method_id,
+        "greedy_replanning_solver_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_result.status,
+        ReplanningResultStatus::SUCCESS
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_result.generated_solution_id,
+        "test_greedy_engine_result_001_solution"
+    );
+
+    FIELDOPS_EXPECT_TRUE(greedy_result.has_new_solution());
+    FIELDOPS_EXPECT_TRUE(greedy_result.is_successful());
 
     ReplanningEngineConfig unknown_config;
 
