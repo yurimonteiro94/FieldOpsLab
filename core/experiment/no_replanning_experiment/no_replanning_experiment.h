@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "core/analysis/solution_comparison/solution_comparison.h"
+#include "core/experiment/experiment_metadata/experiment_metadata.h"
 #include "core/instance/instance/instance.h"
 #include "core/instance/instance_validator/instance_validator.h"
 #include "core/metrics/solution_metrics/solution_metrics.h"
@@ -14,6 +15,8 @@
 #include "core/solution/solution/solution.h"
 
 struct NoReplanningExperimentConfig {
+    ExperimentMetadata metadata;
+
     std::string instance_path = "data/instances/sample_instance_001.json";
 
     std::string perturbation_plan_path =
@@ -45,6 +48,8 @@ struct NoReplanningExperimentConfig {
 };
 
 struct NoReplanningExperimentResult {
+    ExperimentMetadata metadata;
+
     Instance instance;
     ValidationResult validation_result;
 

@@ -5,6 +5,7 @@
 
 void test_travel_matrix();
 void test_instance_validator();
+void test_experiment_metadata();
 void test_greedy_earliest_feasible_heuristic();
 void test_solution_metrics();
 void test_simulation_timeline();
@@ -34,6 +35,7 @@ int main() {
     std::vector<TestCase> tests = {
         {"TravelMatrix", test_travel_matrix},
         {"InstanceValidator", test_instance_validator},
+        {"ExperimentMetadata", test_experiment_metadata},
         {"GreedyEarliestFeasibleHeuristic", test_greedy_earliest_feasible_heuristic},
         {"SolutionMetrics", test_solution_metrics},
         {"SimulationTimeline", test_simulation_timeline},

@@ -45,6 +45,11 @@ static std::string bool_to_string(bool value) {
 static void write_header(std::ofstream& file) {
     file
         << "result_type,"
+        << "experiment_id,"
+        << "scenario_id,"
+        << "replication_id,"
+        << "seed,"
+        << "notes,"
         << "instance_id,"
         << "perturbation_plan_id,"
         << "policy_id,"
@@ -92,6 +97,11 @@ static void write_row(
 ) {
     file
         << csv_escape("no_replanning_experiment_result") << ","
+        << csv_escape(result.metadata.experiment_id) << ","
+        << csv_escape(result.metadata.scenario_id) << ","
+        << result.metadata.replication_id << ","
+        << result.metadata.seed << ","
+        << csv_escape(result.metadata.notes) << ","
         << csv_escape(result.instance.instance_id) << ","
         << csv_escape(result.perturbation_plan.perturbation_plan_id) << ","
         << csv_escape(result.policy_decision.policy_id) << ","

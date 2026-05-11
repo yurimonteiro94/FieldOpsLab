@@ -23,6 +23,11 @@ static std::vector<std::string> read_lines(const std::string& file_path) {
 void test_no_replanning_experiment_summary_csv_writer() {
     NoReplanningExperimentConfig config;
 
+    config.metadata.experiment_id = "csv_writer_experiment_001";
+    config.metadata.scenario_id = "csv_writer_scenario_001";
+    config.metadata.replication_id = 5;
+    config.metadata.seed = 5001;
+
     config.verbose = false;
     config.export_results = false;
 
@@ -48,7 +53,11 @@ void test_no_replanning_experiment_summary_csv_writer() {
     FIELDOPS_EXPECT_EQ(lines.size(), 2);
 
     FIELDOPS_EXPECT_TRUE(
-        lines[0].find("instance_id") != std::string::npos
+        lines[0].find("experiment_id") != std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        lines[0].find("scenario_id") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
@@ -56,7 +65,11 @@ void test_no_replanning_experiment_summary_csv_writer() {
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[1].find("sample_instance_001") != std::string::npos
+        lines[1].find("csv_writer_experiment_001") != std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        lines[1].find("csv_writer_scenario_001") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
@@ -79,7 +92,7 @@ void test_no_replanning_experiment_summary_csv_writer() {
     FIELDOPS_EXPECT_EQ(lines.size(), 3);
 
     FIELDOPS_EXPECT_TRUE(
-        lines[2].find("sample_instance_001") != std::string::npos
+        lines[2].find("csv_writer_experiment_001") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(

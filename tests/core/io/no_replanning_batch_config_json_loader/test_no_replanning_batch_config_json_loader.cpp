@@ -20,13 +20,43 @@ void test_no_replanning_batch_config_json_loader() {
     FIELDOPS_EXPECT_EQ(config.experiments.size(), 2);
 
     FIELDOPS_EXPECT_EQ(
+        config.experiments[0].metadata.experiment_id,
+        "batch_001_run_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[0].metadata.scenario_id,
+        "sample_delay_scenario_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[0].metadata.replication_id,
+        1
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[0].metadata.seed,
+        101
+    );
+
+    FIELDOPS_EXPECT_EQ(
         config.experiments[0].instance_path,
         "data/instances/sample_instance_001.json"
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[0].perturbation_plan_path,
-        "data/perturbations/sample_perturbations_001.json"
+        config.experiments[1].metadata.experiment_id,
+        "batch_001_run_002"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[1].metadata.replication_id,
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[1].metadata.seed,
+        102
     );
 
     FIELDOPS_EXPECT_EQ(

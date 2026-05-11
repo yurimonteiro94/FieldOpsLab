@@ -58,6 +58,16 @@ void test_no_replanning_batch_experiment() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        batch_result.results[0].metadata.experiment_id,
+        "batch_001_run_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        batch_result.results[1].metadata.experiment_id,
+        "batch_001_run_002"
+    );
+
+    FIELDOPS_EXPECT_EQ(
         batch_result.results[0].comparison.delta_total_travel_time,
         50
     );
@@ -75,14 +85,14 @@ void test_no_replanning_batch_experiment() {
     FIELDOPS_EXPECT_EQ(lines.size(), 3);
 
     FIELDOPS_EXPECT_TRUE(
-        lines[0].find("instance_id") != std::string::npos
+        lines[0].find("experiment_id") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[1].find("sample_instance_001") != std::string::npos
+        lines[1].find("batch_001_run_001") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[2].find("sample_instance_001") != std::string::npos
+        lines[2].find("batch_001_run_002") != std::string::npos
     );
 }

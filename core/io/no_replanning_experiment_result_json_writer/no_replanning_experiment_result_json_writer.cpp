@@ -8,6 +8,17 @@
 
 using json = nlohmann::json;
 
+static json metadata_to_json(const ExperimentMetadata& metadata) {
+    return {
+        {"experiment_id", metadata.experiment_id},
+        {"scenario_id", metadata.scenario_id},
+        {"replication_id", metadata.replication_id},
+        {"seed", metadata.seed},
+        {"notes", metadata.notes},
+        {"run_label", build_experiment_run_label(metadata)}
+    };
+}
+
 static json solution_metrics_to_json(const SolutionMetrics& metrics) {
     return {
         {"route_count", metrics.route_count},
@@ -86,6 +97,7 @@ void write_no_replanning_experiment_result_to_json(
 ) {
     json data = {
         {"result_type", result_type},
+        {"metadata", metadata_to_json(result.metadata)},
         {"instance", {
             {"instance_id", result.instance.instance_id},
             {"name", result.instance.name},

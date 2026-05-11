@@ -114,8 +114,22 @@ NoReplanningExperimentResult run_no_replanning_experiment(
 ) {
     NoReplanningExperimentResult result;
 
+    result.metadata = config.metadata;
+
     if (config.verbose) {
         std::cout << "FieldOps Lab - simulation engine started.\n";
+        std::cout << "Experiment ID: "
+                  << result.metadata.experiment_id
+                  << "\n";
+        std::cout << "Scenario ID: "
+                  << result.metadata.scenario_id
+                  << "\n";
+        std::cout << "Replication ID: "
+                  << result.metadata.replication_id
+                  << "\n";
+        std::cout << "Seed: "
+                  << result.metadata.seed
+                  << "\n";
         std::cout << "Loading instance: " << config.instance_path << "\n\n";
     }
 

@@ -8,6 +8,11 @@
   "export_summary_csv": true,
   "experiments": [
     {
+      "experiment_id": "batch_001_run_001",
+      "scenario_id": "sample_delay_scenario_001",
+      "replication_id": 1,
+      "seed": 101,
+      "notes": "First sample no-replanning batch run.",
       "instance_path": "data/instances/sample_instance_001.json",
       "perturbation_plan_path": "data/perturbations/sample_perturbations_001.json",
       "planned_solution_output_path": "data/results/batch_001_planned_solution_001.json",
@@ -19,6 +24,11 @@
       "experiment_summary_csv_output_path": "data/results/batch_001_experiment_summary_001.csv"
     },
     {
+      "experiment_id": "batch_001_run_002",
+      "scenario_id": "sample_delay_scenario_001",
+      "replication_id": 2,
+      "seed": 102,
+      "notes": "Second sample no-replanning batch run.",
       "instance_path": "data/instances/sample_instance_001.json",
       "perturbation_plan_path": "data/perturbations/sample_perturbations_001.json",
       "planned_solution_output_path": "data/results/batch_001_planned_solution_002.json",

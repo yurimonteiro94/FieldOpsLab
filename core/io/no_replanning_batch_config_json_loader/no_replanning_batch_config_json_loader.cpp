@@ -12,6 +12,21 @@ static NoReplanningExperimentConfig read_experiment_config_from_json(
 ) {
     NoReplanningExperimentConfig config;
 
+    config.metadata.experiment_id =
+        data.value("experiment_id", config.metadata.experiment_id);
+
+    config.metadata.scenario_id =
+        data.value("scenario_id", config.metadata.scenario_id);
+
+    config.metadata.replication_id =
+        data.value("replication_id", config.metadata.replication_id);
+
+    config.metadata.seed =
+        data.value("seed", config.metadata.seed);
+
+    config.metadata.notes =
+        data.value("notes", config.metadata.notes);
+
     config.instance_path =
         data.value("instance_path", config.instance_path);
 

@@ -6,6 +6,12 @@
 void test_no_replanning_experiment() {
     NoReplanningExperimentConfig config;
 
+    config.metadata.experiment_id = "test_experiment_001";
+    config.metadata.scenario_id = "test_scenario_001";
+    config.metadata.replication_id = 7;
+    config.metadata.seed = 7001;
+    config.metadata.notes = "No-replanning experiment metadata test.";
+
     config.planned_solution_output_path =
         "data/results/test_no_replanning_planned_solution.json";
 
@@ -42,6 +48,11 @@ void test_no_replanning_experiment() {
         run_no_replanning_experiment(config);
 
     FIELDOPS_EXPECT_TRUE(result.validation_result.is_valid());
+
+    FIELDOPS_EXPECT_EQ(result.metadata.experiment_id, "test_experiment_001");
+    FIELDOPS_EXPECT_EQ(result.metadata.scenario_id, "test_scenario_001");
+    FIELDOPS_EXPECT_EQ(result.metadata.replication_id, 7);
+    FIELDOPS_EXPECT_EQ(result.metadata.seed, 7001);
 
     FIELDOPS_EXPECT_EQ(result.planned_solution.status, SolutionStatus::FEASIBLE);
     FIELDOPS_EXPECT_EQ(result.executed_solution.status, SolutionStatus::FEASIBLE);

@@ -11,6 +11,11 @@ using json = nlohmann::json;
 void test_no_replanning_experiment_result_json_writer() {
     NoReplanningExperimentConfig config;
 
+    config.metadata.experiment_id = "json_writer_experiment_001";
+    config.metadata.scenario_id = "json_writer_scenario_001";
+    config.metadata.replication_id = 4;
+    config.metadata.seed = 4001;
+
     config.verbose = false;
     config.export_results = false;
 
@@ -37,6 +42,26 @@ void test_no_replanning_experiment_result_json_writer() {
     FIELDOPS_EXPECT_EQ(
         data.at("result_type").get<std::string>(),
         "test_no_replanning_experiment_result"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("metadata").at("experiment_id").get<std::string>(),
+        "json_writer_experiment_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("metadata").at("scenario_id").get<std::string>(),
+        "json_writer_scenario_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("metadata").at("replication_id").get<int>(),
+        4
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("metadata").at("seed").get<int>(),
+        4001
     );
 
     FIELDOPS_EXPECT_EQ(
