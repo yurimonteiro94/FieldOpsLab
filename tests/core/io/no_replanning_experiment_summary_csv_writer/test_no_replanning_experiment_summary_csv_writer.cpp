@@ -5,6 +5,20 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
+#include <vector>
+
+static std::vector<std::string> read_lines(const std::string& file_path) {
+    std::ifstream file(file_path);
+
+    std::vector<std::string> lines;
+    std::string line;
+
+    while (std::getline(file, line)) {
+        lines.push_back(line);
+    }
+
+    return lines;
+}
 
 void test_no_replanning_experiment_summary_csv_writer() {
     NoReplanningExperimentConfig config;
@@ -23,36 +37,52 @@ void test_no_replanning_experiment_summary_csv_writer() {
     write_no_replanning_experiment_summary_to_csv(
         result,
         output_path,
-        true
+        true,
+        false
     );
 
     FIELDOPS_EXPECT_TRUE(std::filesystem::exists(output_path));
 
-    std::ifstream file(output_path);
+    std::vector<std::string> lines = read_lines(output_path);
 
-    std::string header;
-    std::string row;
-
-    std::getline(file, header);
-    std::getline(file, row);
+    FIELDOPS_EXPECT_EQ(lines.size(), 2);
 
     FIELDOPS_EXPECT_TRUE(
-        header.find("instance_id") != std::string::npos
+        lines[0].find("instance_id") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        header.find("delta_total_travel_time") != std::string::npos
+        lines[0].find("delta_total_travel_time") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        row.find("sample_instance_001") != std::string::npos
+        lines[1].find("sample_instance_001") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        row.find("no_replanning_policy_v1") != std::string::npos
+        lines[1].find("no_replanning_policy_v1") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        row.find("50") != std::string::npos
+        lines[1].find("50") != std::string::npos
+    );
+
+    write_no_replanning_experiment_summary_to_csv(
+        result,
+        output_path,
+        false,
+        true
+    );
+
+    lines = read_lines(output_path);
+
+    FIELDOPS_EXPECT_EQ(lines.size(), 3);
+
+    FIELDOPS_EXPECT_TRUE(
+        lines[2].find("sample_instance_001") != std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        lines[2].find("no_replanning_policy_v1") != std::string::npos
     );
 }

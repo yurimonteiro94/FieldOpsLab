@@ -2,7 +2,7 @@
 
 #include <filesystem>
 #include <fstream>
-#include <sstream>
+#include <ios>
 #include <stdexcept>
 #include <string>
 
@@ -136,7 +136,8 @@ static void write_row(
 void write_no_replanning_experiment_summary_to_csv(
     const NoReplanningExperimentResult& result,
     const std::string& output_path,
-    bool write_header_line
+    bool write_header_line,
+    bool append
 ) {
     std::filesystem::path path(output_path);
 
@@ -144,7 +145,15 @@ void write_no_replanning_experiment_summary_to_csv(
         std::filesystem::create_directories(path.parent_path());
     }
 
-    std::ofstream file(output_path);
+    std::ios_base::openmode mode = std::ios::out;
+
+    if (append) {
+        mode = mode | std::ios::app;
+    } else {
+        mode = mode | std::ios::trunc;
+    }
+
+    std::ofstream file(output_path, mode);
 
     if (!file.is_open()) {
         throw std::runtime_error(
