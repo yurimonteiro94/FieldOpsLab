@@ -13,7 +13,6 @@
 #include "core/io/solution_result_json_writer/solution_result_json_writer.h"
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
 #include "core/perturbation/perturbation_effect_builder/perturbation_effect_builder.h"
-#include "core/policy/no_replanning_policy/no_replanning_policy.h"
 #include "core/simulation/no_replanning_execution/no_replanning_execution.h"
 
 static void print_effects_summary(const std::vector<Effect>& effects) {
@@ -130,6 +129,9 @@ NoReplanningExperimentResult run_no_replanning_experiment(
         std::cout << "Seed: "
                   << result.metadata.seed
                   << "\n";
+        std::cout << "Policy ID: "
+                  << config.policy_config.policy_id
+                  << "\n";
         std::cout << "Loading instance: " << config.instance_path << "\n\n";
     }
 
@@ -197,7 +199,7 @@ NoReplanningExperimentResult run_no_replanning_experiment(
 
     if (config.verbose) {
         print_effects_summary(result.effects);
-        std::cout << "\nEvaluating no-replanning policy...\n\n";
+        std::cout << "\nEvaluating policy...\n\n";
     }
 
     PolicyEvaluationContext policy_context;
@@ -206,16 +208,17 @@ NoReplanningExperimentResult run_no_replanning_experiment(
     policy_context.effects = result.effects;
 
     result.policy_decision =
-        evaluate_no_replanning_policy(policy_context);
+        evaluate_policy(policy_context, config.policy_config);
 
     if (config.verbose) {
         print_policy_decision(result.policy_decision);
-    }
 
-    if (result.policy_decision.should_replan()) {
-        throw std::runtime_error(
-            "NoReplanningExperiment received an unexpected REPLAN decision."
-        );
+        if (result.policy_decision.should_replan()) {
+            std::cout << "\nReplanning decision recorded. "
+                      << "A replanning execution engine is not implemented yet, "
+                      << "so this experiment will continue with "
+                      << "the no-replanning execution baseline.\n";
+        }
     }
 
     if (config.verbose) {

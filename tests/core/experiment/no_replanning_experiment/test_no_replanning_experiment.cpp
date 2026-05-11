@@ -12,6 +12,8 @@ void test_no_replanning_experiment() {
     config.metadata.seed = 7001;
     config.metadata.notes = "No-replanning experiment metadata test.";
 
+    config.policy_config.policy_id = "no_replanning_policy_v1";
+
     config.planned_solution_output_path =
         "data/results/test_no_replanning_planned_solution.json";
 

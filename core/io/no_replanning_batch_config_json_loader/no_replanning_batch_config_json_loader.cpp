@@ -7,6 +7,53 @@
 
 using json = nlohmann::json;
 
+static void read_policy_config_from_json(
+    const json& data,
+    NoReplanningExperimentConfig& config
+) {
+    config.policy_config.policy_id =
+        data.value("policy_id", config.policy_config.policy_id);
+
+    config.policy_config.threshold_delay_config.policy_id =
+        config.policy_config.policy_id;
+
+    config.policy_config.threshold_delay_config.max_single_delay_threshold =
+        data.value(
+            "max_single_delay_threshold",
+            config.policy_config
+                .threshold_delay_config
+                .max_single_delay_threshold
+        );
+
+    config.policy_config.threshold_delay_config.total_delay_threshold =
+        data.value(
+            "total_delay_threshold",
+            config.policy_config
+                .threshold_delay_config
+                .total_delay_threshold
+        );
+
+    config.policy_config
+        .threshold_delay_config
+        .replan_when_single_delay_reaches_threshold =
+            data.value(
+                "replan_when_single_delay_reaches_threshold",
+                config.policy_config
+                    .threshold_delay_config
+                    .replan_when_single_delay_reaches_threshold
+            );
+
+    config.policy_config
+        .threshold_delay_config
+        .replan_when_total_delay_reaches_threshold =
+            data.value(
+                "replan_when_total_delay_reaches_threshold",
+                config.policy_config
+                    .threshold_delay_config
+                    .replan_when_total_delay_reaches_threshold
+            );
+}
+
 static NoReplanningExperimentConfig read_experiment_config_from_json(
     const json& data
 ) {
@@ -26,6 +73,8 @@ static NoReplanningExperimentConfig read_experiment_config_from_json(
 
     config.metadata.notes =
         data.value("notes", config.metadata.notes);
+
+    read_policy_config_from_json(data, config);
 
     config.instance_path =
         data.value("instance_path", config.instance_path);

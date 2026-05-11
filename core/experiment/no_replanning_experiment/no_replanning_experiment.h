@@ -11,11 +11,14 @@
 #include "core/perturbation/effect/effect.h"
 #include "core/perturbation/perturbation/perturbation.h"
 #include "core/policy/policy/policy.h"
+#include "core/policy/policy_evaluator/policy_evaluator.h"
 #include "core/simulation/simulation_engine/simulation_engine.h"
 #include "core/solution/solution/solution.h"
 
 struct NoReplanningExperimentConfig {
     ExperimentMetadata metadata;
+
+    PolicyEvaluationConfig policy_config;
 
     std::string instance_path = "data/instances/sample_instance_001.json";
 

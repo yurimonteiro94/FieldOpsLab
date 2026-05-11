@@ -46,34 +46,56 @@ void test_no_replanning_batch_experiment() {
         "sample_no_replanning_batch_001"
     );
 
-    FIELDOPS_EXPECT_EQ(batch_result.experiment_count(), 3);
-    FIELDOPS_EXPECT_EQ(batch_result.results.size(), 3);
+    FIELDOPS_EXPECT_EQ(batch_result.experiment_count(), 6);
+    FIELDOPS_EXPECT_EQ(batch_result.results.size(), 6);
 
     FIELDOPS_EXPECT_TRUE(
         batch_result.results[0].validation_result.is_valid()
     );
 
     FIELDOPS_EXPECT_TRUE(
-        batch_result.results[1].validation_result.is_valid()
-    );
-
-    FIELDOPS_EXPECT_TRUE(
-        batch_result.results[2].validation_result.is_valid()
+        batch_result.results[5].validation_result.is_valid()
     );
 
     FIELDOPS_EXPECT_EQ(
         batch_result.results[0].metadata.experiment_id,
-        "batch_001_light_001"
+        "batch_001_no_replanning_light_001"
     );
 
     FIELDOPS_EXPECT_EQ(
-        batch_result.results[1].metadata.experiment_id,
-        "batch_001_moderate_001"
+        batch_result.results[3].metadata.experiment_id,
+        "batch_001_threshold_light_001"
     );
 
     FIELDOPS_EXPECT_EQ(
-        batch_result.results[2].metadata.experiment_id,
-        "batch_001_severe_001"
+        batch_result.results[5].metadata.experiment_id,
+        "batch_001_threshold_severe_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        batch_result.results[0].policy_decision.policy_id,
+        "no_replanning_policy_v1"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        !batch_result.results[0].policy_decision.should_replan()
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        batch_result.results[3].policy_decision.policy_id,
+        "threshold_delay_replanning_policy_v1"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        !batch_result.results[3].policy_decision.should_replan()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        batch_result.results[4].policy_decision.should_replan()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        batch_result.results[5].policy_decision.should_replan()
     );
 
     FIELDOPS_EXPECT_TRUE(
@@ -91,21 +113,29 @@ void test_no_replanning_batch_experiment() {
     std::vector<std::string> lines =
         read_batch_csv_lines(summary_csv_path);
 
-    FIELDOPS_EXPECT_EQ(lines.size(), 4);
+    FIELDOPS_EXPECT_EQ(lines.size(), 7);
 
     FIELDOPS_EXPECT_TRUE(
         lines[0].find("experiment_id") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[1].find("batch_001_light_001") != std::string::npos
+        lines[1].find("batch_001_no_replanning_light_001") !=
+        std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[2].find("batch_001_moderate_001") != std::string::npos
+        lines[4].find("batch_001_threshold_light_001") !=
+        std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[3].find("batch_001_severe_001") != std::string::npos
+        lines[5].find("batch_001_threshold_moderate_001") !=
+        std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        lines[6].find("batch_001_threshold_severe_001") !=
+        std::string::npos
     );
 }

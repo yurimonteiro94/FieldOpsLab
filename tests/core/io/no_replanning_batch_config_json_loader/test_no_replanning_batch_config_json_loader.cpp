@@ -17,21 +17,16 @@ void test_no_replanning_batch_config_json_loader() {
         "data/results/sample_no_replanning_batch_summary_001.csv"
     );
 
-    FIELDOPS_EXPECT_EQ(config.experiments.size(), 3);
+    FIELDOPS_EXPECT_EQ(config.experiments.size(), 6);
 
     FIELDOPS_EXPECT_EQ(
         config.experiments[0].metadata.experiment_id,
-        "batch_001_light_001"
+        "batch_001_no_replanning_light_001"
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[0].metadata.scenario_id,
-        "sample_delay_light_001"
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        config.experiments[0].metadata.seed,
-        101
+        config.experiments[0].policy_config.policy_id,
+        "no_replanning_policy_v1"
     );
 
     FIELDOPS_EXPECT_EQ(
@@ -40,42 +35,43 @@ void test_no_replanning_batch_config_json_loader() {
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[1].metadata.experiment_id,
-        "batch_001_moderate_001"
+        config.experiments[3].metadata.experiment_id,
+        "batch_001_threshold_light_001"
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[1].metadata.scenario_id,
-        "sample_delay_moderate_001"
+        config.experiments[3].policy_config.policy_id,
+        "threshold_delay_replanning_policy_v1"
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[1].metadata.seed,
-        201
+        config.experiments[3]
+            .policy_config
+            .threshold_delay_config
+            .max_single_delay_threshold,
+        30
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[1].perturbation_plan_path,
-        "data/perturbations/sample_perturbations_moderate_001.json"
+        config.experiments[3]
+            .policy_config
+            .threshold_delay_config
+            .total_delay_threshold,
+        60
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[2].metadata.experiment_id,
-        "batch_001_severe_001"
+        config.experiments[5].metadata.experiment_id,
+        "batch_001_threshold_severe_001"
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[2].metadata.scenario_id,
-        "sample_delay_severe_001"
+        config.experiments[5].metadata.seed,
+        601
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[2].metadata.seed,
-        301
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        config.experiments[2].perturbation_plan_path,
+        config.experiments[5].perturbation_plan_path,
         "data/perturbations/sample_perturbations_severe_001.json"
     );
 
