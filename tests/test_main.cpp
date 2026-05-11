@@ -12,6 +12,7 @@ void test_simulation_timeline();
 void test_simulation_state();
 void test_replanning_request();
 void test_replanning_result();
+void test_replanning_engine();
 void test_replanning_request_json_writer();
 void test_perturbation();
 void test_effect();
@@ -48,6 +49,7 @@ int main() {
         {"SimulationState", test_simulation_state},
         {"ReplanningRequest", test_replanning_request},
         {"ReplanningResult", test_replanning_result},
+        {"ReplanningEngine", test_replanning_engine},
         {"ReplanningRequestJsonWriter", test_replanning_request_json_writer},
         {"Perturbation", test_perturbation},
         {"Effect", test_effect},

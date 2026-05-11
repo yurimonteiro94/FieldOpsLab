@@ -8,40 +8,12 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 enable_testing()
 
-set(FIELDOPS_CORE_SOURCES
-    core/analysis/solution_comparison/solution_comparison.cpp
-    core/experiment/experiment_metadata/experiment_metadata.cpp
-    core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.cpp
-    core/experiment/no_replanning_experiment/no_replanning_experiment.cpp
-    core/instance/instance/instance.cpp
-    core/instance/instance_validator/instance_validator.cpp
-    core/io/instance_json_loader/instance_json_loader.cpp
-    core/io/no_replanning_batch_config_json_loader/no_replanning_batch_config_json_loader.cpp
-    core/io/no_replanning_experiment_result_json_writer/no_replanning_experiment_result_json_writer.cpp
-    core/io/no_replanning_experiment_summary_csv_writer/no_replanning_experiment_summary_csv_writer.cpp
-    core/io/perturbation_json_loader/perturbation_json_loader.cpp
-    core/io/replanning_request_json_writer/replanning_request_json_writer.cpp
-    core/io/solution_comparison_json_writer/solution_comparison_json_writer.cpp
-    core/io/solution_result_json_writer/solution_result_json_writer.cpp
-    core/io/simulation_timeline_json_writer/simulation_timeline_json_writer.cpp
-    core/solution/solution/solution.cpp
-    core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.cpp
-    core/metrics/solution_metrics/solution_metrics.cpp
-    core/simulation/simulation_event/simulation_event.cpp
-    core/simulation/simulation_engine/simulation_engine.cpp
-    core/simulation/simulation_state/simulation_state.cpp
-    core/simulation/no_replanning_execution/no_replanning_execution.cpp
-    core/replanning/replanning_request/replanning_request.cpp
-    core/replanning/replanning_result/replanning_result.cpp
-    core/perturbation/perturbation/perturbation.cpp
-    core/perturbation/effect/effect.cpp
-    core/perturbation/travel_delay_perturbation/travel_delay_perturbation.cpp
-    core/perturbation/service_delay_perturbation/service_delay_perturbation.cpp
-    core/perturbation/perturbation_effect_builder/perturbation_effect_builder.cpp
-    core/policy/policy/policy.cpp
-    core/policy/no_replanning_policy/no_replanning_policy.cpp
-    core/policy/threshold_delay_replanning_policy/threshold_delay_replanning_policy.cpp
-    core/policy/policy_evaluator/policy_evaluator.cpp
+file(GLOB_RECURSE FIELDOPS_CORE_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/core/*.cpp"
+)
+
+file(GLOB_RECURSE FIELDOPS_TEST_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/core/*.cpp"
 )
 
 add_library(fieldops_core STATIC
@@ -63,34 +35,7 @@ target_link_libraries(fieldops_lab PRIVATE
 
 add_executable(fieldops_tests
     tests/test_main.cpp
-    tests/core/analysis/solution_comparison/test_solution_comparison.cpp
-    tests/core/experiment/experiment_metadata/test_experiment_metadata.cpp
-    tests/core/experiment/no_replanning_batch_experiment/test_no_replanning_batch_experiment.cpp
-    tests/core/experiment/no_replanning_experiment/test_no_replanning_experiment.cpp
-    tests/core/instance/instance/test_travel_matrix.cpp
-    tests/core/instance/instance_validator/test_instance_validator.cpp
-    tests/core/io/no_replanning_batch_config_json_loader/test_no_replanning_batch_config_json_loader.cpp
-    tests/core/io/no_replanning_experiment_result_json_writer/test_no_replanning_experiment_result_json_writer.cpp
-    tests/core/io/no_replanning_experiment_summary_csv_writer/test_no_replanning_experiment_summary_csv_writer.cpp
-    tests/core/io/perturbation_json_loader/test_perturbation_json_loader.cpp
-    tests/core/io/replanning_request_json_writer/test_replanning_request_json_writer.cpp
-    tests/core/io/solution_comparison_json_writer/test_solution_comparison_json_writer.cpp
-    tests/core/method/greedy_earliest_feasible_heuristic/test_greedy_earliest_feasible_heuristic.cpp
-    tests/core/metrics/solution_metrics/test_solution_metrics.cpp
-    tests/core/simulation/simulation_engine/test_simulation_timeline.cpp
-    tests/core/simulation/simulation_state/test_simulation_state.cpp
-    tests/core/simulation/no_replanning_execution/test_no_replanning_execution.cpp
-    tests/core/replanning/replanning_request/test_replanning_request.cpp
-    tests/core/replanning/replanning_result/test_replanning_result.cpp
-    tests/core/perturbation/perturbation/test_perturbation.cpp
-    tests/core/perturbation/effect/test_effect.cpp
-    tests/core/perturbation/travel_delay_perturbation/test_travel_delay_perturbation.cpp
-    tests/core/perturbation/service_delay_perturbation/test_service_delay_perturbation.cpp
-    tests/core/perturbation/perturbation_effect_builder/test_perturbation_effect_builder.cpp
-    tests/core/policy/policy/test_policy.cpp
-    tests/core/policy/no_replanning_policy/test_no_replanning_policy.cpp
-    tests/core/policy/threshold_delay_replanning_policy/test_threshold_delay_replanning_policy.cpp
-    tests/core/policy/policy_evaluator/test_policy_evaluator.cpp
+    ${FIELDOPS_TEST_SOURCES}
 )
 
 target_link_libraries(fieldops_tests PRIVATE
