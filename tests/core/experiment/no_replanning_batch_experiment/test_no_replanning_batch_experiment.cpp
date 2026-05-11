@@ -46,8 +46,8 @@ void test_no_replanning_batch_experiment() {
         "sample_no_replanning_batch_001"
     );
 
-    FIELDOPS_EXPECT_EQ(batch_result.experiment_count(), 2);
-    FIELDOPS_EXPECT_EQ(batch_result.results.size(), 2);
+    FIELDOPS_EXPECT_EQ(batch_result.experiment_count(), 3);
+    FIELDOPS_EXPECT_EQ(batch_result.results.size(), 3);
 
     FIELDOPS_EXPECT_TRUE(
         batch_result.results[0].validation_result.is_valid()
@@ -57,24 +57,33 @@ void test_no_replanning_batch_experiment() {
         batch_result.results[1].validation_result.is_valid()
     );
 
+    FIELDOPS_EXPECT_TRUE(
+        batch_result.results[2].validation_result.is_valid()
+    );
+
     FIELDOPS_EXPECT_EQ(
         batch_result.results[0].metadata.experiment_id,
-        "batch_001_run_001"
+        "batch_001_light_001"
     );
 
     FIELDOPS_EXPECT_EQ(
         batch_result.results[1].metadata.experiment_id,
-        "batch_001_run_002"
+        "batch_001_moderate_001"
     );
 
     FIELDOPS_EXPECT_EQ(
-        batch_result.results[0].comparison.delta_total_travel_time,
-        50
+        batch_result.results[2].metadata.experiment_id,
+        "batch_001_severe_001"
     );
 
-    FIELDOPS_EXPECT_EQ(
-        batch_result.results[1].comparison.delta_total_travel_time,
-        50
+    FIELDOPS_EXPECT_TRUE(
+        batch_result.results[0].comparison.delta_total_travel_time <
+        batch_result.results[1].comparison.delta_total_travel_time
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        batch_result.results[1].comparison.delta_total_travel_time <
+        batch_result.results[2].comparison.delta_total_travel_time
     );
 
     FIELDOPS_EXPECT_TRUE(std::filesystem::exists(summary_csv_path));
@@ -82,17 +91,21 @@ void test_no_replanning_batch_experiment() {
     std::vector<std::string> lines =
         read_batch_csv_lines(summary_csv_path);
 
-    FIELDOPS_EXPECT_EQ(lines.size(), 3);
+    FIELDOPS_EXPECT_EQ(lines.size(), 4);
 
     FIELDOPS_EXPECT_TRUE(
         lines[0].find("experiment_id") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[1].find("batch_001_run_001") != std::string::npos
+        lines[1].find("batch_001_light_001") != std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[2].find("batch_001_run_002") != std::string::npos
+        lines[2].find("batch_001_moderate_001") != std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        lines[3].find("batch_001_severe_001") != std::string::npos
     );
 }

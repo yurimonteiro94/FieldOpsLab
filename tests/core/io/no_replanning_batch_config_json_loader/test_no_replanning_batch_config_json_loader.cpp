@@ -17,21 +17,16 @@ void test_no_replanning_batch_config_json_loader() {
         "data/results/sample_no_replanning_batch_summary_001.csv"
     );
 
-    FIELDOPS_EXPECT_EQ(config.experiments.size(), 2);
+    FIELDOPS_EXPECT_EQ(config.experiments.size(), 3);
 
     FIELDOPS_EXPECT_EQ(
         config.experiments[0].metadata.experiment_id,
-        "batch_001_run_001"
+        "batch_001_light_001"
     );
 
     FIELDOPS_EXPECT_EQ(
         config.experiments[0].metadata.scenario_id,
-        "sample_delay_scenario_001"
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        config.experiments[0].metadata.replication_id,
-        1
+        "sample_delay_light_001"
     );
 
     FIELDOPS_EXPECT_EQ(
@@ -40,28 +35,48 @@ void test_no_replanning_batch_config_json_loader() {
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[0].instance_path,
-        "data/instances/sample_instance_001.json"
+        config.experiments[0].perturbation_plan_path,
+        "data/perturbations/sample_perturbations_light_001.json"
     );
 
     FIELDOPS_EXPECT_EQ(
         config.experiments[1].metadata.experiment_id,
-        "batch_001_run_002"
+        "batch_001_moderate_001"
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[1].metadata.replication_id,
-        2
+        config.experiments[1].metadata.scenario_id,
+        "sample_delay_moderate_001"
     );
 
     FIELDOPS_EXPECT_EQ(
         config.experiments[1].metadata.seed,
-        102
+        201
     );
 
     FIELDOPS_EXPECT_EQ(
-        config.experiments[1].planned_solution_output_path,
-        "data/results/batch_001_planned_solution_002.json"
+        config.experiments[1].perturbation_plan_path,
+        "data/perturbations/sample_perturbations_moderate_001.json"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[2].metadata.experiment_id,
+        "batch_001_severe_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[2].metadata.scenario_id,
+        "sample_delay_severe_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[2].metadata.seed,
+        301
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[2].perturbation_plan_path,
+        "data/perturbations/sample_perturbations_severe_001.json"
     );
 
     FIELDOPS_EXPECT_TRUE(!config.verbose);

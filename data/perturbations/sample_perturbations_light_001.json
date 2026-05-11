@@ -1,0 +1,29 @@
+{
+  "perturbation_plan_id": "sample_perturbations_light_001",
+  "name": "Light delay perturbation plan",
+  "description": "Light delay scenario with small travel and service delays.",
+  "perturbations": [
+    {
+      "perturbation_id": "light_travel_delay_001",
+      "type": "TRAVEL_DELAY",
+      "occurrence_time": 125,
+      "technician_id": "tech_1",
+      "task_id": "task_C",
+      "from_location_id": "task_A_location",
+      "to_location_id": "task_C_location",
+      "delay_duration": 10,
+      "description": "Small travel delay from task_A_location to task_C_location."
+    },
+    {
+      "perturbation_id": "light_service_delay_001",
+      "type": "SERVICE_DELAY",
+      "occurrence_time": 130,
+      "technician_id": "tech_2",
+      "task_id": "task_B",
+      "from_location_id": "",
+      "to_location_id": "task_B_location",
+      "delay_duration": 5,
+      "description": "Small service delay during task_B."
+    }
+  ]
+}

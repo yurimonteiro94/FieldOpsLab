@@ -1,0 +1,29 @@
+{
+  "perturbation_plan_id": "sample_perturbations_moderate_001",
+  "name": "Moderate delay perturbation plan",
+  "description": "Moderate delay scenario with travel and service delays.",
+  "perturbations": [
+    {
+      "perturbation_id": "moderate_travel_delay_001",
+      "type": "TRAVEL_DELAY",
+      "occurrence_time": 125,
+      "technician_id": "tech_1",
+      "task_id": "task_C",
+      "from_location_id": "task_A_location",
+      "to_location_id": "task_C_location",
+      "delay_duration": 50,
+      "description": "Moderate travel delay from task_A_location to task_C_location."
+    },
+    {
+      "perturbation_id": "moderate_service_delay_001",
+      "type": "SERVICE_DELAY",
+      "occurrence_time": 130,
+      "technician_id": "tech_2",
+      "task_id": "task_B",
+      "from_location_id": "",
+      "to_location_id": "task_B_location",
+      "delay_duration": 30,
+      "description": "Moderate service delay during task_B."
+    }
+  ]
+}

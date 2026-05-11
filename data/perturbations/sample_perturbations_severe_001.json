@@ -1,0 +1,29 @@
+{
+  "perturbation_plan_id": "sample_perturbations_severe_001",
+  "name": "Severe delay perturbation plan",
+  "description": "Severe delay scenario with large travel and service delays.",
+  "perturbations": [
+    {
+      "perturbation_id": "severe_travel_delay_001",
+      "type": "TRAVEL_DELAY",
+      "occurrence_time": 125,
+      "technician_id": "tech_1",
+      "task_id": "task_C",
+      "from_location_id": "task_A_location",
+      "to_location_id": "task_C_location",
+      "delay_duration": 90,
+      "description": "Severe travel delay from task_A_location to task_C_location."
+    },
+    {
+      "perturbation_id": "severe_service_delay_001",
+      "type": "SERVICE_DELAY",
+      "occurrence_time": 130,
+      "technician_id": "tech_2",
+      "task_id": "task_B",
+      "from_location_id": "",
+      "to_location_id": "task_B_location",
+      "delay_duration": 80,
+      "description": "Severe service delay during task_B."
+    }
+  ]
+}
