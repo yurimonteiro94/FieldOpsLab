@@ -13,8 +13,13 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
 ) {
     NoReplanningBatchExperimentResult batch_result;
 
+    batch_result.batch_id = config.batch_id;
+    batch_result.name = config.name;
+    batch_result.description = config.description;
+
     if (config.verbose) {
         std::cout << "Running no-replanning batch experiment...\n";
+        std::cout << "  Batch ID: " << config.batch_id << "\n";
         std::cout << "  Experiments: " << config.experiments.size() << "\n";
     }
 

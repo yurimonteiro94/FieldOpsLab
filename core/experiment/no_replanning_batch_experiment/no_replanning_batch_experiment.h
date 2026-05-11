@@ -6,6 +6,10 @@
 #include "core/experiment/no_replanning_experiment/no_replanning_experiment.h"
 
 struct NoReplanningBatchExperimentConfig {
+    std::string batch_id = "no_replanning_batch";
+    std::string name;
+    std::string description;
+
     std::vector<NoReplanningExperimentConfig> experiments;
 
     std::string summary_csv_output_path =
@@ -17,6 +21,10 @@ struct NoReplanningBatchExperimentConfig {
 };
 
 struct NoReplanningBatchExperimentResult {
+    std::string batch_id;
+    std::string name;
+    std::string description;
+
     std::vector<NoReplanningExperimentResult> results;
 
     int experiment_count() const;

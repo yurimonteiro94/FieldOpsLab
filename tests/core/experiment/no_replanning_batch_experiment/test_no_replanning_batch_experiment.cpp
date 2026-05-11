@@ -1,4 +1,5 @@
 #include "core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.h"
+#include "core/io/no_replanning_batch_config_json_loader/no_replanning_batch_config_json_loader.h"
 #include "tests/test_support/test_assertions.h"
 
 #include <filesystem>
@@ -22,32 +23,28 @@ static std::vector<std::string> read_batch_csv_lines(
 }
 
 void test_no_replanning_batch_experiment() {
+    NoReplanningBatchExperimentConfig batch_config =
+        load_no_replanning_batch_config_from_json(
+            "data/experiments/sample_no_replanning_batch_001.json"
+        );
+
     const std::string summary_csv_path =
         "data/results/test_no_replanning_batch_summary.csv";
 
-    std::filesystem::remove(summary_csv_path);
-
-    NoReplanningExperimentConfig experiment_1;
-
-    experiment_1.verbose = false;
-    experiment_1.export_results = false;
-
-    NoReplanningExperimentConfig experiment_2;
-
-    experiment_2.verbose = false;
-    experiment_2.export_results = false;
-
-    NoReplanningBatchExperimentConfig batch_config;
-
-    batch_config.experiments.push_back(experiment_1);
-    batch_config.experiments.push_back(experiment_2);
     batch_config.summary_csv_output_path = summary_csv_path;
     batch_config.verbose = false;
     batch_config.export_individual_results = false;
     batch_config.export_summary_csv = true;
 
+    std::filesystem::remove(summary_csv_path);
+
     NoReplanningBatchExperimentResult batch_result =
         run_no_replanning_batch_experiment(batch_config);
+
+    FIELDOPS_EXPECT_EQ(
+        batch_result.batch_id,
+        "sample_no_replanning_batch_001"
+    );
 
     FIELDOPS_EXPECT_EQ(batch_result.experiment_count(), 2);
     FIELDOPS_EXPECT_EQ(batch_result.results.size(), 2);

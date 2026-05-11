@@ -1,0 +1,33 @@
+{
+  "batch_id": "sample_no_replanning_batch_001",
+  "name": "Sample no-replanning batch experiment",
+  "description": "Small batch with two no-replanning experiment runs using the same instance and perturbation plan.",
+  "summary_csv_output_path": "data/results/sample_no_replanning_batch_summary_001.csv",
+  "verbose": false,
+  "export_individual_results": false,
+  "export_summary_csv": true,
+  "experiments": [
+    {
+      "instance_path": "data/instances/sample_instance_001.json",
+      "perturbation_plan_path": "data/perturbations/sample_perturbations_001.json",
+      "planned_solution_output_path": "data/results/batch_001_planned_solution_001.json",
+      "planned_timeline_output_path": "data/results/batch_001_planned_timeline_001.json",
+      "executed_solution_output_path": "data/results/batch_001_executed_solution_001.json",
+      "executed_timeline_output_path": "data/results/batch_001_executed_timeline_001.json",
+      "comparison_output_path": "data/results/batch_001_comparison_001.json",
+      "experiment_result_output_path": "data/results/batch_001_experiment_result_001.json",
+      "experiment_summary_csv_output_path": "data/results/batch_001_experiment_summary_001.csv"
+    },
+    {
+      "instance_path": "data/instances/sample_instance_001.json",
+      "perturbation_plan_path": "data/perturbations/sample_perturbations_001.json",
+      "planned_solution_output_path": "data/results/batch_001_planned_solution_002.json",
+      "planned_timeline_output_path": "data/results/batch_001_planned_timeline_002.json",
+      "executed_solution_output_path": "data/results/batch_001_executed_solution_002.json",
+      "executed_timeline_output_path": "data/results/batch_001_executed_timeline_002.json",
+      "comparison_output_path": "data/results/batch_001_comparison_002.json",
+      "experiment_result_output_path": "data/results/batch_001_experiment_result_002.json",
+      "experiment_summary_csv_output_path": "data/results/batch_001_experiment_summary_002.csv"
+    }
+  ]
+}
