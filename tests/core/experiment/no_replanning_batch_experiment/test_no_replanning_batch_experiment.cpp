@@ -81,6 +81,10 @@ void test_no_replanning_batch_experiment() {
         !batch_result.results[0].policy_decision.should_replan()
     );
 
+    FIELDOPS_EXPECT_TRUE(
+        !batch_result.results[0].has_replanning_request
+    );
+
     FIELDOPS_EXPECT_EQ(
         batch_result.results[3].policy_decision.policy_id,
         "threshold_delay_replanning_policy_v1"
@@ -91,11 +95,33 @@ void test_no_replanning_batch_experiment() {
     );
 
     FIELDOPS_EXPECT_TRUE(
+        !batch_result.results[3].has_replanning_request
+    );
+
+    FIELDOPS_EXPECT_TRUE(
         batch_result.results[4].policy_decision.should_replan()
     );
 
     FIELDOPS_EXPECT_TRUE(
+        batch_result.results[4].has_replanning_request
+    );
+
+    FIELDOPS_EXPECT_TRUE(
         batch_result.results[5].policy_decision.should_replan()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        batch_result.results[5].has_replanning_request
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        batch_result.results[4].replanning_request.candidate_task_count(),
+        1
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        batch_result.results[5].replanning_request.candidate_task_count(),
+        1
     );
 
     FIELDOPS_EXPECT_TRUE(

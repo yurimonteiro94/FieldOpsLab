@@ -65,6 +65,7 @@ void test_no_replanning_experiment() {
     );
 
     FIELDOPS_EXPECT_TRUE(!result.policy_decision.should_replan());
+    FIELDOPS_EXPECT_TRUE(!result.has_replanning_request);
 
     FIELDOPS_EXPECT_EQ(
         policy_decision_type_to_string(result.policy_decision.type),
@@ -107,5 +108,68 @@ void test_no_replanning_experiment() {
 
     FIELDOPS_EXPECT_TRUE(
         std::filesystem::exists(config.experiment_summary_csv_output_path)
+    );
+
+    NoReplanningExperimentConfig threshold_config;
+
+    threshold_config.metadata.experiment_id = "test_threshold_experiment_001";
+    threshold_config.metadata.scenario_id = "test_threshold_scenario_001";
+    threshold_config.metadata.replication_id = 1;
+    threshold_config.metadata.seed = 9001;
+
+    threshold_config.policy_config.policy_id =
+        "threshold_delay_replanning_policy_v1";
+
+    threshold_config.policy_config
+        .threshold_delay_config
+        .max_single_delay_threshold = 30;
+
+    threshold_config.policy_config
+        .threshold_delay_config
+        .total_delay_threshold = 60;
+
+    threshold_config.verbose = false;
+    threshold_config.export_results = false;
+
+    NoReplanningExperimentResult threshold_result =
+        run_no_replanning_experiment(threshold_config);
+
+    FIELDOPS_EXPECT_TRUE(threshold_result.policy_decision.should_replan());
+    FIELDOPS_EXPECT_TRUE(threshold_result.has_replanning_request);
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_request.request_id,
+        "test_threshold_experiment_001_replanning_request"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_request.policy_id,
+        "threshold_delay_replanning_policy_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_request.policy_decision,
+        "REPLAN"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        replanning_request_has_work(
+            threshold_result.replanning_request
+        )
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_request.completed_task_count(),
+        1
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_request.locked_task_count(),
+        1
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.replanning_request.candidate_task_count(),
+        1
     );
 }

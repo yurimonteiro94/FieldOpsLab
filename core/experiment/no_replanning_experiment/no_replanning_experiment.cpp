@@ -13,7 +13,9 @@
 #include "core/io/solution_result_json_writer/solution_result_json_writer.h"
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
 #include "core/perturbation/perturbation_effect_builder/perturbation_effect_builder.h"
+#include "core/replanning/replanning_request/replanning_request.h"
 #include "core/simulation/no_replanning_execution/no_replanning_execution.h"
+#include "core/simulation/simulation_state/simulation_state.h"
 
 static void print_effects_summary(const std::vector<Effect>& effects) {
     std::cout << "Effects summary:\n";
@@ -54,6 +56,37 @@ static void print_policy_decision(const PolicyDecision& decision) {
               << "\n";
     std::cout << "  Decision time: " << decision.decision_time << "\n";
     std::cout << "  Reason: " << decision.reason << "\n";
+}
+
+static std::string build_replanning_request_id(
+    const ExperimentMetadata& metadata
+) {
+    return build_experiment_run_label(metadata) + "_replanning_request";
+}
+
+static void maybe_build_replanning_request(
+    NoReplanningExperimentResult& result
+) {
+    if (!result.policy_decision.should_replan()) {
+        result.has_replanning_request = false;
+        return;
+    }
+
+    SimulationSnapshot snapshot =
+        build_simulation_snapshot_from_solution(
+            result.instance,
+            result.planned_solution,
+            result.policy_decision.decision_time
+        );
+
+    result.replanning_request =
+        build_replanning_request_from_snapshot(
+            snapshot,
+            result.policy_decision,
+            build_replanning_request_id(result.metadata)
+        );
+
+    result.has_replanning_request = true;
 }
 
 static void export_no_replanning_experiment_results(
@@ -212,13 +245,17 @@ NoReplanningExperimentResult run_no_replanning_experiment(
 
     if (config.verbose) {
         print_policy_decision(result.policy_decision);
+    }
 
-        if (result.policy_decision.should_replan()) {
-            std::cout << "\nReplanning decision recorded. "
-                      << "A replanning execution engine is not implemented yet, "
-                      << "so this experiment will continue with "
-                      << "the no-replanning execution baseline.\n";
-        }
+    maybe_build_replanning_request(result);
+
+    if (config.verbose && result.has_replanning_request) {
+        std::cout << "\nReplanning request generated.\n";
+        print_replanning_request_summary(result.replanning_request);
+
+        std::cout << "\nA replanning execution engine is not implemented yet, "
+                  << "so this experiment will continue with "
+                  << "the no-replanning execution baseline.\n";
     }
 
     if (config.verbose) {

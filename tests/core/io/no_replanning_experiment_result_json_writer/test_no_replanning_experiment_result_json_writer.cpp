@@ -16,6 +16,17 @@ void test_no_replanning_experiment_result_json_writer() {
     config.metadata.replication_id = 4;
     config.metadata.seed = 4001;
 
+    config.policy_config.policy_id =
+        "threshold_delay_replanning_policy_v1";
+
+    config.policy_config
+        .threshold_delay_config
+        .max_single_delay_threshold = 30;
+
+    config.policy_config
+        .threshold_delay_config
+        .total_delay_threshold = 60;
+
     config.verbose = false;
     config.export_results = false;
 
@@ -71,12 +82,31 @@ void test_no_replanning_experiment_result_json_writer() {
 
     FIELDOPS_EXPECT_EQ(
         data.at("policy_decision").at("policy_id").get<std::string>(),
-        "no_replanning_policy_v1"
+        "threshold_delay_replanning_policy_v1"
     );
 
     FIELDOPS_EXPECT_EQ(
         data.at("policy_decision").at("should_replan").get<bool>(),
-        false
+        true
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        data.at("has_replanning_request").get<bool>()
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("request_id").get<std::string>(),
+        "json_writer_experiment_001_replanning_request"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("policy_decision").get<std::string>(),
+        "REPLAN"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("counts").at("candidate_task_count").get<int>(),
+        1
     );
 
     FIELDOPS_EXPECT_EQ(

@@ -8,6 +8,18 @@
 
 using json = nlohmann::json;
 
+static json string_vector_to_json(
+    const std::vector<std::string>& values
+) {
+    json data = json::array();
+
+    for (const auto& value : values) {
+        data.push_back(value);
+    }
+
+    return data;
+}
+
 static json metadata_to_json(const ExperimentMetadata& metadata) {
     return {
         {"experiment_id", metadata.experiment_id},
@@ -90,11 +102,49 @@ static json effects_to_json(const std::vector<Effect>& effects) {
     return data;
 }
 
+static json replanning_request_to_json(
+    const ReplanningRequest& request
+) {
+    return {
+        {"request_id", request.request_id},
+        {"decision_time", request.decision_time},
+        {"policy_id", request.policy_id},
+        {"policy_decision", request.policy_decision},
+        {"should_replan", request.should_replan},
+        {"has_work", replanning_request_has_work(request)},
+        {"counts", {
+            {"completed_task_count", request.completed_task_count()},
+            {"locked_task_count", request.locked_task_count()},
+            {"candidate_task_count", request.candidate_task_count()},
+            {"available_technician_count", request.available_technician_count()},
+            {"busy_technician_count", request.busy_technician_count()},
+            {"finished_technician_count", request.finished_technician_count()}
+        }},
+        {"tasks", {
+            {"completed_task_ids", string_vector_to_json(request.completed_task_ids)},
+            {"locked_task_ids", string_vector_to_json(request.locked_task_ids)},
+            {"candidate_task_ids", string_vector_to_json(request.candidate_task_ids)}
+        }},
+        {"technicians", {
+            {"available_technician_ids", string_vector_to_json(request.available_technician_ids)},
+            {"busy_technician_ids", string_vector_to_json(request.busy_technician_ids)},
+            {"finished_technician_ids", string_vector_to_json(request.finished_technician_ids)}
+        }}
+    };
+}
+
 void write_no_replanning_experiment_result_to_json(
     const NoReplanningExperimentResult& result,
     const std::string& output_path,
     const std::string& result_type
 ) {
+    json replanning_request_data = nullptr;
+
+    if (result.has_replanning_request) {
+        replanning_request_data =
+            replanning_request_to_json(result.replanning_request);
+    }
+
     json data = {
         {"result_type", result_type},
         {"metadata", metadata_to_json(result.metadata)},
@@ -112,6 +162,8 @@ void write_no_replanning_experiment_result_to_json(
         }},
         {"effects", effects_to_json(result.effects)},
         {"policy_decision", policy_decision_to_json(result.policy_decision)},
+        {"has_replanning_request", result.has_replanning_request},
+        {"replanning_request", replanning_request_data},
         {"planned", {
             {"solution_id", result.planned_solution.solution_id},
             {"method_id", result.planned_solution.method_id},
