@@ -75,6 +75,11 @@ void test_no_replanning_batch_config_json_loader() {
         "data/perturbations/sample_perturbations_severe_001.json"
     );
 
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[5].replanning_request_output_path,
+        "data/results/sample_replanning_request_001.json"
+    );
+
     FIELDOPS_EXPECT_TRUE(!config.verbose);
     FIELDOPS_EXPECT_TRUE(!config.export_individual_results);
     FIELDOPS_EXPECT_TRUE(config.export_summary_csv);

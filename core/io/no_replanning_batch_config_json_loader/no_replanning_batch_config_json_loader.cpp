@@ -121,6 +121,12 @@ static NoReplanningExperimentConfig read_experiment_config_from_json(
             config.experiment_summary_csv_output_path
         );
 
+    config.replanning_request_output_path =
+        data.value(
+            "replanning_request_output_path",
+            config.replanning_request_output_path
+        );
+
     return config;
 }
 

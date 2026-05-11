@@ -8,6 +8,7 @@
 #include "core/io/no_replanning_experiment_result_json_writer/no_replanning_experiment_result_json_writer.h"
 #include "core/io/no_replanning_experiment_summary_csv_writer/no_replanning_experiment_summary_csv_writer.h"
 #include "core/io/perturbation_json_loader/perturbation_json_loader.h"
+#include "core/io/replanning_request_json_writer/replanning_request_json_writer.h"
 #include "core/io/simulation_timeline_json_writer/simulation_timeline_json_writer.h"
 #include "core/io/solution_comparison_json_writer/solution_comparison_json_writer.h"
 #include "core/io/solution_result_json_writer/solution_result_json_writer.h"
@@ -127,6 +128,14 @@ static void export_no_replanning_experiment_results(
         config.comparison_output_path,
         "planned_vs_executed_no_replanning_comparison"
     );
+
+    if (result.has_replanning_request) {
+        write_replanning_request_to_json(
+            result.replanning_request,
+            config.replanning_request_output_path,
+            "replanning_request"
+        );
+    }
 
     write_no_replanning_experiment_result_to_json(
         result,
@@ -332,6 +341,12 @@ NoReplanningExperimentResult run_no_replanning_experiment(
         std::cout << "Solution comparison written to: "
                   << config.comparison_output_path
                   << "\n";
+
+        if (result.has_replanning_request) {
+            std::cout << "Replanning request written to: "
+                      << config.replanning_request_output_path
+                      << "\n";
+        }
 
         std::cout << "Experiment result written to: "
                   << config.experiment_result_output_path

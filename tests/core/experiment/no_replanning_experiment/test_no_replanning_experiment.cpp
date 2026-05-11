@@ -35,6 +35,9 @@ void test_no_replanning_experiment() {
     config.experiment_summary_csv_output_path =
         "data/results/test_no_replanning_experiment_summary.csv";
 
+    config.replanning_request_output_path =
+        "data/results/test_no_replanning_replanning_request.json";
+
     config.verbose = false;
     config.export_results = true;
 
@@ -45,6 +48,7 @@ void test_no_replanning_experiment() {
     std::filesystem::remove(config.comparison_output_path);
     std::filesystem::remove(config.experiment_result_output_path);
     std::filesystem::remove(config.experiment_summary_csv_output_path);
+    std::filesystem::remove(config.replanning_request_output_path);
 
     NoReplanningExperimentResult result =
         run_no_replanning_experiment(config);
@@ -110,6 +114,10 @@ void test_no_replanning_experiment() {
         std::filesystem::exists(config.experiment_summary_csv_output_path)
     );
 
+    FIELDOPS_EXPECT_TRUE(
+        !std::filesystem::exists(config.replanning_request_output_path)
+    );
+
     NoReplanningExperimentConfig threshold_config;
 
     threshold_config.metadata.experiment_id = "test_threshold_experiment_001";
@@ -128,14 +136,27 @@ void test_no_replanning_experiment() {
         .threshold_delay_config
         .total_delay_threshold = 60;
 
+    threshold_config.replanning_request_output_path =
+        "data/results/test_threshold_replanning_request.json";
+
     threshold_config.verbose = false;
-    threshold_config.export_results = false;
+    threshold_config.export_results = true;
+
+    std::filesystem::remove(
+        threshold_config.replanning_request_output_path
+    );
 
     NoReplanningExperimentResult threshold_result =
         run_no_replanning_experiment(threshold_config);
 
     FIELDOPS_EXPECT_TRUE(threshold_result.policy_decision.should_replan());
     FIELDOPS_EXPECT_TRUE(threshold_result.has_replanning_request);
+
+    FIELDOPS_EXPECT_TRUE(
+        std::filesystem::exists(
+            threshold_config.replanning_request_output_path
+        )
+    );
 
     FIELDOPS_EXPECT_EQ(
         threshold_result.replanning_request.request_id,
