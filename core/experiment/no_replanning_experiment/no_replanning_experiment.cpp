@@ -14,8 +14,8 @@
 #include "core/io/solution_result_json_writer/solution_result_json_writer.h"
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
 #include "core/perturbation/perturbation_effect_builder/perturbation_effect_builder.h"
+#include "core/replanning/replanning_engine/replanning_engine.h"
 #include "core/replanning/replanning_request/replanning_request.h"
-#include "core/replanning/replanning_result/replanning_result.h"
 #include "core/simulation/no_replanning_execution/no_replanning_execution.h"
 #include "core/simulation/simulation_state/simulation_state.h"
 
@@ -102,11 +102,18 @@ static void build_replanning_artifacts(
         result.has_replanning_request = false;
     }
 
+    ReplanningEngineConfig replanning_engine_config;
+
+    replanning_engine_config.method_id =
+        "replanning_not_implemented_v1";
+
+    replanning_engine_config.result_id =
+        build_replanning_result_id(result.metadata);
+
     result.replanning_result =
-        build_not_implemented_replanning_result(
+        run_replanning_engine(
             internal_request,
-            build_replanning_result_id(result.metadata),
-            "replanning_not_implemented_v1"
+            replanning_engine_config
         );
 
     result.has_replanning_result = true;
