@@ -63,6 +63,12 @@ static std::string build_header_line() {
         "replanning_available_technician_count,"
         "replanning_busy_technician_count,"
         "replanning_finished_technician_count,"
+        "has_replanning_result,"
+        "replanning_result_method_id,"
+        "replanning_result_status,"
+        "replanning_result_has_new_solution,"
+        "replanning_result_is_successful,"
+        "replanning_result_generated_solution_id,"
         "planned_solution_id,"
         "planned_method_id,"
         "executed_solution_id,"
@@ -158,6 +164,58 @@ static int get_replanning_finished_technician_count(
     return result.replanning_request.finished_technician_count();
 }
 
+static std::string get_replanning_result_method_id(
+    const NoReplanningExperimentResult& result
+) {
+    if (!result.has_replanning_result) {
+        return "";
+    }
+
+    return result.replanning_result.method_id;
+}
+
+static std::string get_replanning_result_status(
+    const NoReplanningExperimentResult& result
+) {
+    if (!result.has_replanning_result) {
+        return "";
+    }
+
+    return replanning_result_status_to_string(
+        result.replanning_result.status
+    );
+}
+
+static bool get_replanning_result_has_new_solution(
+    const NoReplanningExperimentResult& result
+) {
+    if (!result.has_replanning_result) {
+        return false;
+    }
+
+    return result.replanning_result.has_new_solution();
+}
+
+static bool get_replanning_result_is_successful(
+    const NoReplanningExperimentResult& result
+) {
+    if (!result.has_replanning_result) {
+        return false;
+    }
+
+    return result.replanning_result.is_successful();
+}
+
+static std::string get_replanning_result_generated_solution_id(
+    const NoReplanningExperimentResult& result
+) {
+    if (!result.has_replanning_result) {
+        return "";
+    }
+
+    return result.replanning_result.generated_solution_id;
+}
+
 static std::string build_data_line(
     const NoReplanningExperimentResult& result
 ) {
@@ -185,6 +243,12 @@ static std::string build_data_line(
          << get_replanning_available_technician_count(result) << ","
          << get_replanning_busy_technician_count(result) << ","
          << get_replanning_finished_technician_count(result) << ","
+         << bool_to_csv(result.has_replanning_result) << ","
+         << csv_escape(get_replanning_result_method_id(result)) << ","
+         << csv_escape(get_replanning_result_status(result)) << ","
+         << bool_to_csv(get_replanning_result_has_new_solution(result)) << ","
+         << bool_to_csv(get_replanning_result_is_successful(result)) << ","
+         << csv_escape(get_replanning_result_generated_solution_id(result)) << ","
          << csv_escape(result.planned_solution.solution_id) << ","
          << csv_escape(result.planned_solution.method_id) << ","
          << csv_escape(result.executed_solution.solution_id) << ","
