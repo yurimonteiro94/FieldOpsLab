@@ -7,6 +7,5 @@
 void write_no_replanning_experiment_summary_to_csv(
     const NoReplanningExperimentResult& result,
     const std::string& output_path,
-    bool write_header = true,
     bool append = false
 );
