@@ -27,6 +27,9 @@ void test_no_replanning_experiment_result_json_writer() {
         .threshold_delay_config
         .total_delay_threshold = 60;
 
+    config.replanning_engine_config.method_id =
+        "greedy_replanning_solver_v1";
+
     config.verbose = false;
     config.export_results = false;
 
@@ -124,23 +127,38 @@ void test_no_replanning_experiment_result_json_writer() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        data.at("replanning_result").at("method_id").get<std::string>(),
+        "greedy_replanning_solver_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
         data.at("replanning_result").at("status").get<std::string>(),
-        "NOT_IMPLEMENTED"
+        "SUCCESS"
     );
 
     FIELDOPS_EXPECT_EQ(
         data.at("replanning_result").at("has_new_solution").get<bool>(),
-        false
+        true
     );
 
     FIELDOPS_EXPECT_EQ(
         data.at("replanning_result").at("is_successful").get<bool>(),
-        false
+        true
     );
 
     FIELDOPS_EXPECT_EQ(
         data.at("replanning_result").at("counts").at("candidate_task_count").get<int>(),
         1
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_result_was_applied_to_execution").get<bool>(),
+        false
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("execution_mode").get<std::string>(),
+        "no_replanning_execution_baseline"
     );
 
     FIELDOPS_EXPECT_EQ(

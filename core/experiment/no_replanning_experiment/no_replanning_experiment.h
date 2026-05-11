@@ -78,6 +78,9 @@ struct NoReplanningExperimentResult {
     bool has_replanning_result = false;
     ReplanningResult replanning_result;
 
+    bool replanning_result_was_applied_to_execution = false;
+    std::string execution_mode = "no_replanning_execution_baseline";
+
     Solution executed_solution;
     SolutionMetrics executed_metrics;
     SimulationTimeline executed_timeline;

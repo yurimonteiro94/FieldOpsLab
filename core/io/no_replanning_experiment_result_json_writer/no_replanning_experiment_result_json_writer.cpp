@@ -197,6 +197,9 @@ void write_no_replanning_experiment_result_to_json(
         {"replanning_request", replanning_request_data},
         {"has_replanning_result", result.has_replanning_result},
         {"replanning_result", replanning_result_data},
+        {"replanning_result_was_applied_to_execution",
+            result.replanning_result_was_applied_to_execution},
+        {"execution_mode", result.execution_mode},
         {"planned", {
             {"solution_id", result.planned_solution.solution_id},
             {"method_id", result.planned_solution.method_id},
