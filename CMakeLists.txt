@@ -32,6 +32,7 @@ set(FIELDOPS_CORE_SOURCES
     core/simulation/simulation_state/simulation_state.cpp
     core/simulation/no_replanning_execution/no_replanning_execution.cpp
     core/replanning/replanning_request/replanning_request.cpp
+    core/replanning/replanning_result/replanning_result.cpp
     core/perturbation/perturbation/perturbation.cpp
     core/perturbation/effect/effect.cpp
     core/perturbation/travel_delay_perturbation/travel_delay_perturbation.cpp
@@ -80,6 +81,7 @@ add_executable(fieldops_tests
     tests/core/simulation/simulation_state/test_simulation_state.cpp
     tests/core/simulation/no_replanning_execution/test_no_replanning_execution.cpp
     tests/core/replanning/replanning_request/test_replanning_request.cpp
+    tests/core/replanning/replanning_result/test_replanning_result.cpp
     tests/core/perturbation/perturbation/test_perturbation.cpp
     tests/core/perturbation/effect/test_effect.cpp
     tests/core/perturbation/travel_delay_perturbation/test_travel_delay_perturbation.cpp
