@@ -17,6 +17,7 @@
 #include "core/simulation/simulation_engine/simulation_engine.h"
 #include "core/simulation/simulation_event/simulation_event.h"
 #include "core/solution/solution/solution.h"
+#include "core/analysis/solution_comparison/solution_comparison.h"
 
 static void print_effects_summary(const std::vector<Effect>& effects) {
     std::cout << "Effects summary:\n";
@@ -156,6 +157,16 @@ int main(int argc, char* argv[]) {
             calculate_solution_metrics(instance, executed_solution);
 
         print_solution_metrics(executed_metrics);
+
+        std::cout << "\nComparing planned and executed metrics...\n\n";
+
+        SolutionComparison comparison =
+            compare_solution_metrics(
+                planned_metrics,
+                executed_metrics
+            );
+
+        print_solution_comparison(comparison);
 
         std::cout << "\nBuilding executed simulation timeline...\n\n";
 

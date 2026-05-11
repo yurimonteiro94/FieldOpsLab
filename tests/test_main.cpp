@@ -15,6 +15,7 @@ void test_service_delay_perturbation();
 void test_perturbation_json_loader();
 void test_perturbation_effect_builder();
 void test_no_replanning_execution();
+void test_solution_comparison();
 
 struct TestCase {
     std::string name;
@@ -34,7 +35,8 @@ int main() {
         {"ServiceDelayPerturbation", test_service_delay_perturbation},
         {"PerturbationJsonLoader", test_perturbation_json_loader},
         {"PerturbationEffectBuilder", test_perturbation_effect_builder},
-        {"NoReplanningExecution", test_no_replanning_execution}
+        {"NoReplanningExecution", test_no_replanning_execution},
+        {"SolutionComparison", test_solution_comparison}
     };
 
     int failed_tests = 0;

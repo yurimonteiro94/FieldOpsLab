@@ -9,6 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 enable_testing()
 
 set(FIELDOPS_CORE_SOURCES
+    core/analysis/solution_comparison/solution_comparison.cpp
     core/instance/instance/instance.cpp
     core/instance/instance_validator/instance_validator.cpp
     core/io/instance_json_loader/instance_json_loader.cpp
@@ -47,6 +48,7 @@ target_link_libraries(fieldops_lab PRIVATE
 
 add_executable(fieldops_tests
     tests/test_main.cpp
+    tests/core/analysis/solution_comparison/test_solution_comparison.cpp
     tests/core/instance/instance/test_travel_matrix.cpp
     tests/core/instance/instance_validator/test_instance_validator.cpp
     tests/core/io/perturbation_json_loader/test_perturbation_json_loader.cpp
