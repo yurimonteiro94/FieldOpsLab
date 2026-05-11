@@ -1,9 +1,12 @@
 #include <exception>
 #include <iostream>
+#include <string>
 
+#include "core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.h"
 #include "core/experiment/no_replanning_experiment/no_replanning_experiment.h"
+#include "core/io/no_replanning_batch_config_json_loader/no_replanning_batch_config_json_loader.h"
 
-static NoReplanningExperimentConfig build_config_from_arguments(
+static NoReplanningExperimentConfig build_single_experiment_config_from_arguments(
     int argc,
     char* argv[]
 ) {
@@ -48,14 +51,56 @@ static NoReplanningExperimentConfig build_config_from_arguments(
     return config;
 }
 
+static int run_single_experiment_mode(int argc, char* argv[]) {
+    NoReplanningExperimentConfig config =
+        build_single_experiment_config_from_arguments(argc, argv);
+
+    run_no_replanning_experiment(config);
+
+    return 0;
+}
+
+static int run_batch_experiment_mode(int argc, char* argv[]) {
+    std::string batch_config_path =
+        "data/experiments/sample_no_replanning_batch_001.json";
+
+    if (argc >= 3) {
+        batch_config_path = argv[2];
+    }
+
+    std::cout << "FieldOps Lab - batch experiment mode started.\n";
+    std::cout << "Loading batch config: " << batch_config_path << "\n\n";
+
+    NoReplanningBatchExperimentConfig config =
+        load_no_replanning_batch_config_from_json(batch_config_path);
+
+    NoReplanningBatchExperimentResult result =
+        run_no_replanning_batch_experiment(config);
+
+    std::cout << "Batch experiment finished.\n";
+    std::cout << "  Batch ID: " << result.batch_id << "\n";
+    std::cout << "  Experiments: " << result.experiment_count() << "\n";
+
+    if (config.export_summary_csv) {
+        std::cout << "  Summary CSV written to: "
+                  << config.summary_csv_output_path
+                  << "\n";
+    }
+
+    return 0;
+}
+
 int main(int argc, char* argv[]) {
     try {
-        NoReplanningExperimentConfig config =
-            build_config_from_arguments(argc, argv);
+        if (argc >= 2) {
+            std::string mode = argv[1];
 
-        run_no_replanning_experiment(config);
+            if (mode == "batch") {
+                return run_batch_experiment_mode(argc, argv);
+            }
+        }
 
-        return 0;
+        return run_single_experiment_mode(argc, argv);
     } catch (const std::exception& error) {
         std::cerr << "Error: " << error.what() << "\n";
         return 1;
