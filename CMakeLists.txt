@@ -20,6 +20,7 @@ set(FIELDOPS_CORE_SOURCES
     core/io/no_replanning_experiment_result_json_writer/no_replanning_experiment_result_json_writer.cpp
     core/io/no_replanning_experiment_summary_csv_writer/no_replanning_experiment_summary_csv_writer.cpp
     core/io/perturbation_json_loader/perturbation_json_loader.cpp
+    core/io/replanning_request_json_writer/replanning_request_json_writer.cpp
     core/io/solution_comparison_json_writer/solution_comparison_json_writer.cpp
     core/io/solution_result_json_writer/solution_result_json_writer.cpp
     core/io/simulation_timeline_json_writer/simulation_timeline_json_writer.cpp
@@ -71,6 +72,7 @@ add_executable(fieldops_tests
     tests/core/io/no_replanning_experiment_result_json_writer/test_no_replanning_experiment_result_json_writer.cpp
     tests/core/io/no_replanning_experiment_summary_csv_writer/test_no_replanning_experiment_summary_csv_writer.cpp
     tests/core/io/perturbation_json_loader/test_perturbation_json_loader.cpp
+    tests/core/io/replanning_request_json_writer/test_replanning_request_json_writer.cpp
     tests/core/io/solution_comparison_json_writer/test_solution_comparison_json_writer.cpp
     tests/core/method/greedy_earliest_feasible_heuristic/test_greedy_earliest_feasible_heuristic.cpp
     tests/core/metrics/solution_metrics/test_solution_metrics.cpp
