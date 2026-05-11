@@ -18,6 +18,8 @@ void test_no_replanning_execution();
 void test_solution_comparison();
 void test_solution_comparison_json_writer();
 void test_no_replanning_experiment();
+void test_policy();
+void test_no_replanning_policy();
 
 struct TestCase {
     std::string name;
@@ -40,7 +42,9 @@ int main() {
         {"NoReplanningExecution", test_no_replanning_execution},
         {"SolutionComparison", test_solution_comparison},
         {"SolutionComparisonJsonWriter", test_solution_comparison_json_writer},
-        {"NoReplanningExperiment", test_no_replanning_experiment}
+        {"NoReplanningExperiment", test_no_replanning_experiment},
+        {"Policy", test_policy},
+        {"NoReplanningPolicy", test_no_replanning_policy}
     };
 
     int failed_tests = 0;
