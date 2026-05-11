@@ -36,6 +36,7 @@ set(FIELDOPS_CORE_SOURCES
     core/perturbation/perturbation_effect_builder/perturbation_effect_builder.cpp
     core/policy/policy/policy.cpp
     core/policy/no_replanning_policy/no_replanning_policy.cpp
+    core/policy/threshold_delay_replanning_policy/threshold_delay_replanning_policy.cpp
 )
 
 add_library(fieldops_core STATIC
@@ -79,6 +80,7 @@ add_executable(fieldops_tests
     tests/core/perturbation/perturbation_effect_builder/test_perturbation_effect_builder.cpp
     tests/core/policy/policy/test_policy.cpp
     tests/core/policy/no_replanning_policy/test_no_replanning_policy.cpp
+    tests/core/policy/threshold_delay_replanning_policy/test_threshold_delay_replanning_policy.cpp
 )
 
 target_link_libraries(fieldops_tests PRIVATE
