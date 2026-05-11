@@ -37,6 +37,9 @@ struct NoReplanningExperimentConfig {
     std::string experiment_result_output_path =
         "data/results/sample_no_replanning_experiment_result_001.json";
 
+    std::string experiment_summary_csv_output_path =
+        "data/results/sample_no_replanning_experiment_summary_001.csv";
+
     bool verbose = true;
     bool export_results = true;
 };

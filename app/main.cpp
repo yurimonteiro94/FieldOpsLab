@@ -41,6 +41,10 @@ static NoReplanningExperimentConfig build_config_from_arguments(
         config.experiment_result_output_path = argv[8];
     }
 
+    if (argc >= 10) {
+        config.experiment_summary_csv_output_path = argv[9];
+    }
+
     return config;
 }
 

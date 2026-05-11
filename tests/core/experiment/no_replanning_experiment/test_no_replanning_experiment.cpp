@@ -24,6 +24,9 @@ void test_no_replanning_experiment() {
     config.experiment_result_output_path =
         "data/results/test_no_replanning_experiment_result.json";
 
+    config.experiment_summary_csv_output_path =
+        "data/results/test_no_replanning_experiment_summary.csv";
+
     config.verbose = false;
     config.export_results = true;
 
@@ -33,6 +36,7 @@ void test_no_replanning_experiment() {
     std::filesystem::remove(config.executed_timeline_output_path);
     std::filesystem::remove(config.comparison_output_path);
     std::filesystem::remove(config.experiment_result_output_path);
+    std::filesystem::remove(config.experiment_summary_csv_output_path);
 
     NoReplanningExperimentResult result =
         run_no_replanning_experiment(config);
@@ -86,5 +90,9 @@ void test_no_replanning_experiment() {
 
     FIELDOPS_EXPECT_TRUE(
         std::filesystem::exists(config.experiment_result_output_path)
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        std::filesystem::exists(config.experiment_summary_csv_output_path)
     );
 }
