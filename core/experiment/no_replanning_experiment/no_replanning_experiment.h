@@ -9,6 +9,7 @@
 #include "core/metrics/solution_metrics/solution_metrics.h"
 #include "core/perturbation/effect/effect.h"
 #include "core/perturbation/perturbation/perturbation.h"
+#include "core/policy/policy/policy.h"
 #include "core/simulation/simulation_engine/simulation_engine.h"
 #include "core/solution/solution/solution.h"
 
@@ -47,6 +48,8 @@ struct NoReplanningExperimentResult {
 
     PerturbationPlan perturbation_plan;
     std::vector<Effect> effects;
+
+    PolicyDecision policy_decision;
 
     Solution executed_solution;
     SolutionMetrics executed_metrics;

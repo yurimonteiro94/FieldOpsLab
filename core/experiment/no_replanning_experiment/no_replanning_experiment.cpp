@@ -11,6 +11,7 @@
 #include "core/io/solution_result_json_writer/solution_result_json_writer.h"
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
 #include "core/perturbation/perturbation_effect_builder/perturbation_effect_builder.h"
+#include "core/policy/no_replanning_policy/no_replanning_policy.h"
 #include "core/simulation/no_replanning_execution/no_replanning_execution.h"
 
 static void print_effects_summary(const std::vector<Effect>& effects) {
@@ -26,6 +27,32 @@ static void print_effects_summary(const std::vector<Effect>& effects) {
                   << " | delay=" << effect.delay_duration
                   << "\n";
     }
+}
+
+static int get_first_effect_time(const std::vector<Effect>& effects) {
+    if (effects.empty()) {
+        return 0;
+    }
+
+    int first_time = effects.front().occurrence_time;
+
+    for (const auto& effect : effects) {
+        if (effect.occurrence_time < first_time) {
+            first_time = effect.occurrence_time;
+        }
+    }
+
+    return first_time;
+}
+
+static void print_policy_decision(const PolicyDecision& decision) {
+    std::cout << "Policy decision:\n";
+    std::cout << "  Policy ID: " << decision.policy_id << "\n";
+    std::cout << "  Decision: "
+              << policy_decision_type_to_string(decision.type)
+              << "\n";
+    std::cout << "  Decision time: " << decision.decision_time << "\n";
+    std::cout << "  Reason: " << decision.reason << "\n";
 }
 
 static void export_no_replanning_experiment_results(
@@ -142,6 +169,28 @@ NoReplanningExperimentResult run_no_replanning_experiment(
 
     if (config.verbose) {
         print_effects_summary(result.effects);
+        std::cout << "\nEvaluating no-replanning policy...\n\n";
+    }
+
+    PolicyEvaluationContext policy_context;
+
+    policy_context.current_time = get_first_effect_time(result.effects);
+    policy_context.effects = result.effects;
+
+    result.policy_decision =
+        evaluate_no_replanning_policy(policy_context);
+
+    if (config.verbose) {
+        print_policy_decision(result.policy_decision);
+    }
+
+    if (result.policy_decision.should_replan()) {
+        throw std::runtime_error(
+            "NoReplanningExperiment received an unexpected REPLAN decision."
+        );
+    }
+
+    if (config.verbose) {
         std::cout << "\nExecuting solution without replanning...\n\n";
     }
 

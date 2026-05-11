@@ -38,6 +38,20 @@ void test_no_replanning_experiment() {
     FIELDOPS_EXPECT_EQ(result.planned_solution.status, SolutionStatus::FEASIBLE);
     FIELDOPS_EXPECT_EQ(result.executed_solution.status, SolutionStatus::FEASIBLE);
 
+    FIELDOPS_EXPECT_EQ(
+        result.policy_decision.policy_id,
+        "no_replanning_policy_v1"
+    );
+
+    FIELDOPS_EXPECT_TRUE(!result.policy_decision.should_replan());
+
+    FIELDOPS_EXPECT_EQ(
+        policy_decision_type_to_string(result.policy_decision.type),
+        "DO_NOT_REPLAN"
+    );
+
+    FIELDOPS_EXPECT_EQ(result.policy_decision.decision_time, 125);
+
     FIELDOPS_EXPECT_EQ(result.planned_metrics.total_travel_time, 145);
     FIELDOPS_EXPECT_EQ(result.executed_metrics.total_travel_time, 195);
 
