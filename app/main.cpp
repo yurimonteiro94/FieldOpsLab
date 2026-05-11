@@ -18,6 +18,7 @@
 #include "core/simulation/simulation_event/simulation_event.h"
 #include "core/solution/solution/solution.h"
 #include "core/analysis/solution_comparison/solution_comparison.h"
+#include "core/io/solution_comparison_json_writer/solution_comparison_json_writer.h"
 
 static void print_effects_summary(const std::vector<Effect>& effects) {
     std::cout << "Effects summary:\n";
@@ -50,6 +51,9 @@ int main(int argc, char* argv[]) {
 
     std::string executed_timeline_output_path =
         "data/results/sample_executed_timeline_no_replanning_001.json";
+    
+    std::string comparison_output_path =
+    "data/results/sample_solution_comparison_no_replanning_001.json";
 
     if (argc >= 2) {
         instance_path = argv[1];
@@ -73,6 +77,10 @@ int main(int argc, char* argv[]) {
 
     if (argc >= 7) {
         executed_timeline_output_path = argv[6];
+    }
+
+    if (argc >= 8) {
+        comparison_output_path = argv[7];
     }
 
     try {
@@ -168,6 +176,15 @@ int main(int argc, char* argv[]) {
 
         print_solution_comparison(comparison);
 
+        write_solution_comparison_to_json(
+            instance,
+            planned_solution,
+            executed_solution,
+            comparison,
+            comparison_output_path,
+            "planned_vs_executed_no_replanning_comparison"
+        );
+
         std::cout << "\nBuilding executed simulation timeline...\n\n";
 
         SimulationTimeline executed_timeline =
@@ -205,6 +222,10 @@ int main(int argc, char* argv[]) {
 
         std::cout << "Executed timeline written to: "
                   << executed_timeline_output_path
+                  << "\n";
+        
+        std::cout << "Solution comparison written to: "
+                  << comparison_output_path
                   << "\n";
 
         return 0;

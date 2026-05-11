@@ -16,6 +16,7 @@ void test_perturbation_json_loader();
 void test_perturbation_effect_builder();
 void test_no_replanning_execution();
 void test_solution_comparison();
+void test_solution_comparison_json_writer();
 
 struct TestCase {
     std::string name;
@@ -36,7 +37,8 @@ int main() {
         {"PerturbationJsonLoader", test_perturbation_json_loader},
         {"PerturbationEffectBuilder", test_perturbation_effect_builder},
         {"NoReplanningExecution", test_no_replanning_execution},
-        {"SolutionComparison", test_solution_comparison}
+        {"SolutionComparison", test_solution_comparison},
+        {"SolutionComparisonJsonWriter", test_solution_comparison_json_writer}
     };
 
     int failed_tests = 0;
