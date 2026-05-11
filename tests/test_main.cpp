@@ -9,6 +9,7 @@ void test_experiment_metadata();
 void test_greedy_earliest_feasible_heuristic();
 void test_solution_metrics();
 void test_simulation_timeline();
+void test_simulation_state();
 void test_perturbation();
 void test_effect();
 void test_travel_delay_perturbation();
@@ -41,6 +42,7 @@ int main() {
         {"GreedyEarliestFeasibleHeuristic", test_greedy_earliest_feasible_heuristic},
         {"SolutionMetrics", test_solution_metrics},
         {"SimulationTimeline", test_simulation_timeline},
+        {"SimulationState", test_simulation_state},
         {"Perturbation", test_perturbation},
         {"Effect", test_effect},
         {"TravelDelayPerturbation", test_travel_delay_perturbation},

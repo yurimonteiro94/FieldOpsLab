@@ -28,6 +28,7 @@ set(FIELDOPS_CORE_SOURCES
     core/metrics/solution_metrics/solution_metrics.cpp
     core/simulation/simulation_event/simulation_event.cpp
     core/simulation/simulation_engine/simulation_engine.cpp
+    core/simulation/simulation_state/simulation_state.cpp
     core/simulation/no_replanning_execution/no_replanning_execution.cpp
     core/perturbation/perturbation/perturbation.cpp
     core/perturbation/effect/effect.cpp
@@ -73,6 +74,7 @@ add_executable(fieldops_tests
     tests/core/method/greedy_earliest_feasible_heuristic/test_greedy_earliest_feasible_heuristic.cpp
     tests/core/metrics/solution_metrics/test_solution_metrics.cpp
     tests/core/simulation/simulation_engine/test_simulation_timeline.cpp
+    tests/core/simulation/simulation_state/test_simulation_state.cpp
     tests/core/simulation/no_replanning_execution/test_no_replanning_execution.cpp
     tests/core/perturbation/perturbation/test_perturbation.cpp
     tests/core/perturbation/effect/test_effect.cpp
