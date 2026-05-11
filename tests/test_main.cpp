@@ -26,6 +26,7 @@ void test_no_replanning_batch_config_json_loader();
 void test_policy();
 void test_no_replanning_policy();
 void test_threshold_delay_replanning_policy();
+void test_policy_evaluator();
 
 struct TestCase {
     std::string name;
@@ -56,7 +57,8 @@ int main() {
         {"NoReplanningBatchConfigJsonLoader", test_no_replanning_batch_config_json_loader},
         {"Policy", test_policy},
         {"NoReplanningPolicy", test_no_replanning_policy},
-        {"ThresholdDelayReplanningPolicy", test_threshold_delay_replanning_policy}
+        {"ThresholdDelayReplanningPolicy", test_threshold_delay_replanning_policy},
+        {"PolicyEvaluator", test_policy_evaluator}
     };
 
     int failed_tests = 0;
