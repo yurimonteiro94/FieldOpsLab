@@ -69,6 +69,8 @@ static std::string build_header_line() {
         "replanning_result_has_new_solution,"
         "replanning_result_is_successful,"
         "replanning_result_generated_solution_id,"
+        "replanning_result_was_applied_to_execution,"
+        "execution_mode,"
         "planned_solution_id,"
         "planned_method_id,"
         "executed_solution_id,"
@@ -216,6 +218,22 @@ static std::string get_replanning_result_generated_solution_id(
     return result.replanning_result.generated_solution_id;
 }
 
+static bool get_replanning_result_was_applied_to_execution(
+    const NoReplanningExperimentResult& result
+) {
+    (void)result;
+
+    return false;
+}
+
+static std::string get_execution_mode(
+    const NoReplanningExperimentResult& result
+) {
+    (void)result;
+
+    return "no_replanning_execution_baseline";
+}
+
 static std::string build_data_line(
     const NoReplanningExperimentResult& result
 ) {
@@ -249,6 +267,10 @@ static std::string build_data_line(
          << bool_to_csv(get_replanning_result_has_new_solution(result)) << ","
          << bool_to_csv(get_replanning_result_is_successful(result)) << ","
          << csv_escape(get_replanning_result_generated_solution_id(result)) << ","
+         << bool_to_csv(
+                get_replanning_result_was_applied_to_execution(result)
+            ) << ","
+         << csv_escape(get_execution_mode(result)) << ","
          << csv_escape(result.planned_solution.solution_id) << ","
          << csv_escape(result.planned_solution.method_id) << ","
          << csv_escape(result.executed_solution.solution_id) << ","

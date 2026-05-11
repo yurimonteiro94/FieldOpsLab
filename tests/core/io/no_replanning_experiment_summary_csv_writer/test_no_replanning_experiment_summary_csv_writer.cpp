@@ -110,12 +110,21 @@ void test_no_replanning_experiment_summary_csv_writer() {
     );
 
     FIELDOPS_EXPECT_TRUE(
+        lines[0].find("replanning_result_was_applied_to_execution") !=
+        std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        lines[0].find("execution_mode") != std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
         lines[1].find("summary_writer_no_replanning_001") !=
         std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[1].find(",no_replanning_policy_v1,DO_NOT_REPLAN,false,false,false,0,0,0,0,0,0,true,replanning_not_implemented_v1,NOT_REQUESTED,false,false,") !=
+        lines[1].find(",no_replanning_policy_v1,DO_NOT_REPLAN,false,false,false,0,0,0,0,0,0,true,replanning_not_implemented_v1,NOT_REQUESTED,false,false,,false,no_replanning_execution_baseline,") !=
         std::string::npos
     );
 
@@ -126,6 +135,11 @@ void test_no_replanning_experiment_summary_csv_writer() {
 
     FIELDOPS_EXPECT_TRUE(
         lines[2].find(",threshold_delay_replanning_policy_v1,REPLAN,true,true,true,1,1,1,0,2,0,true,greedy_replanning_solver_v1,SUCCESS,true,true,") !=
+        std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        lines[2].find(",false,no_replanning_execution_baseline,") !=
         std::string::npos
     );
 }
