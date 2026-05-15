@@ -1,7 +1,6 @@
 #include "core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.h"
 
 #include <filesystem>
-#include <iostream>
 
 #include "core/io/no_replanning_batch_aggregate_csv_writer/no_replanning_batch_aggregate_csv_writer.h"
 #include "core/io/no_replanning_experiment_summary_csv_writer/no_replanning_experiment_summary_csv_writer.h"
@@ -109,23 +108,6 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.aggregate_csv_was_written =
         config.export_aggregate_csv &&
         !config.aggregate_csv_output_path.empty();
-
-    if (config.verbose) {
-        std::cout << "Batch experiment finished.\n";
-        std::cout << "  Batch ID: " << batch_result.batch_id << "\n";
-        std::cout << "  Experiments: "
-                  << batch_result.experiment_count() << "\n";
-
-        if (batch_result.summary_csv_was_written) {
-            std::cout << "  Summary CSV written to: "
-                      << batch_result.summary_csv_output_path << "\n";
-        }
-
-        if (batch_result.aggregate_csv_was_written) {
-            std::cout << "  Aggregate CSV written to: "
-                      << batch_result.aggregate_csv_output_path << "\n";
-        }
-    }
 
     return batch_result;
 }

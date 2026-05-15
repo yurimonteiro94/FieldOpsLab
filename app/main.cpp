@@ -6,7 +6,7 @@
 #include "core/experiment/no_replanning_experiment/no_replanning_experiment.h"
 #include "core/io/no_replanning_batch_config_json_loader/no_replanning_batch_config_json_loader.h"
 
-static NoReplanningExperimentConfig build_single_experiment_config_from_arguments(
+static NoReplanningExperimentConfig build_single_experiment_config(
     int argc,
     char* argv[]
 ) {
@@ -51,16 +51,7 @@ static NoReplanningExperimentConfig build_single_experiment_config_from_argument
     return config;
 }
 
-static int run_single_experiment_mode(int argc, char* argv[]) {
-    NoReplanningExperimentConfig config =
-        build_single_experiment_config_from_arguments(argc, argv);
-
-    run_no_replanning_experiment(config);
-
-    return 0;
-}
-
-static int run_batch_experiment_mode(int argc, char* argv[]) {
+static int run_batch_mode(int argc, char* argv[]) {
     std::string batch_config_path =
         "data/experiments/sample_no_replanning_batch_001.json";
 
@@ -71,33 +62,42 @@ static int run_batch_experiment_mode(int argc, char* argv[]) {
     std::cout << "FieldOps Lab - batch experiment mode started.\n";
     std::cout << "Loading batch config: " << batch_config_path << "\n\n";
 
-    NoReplanningBatchExperimentConfig config =
+    NoReplanningBatchExperimentConfig batch_config =
         load_no_replanning_batch_config_from_json(batch_config_path);
 
-    NoReplanningBatchExperimentResult result =
-        run_no_replanning_batch_experiment(config);
+    NoReplanningBatchExperimentResult batch_result =
+        run_no_replanning_batch_experiment(batch_config);
 
-    std::cout << "Batch experiment finished.\n";
-    std::cout << "  Batch ID: " << result.batch_id << "\n";
-    std::cout << "  Experiments: " << result.experiment_count() << "\n";
+    std::cout << "\nBatch experiment finished.\n";
+    std::cout << "  Batch ID: " << batch_result.batch_id << "\n";
+    std::cout << "  Experiments: " << batch_result.experiment_count() << "\n";
 
-    if (config.export_summary_csv) {
+    if (batch_result.summary_csv_was_written) {
         std::cout << "  Summary CSV written to: "
-                  << config.summary_csv_output_path
-                  << "\n";
+                  << batch_result.summary_csv_output_path << "\n";
     }
+
+    if (batch_result.aggregate_csv_was_written) {
+        std::cout << "  Aggregate CSV written to: "
+                  << batch_result.aggregate_csv_output_path << "\n";
+    }
+
+    return 0;
+}
+
+static int run_single_experiment_mode(int argc, char* argv[]) {
+    NoReplanningExperimentConfig config =
+        build_single_experiment_config(argc, argv);
+
+    run_no_replanning_experiment(config);
 
     return 0;
 }
 
 int main(int argc, char* argv[]) {
     try {
-        if (argc >= 2) {
-            std::string mode = argv[1];
-
-            if (mode == "batch") {
-                return run_batch_experiment_mode(argc, argv);
-            }
+        if (argc >= 2 && std::string(argv[1]) == "batch") {
+            return run_batch_mode(argc, argv);
         }
 
         return run_single_experiment_mode(argc, argv);
