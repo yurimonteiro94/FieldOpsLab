@@ -232,6 +232,13 @@ NoReplanningBatchExperimentConfig load_no_replanning_batch_config_from_json(
             config.aggregate_csv_output_path
         );
 
+    config.ranking_csv_output_path =
+        get_optional_string(
+            data,
+            "ranking_csv_output_path",
+            config.ranking_csv_output_path
+        );
+
     config.result_json_output_path =
         get_optional_string(
             data,
@@ -265,6 +272,13 @@ NoReplanningBatchExperimentConfig load_no_replanning_batch_config_from_json(
             data,
             "export_aggregate_csv",
             config.export_aggregate_csv
+        );
+
+    config.export_ranking_csv =
+        get_optional_bool(
+            data,
+            "export_ranking_csv",
+            config.export_ranking_csv
         );
 
     config.export_result_json =

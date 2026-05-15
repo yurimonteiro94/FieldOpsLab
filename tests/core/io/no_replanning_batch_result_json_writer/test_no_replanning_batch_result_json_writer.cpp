@@ -20,6 +20,7 @@ void test_no_replanning_batch_result_json_writer() {
     config.export_individual_results = false;
     config.export_summary_csv = true;
     config.export_aggregate_csv = true;
+    config.export_ranking_csv = true;
     config.export_result_json = true;
 
     config.summary_csv_output_path =
@@ -27,6 +28,9 @@ void test_no_replanning_batch_result_json_writer() {
 
     config.aggregate_csv_output_path =
         "data/results/test_batch_result_writer_aggregate.csv";
+
+    config.ranking_csv_output_path =
+        "data/results/test_batch_result_writer_ranking.csv";
 
     config.result_json_output_path =
         "data/results/test_batch_result_writer_result.json";
@@ -77,6 +81,11 @@ void test_no_replanning_batch_result_json_writer() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        data.at("outputs").at("ranking_csv_output_path").get<std::string>(),
+        "data/results/test_batch_result_writer_ranking.csv"
+    );
+
+    FIELDOPS_EXPECT_EQ(
         data.at("outputs").at("result_json_output_path").get<std::string>(),
         "data/results/test_batch_result_writer_result.json"
     );
@@ -87,6 +96,10 @@ void test_no_replanning_batch_result_json_writer() {
 
     FIELDOPS_EXPECT_TRUE(
         data.at("outputs").at("aggregate_csv_was_written").get<bool>()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        data.at("outputs").at("ranking_csv_was_written").get<bool>()
     );
 
     FIELDOPS_EXPECT_TRUE(

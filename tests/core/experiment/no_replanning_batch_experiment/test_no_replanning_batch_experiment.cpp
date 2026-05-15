@@ -14,6 +14,7 @@ void test_no_replanning_batch_experiment() {
     config.export_individual_results = false;
     config.export_summary_csv = true;
     config.export_aggregate_csv = true;
+    config.export_ranking_csv = true;
     config.export_result_json = true;
 
     config.summary_csv_output_path =
@@ -22,11 +23,15 @@ void test_no_replanning_batch_experiment() {
     config.aggregate_csv_output_path =
         "data/results/test_no_replanning_batch_aggregate_summary_from_batch.csv";
 
+    config.ranking_csv_output_path =
+        "data/results/test_no_replanning_batch_ranking_from_batch.csv";
+
     config.result_json_output_path =
         "data/results/test_no_replanning_batch_result_from_batch.json";
 
     std::filesystem::remove(config.summary_csv_output_path);
     std::filesystem::remove(config.aggregate_csv_output_path);
+    std::filesystem::remove(config.ranking_csv_output_path);
     std::filesystem::remove(config.result_json_output_path);
 
     NoReplanningBatchExperimentResult result =
@@ -42,6 +47,7 @@ void test_no_replanning_batch_experiment() {
 
     FIELDOPS_EXPECT_TRUE(result.summary_csv_was_written);
     FIELDOPS_EXPECT_TRUE(result.aggregate_csv_was_written);
+    FIELDOPS_EXPECT_TRUE(result.ranking_csv_was_written);
     FIELDOPS_EXPECT_TRUE(result.result_json_was_written);
 
     FIELDOPS_EXPECT_EQ(
@@ -55,6 +61,11 @@ void test_no_replanning_batch_experiment() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        result.ranking_csv_output_path,
+        "data/results/test_no_replanning_batch_ranking_from_batch.csv"
+    );
+
+    FIELDOPS_EXPECT_EQ(
         result.result_json_output_path,
         "data/results/test_no_replanning_batch_result_from_batch.json"
     );
@@ -65,6 +76,10 @@ void test_no_replanning_batch_experiment() {
 
     FIELDOPS_EXPECT_TRUE(
         std::filesystem::exists(config.aggregate_csv_output_path)
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        std::filesystem::exists(config.ranking_csv_output_path)
     );
 
     FIELDOPS_EXPECT_TRUE(

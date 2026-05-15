@@ -16,6 +16,9 @@ struct NoReplanningBatchExperimentConfig {
     std::string aggregate_csv_output_path =
         "data/results/sample_no_replanning_batch_aggregate_summary_001.csv";
 
+    std::string ranking_csv_output_path =
+        "data/results/sample_no_replanning_batch_ranking_001.csv";
+
     std::string result_json_output_path =
         "data/results/sample_no_replanning_batch_result_001.json";
 
@@ -23,6 +26,7 @@ struct NoReplanningBatchExperimentConfig {
     bool export_individual_results = false;
     bool export_summary_csv = true;
     bool export_aggregate_csv = true;
+    bool export_ranking_csv = true;
     bool export_result_json = true;
 
     std::vector<NoReplanningExperimentConfig> experiments;
@@ -35,10 +39,12 @@ struct NoReplanningBatchExperimentResult {
 
     std::string summary_csv_output_path;
     std::string aggregate_csv_output_path;
+    std::string ranking_csv_output_path;
     std::string result_json_output_path;
 
     bool summary_csv_was_written = false;
     bool aggregate_csv_was_written = false;
+    bool ranking_csv_was_written = false;
     bool result_json_was_written = false;
 
     std::vector<NoReplanningExperimentResult> results;

@@ -285,9 +285,11 @@ void write_no_replanning_batch_result_to_json(
         {"outputs", {
             {"summary_csv_output_path", batch_result.summary_csv_output_path},
             {"aggregate_csv_output_path", batch_result.aggregate_csv_output_path},
+            {"ranking_csv_output_path", batch_result.ranking_csv_output_path},
             {"result_json_output_path", batch_result.result_json_output_path},
             {"summary_csv_was_written", batch_result.summary_csv_was_written},
             {"aggregate_csv_was_written", batch_result.aggregate_csv_was_written},
+            {"ranking_csv_was_written", batch_result.ranking_csv_was_written},
             {"result_json_was_written", batch_result.result_json_was_written}
         }},
         {"experiments", experiment_results_to_json(batch_result)}

@@ -23,6 +23,11 @@ void test_no_replanning_batch_config_json_loader() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        config.ranking_csv_output_path,
+        "data/results/sample_no_replanning_batch_ranking_001.csv"
+    );
+
+    FIELDOPS_EXPECT_EQ(
         config.result_json_output_path,
         "data/results/sample_no_replanning_batch_result_001.json"
     );
@@ -31,6 +36,7 @@ void test_no_replanning_batch_config_json_loader() {
     FIELDOPS_EXPECT_TRUE(!config.export_individual_results);
     FIELDOPS_EXPECT_TRUE(config.export_summary_csv);
     FIELDOPS_EXPECT_TRUE(config.export_aggregate_csv);
+    FIELDOPS_EXPECT_TRUE(config.export_ranking_csv);
     FIELDOPS_EXPECT_TRUE(config.export_result_json);
 
     FIELDOPS_EXPECT_EQ(config.experiments.size(), 12);

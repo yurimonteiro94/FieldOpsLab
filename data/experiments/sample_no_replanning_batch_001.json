@@ -4,11 +4,13 @@
     "description": "Sample batch comparing no-replanning, threshold decisions with no implemented replanning, and threshold decisions with greedy replanning solver.",
     "summary_csv_output_path": "data/results/sample_no_replanning_batch_summary_001.csv",
     "aggregate_csv_output_path": "data/results/sample_no_replanning_batch_aggregate_summary_001.csv",
+    "ranking_csv_output_path": "data/results/sample_no_replanning_batch_ranking_001.csv",
     "result_json_output_path": "data/results/sample_no_replanning_batch_result_001.json",
     "verbose": false,
     "export_individual_results": false,
     "export_summary_csv": true,
     "export_aggregate_csv": true,
+    "export_ranking_csv": true,
     "export_result_json": true,
     "experiments": [
         {
