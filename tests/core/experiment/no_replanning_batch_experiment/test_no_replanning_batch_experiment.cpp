@@ -13,10 +13,16 @@ void test_no_replanning_batch_experiment() {
     config.verbose = false;
     config.export_individual_results = false;
     config.export_summary_csv = true;
+    config.export_aggregate_csv = true;
+
     config.summary_csv_output_path =
         "data/results/test_no_replanning_batch_summary.csv";
 
+    config.aggregate_csv_output_path =
+        "data/results/test_no_replanning_batch_aggregate_summary_from_batch.csv";
+
     std::filesystem::remove(config.summary_csv_output_path);
+    std::filesystem::remove(config.aggregate_csv_output_path);
 
     NoReplanningBatchExperimentResult result =
         run_no_replanning_batch_experiment(config);
@@ -28,6 +34,27 @@ void test_no_replanning_batch_experiment() {
 
     FIELDOPS_EXPECT_EQ(result.experiment_count(), 9);
     FIELDOPS_EXPECT_EQ(result.results.size(), 9);
+
+    FIELDOPS_EXPECT_TRUE(result.summary_csv_was_written);
+    FIELDOPS_EXPECT_TRUE(result.aggregate_csv_was_written);
+
+    FIELDOPS_EXPECT_EQ(
+        result.summary_csv_output_path,
+        "data/results/test_no_replanning_batch_summary.csv"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        result.aggregate_csv_output_path,
+        "data/results/test_no_replanning_batch_aggregate_summary_from_batch.csv"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        std::filesystem::exists(config.summary_csv_output_path)
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        std::filesystem::exists(config.aggregate_csv_output_path)
+    );
 
     FIELDOPS_EXPECT_EQ(
         result.results[0].metadata.experiment_id,
@@ -117,9 +144,5 @@ void test_no_replanning_batch_experiment() {
 
     FIELDOPS_EXPECT_TRUE(
         result.results[8].replanning_result.has_new_solution()
-    );
-
-    FIELDOPS_EXPECT_TRUE(
-        std::filesystem::exists(config.summary_csv_output_path)
     );
 }
