@@ -23,6 +23,22 @@ static PolicyDecision make_replanning_request_writer_test_decision() {
     return decision;
 }
 
+static Effect make_replanning_request_writer_test_effect() {
+    Effect effect;
+
+    effect.effect_id = "test_runtime_effect_001";
+    effect.type = EffectType::ADD_TRAVEL_DELAY;
+    effect.occurrence_time = 125;
+    effect.technician_id = "tech_1";
+    effect.task_id = "task_C";
+    effect.from_location_id = "task_A_location";
+    effect.to_location_id = "task_C_location";
+    effect.delay_duration = 50;
+    effect.description = "Test runtime effect for request writer.";
+
+    return effect;
+}
+
 void test_replanning_request_json_writer() {
     Instance instance =
         load_instance_from_json("data/instances/sample_instance_001.json");
@@ -42,6 +58,10 @@ void test_replanning_request_json_writer() {
             decision,
             "test_replanning_request_writer_001"
         );
+
+    request.runtime_effects.push_back(
+        make_replanning_request_writer_test_effect()
+    );
 
     const std::string output_path =
         "data/results/test_replanning_request_writer.json";
@@ -89,6 +109,10 @@ void test_replanning_request_json_writer() {
         data.at("should_replan").get<bool>()
     );
 
+    FIELDOPS_EXPECT_TRUE(
+        data.at("has_work").get<bool>()
+    );
+
     FIELDOPS_EXPECT_EQ(
         data.at("counts").at("completed_task_count").get<int>(),
         1
@@ -110,6 +134,16 @@ void test_replanning_request_json_writer() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        data.at("counts").at("technician_runtime_state_count").get<int>(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("counts").at("runtime_effect_count").get<int>(),
+        1
+    );
+
+    FIELDOPS_EXPECT_EQ(
         data.at("tasks").at("completed_task_ids").at(0).get<std::string>(),
         "task_A"
     );
@@ -127,5 +161,54 @@ void test_replanning_request_json_writer() {
     FIELDOPS_EXPECT_EQ(
         data.at("technicians").at("busy_technician_ids").size(),
         2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("technician_runtime_states").size(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("technician_runtime_states").at(0).at("technician_id").get<std::string>(),
+        "tech_1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("technician_runtime_states").at(0).at("execution_status").get<std::string>(),
+        "TRAVELING"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("technician_runtime_states").at(0).at("current_location_id").get<std::string>(),
+        "task_A_location"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("technician_runtime_states").at(0).at("next_task_id").get<std::string>(),
+        "task_C"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        data.at("technician_runtime_states").at(0).at("can_receive_candidate_tasks").get<bool>()
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("runtime_effects").size(),
+        1
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("runtime_effects").at(0).at("effect_id").get<std::string>(),
+        "test_runtime_effect_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("runtime_effects").at(0).at("type").get<std::string>(),
+        "ADD_TRAVEL_DELAY"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("runtime_effects").at(0).at("delay_duration").get<int>(),
+        50
     );
 }

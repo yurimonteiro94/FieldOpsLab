@@ -112,6 +112,60 @@ void test_no_replanning_experiment_result_json_writer() {
         1
     );
 
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("counts").at("technician_runtime_state_count").get<int>(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("counts").at("runtime_effect_count").get<int>(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("technician_runtime_states").size(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("technician_runtime_states").at(0).at("technician_id").get<std::string>(),
+        "tech_1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("technician_runtime_states").at(0).at("execution_status").get<std::string>(),
+        "TRAVELING"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("technician_runtime_states").at(0).at("current_location_id").get<std::string>(),
+        "task_A_location"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("technician_runtime_states").at(0).at("next_task_id").get<std::string>(),
+        "task_C"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        data.at("replanning_request").at("technician_runtime_states").at(0).at("can_receive_candidate_tasks").get<bool>()
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("runtime_effects").size(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("runtime_effects").at(0).at("type").get<std::string>(),
+        "ADD_TRAVEL_DELAY"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("replanning_request").at("runtime_effects").at(0).at("delay_duration").get<int>(),
+        50
+    );
+
     FIELDOPS_EXPECT_TRUE(
         data.at("has_replanning_result").get<bool>()
     );

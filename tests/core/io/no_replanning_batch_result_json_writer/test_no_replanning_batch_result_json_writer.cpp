@@ -114,6 +114,16 @@ void test_no_replanning_batch_result_json_writer() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(0).at("replanning_request").at("technician_runtime_state_count").get<int>(),
+        0
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(0).at("replanning_request").at("runtime_effect_count").get<int>(),
+        0
+    );
+
+    FIELDOPS_EXPECT_EQ(
         data.at("experiments").at(4).at("experiment_id").get<std::string>(),
         "batch_001_threshold_moderate_001"
     );
@@ -160,6 +170,41 @@ void test_no_replanning_batch_result_json_writer() {
     );
 
     FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(7).at("replanning_request").at("technician_runtime_state_count").get<int>(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(7).at("replanning_request").at("runtime_effect_count").get<int>(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(7).at("replanning_request").at("technician_runtime_states").size(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(7).at("replanning_request").at("technician_runtime_states").at(0).at("technician_id").get<std::string>(),
+        "tech_1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(7).at("replanning_request").at("technician_runtime_states").at(0).at("execution_status").get<std::string>(),
+        "TRAVELING"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(7).at("replanning_request").at("runtime_effects").size(),
+        2
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(7).at("replanning_request").at("runtime_effects").at(0).at("type").get<std::string>(),
+        "ADD_TRAVEL_DELAY"
+    );
+
+    FIELDOPS_EXPECT_EQ(
         data.at("experiments").at(11).at("experiment_id").get<std::string>(),
         "batch_001_threshold_greedy_reassignment_001"
     );
@@ -186,6 +231,16 @@ void test_no_replanning_batch_result_json_writer() {
     FIELDOPS_EXPECT_EQ(
         data.at("experiments").at(11).at("execution").at("execution_mode").get<std::string>(),
         "replanning_applied_execution"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(11).at("replanning_request").at("runtime_effect_count").get<int>(),
+        1
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("experiments").at(11).at("replanning_request").at("runtime_effects").at(0).at("delay_duration").get<int>(),
+        100
     );
 
     FIELDOPS_EXPECT_TRUE(
