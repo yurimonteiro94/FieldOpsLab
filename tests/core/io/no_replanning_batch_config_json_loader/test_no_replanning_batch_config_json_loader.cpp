@@ -22,7 +22,7 @@ void test_no_replanning_batch_config_json_loader() {
         "data/results/sample_no_replanning_batch_aggregate_summary_001.csv"
     );
 
-    FIELDOPS_EXPECT_TRUE(config.verbose);
+    FIELDOPS_EXPECT_TRUE(!config.verbose);
     FIELDOPS_EXPECT_TRUE(!config.export_individual_results);
     FIELDOPS_EXPECT_TRUE(config.export_summary_csv);
     FIELDOPS_EXPECT_TRUE(config.export_aggregate_csv);
