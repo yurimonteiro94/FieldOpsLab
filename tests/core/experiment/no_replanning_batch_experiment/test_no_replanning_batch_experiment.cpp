@@ -37,8 +37,8 @@ void test_no_replanning_batch_experiment() {
         "sample_no_replanning_batch_001"
     );
 
-    FIELDOPS_EXPECT_EQ(result.experiment_count(), 9);
-    FIELDOPS_EXPECT_EQ(result.results.size(), 9);
+    FIELDOPS_EXPECT_EQ(result.experiment_count(), 12);
+    FIELDOPS_EXPECT_EQ(result.results.size(), 12);
 
     FIELDOPS_EXPECT_TRUE(result.summary_csv_was_written);
     FIELDOPS_EXPECT_TRUE(result.aggregate_csv_was_written);
@@ -106,32 +106,8 @@ void test_no_replanning_batch_experiment() {
     );
 
     FIELDOPS_EXPECT_EQ(
-        result.results[6].metadata.experiment_id,
-        "batch_001_threshold_greedy_light_001"
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        result.results[6].replanning_result.method_id,
-        "greedy_replanning_solver_v1"
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        result.results[6].replanning_result.status,
-        ReplanningResultStatus::NOT_REQUESTED
-    );
-
-    FIELDOPS_EXPECT_EQ(
         result.results[7].metadata.experiment_id,
         "batch_001_threshold_greedy_moderate_001"
-    );
-
-    FIELDOPS_EXPECT_TRUE(
-        result.results[7].policy_decision.should_replan()
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        result.results[7].replanning_result.method_id,
-        "greedy_replanning_solver_v1"
     );
 
     FIELDOPS_EXPECT_EQ(
@@ -143,21 +119,49 @@ void test_no_replanning_batch_experiment() {
         result.results[7].replanning_result.has_new_solution()
     );
 
+    FIELDOPS_EXPECT_EQ(
+        result.results[11].metadata.experiment_id,
+        "batch_001_threshold_greedy_reassignment_001"
+    );
+
     FIELDOPS_EXPECT_TRUE(
-        result.results[7].replanning_result.is_successful()
+        result.results[11].policy_decision.should_replan()
     );
 
     FIELDOPS_EXPECT_EQ(
-        result.results[8].metadata.experiment_id,
-        "batch_001_threshold_greedy_severe_001"
+        result.results[11].replanning_result.method_id,
+        "greedy_replanning_solver_v1"
     );
 
     FIELDOPS_EXPECT_EQ(
-        result.results[8].replanning_result.status,
+        result.results[11].replanning_result.status,
         ReplanningResultStatus::SUCCESS
     );
 
     FIELDOPS_EXPECT_TRUE(
-        result.results[8].replanning_result.has_new_solution()
+        result.results[11].replanning_result.has_new_solution()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        result.results[11].replanning_result.is_successful()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        result.results[11].replanning_result_was_applied_to_execution
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        result.results[11].execution_mode,
+        "replanning_applied_execution"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        result.results[11].comparison.delta_total_travel_time <
+        result.results[9].comparison.delta_total_travel_time
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        result.results[11].comparison.delta_objective_value <
+        result.results[9].comparison.delta_objective_value
     );
 }

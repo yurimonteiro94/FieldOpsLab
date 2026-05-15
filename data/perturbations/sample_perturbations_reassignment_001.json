@@ -1,0 +1,18 @@
+{
+  "perturbation_plan_id": "sample_perturbations_reassignment_001",
+  "name": "Reassignment opportunity perturbation plan",
+  "description": "Travel delay on the original tech_1 route to task_C, creating an opportunity for tech_2 to execute the candidate task with better performance.",
+  "perturbations": [
+    {
+      "perturbation_id": "reassignment_travel_delay_001",
+      "type": "TRAVEL_DELAY",
+      "occurrence_time": 125,
+      "technician_id": "tech_1",
+      "task_id": "task_C",
+      "from_location_id": "task_A_location",
+      "to_location_id": "task_C_location",
+      "delay_duration": 100,
+      "description": "Large travel delay affecting tech_1 from task_A_location to task_C_location."
+    }
+  ]
+}

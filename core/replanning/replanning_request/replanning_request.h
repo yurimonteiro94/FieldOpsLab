@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include "core/perturbation/effect/effect.h"
 #include "core/policy/policy/policy.h"
 #include "core/simulation/simulation_state/simulation_state.h"
 
@@ -40,6 +41,8 @@ struct ReplanningRequest {
 
     std::vector<ReplanningTechnicianRuntimeState>
         technician_runtime_states;
+
+    std::vector<Effect> runtime_effects;
 
     int completed_task_count() const;
     int locked_task_count() const;

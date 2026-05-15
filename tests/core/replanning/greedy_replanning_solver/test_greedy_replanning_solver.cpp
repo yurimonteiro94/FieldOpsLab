@@ -54,8 +54,8 @@ void test_greedy_replanning_solver() {
     request.should_replan = true;
 
     request.completed_task_ids.push_back("task_A");
-    request.locked_task_ids.push_back("task_C");
-    request.candidate_task_ids.push_back("task_B");
+    request.locked_task_ids.push_back("task_B");
+    request.candidate_task_ids.push_back("task_C");
 
     request.busy_technician_ids.push_back("tech_1");
     request.busy_technician_ids.push_back("tech_2");
@@ -63,23 +63,36 @@ void test_greedy_replanning_solver() {
     ReplanningTechnicianRuntimeState tech_1_state;
 
     tech_1_state.technician_id = "tech_1";
-    tech_1_state.execution_status = "SERVICING";
+    tech_1_state.execution_status = "TRAVELING";
     tech_1_state.current_location_id = "task_A_location";
-    tech_1_state.current_task_id = "task_A";
-    tech_1_state.available_from_time = 180;
-    tech_1_state.can_receive_candidate_tasks = false;
+    tech_1_state.next_task_id = "task_C";
+    tech_1_state.available_from_time = 125;
+    tech_1_state.can_receive_candidate_tasks = true;
 
     ReplanningTechnicianRuntimeState tech_2_state;
 
     tech_2_state.technician_id = "tech_2";
-    tech_2_state.execution_status = "WAITING";
+    tech_2_state.execution_status = "SERVICING";
     tech_2_state.current_location_id = "task_B_location";
     tech_2_state.current_task_id = "task_B";
-    tech_2_state.available_from_time = 125;
+    tech_2_state.available_from_time = 165;
     tech_2_state.can_receive_candidate_tasks = true;
 
     request.technician_runtime_states.push_back(tech_1_state);
     request.technician_runtime_states.push_back(tech_2_state);
+
+    Effect travel_delay;
+
+    travel_delay.effect_id = "test_runtime_travel_delay_001";
+    travel_delay.type = EffectType::ADD_TRAVEL_DELAY;
+    travel_delay.occurrence_time = 125;
+    travel_delay.technician_id = "tech_1";
+    travel_delay.task_id = "task_C";
+    travel_delay.from_location_id = "task_A_location";
+    travel_delay.to_location_id = "task_C_location";
+    travel_delay.delay_duration = 100;
+
+    request.runtime_effects.push_back(travel_delay);
 
     GreedyReplanningSolverConfig config;
 
@@ -121,7 +134,7 @@ void test_greedy_replanning_solver() {
     FIELDOPS_EXPECT_TRUE(
         solution_contains_task_on_technician(
             result.generated_solution,
-            "task_B",
+            "task_C",
             "tech_2"
         )
     );
@@ -129,7 +142,7 @@ void test_greedy_replanning_solver() {
     FIELDOPS_EXPECT_TRUE(
         !solution_contains_task_on_technician(
             result.generated_solution,
-            "task_B",
+            "task_C",
             "tech_1"
         )
     );
@@ -154,7 +167,7 @@ void test_greedy_replanning_solver() {
 
     FIELDOPS_EXPECT_EQ(
         tech_2_route->stops[0].task_id,
-        "task_B"
+        "task_C"
     );
 
     FIELDOPS_EXPECT_TRUE(

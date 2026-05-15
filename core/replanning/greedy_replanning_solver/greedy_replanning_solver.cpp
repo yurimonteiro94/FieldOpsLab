@@ -189,6 +189,16 @@ static int route_current_location_index(
     return location_index.at(route.stops.back().location_id);
 }
 
+static std::string route_current_location_id(
+    const Route& route
+) {
+    if (route.stops.empty()) {
+        return route.start_location_id;
+    }
+
+    return route.stops.back().location_id;
+}
+
 static int route_current_time(
     const Route& route
 ) {
@@ -199,8 +209,71 @@ static int route_current_time(
     return route.stops.back().end_service_time;
 }
 
+static int get_runtime_travel_delay(
+    const ReplanningRequest& request,
+    const std::string& technician_id,
+    const std::string& from_location_id,
+    const std::string& to_location_id,
+    const std::string& task_id
+) {
+    int delay = 0;
+
+    for (const auto& effect : request.runtime_effects) {
+        if (effect.type != EffectType::ADD_TRAVEL_DELAY) {
+            continue;
+        }
+
+        if (effect.technician_id != technician_id) {
+            continue;
+        }
+
+        if (effect.from_location_id != from_location_id) {
+            continue;
+        }
+
+        if (effect.to_location_id != to_location_id) {
+            continue;
+        }
+
+        if (effect.task_id != task_id) {
+            continue;
+        }
+
+        delay += effect.delay_duration;
+    }
+
+    return delay;
+}
+
+static int get_runtime_service_delay(
+    const ReplanningRequest& request,
+    const std::string& technician_id,
+    const std::string& task_id
+) {
+    int delay = 0;
+
+    for (const auto& effect : request.runtime_effects) {
+        if (effect.type != EffectType::ADD_SERVICE_DELAY) {
+            continue;
+        }
+
+        if (effect.technician_id != technician_id) {
+            continue;
+        }
+
+        if (effect.task_id != task_id) {
+            continue;
+        }
+
+        delay += effect.delay_duration;
+    }
+
+    return delay;
+}
+
 static int calculate_candidate_end_time(
     const Instance& instance,
+    const ReplanningRequest& request,
     const std::unordered_map<std::string, int>& location_index,
     const Route& route,
     const Task& task
@@ -211,8 +284,20 @@ static int calculate_candidate_end_time(
     const int to_index =
         location_index.at(task.location_id);
 
-    const int travel_time =
+    const int base_travel_time =
         instance.travel_matrix.duration(from_index, to_index);
+
+    const int travel_delay =
+        get_runtime_travel_delay(
+            request,
+            route.technician_id,
+            route_current_location_id(route),
+            task.location_id,
+            task.id
+        );
+
+    const int travel_time =
+        base_travel_time + travel_delay;
 
     const int arrival_time =
         route_current_time(route) + travel_time;
@@ -220,11 +305,19 @@ static int calculate_candidate_end_time(
     const int start_service_time =
         std::max(arrival_time, task.time_window_start);
 
-    return start_service_time + task.service_duration;
+    const int service_delay =
+        get_runtime_service_delay(
+            request,
+            route.technician_id,
+            task.id
+        );
+
+    return start_service_time + task.service_duration + service_delay;
 }
 
 static RouteStop build_route_stop_for_task(
     const Instance& instance,
+    const ReplanningRequest& request,
     const std::unordered_map<std::string, int>& location_index,
     const Route& route,
     const Task& task
@@ -235,8 +328,20 @@ static RouteStop build_route_stop_for_task(
     const int to_index =
         location_index.at(task.location_id);
 
-    const int travel_time =
+    const int base_travel_time =
         instance.travel_matrix.duration(from_index, to_index);
+
+    const int travel_delay =
+        get_runtime_travel_delay(
+            request,
+            route.technician_id,
+            route_current_location_id(route),
+            task.location_id,
+            task.id
+        );
+
+    const int travel_time =
+        base_travel_time + travel_delay;
 
     const int arrival_time =
         route_current_time(route) + travel_time;
@@ -247,13 +352,21 @@ static RouteStop build_route_stop_for_task(
     const int waiting_time =
         start_service_time - arrival_time;
 
+    const int service_delay =
+        get_runtime_service_delay(
+            request,
+            route.technician_id,
+            task.id
+        );
+
     RouteStop stop;
 
     stop.task_id = task.id;
     stop.location_id = task.location_id;
     stop.arrival_time = arrival_time;
     stop.start_service_time = start_service_time;
-    stop.end_service_time = start_service_time + task.service_duration;
+    stop.end_service_time =
+        start_service_time + task.service_duration + service_delay;
     stop.travel_time_from_previous = travel_time;
     stop.waiting_time = waiting_time;
 
@@ -387,6 +500,7 @@ static Solution build_greedy_replanned_solution(
             const int candidate_end_time =
                 calculate_candidate_end_time(
                     instance,
+                    request,
                     location_index,
                     route,
                     task
@@ -410,6 +524,7 @@ static Solution build_greedy_replanned_solution(
         RouteStop stop =
             build_route_stop_for_task(
                 instance,
+                request,
                 location_index,
                 solution.routes[best_route_index],
                 task

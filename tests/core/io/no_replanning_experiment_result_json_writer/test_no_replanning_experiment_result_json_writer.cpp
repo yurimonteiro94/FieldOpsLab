@@ -165,12 +165,22 @@ void test_no_replanning_experiment_result_json_writer() {
 
     FIELDOPS_EXPECT_EQ(
         data.at("executed").at("metrics").at("total_travel_time").get<int>(),
-        195
+        128
     );
 
     FIELDOPS_EXPECT_EQ(
         data.at("comparison").at("deltas").at("total_travel_time").get<int>(),
-        50
+        -17
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("executed").at("metrics").at("total_service_time").get<int>(),
+        185
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("comparison").at("deltas").at("total_service_time").get<int>(),
+        30
     );
 
     FIELDOPS_EXPECT_EQ(

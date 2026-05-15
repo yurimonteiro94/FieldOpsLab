@@ -33,7 +33,7 @@ void test_no_replanning_batch_config_json_loader() {
     FIELDOPS_EXPECT_TRUE(config.export_aggregate_csv);
     FIELDOPS_EXPECT_TRUE(config.export_result_json);
 
-    FIELDOPS_EXPECT_EQ(config.experiments.size(), 9);
+    FIELDOPS_EXPECT_EQ(config.experiments.size(), 12);
 
     FIELDOPS_EXPECT_EQ(
         config.experiments[0].metadata.experiment_id,
@@ -114,5 +114,35 @@ void test_no_replanning_batch_config_json_loader() {
     FIELDOPS_EXPECT_EQ(
         config.experiments[8].replanning_engine_config.method_id,
         "greedy_replanning_solver_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[9].metadata.experiment_id,
+        "batch_001_no_replanning_reassignment_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[9].metadata.scenario_id,
+        "sample_delay_reassignment_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[9].perturbation_plan_path,
+        "data/perturbations/sample_perturbations_reassignment_001.json"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[11].metadata.experiment_id,
+        "batch_001_threshold_greedy_reassignment_001"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[11].replanning_engine_config.method_id,
+        "greedy_replanning_solver_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        config.experiments[11].metadata.seed,
+        1201
     );
 }

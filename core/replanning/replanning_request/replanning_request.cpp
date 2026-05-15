@@ -301,4 +301,8 @@ void print_replanning_request_summary(
     );
 
     print_runtime_states(request);
+
+    std::cout << "  Runtime effects: "
+              << request.runtime_effects.size()
+              << "\n";
 }

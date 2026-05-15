@@ -49,7 +49,7 @@ void test_no_replanning_batch_aggregate_csv_writer() {
     NoReplanningBatchExperimentResult result =
         run_no_replanning_batch_experiment(config);
 
-    FIELDOPS_EXPECT_EQ(result.results.size(), 9);
+    FIELDOPS_EXPECT_EQ(result.results.size(), 12);
 
     result.results.push_back(result.results[0]);
 
@@ -65,7 +65,7 @@ void test_no_replanning_batch_aggregate_csv_writer() {
     std::vector<std::string> lines =
         read_aggregate_csv_lines(output_path);
 
-    FIELDOPS_EXPECT_EQ(lines.size(), 10);
+    FIELDOPS_EXPECT_EQ(lines.size(), 13);
 
     FIELDOPS_EXPECT_TRUE(
         lines[0].find("scenario_id") != std::string::npos
@@ -106,6 +106,15 @@ void test_no_replanning_batch_aggregate_csv_writer() {
         any_line_contains(
             lines,
             "sample_delay_severe_001,threshold_delay_replanning_policy_v1,"
+            "greedy_replanning_solver_v1,"
+            "replanning_applied_execution,1,1,1,1,1,"
+        )
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        any_line_contains(
+            lines,
+            "sample_delay_reassignment_001,threshold_delay_replanning_policy_v1,"
             "greedy_replanning_solver_v1,"
             "replanning_applied_execution,1,1,1,1,1,"
         )

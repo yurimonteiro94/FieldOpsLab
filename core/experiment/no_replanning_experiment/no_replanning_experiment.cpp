@@ -83,11 +83,16 @@ static ReplanningRequest build_internal_replanning_request(
             result.policy_decision.decision_time
         );
 
-    return build_replanning_request_from_snapshot(
-        snapshot,
-        result.policy_decision,
-        build_replanning_request_id(result.metadata)
-    );
+    ReplanningRequest request =
+        build_replanning_request_from_snapshot(
+            snapshot,
+            result.policy_decision,
+            build_replanning_request_id(result.metadata)
+        );
+
+    request.runtime_effects = result.effects;
+
+    return request;
 }
 
 static ReplanningEngineConfig build_replanning_engine_config_for_run(
@@ -135,7 +140,7 @@ static void build_replanning_artifacts(
     result.has_replanning_result = true;
 }
 
-static Solution build_solution_for_execution(
+static Solution build_solution_to_execute(
     NoReplanningExperimentResult& result
 ) {
     result.replanning_result_was_applied_to_execution = false;
@@ -149,22 +154,23 @@ static Solution build_solution_for_execution(
         return result.planned_solution;
     }
 
-    if (!result.replanning_result.has_new_solution()) {
+    if (!result.replanning_result.is_successful()) {
         return result.planned_solution;
     }
 
-    Solution applied_solution =
-        build_solution_with_applied_replanning_result(
-            result.instance,
-            result.planned_solution,
-            result.replanning_request,
-            result.replanning_result
-        );
+    if (!result.replanning_result.generated_solution_was_built) {
+        return result.planned_solution;
+    }
 
     result.replanning_result_was_applied_to_execution = true;
     result.execution_mode = "replanning_applied_execution";
 
-    return applied_solution;
+    return build_solution_with_applied_replanning_result(
+        result.instance,
+        result.planned_solution,
+        result.replanning_request,
+        result.replanning_result
+    );
 }
 
 static void export_no_replanning_experiment_results(
@@ -355,21 +361,19 @@ NoReplanningExperimentResult run_no_replanning_experiment(
         }
     }
 
-    Solution solution_for_execution =
-        build_solution_for_execution(result);
+    Solution solution_to_execute =
+        build_solution_to_execute(result);
 
     if (config.verbose) {
-        if (result.replanning_result_was_applied_to_execution) {
-            std::cout << "\nExecuting solution with applied replanning...\n\n";
-        } else {
-            std::cout << "\nExecuting solution without replanning...\n\n";
-        }
+        std::cout << "\nExecuting solution with mode: "
+                  << result.execution_mode
+                  << "\n\n";
     }
 
     result.executed_solution =
         execute_solution_without_replanning(
             result.instance,
-            solution_for_execution,
+            solution_to_execute,
             result.effects
         );
 
