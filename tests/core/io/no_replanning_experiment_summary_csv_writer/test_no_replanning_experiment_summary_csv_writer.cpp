@@ -139,7 +139,12 @@ void test_no_replanning_experiment_summary_csv_writer() {
     );
 
     FIELDOPS_EXPECT_TRUE(
-        lines[2].find(",false,no_replanning_execution_baseline,") !=
+        lines[2].find(",true,replanning_applied_execution,") !=
+        std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        lines[2].find("greedy_replanning_solver_v1_applied") !=
         std::string::npos
     );
 }

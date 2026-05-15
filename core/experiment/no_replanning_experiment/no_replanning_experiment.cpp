@@ -14,6 +14,7 @@
 #include "core/io/solution_result_json_writer/solution_result_json_writer.h"
 #include "core/method/greedy_earliest_feasible_heuristic/greedy_earliest_feasible_heuristic.h"
 #include "core/perturbation/perturbation_effect_builder/perturbation_effect_builder.h"
+#include "core/replanning/replanning_application/replanning_application.h"
 #include "core/replanning/replanning_engine/replanning_engine.h"
 #include "core/replanning/replanning_request/replanning_request.h"
 #include "core/simulation/no_replanning_execution/no_replanning_execution.h"
@@ -132,6 +133,38 @@ static void build_replanning_artifacts(
         );
 
     result.has_replanning_result = true;
+}
+
+static Solution build_solution_for_execution(
+    NoReplanningExperimentResult& result
+) {
+    result.replanning_result_was_applied_to_execution = false;
+    result.execution_mode = "no_replanning_execution_baseline";
+
+    if (!result.has_replanning_request) {
+        return result.planned_solution;
+    }
+
+    if (!result.has_replanning_result) {
+        return result.planned_solution;
+    }
+
+    if (!result.replanning_result.has_new_solution()) {
+        return result.planned_solution;
+    }
+
+    Solution applied_solution =
+        build_solution_with_applied_replanning_result(
+            result.instance,
+            result.planned_solution,
+            result.replanning_request,
+            result.replanning_result
+        );
+
+    result.replanning_result_was_applied_to_execution = true;
+    result.execution_mode = "replanning_applied_execution";
+
+    return applied_solution;
 }
 
 static void export_no_replanning_experiment_results(
@@ -322,14 +355,21 @@ NoReplanningExperimentResult run_no_replanning_experiment(
         }
     }
 
+    Solution solution_for_execution =
+        build_solution_for_execution(result);
+
     if (config.verbose) {
-        std::cout << "\nExecuting solution without replanning...\n\n";
+        if (result.replanning_result_was_applied_to_execution) {
+            std::cout << "\nExecuting solution with applied replanning...\n\n";
+        } else {
+            std::cout << "\nExecuting solution without replanning...\n\n";
+        }
     }
 
     result.executed_solution =
         execute_solution_without_replanning(
             result.instance,
-            result.planned_solution,
+            solution_for_execution,
             result.effects
         );
 

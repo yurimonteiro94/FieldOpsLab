@@ -151,12 +151,12 @@ void test_no_replanning_batch_result_json_writer() {
     );
 
     FIELDOPS_EXPECT_TRUE(
-        !data.at("experiments").at(7).at("replanning_result").at("was_applied_to_execution").get<bool>()
+        data.at("experiments").at(7).at("replanning_result").at("was_applied_to_execution").get<bool>()
     );
 
     FIELDOPS_EXPECT_EQ(
         data.at("experiments").at(7).at("execution").at("execution_mode").get<std::string>(),
-        "no_replanning_execution_baseline"
+        "replanning_applied_execution"
     );
 
     FIELDOPS_EXPECT_EQ(

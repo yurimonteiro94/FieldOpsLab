@@ -2,6 +2,7 @@
 #include "tests/test_support/test_assertions.h"
 
 #include <filesystem>
+#include <string>
 
 void test_no_replanning_experiment() {
     NoReplanningExperimentConfig config;
@@ -84,6 +85,15 @@ void test_no_replanning_experiment() {
 
     FIELDOPS_EXPECT_TRUE(!result.replanning_result.has_new_solution());
     FIELDOPS_EXPECT_TRUE(!result.replanning_result.is_successful());
+
+    FIELDOPS_EXPECT_TRUE(
+        !result.replanning_result_was_applied_to_execution
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        result.execution_mode,
+        "no_replanning_execution_baseline"
+    );
 
     FIELDOPS_EXPECT_EQ(
         policy_decision_type_to_string(result.policy_decision.type),
@@ -199,6 +209,15 @@ void test_no_replanning_experiment() {
     );
 
     FIELDOPS_EXPECT_TRUE(
+        !threshold_result.replanning_result_was_applied_to_execution
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        threshold_result.execution_mode,
+        "no_replanning_execution_baseline"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
         std::filesystem::exists(
             threshold_config.replanning_request_output_path
         )
@@ -238,6 +257,88 @@ void test_no_replanning_experiment() {
     FIELDOPS_EXPECT_EQ(
         threshold_result.replanning_request.candidate_task_count(),
         1
+    );
+
+    NoReplanningExperimentConfig greedy_apply_config;
+
+    greedy_apply_config.metadata.experiment_id =
+        "test_greedy_applied_experiment_001";
+
+    greedy_apply_config.metadata.scenario_id =
+        "test_greedy_applied_scenario_001";
+
+    greedy_apply_config.metadata.replication_id = 1;
+    greedy_apply_config.metadata.seed = 9201;
+
+    greedy_apply_config.policy_config.policy_id =
+        "threshold_delay_replanning_policy_v1";
+
+    greedy_apply_config.policy_config
+        .threshold_delay_config
+        .max_single_delay_threshold = 30;
+
+    greedy_apply_config.policy_config
+        .threshold_delay_config
+        .total_delay_threshold = 60;
+
+    greedy_apply_config.replanning_engine_config.method_id =
+        "greedy_replanning_solver_v1";
+
+    greedy_apply_config.verbose = false;
+    greedy_apply_config.export_results = false;
+
+    NoReplanningExperimentResult greedy_apply_result =
+        run_no_replanning_experiment(greedy_apply_config);
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_apply_result.policy_decision.should_replan()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_apply_result.has_replanning_request
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_apply_result.has_replanning_result
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_apply_result.replanning_result.status,
+        ReplanningResultStatus::SUCCESS
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_apply_result.replanning_result.has_new_solution()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_apply_result.replanning_result.is_successful()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_apply_result.replanning_result_was_applied_to_execution
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_apply_result.execution_mode,
+        "replanning_applied_execution"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_apply_result.executed_solution.solution_id.find(
+            "_with_applied_"
+        ) != std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_apply_result.executed_solution.method_id.find(
+            "greedy_replanning_solver_v1_applied"
+        ) != std::string::npos
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_apply_result.executed_solution.status,
+        SolutionStatus::FEASIBLE
     );
 
     NoReplanningExperimentConfig unknown_method_config;
@@ -296,5 +397,14 @@ void test_no_replanning_experiment() {
     FIELDOPS_EXPECT_EQ(
         unknown_method_result.replanning_result.result_id,
         "test_unknown_replanning_method_001_replanning_result"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        !unknown_method_result.replanning_result_was_applied_to_execution
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        unknown_method_result.execution_mode,
+        "no_replanning_execution_baseline"
     );
 }

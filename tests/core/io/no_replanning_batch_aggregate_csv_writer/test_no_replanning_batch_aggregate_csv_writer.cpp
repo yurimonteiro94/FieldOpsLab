@@ -98,7 +98,7 @@ void test_no_replanning_batch_aggregate_csv_writer() {
             lines,
             "sample_delay_moderate_001,threshold_delay_replanning_policy_v1,"
             "greedy_replanning_solver_v1,"
-            "no_replanning_execution_baseline,1,1,1,1,0,"
+            "replanning_applied_execution,1,1,1,1,1,"
         )
     );
 
@@ -107,7 +107,7 @@ void test_no_replanning_batch_aggregate_csv_writer() {
             lines,
             "sample_delay_severe_001,threshold_delay_replanning_policy_v1,"
             "greedy_replanning_solver_v1,"
-            "no_replanning_execution_baseline,1,1,1,1,0,"
+            "replanning_applied_execution,1,1,1,1,1,"
         )
     );
 }

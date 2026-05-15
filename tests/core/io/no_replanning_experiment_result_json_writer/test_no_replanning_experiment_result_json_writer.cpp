@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <string>
 
 using json = nlohmann::json;
 
@@ -88,9 +89,8 @@ void test_no_replanning_experiment_result_json_writer() {
         "threshold_delay_replanning_policy_v1"
     );
 
-    FIELDOPS_EXPECT_EQ(
-        data.at("policy_decision").at("should_replan").get<bool>(),
-        true
+    FIELDOPS_EXPECT_TRUE(
+        data.at("policy_decision").at("should_replan").get<bool>()
     );
 
     FIELDOPS_EXPECT_TRUE(
@@ -136,14 +136,12 @@ void test_no_replanning_experiment_result_json_writer() {
         "SUCCESS"
     );
 
-    FIELDOPS_EXPECT_EQ(
-        data.at("replanning_result").at("has_new_solution").get<bool>(),
-        true
+    FIELDOPS_EXPECT_TRUE(
+        data.at("replanning_result").at("has_new_solution").get<bool>()
     );
 
-    FIELDOPS_EXPECT_EQ(
-        data.at("replanning_result").at("is_successful").get<bool>(),
-        true
+    FIELDOPS_EXPECT_TRUE(
+        data.at("replanning_result").at("is_successful").get<bool>()
     );
 
     FIELDOPS_EXPECT_EQ(
@@ -151,14 +149,13 @@ void test_no_replanning_experiment_result_json_writer() {
         1
     );
 
-    FIELDOPS_EXPECT_EQ(
-        data.at("replanning_result_was_applied_to_execution").get<bool>(),
-        false
+    FIELDOPS_EXPECT_TRUE(
+        data.at("replanning_result_was_applied_to_execution").get<bool>()
     );
 
     FIELDOPS_EXPECT_EQ(
         data.at("execution_mode").get<std::string>(),
-        "no_replanning_execution_baseline"
+        "replanning_applied_execution"
     );
 
     FIELDOPS_EXPECT_EQ(
