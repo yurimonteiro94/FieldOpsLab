@@ -20,12 +20,16 @@ void test_no_replanning_batch_result_json_writer() {
     config.export_individual_results = false;
     config.export_summary_csv = true;
     config.export_aggregate_csv = true;
+    config.export_result_json = true;
 
     config.summary_csv_output_path =
         "data/results/test_batch_result_writer_summary.csv";
 
     config.aggregate_csv_output_path =
         "data/results/test_batch_result_writer_aggregate.csv";
+
+    config.result_json_output_path =
+        "data/results/test_batch_result_writer_result.json";
 
     NoReplanningBatchExperimentResult batch_result =
         run_no_replanning_batch_experiment(config);
@@ -62,12 +66,31 @@ void test_no_replanning_batch_result_json_writer() {
         9
     );
 
+    FIELDOPS_EXPECT_EQ(
+        data.at("outputs").at("summary_csv_output_path").get<std::string>(),
+        "data/results/test_batch_result_writer_summary.csv"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("outputs").at("aggregate_csv_output_path").get<std::string>(),
+        "data/results/test_batch_result_writer_aggregate.csv"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("outputs").at("result_json_output_path").get<std::string>(),
+        "data/results/test_batch_result_writer_result.json"
+    );
+
     FIELDOPS_EXPECT_TRUE(
         data.at("outputs").at("summary_csv_was_written").get<bool>()
     );
 
     FIELDOPS_EXPECT_TRUE(
         data.at("outputs").at("aggregate_csv_was_written").get<bool>()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        data.at("outputs").at("result_json_was_written").get<bool>()
     );
 
     FIELDOPS_EXPECT_EQ(

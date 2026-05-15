@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include "core/io/no_replanning_batch_aggregate_csv_writer/no_replanning_batch_aggregate_csv_writer.h"
+#include "core/io/no_replanning_batch_result_json_writer/no_replanning_batch_result_json_writer.h"
 #include "core/io/no_replanning_experiment_summary_csv_writer/no_replanning_experiment_summary_csv_writer.h"
 
 int NoReplanningBatchExperimentResult::experiment_count() const {
@@ -57,6 +58,21 @@ static void write_batch_aggregate_if_enabled(
     );
 }
 
+static void write_batch_result_json_if_enabled(
+    const NoReplanningBatchExperimentConfig& config,
+    const NoReplanningBatchExperimentResult& result
+) {
+    if (!config.export_result_json) {
+        return;
+    }
+
+    write_no_replanning_batch_result_to_json(
+        result,
+        config.result_json_output_path,
+        "no_replanning_batch_result"
+    );
+}
+
 NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     const NoReplanningBatchExperimentConfig& config
 ) {
@@ -67,6 +83,7 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.description = config.description;
     batch_result.summary_csv_output_path = config.summary_csv_output_path;
     batch_result.aggregate_csv_output_path = config.aggregate_csv_output_path;
+    batch_result.result_json_output_path = config.result_json_output_path;
 
     if (config.export_summary_csv) {
         remove_existing_output_file(config.summary_csv_output_path);
@@ -74,6 +91,10 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
 
     if (config.export_aggregate_csv) {
         remove_existing_output_file(config.aggregate_csv_output_path);
+    }
+
+    if (config.export_result_json) {
+        remove_existing_output_file(config.result_json_output_path);
     }
 
     bool append_summary_row = false;
@@ -108,6 +129,12 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.aggregate_csv_was_written =
         config.export_aggregate_csv &&
         !config.aggregate_csv_output_path.empty();
+
+    batch_result.result_json_was_written =
+        config.export_result_json &&
+        !config.result_json_output_path.empty();
+
+    write_batch_result_json_if_enabled(config, batch_result);
 
     return batch_result;
 }

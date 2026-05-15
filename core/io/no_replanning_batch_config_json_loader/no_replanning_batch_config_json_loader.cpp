@@ -232,6 +232,13 @@ NoReplanningBatchExperimentConfig load_no_replanning_batch_config_from_json(
             config.aggregate_csv_output_path
         );
 
+    config.result_json_output_path =
+        get_optional_string(
+            data,
+            "result_json_output_path",
+            config.result_json_output_path
+        );
+
     config.verbose =
         get_optional_bool(
             data,
@@ -258,6 +265,13 @@ NoReplanningBatchExperimentConfig load_no_replanning_batch_config_from_json(
             data,
             "export_aggregate_csv",
             config.export_aggregate_csv
+        );
+
+    config.export_result_json =
+        get_optional_bool(
+            data,
+            "export_result_json",
+            config.export_result_json
         );
 
     if (!data.contains("experiments")) {

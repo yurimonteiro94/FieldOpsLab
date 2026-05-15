@@ -14,6 +14,7 @@ void test_no_replanning_batch_experiment() {
     config.export_individual_results = false;
     config.export_summary_csv = true;
     config.export_aggregate_csv = true;
+    config.export_result_json = true;
 
     config.summary_csv_output_path =
         "data/results/test_no_replanning_batch_summary.csv";
@@ -21,8 +22,12 @@ void test_no_replanning_batch_experiment() {
     config.aggregate_csv_output_path =
         "data/results/test_no_replanning_batch_aggregate_summary_from_batch.csv";
 
+    config.result_json_output_path =
+        "data/results/test_no_replanning_batch_result_from_batch.json";
+
     std::filesystem::remove(config.summary_csv_output_path);
     std::filesystem::remove(config.aggregate_csv_output_path);
+    std::filesystem::remove(config.result_json_output_path);
 
     NoReplanningBatchExperimentResult result =
         run_no_replanning_batch_experiment(config);
@@ -37,6 +42,7 @@ void test_no_replanning_batch_experiment() {
 
     FIELDOPS_EXPECT_TRUE(result.summary_csv_was_written);
     FIELDOPS_EXPECT_TRUE(result.aggregate_csv_was_written);
+    FIELDOPS_EXPECT_TRUE(result.result_json_was_written);
 
     FIELDOPS_EXPECT_EQ(
         result.summary_csv_output_path,
@@ -48,12 +54,21 @@ void test_no_replanning_batch_experiment() {
         "data/results/test_no_replanning_batch_aggregate_summary_from_batch.csv"
     );
 
+    FIELDOPS_EXPECT_EQ(
+        result.result_json_output_path,
+        "data/results/test_no_replanning_batch_result_from_batch.json"
+    );
+
     FIELDOPS_EXPECT_TRUE(
         std::filesystem::exists(config.summary_csv_output_path)
     );
 
     FIELDOPS_EXPECT_TRUE(
         std::filesystem::exists(config.aggregate_csv_output_path)
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        std::filesystem::exists(config.result_json_output_path)
     );
 
     FIELDOPS_EXPECT_EQ(
