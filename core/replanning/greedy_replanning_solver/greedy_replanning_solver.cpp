@@ -85,6 +85,21 @@ static std::vector<std::string> build_active_technician_ids(
 ) {
     std::vector<std::string> technician_ids;
 
+    for (const auto& runtime_state :
+         request.technician_runtime_states) {
+        if (!runtime_state.can_receive_candidate_tasks) {
+            continue;
+        }
+
+        if (!vector_contains(technician_ids, runtime_state.technician_id)) {
+            technician_ids.push_back(runtime_state.technician_id);
+        }
+    }
+
+    if (!technician_ids.empty()) {
+        return technician_ids;
+    }
+
     for (const auto& technician_id : request.available_technician_ids) {
         technician_ids.push_back(technician_id);
     }
@@ -98,16 +113,67 @@ static std::vector<std::string> build_active_technician_ids(
     return technician_ids;
 }
 
+static std::string technician_start_location_for_replanning(
+    const Technician& technician,
+    const ReplanningRequest& request
+) {
+    const ReplanningTechnicianRuntimeState* runtime_state =
+        find_replanning_technician_runtime_state_by_id(
+            request,
+            technician.id
+        );
+
+    if (runtime_state == nullptr) {
+        return technician.start_location_id;
+    }
+
+    if (runtime_state->current_location_id.empty()) {
+        return technician.start_location_id;
+    }
+
+    return runtime_state->current_location_id;
+}
+
+static int technician_start_time_for_replanning(
+    const Technician& technician,
+    const ReplanningRequest& request
+) {
+    const ReplanningTechnicianRuntimeState* runtime_state =
+        find_replanning_technician_runtime_state_by_id(
+            request,
+            technician.id
+        );
+
+    if (runtime_state == nullptr) {
+        return std::max(technician.available_from, request.decision_time);
+    }
+
+    return std::max(
+        technician.available_from,
+        runtime_state->available_from_time
+    );
+}
+
 static Route build_empty_replanning_route(
     const Technician& technician,
-    int decision_time
+    const ReplanningRequest& request
 ) {
     Route route;
 
     route.technician_id = technician.id;
-    route.start_location_id = technician.start_location_id;
+    route.start_location_id =
+        technician_start_location_for_replanning(
+            technician,
+            request
+        );
+
     route.end_location_id = technician.end_location_id;
-    route.end_time = std::max(technician.available_from, decision_time);
+
+    route.end_time =
+        technician_start_time_for_replanning(
+            technician,
+            request
+        );
 
     return route;
 }
@@ -287,7 +353,7 @@ static Solution build_greedy_replanned_solution(
         solution.routes.push_back(
             build_empty_replanning_route(
                 technician_map.at(technician_id),
-                request.decision_time
+                request
             )
         );
     }

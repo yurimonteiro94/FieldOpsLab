@@ -72,6 +72,95 @@ static void add_technician_to_replanning_request(
     );
 }
 
+static const SimulationTaskState* find_task_state_by_id(
+    const SimulationSnapshot& snapshot,
+    const std::string& task_id
+) {
+    for (const auto& task_state : snapshot.task_states) {
+        if (task_state.task_id == task_id) {
+            return &task_state;
+        }
+    }
+
+    return nullptr;
+}
+
+static int estimate_technician_available_from_time(
+    const SimulationSnapshot& snapshot,
+    const SimulationTechnicianState& technician_state
+) {
+    if (technician_state.status ==
+        SimulationTechnicianExecutionStatus::SERVICING) {
+        const SimulationTaskState* task_state =
+            find_task_state_by_id(
+                snapshot,
+                technician_state.current_task_id
+            );
+
+        if (task_state != nullptr) {
+            return task_state->planned_end_time;
+        }
+    }
+
+    return snapshot.current_time;
+}
+
+static bool technician_can_receive_candidate_tasks(
+    const SimulationTechnicianState& technician_state
+) {
+    return technician_state.status !=
+           SimulationTechnicianExecutionStatus::FINISHED;
+}
+
+static ReplanningTechnicianRuntimeState
+build_technician_runtime_state(
+    const SimulationSnapshot& snapshot,
+    const SimulationTechnicianState& technician_state
+) {
+    ReplanningTechnicianRuntimeState runtime_state;
+
+    runtime_state.technician_id = technician_state.technician_id;
+
+    runtime_state.execution_status =
+        simulation_technician_execution_status_to_string(
+            technician_state.status
+        );
+
+    runtime_state.current_location_id =
+        technician_state.current_location_id;
+
+    runtime_state.current_task_id =
+        technician_state.current_task_id;
+
+    runtime_state.next_task_id =
+        technician_state.next_task_id;
+
+    runtime_state.available_from_time =
+        estimate_technician_available_from_time(
+            snapshot,
+            technician_state
+        );
+
+    runtime_state.can_receive_candidate_tasks =
+        technician_can_receive_candidate_tasks(technician_state);
+
+    return runtime_state;
+}
+
+static void add_runtime_states_to_replanning_request(
+    ReplanningRequest& request,
+    const SimulationSnapshot& snapshot
+) {
+    for (const auto& technician_state : snapshot.technician_states) {
+        request.technician_runtime_states.push_back(
+            build_technician_runtime_state(
+                snapshot,
+                technician_state
+            )
+        );
+    }
+}
+
 ReplanningRequest build_replanning_request_from_snapshot(
     const SimulationSnapshot& snapshot,
     const PolicyDecision& policy_decision,
@@ -97,6 +186,8 @@ ReplanningRequest build_replanning_request_from_snapshot(
         );
     }
 
+    add_runtime_states_to_replanning_request(request, snapshot);
+
     return request;
 }
 
@@ -105,6 +196,21 @@ bool replanning_request_has_work(
 ) {
     return request.should_replan &&
            request.candidate_task_count() > 0;
+}
+
+const ReplanningTechnicianRuntimeState*
+find_replanning_technician_runtime_state_by_id(
+    const ReplanningRequest& request,
+    const std::string& technician_id
+) {
+    for (const auto& runtime_state :
+         request.technician_runtime_states) {
+        if (runtime_state.technician_id == technician_id) {
+            return &runtime_state;
+        }
+    }
+
+    return nullptr;
 }
 
 static void print_string_vector(
@@ -127,6 +233,40 @@ static void print_string_vector(
     }
 
     std::cout << "\n";
+}
+
+static void print_runtime_states(
+    const ReplanningRequest& request
+) {
+    std::cout << "  Technician runtime states:\n";
+
+    if (request.technician_runtime_states.empty()) {
+        std::cout << "    (none)\n";
+        return;
+    }
+
+    for (const auto& runtime_state :
+         request.technician_runtime_states) {
+        std::cout << "    Technician: "
+                  << runtime_state.technician_id
+                  << " | status="
+                  << runtime_state.execution_status
+                  << " | current_location="
+                  << runtime_state.current_location_id
+                  << " | current_task="
+                  << runtime_state.current_task_id
+                  << " | next_task="
+                  << runtime_state.next_task_id
+                  << " | available_from="
+                  << runtime_state.available_from_time
+                  << " | can_receive_candidate_tasks="
+                  << (
+                      runtime_state.can_receive_candidate_tasks
+                          ? "true"
+                          : "false"
+                  )
+                  << "\n";
+    }
 }
 
 void print_replanning_request_summary(
@@ -159,4 +299,6 @@ void print_replanning_request_summary(
         "Finished technicians",
         request.finished_technician_ids
     );
+
+    print_runtime_states(request);
 }
