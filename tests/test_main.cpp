@@ -30,6 +30,7 @@ void test_no_replanning_experiment_summary_csv_writer();
 void test_no_replanning_batch_experiment();
 void test_no_replanning_batch_config_json_loader();
 void test_no_replanning_batch_aggregate_csv_writer();
+void test_no_replanning_batch_result_json_writer();
 void test_policy();
 void test_no_replanning_policy();
 void test_threshold_delay_replanning_policy();
@@ -69,6 +70,7 @@ int main() {
         {"NoReplanningBatchExperiment", test_no_replanning_batch_experiment},
         {"NoReplanningBatchConfigJsonLoader", test_no_replanning_batch_config_json_loader},
         {"NoReplanningBatchAggregateCsvWriter", test_no_replanning_batch_aggregate_csv_writer},
+        {"NoReplanningBatchResultJsonWriter", test_no_replanning_batch_result_json_writer},
         {"Policy", test_policy},
         {"NoReplanningPolicy", test_no_replanning_policy},
         {"ThresholdDelayReplanningPolicy", test_threshold_delay_replanning_policy},
