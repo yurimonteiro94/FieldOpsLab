@@ -126,6 +126,7 @@ static void build_replanning_artifacts(
 
     result.replanning_result =
         run_replanning_engine(
+            result.instance,
             internal_request,
             replanning_engine_config
         );

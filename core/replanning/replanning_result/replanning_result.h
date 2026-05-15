@@ -3,6 +3,7 @@
 #include <string>
 
 #include "core/replanning/replanning_request/replanning_request.h"
+#include "core/solution/solution/solution.h"
 
 enum class ReplanningResultStatus {
     NOT_REQUESTED,
@@ -34,6 +35,8 @@ struct ReplanningResult {
     int finished_technician_count = 0;
 
     std::string generated_solution_id;
+    bool generated_solution_was_built = false;
+    Solution generated_solution;
 
     bool has_new_solution() const;
     bool is_successful() const;

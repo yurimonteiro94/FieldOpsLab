@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "core/instance/instance/instance.h"
 #include "core/replanning/replanning_request/replanning_request.h"
 #include "core/replanning/replanning_result/replanning_result.h"
 
@@ -12,6 +13,12 @@ struct GreedyReplanningSolverConfig {
 };
 
 ReplanningResult run_greedy_replanning_solver(
+    const ReplanningRequest& request,
+    const GreedyReplanningSolverConfig& config = GreedyReplanningSolverConfig()
+);
+
+ReplanningResult run_greedy_replanning_solver(
+    const Instance& instance,
     const ReplanningRequest& request,
     const GreedyReplanningSolverConfig& config = GreedyReplanningSolverConfig()
 );

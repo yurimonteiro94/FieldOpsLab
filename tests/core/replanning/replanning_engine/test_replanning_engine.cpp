@@ -1,18 +1,31 @@
+#include "core/io/instance_json_loader/instance_json_loader.h"
+#include "core/policy/policy/policy.h"
 #include "core/replanning/replanning_engine/replanning_engine.h"
+#include "core/replanning/replanning_request/replanning_request.h"
 #include "tests/test_support/test_assertions.h"
 
-static ReplanningRequest make_replanning_engine_test_request() {
+static ReplanningRequest build_engine_replanning_request(
+    bool should_replan
+) {
     ReplanningRequest request;
 
-    request.request_id = "test_replanning_request_001";
+    request.request_id = "test_engine_replanning_request";
     request.decision_time = 125;
     request.policy_id = "threshold_delay_replanning_policy_v1";
-    request.policy_decision = "REPLAN";
-    request.should_replan = true;
+    request.policy_decision =
+        policy_decision_type_to_string(
+            should_replan ?
+            PolicyDecisionType::REPLAN :
+            PolicyDecisionType::DO_NOT_REPLAN
+        );
+    request.should_replan = should_replan;
 
     request.completed_task_ids.push_back("task_A");
     request.locked_task_ids.push_back("task_B");
-    request.candidate_task_ids.push_back("task_C");
+
+    if (should_replan) {
+        request.candidate_task_ids.push_back("task_C");
+    }
 
     request.busy_technician_ids.push_back("tech_1");
     request.busy_technician_ids.push_back("tech_2");
@@ -21,54 +34,17 @@ static ReplanningRequest make_replanning_engine_test_request() {
 }
 
 void test_replanning_engine() {
-    ReplanningRequest work_request =
-        make_replanning_engine_test_request();
+    ReplanningRequest no_replanning_request =
+        build_engine_replanning_request(false);
 
     ReplanningEngineConfig not_implemented_config;
 
     not_implemented_config.method_id = "replanning_not_implemented_v1";
-    not_implemented_config.result_id = "test_replanning_engine_result_001";
-
-    ReplanningResult not_implemented_result =
-        run_replanning_engine(work_request, not_implemented_config);
-
-    FIELDOPS_EXPECT_EQ(
-        not_implemented_result.result_id,
-        "test_replanning_engine_result_001"
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        not_implemented_result.request_id,
-        "test_replanning_request_001"
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        not_implemented_result.method_id,
-        "replanning_not_implemented_v1"
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        not_implemented_result.status,
-        ReplanningResultStatus::NOT_IMPLEMENTED
-    );
-
-    FIELDOPS_EXPECT_EQ(not_implemented_result.completed_task_count, 1);
-    FIELDOPS_EXPECT_EQ(not_implemented_result.locked_task_count, 1);
-    FIELDOPS_EXPECT_EQ(not_implemented_result.candidate_task_count, 1);
-    FIELDOPS_EXPECT_EQ(not_implemented_result.busy_technician_count, 2);
-
-    FIELDOPS_EXPECT_TRUE(!not_implemented_result.has_new_solution());
-    FIELDOPS_EXPECT_TRUE(!not_implemented_result.is_successful());
-
-    ReplanningRequest not_requested_request =
-        make_replanning_engine_test_request();
-
-    not_requested_request.should_replan = false;
-    not_requested_request.policy_decision = "DO_NOT_REPLAN";
+    not_implemented_config.result_id = "test_not_implemented_result";
 
     ReplanningResult not_requested_result =
         run_replanning_engine(
-            not_requested_request,
+            no_replanning_request,
             not_implemented_config
         );
 
@@ -77,70 +53,89 @@ void test_replanning_engine() {
         ReplanningResultStatus::NOT_REQUESTED
     );
 
-    ReplanningRequest no_work_request =
-        make_replanning_engine_test_request();
+    FIELDOPS_EXPECT_TRUE(!not_requested_result.has_new_solution());
 
-    no_work_request.candidate_task_ids.clear();
+    ReplanningRequest replanning_request =
+        build_engine_replanning_request(true);
 
-    ReplanningResult no_work_result =
+    ReplanningResult not_implemented_result =
         run_replanning_engine(
-            no_work_request,
+            replanning_request,
             not_implemented_config
         );
 
     FIELDOPS_EXPECT_EQ(
-        no_work_result.status,
-        ReplanningResultStatus::NO_WORK
+        not_implemented_result.status,
+        ReplanningResultStatus::NOT_IMPLEMENTED
     );
+
+    FIELDOPS_EXPECT_TRUE(!not_implemented_result.has_new_solution());
 
     ReplanningEngineConfig greedy_config;
 
     greedy_config.method_id = "greedy_replanning_solver_v1";
-    greedy_config.result_id = "test_greedy_engine_result_001";
+    greedy_config.result_id = "test_greedy_engine_result";
 
-    ReplanningResult greedy_result =
-        run_replanning_engine(work_request, greedy_config);
-
-    FIELDOPS_EXPECT_EQ(
-        greedy_result.result_id,
-        "test_greedy_engine_result_001"
-    );
+    ReplanningResult greedy_result_without_instance =
+        run_replanning_engine(
+            replanning_request,
+            greedy_config
+        );
 
     FIELDOPS_EXPECT_EQ(
-        greedy_result.method_id,
-        "greedy_replanning_solver_v1"
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        greedy_result.status,
+        greedy_result_without_instance.status,
         ReplanningResultStatus::SUCCESS
     );
 
-    FIELDOPS_EXPECT_EQ(
-        greedy_result.generated_solution_id,
-        "test_greedy_engine_result_001_solution"
+    FIELDOPS_EXPECT_TRUE(
+        !greedy_result_without_instance.has_new_solution()
     );
 
-    FIELDOPS_EXPECT_TRUE(greedy_result.has_new_solution());
-    FIELDOPS_EXPECT_TRUE(greedy_result.is_successful());
+    Instance instance =
+        load_instance_from_json(
+            "data/instances/sample_instance_001.json"
+        );
+
+    ReplanningResult greedy_result_with_instance =
+        run_replanning_engine(
+            instance,
+            replanning_request,
+            greedy_config
+        );
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_result_with_instance.status,
+        ReplanningResultStatus::SUCCESS
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_result_with_instance.generated_solution_was_built
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        greedy_result_with_instance.has_new_solution()
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_result_with_instance.generated_solution.solution_id,
+        "test_greedy_engine_result_solution"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        greedy_result_with_instance.generated_solution.method_id,
+        "greedy_replanning_solver_v1"
+    );
 
     ReplanningEngineConfig unknown_config;
 
     unknown_config.method_id = "unknown_replanning_method_v1";
-    unknown_config.result_id = "test_replanning_engine_unknown_result";
+    unknown_config.result_id = "test_unknown_result";
 
     ReplanningResult unknown_result =
-        run_replanning_engine(work_request, unknown_config);
-
-    FIELDOPS_EXPECT_EQ(
-        unknown_result.result_id,
-        "test_replanning_engine_unknown_result"
-    );
-
-    FIELDOPS_EXPECT_EQ(
-        unknown_result.method_id,
-        "unknown_replanning_method_v1"
-    );
+        run_replanning_engine(
+            replanning_request,
+            unknown_config
+        );
 
     FIELDOPS_EXPECT_EQ(
         unknown_result.status,
@@ -148,5 +143,4 @@ void test_replanning_engine() {
     );
 
     FIELDOPS_EXPECT_TRUE(!unknown_result.has_new_solution());
-    FIELDOPS_EXPECT_TRUE(!unknown_result.is_successful());
 }

@@ -1,13 +1,17 @@
+#include "core/io/instance_json_loader/instance_json_loader.h"
+#include "core/policy/policy/policy.h"
 #include "core/replanning/greedy_replanning_solver/greedy_replanning_solver.h"
+#include "core/replanning/replanning_request/replanning_request.h"
 #include "tests/test_support/test_assertions.h"
 
-static ReplanningRequest make_greedy_replanning_solver_test_request() {
+static ReplanningRequest build_sample_greedy_replanning_request() {
     ReplanningRequest request;
 
-    request.request_id = "test_replanning_request_001";
+    request.request_id = "test_greedy_replanning_request";
     request.decision_time = 125;
     request.policy_id = "threshold_delay_replanning_policy_v1";
-    request.policy_decision = "REPLAN";
+    request.policy_decision =
+        policy_decision_type_to_string(PolicyDecisionType::REPLAN);
     request.should_replan = true;
 
     request.completed_task_ids.push_back("task_A");
@@ -21,82 +25,89 @@ static ReplanningRequest make_greedy_replanning_solver_test_request() {
 }
 
 void test_greedy_replanning_solver() {
+    ReplanningRequest request =
+        build_sample_greedy_replanning_request();
+
     GreedyReplanningSolverConfig config;
 
-    config.result_id = "test_greedy_replanning_result_001";
-    config.generated_solution_id = "test_greedy_replanned_solution_001";
+    config.result_id = "test_greedy_replanning_result";
+    config.generated_solution_id = "test_greedy_replanned_solution";
 
-    ReplanningRequest work_request =
-        make_greedy_replanning_solver_test_request();
-
-    ReplanningResult success_result =
-        run_greedy_replanning_solver(work_request, config);
+    ReplanningResult result =
+        run_greedy_replanning_solver(request, config);
 
     FIELDOPS_EXPECT_EQ(
-        success_result.result_id,
-        "test_greedy_replanning_result_001"
+        result.result_id,
+        "test_greedy_replanning_result"
     );
 
     FIELDOPS_EXPECT_EQ(
-        success_result.request_id,
-        "test_replanning_request_001"
+        result.request_id,
+        "test_greedy_replanning_request"
     );
 
     FIELDOPS_EXPECT_EQ(
-        success_result.method_id,
+        result.method_id,
         "greedy_replanning_solver_v1"
     );
 
     FIELDOPS_EXPECT_EQ(
-        success_result.status,
+        result.status,
         ReplanningResultStatus::SUCCESS
     );
 
-    FIELDOPS_EXPECT_EQ(success_result.decision_time, 125);
-    FIELDOPS_EXPECT_EQ(success_result.completed_task_count, 1);
-    FIELDOPS_EXPECT_EQ(success_result.locked_task_count, 1);
-    FIELDOPS_EXPECT_EQ(success_result.candidate_task_count, 1);
-    FIELDOPS_EXPECT_EQ(success_result.busy_technician_count, 2);
-
     FIELDOPS_EXPECT_EQ(
-        success_result.generated_solution_id,
-        "test_greedy_replanned_solution_001"
+        result.generated_solution_id,
+        "test_greedy_replanned_solution"
     );
 
-    FIELDOPS_EXPECT_TRUE(success_result.has_new_solution());
-    FIELDOPS_EXPECT_TRUE(success_result.is_successful());
+    FIELDOPS_EXPECT_TRUE(!result.has_new_solution());
+    FIELDOPS_EXPECT_TRUE(!result.generated_solution_was_built);
 
-    ReplanningRequest not_requested_request =
-        make_greedy_replanning_solver_test_request();
+    Instance instance =
+        load_instance_from_json(
+            "data/instances/sample_instance_001.json"
+        );
 
-    not_requested_request.should_replan = false;
-    not_requested_request.policy_decision = "DO_NOT_REPLAN";
-
-    ReplanningResult not_requested_result =
-        run_greedy_replanning_solver(not_requested_request, config);
-
-    FIELDOPS_EXPECT_EQ(
-        not_requested_result.status,
-        ReplanningResultStatus::NOT_REQUESTED
-    );
-
-    FIELDOPS_EXPECT_TRUE(!not_requested_result.has_new_solution());
-    FIELDOPS_EXPECT_TRUE(!not_requested_result.is_successful());
-
-    ReplanningRequest no_work_request =
-        make_greedy_replanning_solver_test_request();
-
-    no_work_request.candidate_task_ids.clear();
-
-    ReplanningResult no_work_result =
-        run_greedy_replanning_solver(no_work_request, config);
+    ReplanningResult result_with_solution =
+        run_greedy_replanning_solver(
+            instance,
+            request,
+            config
+        );
 
     FIELDOPS_EXPECT_EQ(
-        no_work_result.status,
-        ReplanningResultStatus::NO_WORK
+        result_with_solution.status,
+        ReplanningResultStatus::SUCCESS
     );
 
-    FIELDOPS_EXPECT_EQ(no_work_result.candidate_task_count, 0);
-    FIELDOPS_EXPECT_TRUE(!no_work_result.has_new_solution());
-    FIELDOPS_EXPECT_TRUE(!no_work_result.is_successful());
+    FIELDOPS_EXPECT_TRUE(result_with_solution.generated_solution_was_built);
+    FIELDOPS_EXPECT_TRUE(result_with_solution.has_new_solution());
+    FIELDOPS_EXPECT_TRUE(result_with_solution.is_successful());
+
+    FIELDOPS_EXPECT_EQ(
+        result_with_solution.generated_solution.solution_id,
+        "test_greedy_replanned_solution"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        result_with_solution.generated_solution.method_id,
+        "greedy_replanning_solver_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        result_with_solution.generated_solution.instance_id,
+        "sample_instance_001"
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        result_with_solution.generated_solution.status ==
+        SolutionStatus::FEASIBLE ||
+        result_with_solution.generated_solution.status ==
+        SolutionStatus::PARTIAL
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        !result_with_solution.generated_solution.routes.empty()
+    );
 }

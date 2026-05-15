@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "core/instance/instance/instance.h"
 #include "core/replanning/replanning_request/replanning_request.h"
 #include "core/replanning/replanning_result/replanning_result.h"
 
@@ -11,6 +12,12 @@ struct ReplanningEngineConfig {
 };
 
 ReplanningResult run_replanning_engine(
+    const ReplanningRequest& request,
+    const ReplanningEngineConfig& config = ReplanningEngineConfig()
+);
+
+ReplanningResult run_replanning_engine(
+    const Instance& instance,
     const ReplanningRequest& request,
     const ReplanningEngineConfig& config = ReplanningEngineConfig()
 );

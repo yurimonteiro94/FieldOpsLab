@@ -3,7 +3,9 @@
 #include <iostream>
 
 bool ReplanningResult::has_new_solution() const {
-    return !generated_solution_id.empty();
+    return generated_solution_was_built &&
+           !generated_solution_id.empty() &&
+           !generated_solution.solution_id.empty();
 }
 
 bool ReplanningResult::is_successful() const {
@@ -111,5 +113,21 @@ void print_replanning_result_summary(
     std::cout << "  Generated solution ID: "
               << result.generated_solution_id
               << "\n";
+    std::cout << "  Generated solution was built: "
+              << (result.generated_solution_was_built ? "true" : "false")
+              << "\n";
+
+    if (result.generated_solution_was_built) {
+        std::cout << "  Generated solution status: "
+                  << solution_status_to_string(result.generated_solution.status)
+                  << "\n";
+        std::cout << "  Generated solution routes: "
+                  << result.generated_solution.routes.size()
+                  << "\n";
+        std::cout << "  Generated solution unassigned tasks: "
+                  << result.generated_solution.unassigned_task_ids.size()
+                  << "\n";
+    }
+
     std::cout << "  Message: " << result.message << "\n";
 }
