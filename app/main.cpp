@@ -1,6 +1,5 @@
 #include "core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.h"
-#include "core/io/batch_ranking_config_json_loader/batch_ranking_config_json_loader.h"
-#include "core/io/no_replanning_batch_config_json_loader/no_replanning_batch_config_json_loader.h"
+#include "core/io/no_replanning_batch_full_config_json_loader/no_replanning_batch_full_config_json_loader.h"
 
 #include <iomanip>
 #include <iostream>
@@ -31,16 +30,16 @@ static int run_batch_mode(const std::string& config_path) {
     std::cout << "FieldOps Lab - batch experiment mode started.\n";
     std::cout << "Loading batch config: " << config_path << "\n\n";
 
+    NoReplanningBatchFullConfigLoadResult config_load_result =
+        load_no_replanning_batch_full_config_from_json(config_path);
+
     NoReplanningBatchExperimentConfig config =
-        load_no_replanning_batch_config_from_json(config_path);
+        config_load_result.config;
 
-    const bool loaded_custom_ranking_config =
-        try_load_batch_ranking_config_from_json_file(
-            config_path,
-            config.ranking_config
-        );
-
-    if (loaded_custom_ranking_config && config.verbose) {
+    if (
+        config_load_result.custom_ranking_config_was_loaded &&
+        config.verbose
+    ) {
         std::cout
             << "Custom ranking config loaded: "
             << config.ranking_config.ranking_config_id
