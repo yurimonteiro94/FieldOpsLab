@@ -1,0 +1,69 @@
+FieldOps Lab batch analysis pipeline
+====================================
+Input JSON: data\results\sample_no_replanning_batch_result_001.json
+Output directory: analysis\reports
+Report prefix: sample_no_replanning_batch_001
+
+Command:
+C:\Python314\python.exe C:\Users\yuri\Documents\FieldOpsLab\analysis\scripts\summarize_batch_result.py data\results\sample_no_replanning_batch_result_001.json
+
+FieldOps Lab batch result summary
+======================================
+Batch ID: sample_no_replanning_batch_001
+Name: Sample no-replanning and replanning batch
+Configured experiments: 12
+Completed experiments: 12
+Completion: 100%
+Is complete: yes
+
+Ranking config: default_objective_delta_ranking_v1
+Active weights: objective_value_weight=1
+Important note: this ranking is currently objective-only. It does not penalize makespan, lateness, travel time, waiting time, or replanning effort.
+
+Score definition: Lower is better. Current ranking_score equals mean_delta_objective_value.
+
+Recommendations by scenario:
+- sample_delay_light_001: no_replanning_policy_v1 + replanning_not_implemented_v1 (no_replanning_execution_baseline) | score=0 | second=0 | margin=0 | tie or weak winner
+- sample_delay_moderate_001: threshold_delay_replanning_policy_v1 + greedy_replanning_solver_v1 (replanning_applied_execution) | score=-52 | second=15 | margin=67 | clear winner
+- sample_delay_reassignment_001: threshold_delay_replanning_policy_v1 + greedy_replanning_solver_v1 (replanning_applied_execution) | score=-52 | second=65 | margin=117 | clear winner
+- sample_delay_severe_001: threshold_delay_replanning_policy_v1 + greedy_replanning_solver_v1 (replanning_applied_execution) | score=-52 | second=55 | margin=107 | clear winner
+
+Trade-off warnings:
+- sample_delay_moderate_001: the recommended option improves objective value by 52, but increases makespan by 33.
+- sample_delay_moderate_001: travel time improves by 17, but makespan still increases by 33. This is a trade-off, not an absolute improvement.
+- sample_delay_reassignment_001: the recommended option improves objective value by 52, but increases makespan by 3.
+- sample_delay_reassignment_001: travel time improves by 17, but makespan still increases by 3. This is a trade-off, not an absolute improvement.
+- sample_delay_severe_001: the recommended option improves objective value by 52, but increases makespan by 83.
+- sample_delay_severe_001: travel time improves by 17, but makespan still increases by 83. This is a trade-off, not an absolute improvement.
+
+Generated output files:
+- overview_csv_output_path: data/results/sample_no_replanning_batch_overview_001.csv | written=yes
+- summary_csv_output_path: data/results/sample_no_replanning_batch_summary_001.csv | written=yes
+- aggregate_csv_output_path: data/results/sample_no_replanning_batch_aggregate_summary_001.csv | written=yes
+- ranking_csv_output_path: data/results/sample_no_replanning_batch_ranking_001.csv | written=yes
+- recommendation_csv_output_path: data/results/sample_no_replanning_batch_recommendation_001.csv | written=yes
+- result_json_output_path: data/results/sample_no_replanning_batch_result_001.json | written=yes
+
+Command:
+C:\Python314\python.exe C:\Users\yuri\Documents\FieldOpsLab\analysis\scripts\generate_batch_markdown_report.py data\results\sample_no_replanning_batch_result_001.json analysis\reports\sample_no_replanning_batch_001_report.md
+
+Batch recommendation audit written to: analysis\reports\sample_no_replanning_batch_001_report.md
+
+Command:
+C:\Python314\python.exe C:\Users\yuri\Documents\FieldOpsLab\analysis\scripts\audit_batch_recommendations.py data\results\sample_no_replanning_batch_result_001.json analysis\reports\sample_no_replanning_batch_001_audit.md
+
+Batch recommendation audit written to: analysis\reports\sample_no_replanning_batch_001_audit.md
+
+Command:
+C:\Python314\python.exe C:\Users\yuri\Documents\FieldOpsLab\analysis\scripts\run_ranking_sensitivity.py data\results\sample_no_replanning_batch_result_001.json analysis\reports\sample_no_replanning_batch_001_ranking_sensitivity.md
+
+Ranking sensitivity report written to: analysis\reports\sample_no_replanning_batch_001_ranking_sensitivity.md
+
+Command:
+C:\Python314\python.exe C:\Users\yuri\Documents\FieldOpsLab\analysis\scripts\generate_scenario_descriptors.py data\results\sample_no_replanning_batch_result_001.json analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.md analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.csv
+
+Scenario descriptor report written to: analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.md
+Scenario descriptor CSV written to: analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.csv
+
+Pipeline finished successfully.
+Index report: analysis\reports\sample_no_replanning_batch_001_analysis_index.md
