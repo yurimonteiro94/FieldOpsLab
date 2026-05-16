@@ -1,0 +1,109 @@
+{
+    "report_type": "fieldops_lab_campaign_result_summary_quality_check",
+    "generated_at_local": "2026-05-16T04:46:49",
+    "summary_json": "analysis\\reports\\campaign_result_summary.json",
+    "summary_md": "analysis\\reports\\campaign_result_summary.md",
+    "summary_csv": "analysis\\reports\\campaign_result_summary.csv",
+    "all_required_checks_passed": true,
+    "problem_count": 0,
+    "warning_count": 2,
+    "batch_count": 12,
+    "recommendation_count": 12,
+    "total_completed_experiment_count": 108,
+    "weak_or_tied_count": 6,
+    "tradeoff_count": 6,
+    "csv_row_count": 12,
+    "scientific_status": "campaign_result_consolidation_only",
+    "fuzzy_logic_status": "not_used_in_main_pipeline",
+    "problems": [],
+    "warnings": [
+        "Campaign has 6 weak or tied recommendation(s).",
+        "Campaign has 6 trade-off recommendation(s)."
+    ],
+    "row_checks": [
+        {
+            "batch_id": "campaign_combined_delay_light_batch",
+            "recommendation_class": "weak_or_tied",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_combined_delay_light_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_combined_delay_moderate_batch",
+            "recommendation_class": "replanning_tradeoff",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_combined_delay_moderate_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_combined_delay_severe_batch",
+            "recommendation_class": "replanning_tradeoff",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_combined_delay_severe_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_light_batch",
+            "recommendation_class": "weak_or_tied",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_light_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_moderate_batch",
+            "recommendation_class": "replanning_tradeoff",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_moderate_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_severe_batch",
+            "recommendation_class": "replanning_tradeoff",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_severe_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_service_delay_only_light_batch",
+            "recommendation_class": "weak_or_tied",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_service_delay_only_light_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_service_delay_only_moderate_batch",
+            "recommendation_class": "weak_or_tied",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_service_delay_only_moderate_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_service_delay_only_severe_batch",
+            "recommendation_class": "weak_or_tied",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_service_delay_only_severe_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_light_batch",
+            "recommendation_class": "weak_or_tied",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_moderate_batch",
+            "recommendation_class": "replanning_tradeoff",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_moderate_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_severe_batch",
+            "recommendation_class": "replanning_tradeoff",
+            "result_json_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_severe_batch_result.json",
+            "problem_count": 0,
+            "problems": []
+        }
+    ]
+}
