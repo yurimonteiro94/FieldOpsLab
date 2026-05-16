@@ -18,7 +18,7 @@
     "scenario_family_id": "reassignment_opportunity",
     "severity_id": "moderate",
     "planned_run_count": 3,
-    "generated_at_local": "2026-05-16T04:42:12",
+    "generated_at_local": "2026-05-16T05:41:48",
     "semantic_status": "family_specific_template_based_perturbation_plan",
     "scientific_status": "candidate_campaign_semantics"
 }

@@ -1,13 +1,13 @@
 {
     "report_type": "fieldops_lab_campaign_final_diagnostic_report",
-    "generated_at_local": "2026-05-16T05:37:20",
+    "generated_at_local": "2026-05-16T05:41:53",
     "source_files": [
         {
             "label": "campaign_execution_index",
             "path": "analysis\\reports\\campaign_execution_index.json",
             "exists": true,
             "top_level_keys": 15,
-            "size_bytes": 51400
+            "size_bytes": 51404
         },
         {
             "label": "campaign_result_summary",
