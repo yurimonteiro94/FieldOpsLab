@@ -1,197 +1,240 @@
 {
-    "report_type": "fieldops_lab_executable_campaign_batch_config_index",
-    "generated_at_local": "2026-05-16T04:02:14",
-    "overview": {
-        "output_config_dir": "data\\experiments\\campaign_batches",
-        "generated_batch_config_count": 12,
-        "generated_experiment_count": 108,
-        "semantic_status": "template_based_executable_candidate",
-        "scientific_status": "not_final_campaign_semantics"
-    },
-    "generated_configs": [
+    "index_type": "fieldops_lab_executable_campaign_batch_config_index",
+    "generated_at_local": "2026-05-16T04:13:45",
+    "output_config_dir": "data\\experiments\\campaign_batches",
+    "generated_batch_config_count": 12,
+    "generated_experiment_count": 108,
+    "semantic_status": "template_based_executable_candidate",
+    "scientific_status": "not_final_campaign_semantics",
+    "warning": "These configs are executable candidates generated from templates. They are useful for pipeline validation, but not final scientific evidence.",
+    "rows": [
         {
             "batch_id": "campaign_combined_delay_light_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_light_batch_blueprint_blueprint.json",
-            "scenario_family_id": "combined_delay",
-            "severity_id": "light",
+            "scenario_family_id": "family_id_combined_delay_description_travel_and_service_times_are_both_perturbed_uses_travel_delay_true_uses_service_delay_true_creates_reassignment_opportunity_false",
+            "severity_id": "severity_id_light_nominal_delay_minutes_10_description_small_disruption_usually_useful_to_test_whether_replanning_is_unnecessary",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "light_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_light_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_combined_delay_light_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_light_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_light_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_light_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_light_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_light_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_light_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_combined_delay_moderate_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_moderate_batch_blueprint_blueprint.json",
-            "scenario_family_id": "combined_delay",
-            "severity_id": "moderate",
+            "scenario_family_id": "family_id_combined_delay_description_travel_and_service_times_are_both_perturbed_uses_travel_delay_true_uses_service_delay_true_creates_reassignment_opportunity_false",
+            "severity_id": "severity_id_moderate_nominal_delay_minutes_50_description_medium_disruption_useful_to_test_trade_offs_between_keeping_the_plan_and_replanning",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "moderate_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_moderate_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_moderate_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_combined_delay_severe_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_severe_batch_blueprint_blueprint.json",
-            "scenario_family_id": "combined_delay",
-            "severity_id": "severe",
+            "scenario_family_id": "family_id_combined_delay_description_travel_and_service_times_are_both_perturbed_uses_travel_delay_true_uses_service_delay_true_creates_reassignment_opportunity_false",
+            "severity_id": "severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "severe_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_severe_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_severe_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_reassignment_opportunity_light_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_light_batch_blueprint_blueprint.json",
-            "scenario_family_id": "reassignment_opportunity",
-            "severity_id": "light",
+            "scenario_family_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true",
+            "severity_id": "severity_id_light_nominal_delay_minutes_10_description_small_disruption_usually_useful_to_test_whether_replanning_is_unnecessary",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "light_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_light_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_light_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_reassignment_opportunity_moderate_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_moderate_batch_blueprint_blueprint.json",
-            "scenario_family_id": "reassignment_opportunity",
-            "severity_id": "moderate",
+            "scenario_family_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true",
+            "severity_id": "severity_id_moderate_nominal_delay_minutes_50_description_medium_disruption_useful_to_test_trade_offs_between_keeping_the_plan_and_replanning",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "reassignment_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_moderate_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_moderate_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_reassignment_opportunity_severe_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_severe_batch_blueprint_blueprint.json",
-            "scenario_family_id": "reassignment_opportunity",
-            "severity_id": "severe",
+            "scenario_family_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true",
+            "severity_id": "severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "reassignment_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_severe_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_severe_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_service_delay_only_light_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_light_batch_blueprint_blueprint.json",
-            "scenario_family_id": "service_delay_only",
-            "severity_id": "light",
+            "scenario_family_id": "family_id_service_delay_only_description_only_service_time_is_perturbed_uses_travel_delay_false_uses_service_delay_true_creates_reassignment_opportunity_false",
+            "severity_id": "severity_id_light_nominal_delay_minutes_10_description_small_disruption_usually_useful_to_test_whether_replanning_is_unnecessary",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "light_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_light_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_light_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_service_delay_only_moderate_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_moderate_batch_blueprint_blueprint.json",
-            "scenario_family_id": "service_delay_only",
-            "severity_id": "moderate",
+            "scenario_family_id": "family_id_service_delay_only_description_only_service_time_is_perturbed_uses_travel_delay_false_uses_service_delay_true_creates_reassignment_opportunity_false",
+            "severity_id": "severity_id_moderate_nominal_delay_minutes_50_description_medium_disruption_useful_to_test_trade_offs_between_keeping_the_plan_and_replanning",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "moderate_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_moderate_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_moderate_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_service_delay_only_severe_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_severe_batch_blueprint_blueprint.json",
-            "scenario_family_id": "service_delay_only",
-            "severity_id": "severe",
+            "scenario_family_id": "family_id_service_delay_only_description_only_service_time_is_perturbed_uses_travel_delay_false_uses_service_delay_true_creates_reassignment_opportunity_false",
+            "severity_id": "severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "severe_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_severe_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_severe_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_travel_delay_only_light_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_light_batch_blueprint_blueprint.json",
-            "scenario_family_id": "travel_delay_only",
-            "severity_id": "light",
+            "scenario_family_id": "family_id_travel_delay_only_description_only_travel_time_is_perturbed_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_false",
+            "severity_id": "severity_id_light_nominal_delay_minutes_10_description_small_disruption_usually_useful_to_test_whether_replanning_is_unnecessary",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "light_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_light_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_light_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_travel_delay_only_moderate_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_moderate_batch_blueprint_blueprint.json",
-            "scenario_family_id": "travel_delay_only",
-            "severity_id": "moderate",
+            "scenario_family_id": "family_id_travel_delay_only_description_only_travel_time_is_perturbed_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_false",
+            "severity_id": "severity_id_moderate_nominal_delay_minutes_50_description_medium_disruption_useful_to_test_trade_offs_between_keeping_the_plan_and_replanning",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "moderate_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_moderate_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_moderate_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         },
         {
             "batch_id": "campaign_travel_delay_only_severe_batch",
-            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_severe_batch_blueprint_blueprint.json",
-            "scenario_family_id": "travel_delay_only",
-            "severity_id": "severe",
+            "scenario_family_id": "family_id_travel_delay_only_description_only_travel_time_is_perturbed_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_false",
+            "severity_id": "severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
+            "replication_count": 3,
             "planned_run_count": 3,
             "policy_option_count": 3,
             "generated_experiment_count": 9,
-            "template_reuse_modes": [
-                "severe_severity_template_reused"
-            ],
+            "planned_algorithm_run_count": 9,
+            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_severe_batch.json",
+            "result_json_output_path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_result.json",
+            "overview_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_overview.csv",
+            "summary_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_summary.csv",
+            "aggregate_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_aggregate_summary.csv",
+            "ranking_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_ranking.csv",
+            "recommendation_csv_output_path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_recommendation.csv",
             "semantic_status": "template_based_executable_candidate",
-            "scientific_status": "not_final_campaign_semantics",
-            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_severe_batch.json"
+            "scientific_status": "not_final_campaign_semantics"
         }
-    ],
-    "interpretation": {
-        "warning": "Generated configs reuse sample perturbation plan templates. They validate the pipeline, but they are not final scientific campaign configs.",
-        "next_step": "Generate family-specific perturbation plans and then regenerate executable campaign configs with full semantic fidelity."
-    }
+    ]
 }

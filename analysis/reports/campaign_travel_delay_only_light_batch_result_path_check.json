@@ -1,0 +1,57 @@
+{
+    "report_type": "fieldops_lab_executed_campaign_batch_result_path_check",
+    "result_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_result.json",
+    "expected_result_dir": "data\\results\\campaign_batches",
+    "all_required_checks_passed": false,
+    "problem_count": 4,
+    "checks": [
+        {
+            "key": "overview_csv_output_path",
+            "path": "data\\results\\sample_no_replanning_batch_overview_001.csv",
+            "under_expected_dir": false,
+            "was_written": true,
+            "problems": [
+                "Path still points to sample batch output.",
+                "Path is not under expected campaign result directory."
+            ]
+        },
+        {
+            "key": "summary_csv_output_path",
+            "path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_summary.csv",
+            "under_expected_dir": true,
+            "was_written": true,
+            "problems": []
+        },
+        {
+            "key": "aggregate_csv_output_path",
+            "path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_aggregate_summary.csv",
+            "under_expected_dir": true,
+            "was_written": true,
+            "problems": []
+        },
+        {
+            "key": "ranking_csv_output_path",
+            "path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_ranking.csv",
+            "under_expected_dir": true,
+            "was_written": true,
+            "problems": []
+        },
+        {
+            "key": "recommendation_csv_output_path",
+            "path": "data\\results\\sample_no_replanning_batch_recommendation_001.csv",
+            "under_expected_dir": false,
+            "was_written": true,
+            "problems": [
+                "Path still points to sample batch output.",
+                "Path is not under expected campaign result directory."
+            ]
+        },
+        {
+            "key": "result_json_output_path",
+            "path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_result.json",
+            "under_expected_dir": true,
+            "was_written": true,
+            "problems": []
+        }
+    ]
+}
