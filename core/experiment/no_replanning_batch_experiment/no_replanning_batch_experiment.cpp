@@ -61,6 +61,35 @@ static void update_batch_completion(
         );
 }
 
+static void update_batch_output_flags(
+    NoReplanningBatchExperimentResult& batch_result,
+    const NoReplanningBatchExperimentConfig& config
+) {
+    batch_result.overview_csv_was_written =
+        config.export_overview_csv &&
+        !config.overview_csv_output_path.empty();
+
+    batch_result.summary_csv_was_written =
+        config.export_summary_csv &&
+        !config.summary_csv_output_path.empty();
+
+    batch_result.aggregate_csv_was_written =
+        config.export_aggregate_csv &&
+        !config.aggregate_csv_output_path.empty();
+
+    batch_result.ranking_csv_was_written =
+        config.export_ranking_csv &&
+        !config.ranking_csv_output_path.empty();
+
+    batch_result.recommendation_csv_was_written =
+        config.export_recommendation_csv &&
+        !config.recommendation_csv_output_path.empty();
+
+    batch_result.result_json_was_written =
+        config.export_result_json &&
+        !config.result_json_output_path.empty();
+}
+
 static void print_batch_progress_if_enabled(
     const NoReplanningBatchExperimentConfig& config,
     const NoReplanningBatchExperimentResult& batch_result
@@ -255,38 +284,12 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
         print_batch_progress_if_enabled(config, batch_result);
     }
 
-    batch_result.summary_csv_was_written =
-        config.export_summary_csv &&
-        !config.summary_csv_output_path.empty();
-
-    write_batch_overview_if_enabled(config, batch_result);
-
-    batch_result.overview_csv_was_written =
-        config.export_overview_csv &&
-        !config.overview_csv_output_path.empty();
+    update_batch_output_flags(batch_result, config);
 
     write_batch_aggregate_if_enabled(config, batch_result);
-
-    batch_result.aggregate_csv_was_written =
-        config.export_aggregate_csv &&
-        !config.aggregate_csv_output_path.empty();
-
     write_batch_ranking_if_enabled(config, batch_result);
-
-    batch_result.ranking_csv_was_written =
-        config.export_ranking_csv &&
-        !config.ranking_csv_output_path.empty();
-
     write_batch_recommendation_if_enabled(config, batch_result);
-
-    batch_result.recommendation_csv_was_written =
-        config.export_recommendation_csv &&
-        !config.recommendation_csv_output_path.empty();
-
-    batch_result.result_json_was_written =
-        config.export_result_json &&
-        !config.result_json_output_path.empty();
-
+    write_batch_overview_if_enabled(config, batch_result);
     write_batch_result_json_if_enabled(config, batch_result);
 
     return batch_result;

@@ -56,12 +56,17 @@ void test_no_replanning_batch_overview_csv_writer() {
     );
 
     FIELDOPS_EXPECT_TRUE(
+        content.find("overview_csv_was_written") !=
+        std::string::npos
+    );
+
+    FIELDOPS_EXPECT_TRUE(
         content.find("sample_no_replanning_batch_001") !=
         std::string::npos
     );
 
     FIELDOPS_EXPECT_TRUE(
-        content.find(",12,12,100,true,12,") !=
+        content.find(",12,12,100,true,12,true,false,false,false,false,false") !=
         std::string::npos
     );
 
