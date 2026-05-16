@@ -1,10 +1,23 @@
 #include <exception>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.h"
 #include "core/experiment/no_replanning_experiment/no_replanning_experiment.h"
 #include "core/io/no_replanning_batch_config_json_loader/no_replanning_batch_config_json_loader.h"
+
+static std::string format_percent(double value) {
+    std::ostringstream text;
+
+    text
+        << std::fixed
+        << std::setprecision(2)
+        << value;
+
+    return text.str();
+}
 
 static NoReplanningExperimentConfig build_single_experiment_config(
     int argc,
@@ -71,6 +84,13 @@ static int run_batch_mode(int argc, char* argv[]) {
     std::cout << "\nBatch experiment finished.\n";
     std::cout << "  Batch ID: " << batch_result.batch_id << "\n";
     std::cout << "  Experiments: " << batch_result.experiment_count() << "\n";
+    std::cout << "  Completed: "
+              << batch_result.completed_experiment_count
+              << "/"
+              << batch_result.configured_experiment_count
+              << " ("
+              << format_percent(batch_result.completion_percent)
+              << "%)\n";
 
     if (batch_result.summary_csv_was_written) {
         std::cout << "  Summary CSV written to: "

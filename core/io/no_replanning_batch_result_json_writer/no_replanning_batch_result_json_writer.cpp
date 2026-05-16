@@ -466,7 +466,13 @@ void write_no_replanning_batch_result_to_json(
             {"batch_id", batch_result.batch_id},
             {"name", batch_result.name},
             {"description", batch_result.description},
-            {"experiment_count", batch_result.experiment_count()}
+            {"experiment_count", batch_result.experiment_count()},
+            {"configured_experiment_count",
+                batch_result.configured_experiment_count},
+            {"completed_experiment_count",
+                batch_result.completed_experiment_count},
+            {"completion_percent", batch_result.completion_percent},
+            {"is_complete", batch_result.is_complete}
         }},
         {"outputs", {
             {"summary_csv_output_path",

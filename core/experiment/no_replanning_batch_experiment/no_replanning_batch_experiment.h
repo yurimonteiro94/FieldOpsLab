@@ -11,8 +11,6 @@ struct NoReplanningBatchExperimentConfig {
     std::string name = "Sample no-replanning batch";
     std::string description = "Sample no-replanning batch experiment.";
 
-    BatchRankingConfig ranking_config;
-
     std::string summary_csv_output_path =
         "data/results/sample_no_replanning_batch_summary_001.csv";
 
@@ -36,6 +34,8 @@ struct NoReplanningBatchExperimentConfig {
     bool export_recommendation_csv = true;
     bool export_result_json = true;
 
+    BatchRankingConfig ranking_config;
+
     std::vector<NoReplanningExperimentConfig> experiments;
 };
 
@@ -43,8 +43,6 @@ struct NoReplanningBatchExperimentResult {
     std::string batch_id;
     std::string name;
     std::string description;
-
-    BatchRankingConfig ranking_config;
 
     std::string summary_csv_output_path;
     std::string aggregate_csv_output_path;
@@ -57,6 +55,13 @@ struct NoReplanningBatchExperimentResult {
     bool ranking_csv_was_written = false;
     bool recommendation_csv_was_written = false;
     bool result_json_was_written = false;
+
+    BatchRankingConfig ranking_config;
+
+    int configured_experiment_count = 0;
+    int completed_experiment_count = 0;
+    double completion_percent = 0.0;
+    bool is_complete = false;
 
     std::vector<NoReplanningExperimentResult> results;
 

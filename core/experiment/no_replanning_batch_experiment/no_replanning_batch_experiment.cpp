@@ -1,6 +1,8 @@
 #include "core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.h"
 
 #include <filesystem>
+#include <iomanip>
+#include <iostream>
 
 #include "core/io/no_replanning_batch_aggregate_csv_writer/no_replanning_batch_aggregate_csv_writer.h"
 #include "core/io/no_replanning_batch_ranking_csv_writer/no_replanning_batch_ranking_csv_writer.h"
@@ -16,6 +18,66 @@ static void remove_existing_output_file(const std::string& output_path) {
     if (!output_path.empty()) {
         std::filesystem::remove(output_path);
     }
+}
+
+static double calculate_completion_percent(
+    int completed_experiment_count,
+    int configured_experiment_count
+) {
+    if (configured_experiment_count <= 0) {
+        return 100.0;
+    }
+
+    return
+        100.0 *
+        static_cast<double>(completed_experiment_count) /
+        static_cast<double>(configured_experiment_count);
+}
+
+static bool calculate_is_complete(
+    int completed_experiment_count,
+    int configured_experiment_count
+) {
+    return completed_experiment_count >= configured_experiment_count;
+}
+
+static void update_batch_completion(
+    NoReplanningBatchExperimentResult& batch_result
+) {
+    batch_result.completed_experiment_count =
+        batch_result.experiment_count();
+
+    batch_result.completion_percent =
+        calculate_completion_percent(
+            batch_result.completed_experiment_count,
+            batch_result.configured_experiment_count
+        );
+
+    batch_result.is_complete =
+        calculate_is_complete(
+            batch_result.completed_experiment_count,
+            batch_result.configured_experiment_count
+        );
+}
+
+static void print_batch_progress_if_enabled(
+    const NoReplanningBatchExperimentConfig& config,
+    const NoReplanningBatchExperimentResult& batch_result
+) {
+    if (!config.verbose) {
+        return;
+    }
+
+    std::cout
+        << "  Progress: "
+        << batch_result.completed_experiment_count
+        << "/"
+        << batch_result.configured_experiment_count
+        << " experiments completed ("
+        << std::fixed
+        << std::setprecision(2)
+        << batch_result.completion_percent
+        << "%).\n";
 }
 
 static NoReplanningExperimentConfig prepare_experiment_config_for_batch(
@@ -111,7 +173,6 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.batch_id = config.batch_id;
     batch_result.name = config.name;
     batch_result.description = config.description;
-    batch_result.ranking_config = config.ranking_config;
 
     batch_result.summary_csv_output_path = config.summary_csv_output_path;
     batch_result.aggregate_csv_output_path = config.aggregate_csv_output_path;
@@ -119,6 +180,13 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.recommendation_csv_output_path =
         config.recommendation_csv_output_path;
     batch_result.result_json_output_path = config.result_json_output_path;
+
+    batch_result.ranking_config = config.ranking_config;
+
+    batch_result.configured_experiment_count =
+        static_cast<int>(config.experiments.size());
+
+    update_batch_completion(batch_result);
 
     if (config.export_summary_csv) {
         remove_existing_output_file(config.summary_csv_output_path);
@@ -154,6 +222,8 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
 
         batch_result.results.push_back(experiment_result);
 
+        update_batch_completion(batch_result);
+
         write_batch_summary_row_if_enabled(
             config,
             experiment_result,
@@ -161,6 +231,8 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
         );
 
         append_summary_row = true;
+
+        print_batch_progress_if_enabled(config, batch_result);
     }
 
     batch_result.summary_csv_was_written =
