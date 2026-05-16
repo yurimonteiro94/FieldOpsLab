@@ -11,6 +11,9 @@ struct NoReplanningBatchExperimentConfig {
     std::string name = "Sample no-replanning batch";
     std::string description = "Sample no-replanning batch experiment.";
 
+    std::string overview_csv_output_path =
+        "data/results/sample_no_replanning_batch_overview_001.csv";
+
     std::string summary_csv_output_path =
         "data/results/sample_no_replanning_batch_summary_001.csv";
 
@@ -28,6 +31,7 @@ struct NoReplanningBatchExperimentConfig {
 
     bool verbose = true;
     bool export_individual_results = false;
+    bool export_overview_csv = true;
     bool export_summary_csv = true;
     bool export_aggregate_csv = true;
     bool export_ranking_csv = true;
@@ -44,12 +48,14 @@ struct NoReplanningBatchExperimentResult {
     std::string name;
     std::string description;
 
+    std::string overview_csv_output_path;
     std::string summary_csv_output_path;
     std::string aggregate_csv_output_path;
     std::string ranking_csv_output_path;
     std::string recommendation_csv_output_path;
     std::string result_json_output_path;
 
+    bool overview_csv_was_written = false;
     bool summary_csv_was_written = false;
     bool aggregate_csv_was_written = false;
     bool ranking_csv_was_written = false;

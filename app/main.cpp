@@ -92,6 +92,11 @@ static int run_batch_mode(int argc, char* argv[]) {
               << format_percent(batch_result.completion_percent)
               << "%)\n";
 
+    if (batch_result.overview_csv_was_written) {
+        std::cout << "  Overview CSV written to: "
+                  << batch_result.overview_csv_output_path << "\n";
+    }
+
     if (batch_result.summary_csv_was_written) {
         std::cout << "  Summary CSV written to: "
                   << batch_result.summary_csv_output_path << "\n";

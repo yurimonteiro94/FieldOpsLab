@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "core/io/no_replanning_batch_aggregate_csv_writer/no_replanning_batch_aggregate_csv_writer.h"
+#include "core/io/no_replanning_batch_overview_csv_writer/no_replanning_batch_overview_csv_writer.h"
 #include "core/io/no_replanning_batch_ranking_csv_writer/no_replanning_batch_ranking_csv_writer.h"
 #include "core/io/no_replanning_batch_recommendation_csv_writer/no_replanning_batch_recommendation_csv_writer.h"
 #include "core/io/no_replanning_batch_result_json_writer/no_replanning_batch_result_json_writer.h"
@@ -108,6 +109,20 @@ static void write_batch_summary_row_if_enabled(
     );
 }
 
+static void write_batch_overview_if_enabled(
+    const NoReplanningBatchExperimentConfig& config,
+    const NoReplanningBatchExperimentResult& result
+) {
+    if (!config.export_overview_csv) {
+        return;
+    }
+
+    write_no_replanning_batch_overview_csv(
+        result,
+        config.overview_csv_output_path
+    );
+}
+
 static void write_batch_aggregate_if_enabled(
     const NoReplanningBatchExperimentConfig& config,
     const NoReplanningBatchExperimentResult& result
@@ -174,6 +189,7 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.name = config.name;
     batch_result.description = config.description;
 
+    batch_result.overview_csv_output_path = config.overview_csv_output_path;
     batch_result.summary_csv_output_path = config.summary_csv_output_path;
     batch_result.aggregate_csv_output_path = config.aggregate_csv_output_path;
     batch_result.ranking_csv_output_path = config.ranking_csv_output_path;
@@ -187,6 +203,10 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
         static_cast<int>(config.experiments.size());
 
     update_batch_completion(batch_result);
+
+    if (config.export_overview_csv) {
+        remove_existing_output_file(config.overview_csv_output_path);
+    }
 
     if (config.export_summary_csv) {
         remove_existing_output_file(config.summary_csv_output_path);
@@ -238,6 +258,12 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.summary_csv_was_written =
         config.export_summary_csv &&
         !config.summary_csv_output_path.empty();
+
+    write_batch_overview_if_enabled(config, batch_result);
+
+    batch_result.overview_csv_was_written =
+        config.export_overview_csv &&
+        !config.overview_csv_output_path.empty();
 
     write_batch_aggregate_if_enabled(config, batch_result);
 

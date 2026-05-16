@@ -475,6 +475,8 @@ void write_no_replanning_batch_result_to_json(
             {"is_complete", batch_result.is_complete}
         }},
         {"outputs", {
+            {"overview_csv_output_path",
+                batch_result.overview_csv_output_path},
             {"summary_csv_output_path",
                 batch_result.summary_csv_output_path},
             {"aggregate_csv_output_path",
@@ -485,6 +487,8 @@ void write_no_replanning_batch_result_to_json(
                 batch_result.recommendation_csv_output_path},
             {"result_json_output_path",
                 batch_result.result_json_output_path},
+            {"overview_csv_was_written",
+                batch_result.overview_csv_was_written},
             {"summary_csv_was_written",
                 batch_result.summary_csv_was_written},
             {"aggregate_csv_was_written",
