@@ -16,18 +16,18 @@ Index JSON: `analysis\reports\campaign_executable_batch_config_index.json`
 
 | Batch | Exists | Size bytes | Experiments | Unique IDs | Output paths ok | Export flags ok | Problems |
 | --- | --- | ---: | ---: | ---: | --- | --- | --- |
-| campaign_combined_delay_light_batch | yes | 16793 | 9 | 9 | yes | yes | none |
-| campaign_combined_delay_moderate_batch | yes | 17142 | 9 | 9 | yes | yes | none |
-| campaign_combined_delay_severe_batch | yes | 16980 | 9 | 9 | yes | yes | none |
-| campaign_reassignment_opportunity_light_batch | yes | 17765 | 9 | 9 | yes | yes | none |
-| campaign_reassignment_opportunity_moderate_batch | yes | 18096 | 9 | 9 | yes | yes | none |
-| campaign_reassignment_opportunity_severe_batch | yes | 17799 | 9 | 9 | yes | yes | none |
-| campaign_service_delay_only_light_batch | yes | 16741 | 9 | 9 | yes | yes | none |
-| campaign_service_delay_only_moderate_batch | yes | 17090 | 9 | 9 | yes | yes | none |
-| campaign_service_delay_only_severe_batch | yes | 16802 | 9 | 9 | yes | yes | none |
-| campaign_travel_delay_only_light_batch | yes | 16678 | 9 | 9 | yes | yes | none |
-| campaign_travel_delay_only_moderate_batch | yes | 17027 | 9 | 9 | yes | yes | none |
-| campaign_travel_delay_only_severe_batch | yes | 16739 | 9 | 9 | yes | yes | none |
+| campaign_combined_delay_light_batch | yes | 18686 | 9 | 9 | yes | yes | none |
+| campaign_combined_delay_moderate_batch | yes | 19095 | 9 | 9 | yes | yes | none |
+| campaign_combined_delay_severe_batch | yes | 18893 | 9 | 9 | yes | yes | none |
+| campaign_reassignment_opportunity_light_batch | yes | 19858 | 9 | 9 | yes | yes | none |
+| campaign_reassignment_opportunity_moderate_batch | yes | 20249 | 9 | 9 | yes | yes | none |
+| campaign_reassignment_opportunity_severe_batch | yes | 19912 | 9 | 9 | yes | yes | none |
+| campaign_service_delay_only_light_batch | yes | 18714 | 9 | 9 | yes | yes | none |
+| campaign_service_delay_only_moderate_batch | yes | 19123 | 9 | 9 | yes | yes | none |
+| campaign_service_delay_only_severe_batch | yes | 18795 | 9 | 9 | yes | yes | none |
+| campaign_travel_delay_only_light_batch | yes | 18631 | 9 | 9 | yes | yes | none |
+| campaign_travel_delay_only_moderate_batch | yes | 19040 | 9 | 9 | yes | yes | none |
+| campaign_travel_delay_only_severe_batch | yes | 18712 | 9 | 9 | yes | yes | none |
 
 ## Problems
 

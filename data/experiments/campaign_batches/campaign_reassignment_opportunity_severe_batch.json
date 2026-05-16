@@ -22,111 +22,125 @@
             "scenario_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
             "replication_id": 1,
             "seed": 199111,
-            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep001; option_id=no_replanning_baseline; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template.",
+            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep001; option_id=no_replanning_baseline; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template. campaign_perturbation_plan_connected=true.",
             "policy_id": "no_replanning_policy_v1",
             "replanning_method_id": "replanning_not_implemented_v1",
             "instance_path": "data/instances/sample_instance_001.json",
-            "perturbation_plan_path": "data/perturbations/sample_perturbations_light_001.json"
+            "perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+            "perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan"
         },
         {
             "experiment_id": "planned_reassignment_opportunity_severe_rep001_threshold_without_solver",
             "scenario_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
             "replication_id": 1,
             "seed": 199121,
-            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep001; option_id=threshold_without_solver; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template.",
+            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep001; option_id=threshold_without_solver; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template. campaign_perturbation_plan_connected=true.",
             "policy_id": "threshold_delay_replanning_policy_v1",
             "replanning_method_id": "replanning_not_implemented_v1",
             "max_single_delay_threshold": 30,
             "total_delay_threshold": 60,
             "instance_path": "data/instances/sample_instance_001.json",
-            "perturbation_plan_path": "data/perturbations/sample_perturbations_light_001.json"
+            "perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+            "perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan"
         },
         {
             "experiment_id": "planned_reassignment_opportunity_severe_rep001_threshold_with_greedy_replanning",
             "scenario_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
             "replication_id": 1,
             "seed": 199131,
-            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep001; option_id=threshold_with_greedy_replanning; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template.",
+            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep001; option_id=threshold_with_greedy_replanning; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template. campaign_perturbation_plan_connected=true.",
             "policy_id": "threshold_delay_replanning_policy_v1",
             "replanning_method_id": "greedy_replanning_solver_v1",
             "max_single_delay_threshold": 30,
             "total_delay_threshold": 60,
             "instance_path": "data/instances/sample_instance_001.json",
-            "perturbation_plan_path": "data/perturbations/sample_perturbations_light_001.json"
+            "perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+            "perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan"
         },
         {
             "experiment_id": "planned_reassignment_opportunity_severe_rep002_no_replanning_baseline",
             "scenario_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
             "replication_id": 2,
             "seed": 199212,
-            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep002; option_id=no_replanning_baseline; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template.",
+            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep002; option_id=no_replanning_baseline; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template. campaign_perturbation_plan_connected=true.",
             "policy_id": "no_replanning_policy_v1",
             "replanning_method_id": "replanning_not_implemented_v1",
             "instance_path": "data/instances/sample_instance_001.json",
-            "perturbation_plan_path": "data/perturbations/sample_perturbations_light_001.json"
+            "perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+            "perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan"
         },
         {
             "experiment_id": "planned_reassignment_opportunity_severe_rep002_threshold_without_solver",
             "scenario_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
             "replication_id": 2,
             "seed": 199222,
-            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep002; option_id=threshold_without_solver; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template.",
+            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep002; option_id=threshold_without_solver; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template. campaign_perturbation_plan_connected=true.",
             "policy_id": "threshold_delay_replanning_policy_v1",
             "replanning_method_id": "replanning_not_implemented_v1",
             "max_single_delay_threshold": 30,
             "total_delay_threshold": 60,
             "instance_path": "data/instances/sample_instance_001.json",
-            "perturbation_plan_path": "data/perturbations/sample_perturbations_light_001.json"
+            "perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+            "perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan"
         },
         {
             "experiment_id": "planned_reassignment_opportunity_severe_rep002_threshold_with_greedy_replanning",
             "scenario_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
             "replication_id": 2,
             "seed": 199232,
-            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep002; option_id=threshold_with_greedy_replanning; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template.",
+            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep002; option_id=threshold_with_greedy_replanning; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template. campaign_perturbation_plan_connected=true.",
             "policy_id": "threshold_delay_replanning_policy_v1",
             "replanning_method_id": "greedy_replanning_solver_v1",
             "max_single_delay_threshold": 30,
             "total_delay_threshold": 60,
             "instance_path": "data/instances/sample_instance_001.json",
-            "perturbation_plan_path": "data/perturbations/sample_perturbations_light_001.json"
+            "perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+            "perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan"
         },
         {
             "experiment_id": "planned_reassignment_opportunity_severe_rep003_no_replanning_baseline",
             "scenario_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
             "replication_id": 3,
             "seed": 199313,
-            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep003; option_id=no_replanning_baseline; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template.",
+            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep003; option_id=no_replanning_baseline; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template. campaign_perturbation_plan_connected=true.",
             "policy_id": "no_replanning_policy_v1",
             "replanning_method_id": "replanning_not_implemented_v1",
             "instance_path": "data/instances/sample_instance_001.json",
-            "perturbation_plan_path": "data/perturbations/sample_perturbations_light_001.json"
+            "perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+            "perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan"
         },
         {
             "experiment_id": "planned_reassignment_opportunity_severe_rep003_threshold_without_solver",
             "scenario_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
             "replication_id": 3,
             "seed": 199323,
-            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep003; option_id=threshold_without_solver; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template.",
+            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep003; option_id=threshold_without_solver; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template. campaign_perturbation_plan_connected=true.",
             "policy_id": "threshold_delay_replanning_policy_v1",
             "replanning_method_id": "replanning_not_implemented_v1",
             "max_single_delay_threshold": 30,
             "total_delay_threshold": 60,
             "instance_path": "data/instances/sample_instance_001.json",
-            "perturbation_plan_path": "data/perturbations/sample_perturbations_light_001.json"
+            "perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+            "perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan"
         },
         {
             "experiment_id": "planned_reassignment_opportunity_severe_rep003_threshold_with_greedy_replanning",
             "scenario_id": "family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
             "replication_id": 3,
             "seed": 199333,
-            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep003; option_id=threshold_with_greedy_replanning; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template.",
+            "notes": "Template-based campaign experiment generated from blueprint. family=family_id_reassignment_opportunity_description_a_disruption_creates_a_possible_benefit_from_reassigning_remaining_work_uses_travel_delay_true_uses_service_delay_false_creates_reassignment_opportunity_true; severity=severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery; planned_run_id=planned_reassignment_opportunity_severe_rep003; option_id=threshold_with_greedy_replanning; expected_descriptor=reassignment_opportunity; conservative_action=test_replanning_opportunity; perturbation_template_reuse_mode=fallback_template_reused. This config is executable as a pipeline validation candidate, but it is not yet the final scientific campaign because perturbation plans are reused from the sample template. campaign_perturbation_plan_connected=true.",
             "policy_id": "threshold_delay_replanning_policy_v1",
             "replanning_method_id": "greedy_replanning_solver_v1",
             "max_single_delay_threshold": 30,
             "total_delay_threshold": 60,
             "instance_path": "data/instances/sample_instance_001.json",
-            "perturbation_plan_path": "data/perturbations/sample_perturbations_light_001.json"
+            "perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+            "perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan"
         }
-    ]
+    ],
+    "campaign_perturbation_plan_path": "data/perturbations/campaign_plans/campaign_reassignment_opportunity_severe_perturbation_plan.json",
+    "campaign_perturbation_plan_id": "campaign_reassignment_opportunity_severe_perturbation_plan",
+    "campaign_perturbation_plan_connected": true,
+    "semantic_status": "executable_campaign_config_with_family_specific_perturbations",
+    "scientific_status": "candidate_campaign_execution_config"
 }
