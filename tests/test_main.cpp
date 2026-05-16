@@ -34,6 +34,8 @@ void test_no_replanning_execution();
 void test_solution_comparison();
 void test_solution_comparison_json_writer();
 
+void test_batch_ranking();
+
 void test_no_replanning_experiment();
 void test_no_replanning_experiment_result_json_writer();
 void test_no_replanning_experiment_summary_csv_writer();
@@ -142,6 +144,11 @@ int main() {
     failed_tests += run_test(
         "SolutionComparisonJsonWriter",
         test_solution_comparison_json_writer
+    );
+
+    failed_tests += run_test(
+        "BatchRanking",
+        test_batch_ranking
     );
 
     failed_tests += run_test(
