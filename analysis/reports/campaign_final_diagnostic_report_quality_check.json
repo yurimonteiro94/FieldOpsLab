@@ -1,0 +1,27 @@
+{
+    "report_type": "fieldops_lab_campaign_final_diagnostic_report_quality_check",
+    "generated_at_local": "2026-05-16T05:37:20",
+    "final_json_path": "analysis\\reports\\campaign_final_diagnostic_report.json",
+    "final_markdown_path": "analysis\\reports\\campaign_final_diagnostic_report.md",
+    "final_csv_path": "analysis\\reports\\campaign_final_diagnostic_report.csv",
+    "all_required_checks_passed": true,
+    "problem_count": 0,
+    "warning_count": 2,
+    "decision_row_count": 12,
+    "csv_row_count": 12,
+    "source_file_count": 6,
+    "low_evidence_count": 6,
+    "service_modeling_review_count": 4,
+    "replan_candidate_count": 6,
+    "semantic_problem_count": 0,
+    "invalid_evidence_count": 0,
+    "fuzzy_logic_status": "not_used_in_main_pipeline",
+    "scientific_status": "final_diagnostic_report_only",
+    "general_project_completeness_estimate_percent": 30,
+    "campaign_pipeline_completeness_estimate_percent": 90,
+    "problems": [],
+    "warnings": [
+        "Final report contains 6 low-evidence row(s).",
+        "Final report contains 4 service-modeling review row(s)."
+    ]
+}

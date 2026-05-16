@@ -505,7 +505,7 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
 
 
 def main() -> int:
-    if len(sys.argv) != 9:
+    if len(sys.argv) != 10:
         print(
             "Usage: py -3 analysis\\scripts\\generate_campaign_final_diagnostic_report.py "
             "<campaign_execution_index_json> "
@@ -532,7 +532,7 @@ def main() -> int:
 
     output_md = Path(sys.argv[7])
     output_json = Path(sys.argv[8])
-    output_csv = Path(sys.argv[9]) if len(sys.argv) > 9 else None
+    output_csv = Path(sys.argv[9])
 
     try:
         loaded = {label: load_json(path) for label, path in paths.items()}
