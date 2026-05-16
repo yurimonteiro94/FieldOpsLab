@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "core/experiment/no_replanning_batch_result_validator/no_replanning_batch_result_validator.h"
 #include "core/io/no_replanning_batch_aggregate_csv_writer/no_replanning_batch_aggregate_csv_writer.h"
 #include "core/io/no_replanning_batch_overview_csv_writer/no_replanning_batch_overview_csv_writer.h"
 #include "core/io/no_replanning_batch_ranking_csv_writer/no_replanning_batch_ranking_csv_writer.h"
@@ -285,6 +286,8 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     }
 
     update_batch_output_flags(batch_result, config);
+
+    validate_no_replanning_batch_result(batch_result);
 
     write_batch_aggregate_if_enabled(config, batch_result);
     write_batch_ranking_if_enabled(config, batch_result);

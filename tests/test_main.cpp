@@ -44,6 +44,7 @@ void test_no_replanning_experiment_summary_csv_writer();
 
 void test_no_replanning_batch_experiment();
 void test_no_replanning_batch_completion();
+void test_no_replanning_batch_result_validator();
 void test_no_replanning_batch_config_json_loader();
 void test_no_replanning_batch_aggregate_csv_writer();
 void test_no_replanning_batch_overview_csv_writer();
@@ -189,6 +190,11 @@ int main() {
     failed_tests += run_test(
         "NoReplanningBatchCompletion",
         test_no_replanning_batch_completion
+    );
+
+    failed_tests += run_test(
+        "NoReplanningBatchResultValidator",
+        test_no_replanning_batch_result_validator
     );
 
     failed_tests += run_test(
