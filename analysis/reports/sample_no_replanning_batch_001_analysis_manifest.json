@@ -1,6 +1,6 @@
 {
     "manifest_type": "fieldops_lab_batch_analysis_manifest",
-    "generated_at_local": "2026-05-16T03:17:45",
+    "generated_at_local": "2026-05-16T03:20:54",
     "batch": {
         "batch_id": "sample_no_replanning_batch_001",
         "name": "Sample no-replanning and replanning batch",
@@ -29,7 +29,7 @@
             "label": "main_markdown_report",
             "path": "analysis\\reports\\sample_no_replanning_batch_001_report.md",
             "status": "ok",
-            "size_bytes": 2559
+            "size_bytes": 3632
         },
         {
             "label": "recommendation_audit",

@@ -1,9 +1,9 @@
 {
     "report_type": "fieldops_lab_analysis_output_quality_check",
     "manifest_path": "analysis\\reports\\sample_no_replanning_batch_001_analysis_manifest.json",
-    "all_required_checks_passed": false,
-    "problem_count": 2,
-    "warning_count": 1,
+    "all_required_checks_passed": true,
+    "problem_count": 0,
+    "warning_count": 0,
     "checked_file_count": 8,
     "file_checks": [
         {
@@ -21,14 +21,12 @@
             "label": "main_markdown_report",
             "path": "analysis\\reports\\sample_no_replanning_batch_001_report.md",
             "exists": true,
-            "size_bytes": 2559,
+            "size_bytes": 3632,
             "status_from_manifest": "ok",
             "expected_text": "# FieldOps Lab batch report",
-            "expected_text_found": false,
-            "sha256": "60e44058bf529214b572052489f0d0408d5dcc45565f7db6efcd13b1d912ba83",
-            "problems": [
-                "Expected text not found: # FieldOps Lab batch report"
-            ]
+            "expected_text_found": true,
+            "sha256": "3a9454ed0486c292fd2112681edead54719c3780bb0c71ae0dd90636357b3875",
+            "problems": []
         },
         {
             "label": "recommendation_audit",
@@ -97,10 +95,6 @@
             "problems": []
         }
     ],
-    "duplicate_content_problems": [
-        "Duplicate file content detected. labels=['main_markdown_report', 'recommendation_audit']; paths=['analysis\\\\reports\\\\sample_no_replanning_batch_001_report.md', 'analysis\\\\reports\\\\sample_no_replanning_batch_001_audit.md']"
-    ],
-    "suspicious_same_size_warnings": [
-        "Suspicious same file size detected. size_bytes=2559; labels=['main_markdown_report', 'recommendation_audit']. This is not necessarily wrong, but it should be reviewed."
-    ]
+    "duplicate_content_problems": [],
+    "suspicious_same_size_warnings": []
 }
