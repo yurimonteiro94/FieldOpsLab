@@ -1,148 +1,139 @@
-#include <exception>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-#include <string>
-
 #include "core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.h"
-#include "core/experiment/no_replanning_experiment/no_replanning_experiment.h"
+#include "core/io/batch_ranking_config_json_loader/batch_ranking_config_json_loader.h"
 #include "core/io/no_replanning_batch_config_json_loader/no_replanning_batch_config_json_loader.h"
 
-static std::string format_percent(double value) {
-    std::ostringstream text;
+#include <iomanip>
+#include <iostream>
+#include <stdexcept>
+#include <string>
 
-    text
+static void print_usage() {
+    std::cout
+        << "FieldOps Lab\n"
+        << "\n"
+        << "Usage:\n"
+        << "  fieldops_lab.exe batch <batch_config_json_path>\n";
+}
+
+static void print_written_output(
+    const std::string& label,
+    const std::string& output_path
+) {
+    std::cout
+        << "  "
+        << label
+        << " written to: "
+        << output_path
+        << "\n";
+}
+
+static int run_batch_mode(const std::string& config_path) {
+    std::cout << "FieldOps Lab - batch experiment mode started.\n";
+    std::cout << "Loading batch config: " << config_path << "\n\n";
+
+    NoReplanningBatchExperimentConfig config =
+        load_no_replanning_batch_config_from_json(config_path);
+
+    const bool loaded_custom_ranking_config =
+        try_load_batch_ranking_config_from_json_file(
+            config_path,
+            config.ranking_config
+        );
+
+    if (loaded_custom_ranking_config && config.verbose) {
+        std::cout
+            << "Custom ranking config loaded: "
+            << config.ranking_config.ranking_config_id
+            << "\n\n";
+    }
+
+    NoReplanningBatchExperimentResult result =
+        run_no_replanning_batch_experiment(config);
+
+    std::cout << "\n";
+    std::cout << "Batch experiment finished.\n";
+    std::cout << "  Batch ID: " << result.batch_id << "\n";
+    std::cout << "  Experiments: " << result.experiment_count() << "\n";
+    std::cout
+        << "  Completed: "
+        << result.completed_experiment_count
+        << "/"
+        << result.configured_experiment_count
+        << " ("
         << std::fixed
         << std::setprecision(2)
-        << value;
+        << result.completion_percent
+        << "%)\n";
 
-    return text.str();
-}
-
-static NoReplanningExperimentConfig build_single_experiment_config(
-    int argc,
-    char* argv[]
-) {
-    NoReplanningExperimentConfig config;
-
-    if (argc >= 2) {
-        config.instance_path = argv[1];
+    if (result.overview_csv_was_written) {
+        print_written_output(
+            "Overview CSV",
+            result.overview_csv_output_path
+        );
     }
 
-    if (argc >= 3) {
-        config.perturbation_plan_path = argv[2];
+    if (result.summary_csv_was_written) {
+        print_written_output(
+            "Summary CSV",
+            result.summary_csv_output_path
+        );
     }
 
-    if (argc >= 4) {
-        config.planned_solution_output_path = argv[3];
+    if (result.aggregate_csv_was_written) {
+        print_written_output(
+            "Aggregate CSV",
+            result.aggregate_csv_output_path
+        );
     }
 
-    if (argc >= 5) {
-        config.planned_timeline_output_path = argv[4];
+    if (result.ranking_csv_was_written) {
+        print_written_output(
+            "Ranking CSV",
+            result.ranking_csv_output_path
+        );
     }
 
-    if (argc >= 6) {
-        config.executed_solution_output_path = argv[5];
+    if (result.recommendation_csv_was_written) {
+        print_written_output(
+            "Recommendation CSV",
+            result.recommendation_csv_output_path
+        );
     }
 
-    if (argc >= 7) {
-        config.executed_timeline_output_path = argv[6];
+    if (result.result_json_was_written) {
+        print_written_output(
+            "Result JSON",
+            result.result_json_output_path
+        );
     }
-
-    if (argc >= 8) {
-        config.comparison_output_path = argv[7];
-    }
-
-    if (argc >= 9) {
-        config.experiment_result_output_path = argv[8];
-    }
-
-    if (argc >= 10) {
-        config.experiment_summary_csv_output_path = argv[9];
-    }
-
-    return config;
-}
-
-static int run_batch_mode(int argc, char* argv[]) {
-    std::string batch_config_path =
-        "data/experiments/sample_no_replanning_batch_001.json";
-
-    if (argc >= 3) {
-        batch_config_path = argv[2];
-    }
-
-    std::cout << "FieldOps Lab - batch experiment mode started.\n";
-    std::cout << "Loading batch config: " << batch_config_path << "\n\n";
-
-    NoReplanningBatchExperimentConfig batch_config =
-        load_no_replanning_batch_config_from_json(batch_config_path);
-
-    NoReplanningBatchExperimentResult batch_result =
-        run_no_replanning_batch_experiment(batch_config);
-
-    std::cout << "\nBatch experiment finished.\n";
-    std::cout << "  Batch ID: " << batch_result.batch_id << "\n";
-    std::cout << "  Experiments: " << batch_result.experiment_count() << "\n";
-    std::cout << "  Completed: "
-              << batch_result.completed_experiment_count
-              << "/"
-              << batch_result.configured_experiment_count
-              << " ("
-              << format_percent(batch_result.completion_percent)
-              << "%)\n";
-
-    if (batch_result.overview_csv_was_written) {
-        std::cout << "  Overview CSV written to: "
-                  << batch_result.overview_csv_output_path << "\n";
-    }
-
-    if (batch_result.summary_csv_was_written) {
-        std::cout << "  Summary CSV written to: "
-                  << batch_result.summary_csv_output_path << "\n";
-    }
-
-    if (batch_result.aggregate_csv_was_written) {
-        std::cout << "  Aggregate CSV written to: "
-                  << batch_result.aggregate_csv_output_path << "\n";
-    }
-
-    if (batch_result.ranking_csv_was_written) {
-        std::cout << "  Ranking CSV written to: "
-                  << batch_result.ranking_csv_output_path << "\n";
-    }
-
-    if (batch_result.recommendation_csv_was_written) {
-        std::cout << "  Recommendation CSV written to: "
-                  << batch_result.recommendation_csv_output_path << "\n";
-    }
-
-    if (batch_result.result_json_was_written) {
-        std::cout << "  Result JSON written to: "
-                  << batch_result.result_json_output_path << "\n";
-    }
-
-    return 0;
-}
-
-static int run_single_experiment_mode(int argc, char* argv[]) {
-    NoReplanningExperimentConfig config =
-        build_single_experiment_config(argc, argv);
-
-    run_no_replanning_experiment(config);
 
     return 0;
 }
 
 int main(int argc, char* argv[]) {
     try {
-        if (argc >= 2 && std::string(argv[1]) == "batch") {
-            return run_batch_mode(argc, argv);
+        if (argc < 2) {
+            print_usage();
+            return 1;
         }
 
-        return run_single_experiment_mode(argc, argv);
-    } catch (const std::exception& error) {
-        std::cerr << "Error: " << error.what() << "\n";
+        const std::string mode = argv[1];
+
+        if (mode == "batch") {
+            if (argc < 3) {
+                print_usage();
+                return 1;
+            }
+
+            return run_batch_mode(argv[2]);
+        }
+
+        std::cout << "Unknown mode: " << mode << "\n\n";
+        print_usage();
+
+        return 1;
+    } catch (const std::exception& exception) {
+        std::cout << "Error: " << exception.what() << "\n";
         return 1;
     }
 }
