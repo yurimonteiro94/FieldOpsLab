@@ -1,0 +1,24 @@
+{
+    "perturbation_plan_id": "campaign_service_delay_only_moderate_perturbation_plan",
+    "name": "Campaign perturbation plan: service_delay_only / moderate",
+    "description": "Family-specific campaign perturbation plan generated from the current sample perturbation templates. This is more semantically faithful than reusing one generic sample plan for every campaign batch.",
+    "perturbations": [
+        {
+            "perturbation_id": "campaign_service_delay_only_moderate_perturbation_plan_service_delay",
+            "type": "SERVICE_DELAY",
+            "occurrence_time": 130,
+            "technician_id": "tech_2",
+            "task_id": "task_B",
+            "from_location_id": "",
+            "to_location_id": "task_B_location",
+            "delay_duration": 35,
+            "description": "Campaign service-delay perturbation generated from template. family=service_delay_only; severity=moderate; delay=35."
+        }
+    ],
+    "scenario_family_id": "service_delay_only",
+    "severity_id": "moderate",
+    "planned_run_count": 3,
+    "generated_at_local": "2026-05-16T04:29:32",
+    "semantic_status": "family_specific_template_based_perturbation_plan",
+    "scientific_status": "candidate_campaign_semantics"
+}

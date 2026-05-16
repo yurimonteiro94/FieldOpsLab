@@ -1,0 +1,35 @@
+{
+    "perturbation_plan_id": "campaign_combined_delay_light_perturbation_plan",
+    "name": "Campaign perturbation plan: combined_delay / light",
+    "description": "Family-specific campaign perturbation plan generated from the current sample perturbation templates. This is more semantically faithful than reusing one generic sample plan for every campaign batch.",
+    "perturbations": [
+        {
+            "perturbation_id": "campaign_combined_delay_light_perturbation_plan_travel_delay",
+            "type": "TRAVEL_DELAY",
+            "occurrence_time": 125,
+            "technician_id": "tech_1",
+            "task_id": "task_C",
+            "from_location_id": "task_A_location",
+            "to_location_id": "task_C_location",
+            "delay_duration": 10,
+            "description": "Campaign travel-delay perturbation generated from template. family=combined_delay; severity=light; delay=10."
+        },
+        {
+            "perturbation_id": "campaign_combined_delay_light_perturbation_plan_service_delay",
+            "type": "SERVICE_DELAY",
+            "occurrence_time": 130,
+            "technician_id": "tech_2",
+            "task_id": "task_B",
+            "from_location_id": "",
+            "to_location_id": "task_B_location",
+            "delay_duration": 7,
+            "description": "Campaign service-delay perturbation generated from template. family=combined_delay; severity=light; delay=7."
+        }
+    ],
+    "scenario_family_id": "combined_delay",
+    "severity_id": "light",
+    "planned_run_count": 3,
+    "generated_at_local": "2026-05-16T04:29:32",
+    "semantic_status": "family_specific_template_based_perturbation_plan",
+    "scientific_status": "candidate_campaign_semantics"
+}

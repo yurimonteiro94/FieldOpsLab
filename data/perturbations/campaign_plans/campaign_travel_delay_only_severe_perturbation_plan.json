@@ -1,0 +1,24 @@
+{
+    "perturbation_plan_id": "campaign_travel_delay_only_severe_perturbation_plan",
+    "name": "Campaign perturbation plan: travel_delay_only / severe",
+    "description": "Family-specific campaign perturbation plan generated from the current sample perturbation templates. This is more semantically faithful than reusing one generic sample plan for every campaign batch.",
+    "perturbations": [
+        {
+            "perturbation_id": "campaign_travel_delay_only_severe_perturbation_plan_travel_delay",
+            "type": "TRAVEL_DELAY",
+            "occurrence_time": 125,
+            "technician_id": "tech_1",
+            "task_id": "task_C",
+            "from_location_id": "task_A_location",
+            "to_location_id": "task_C_location",
+            "delay_duration": 90,
+            "description": "Campaign travel-delay perturbation generated from template. family=travel_delay_only; severity=severe; delay=90."
+        }
+    ],
+    "scenario_family_id": "travel_delay_only",
+    "severity_id": "severe",
+    "planned_run_count": 3,
+    "generated_at_local": "2026-05-16T04:29:32",
+    "semantic_status": "family_specific_template_based_perturbation_plan",
+    "scientific_status": "candidate_campaign_semantics"
+}
