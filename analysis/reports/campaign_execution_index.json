@@ -1,0 +1,849 @@
+{
+    "index_type": "fieldops_lab_campaign_execution_index",
+    "generated_at_local": "2026-05-16T04:42:14",
+    "config_dir": "data\\experiments\\campaign_batches",
+    "expected_result_dir": "data\\results\\campaign_batches",
+    "batch_count": 12,
+    "complete_batch_count": 12,
+    "output_path_ok_batch_count": 12,
+    "total_configured_experiment_count": 108,
+    "total_completed_experiment_count": 108,
+    "problem_count": 0,
+    "all_required_checks_passed": true,
+    "execution_status": "campaign_execution_validation",
+    "scientific_status": "pipeline_execution_validation_only",
+    "rows": [
+        {
+            "batch_id": "campaign_combined_delay_light_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_light_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_combined_delay_light_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.13299010007176548,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_light_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_light_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_light_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_light_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_light_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_light_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_combined_delay_light_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_combined_delay_light_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_combined_delay_light_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_combined_delay_light_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_combined_delay_light_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_combined_delay_light_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_combined_delay_light_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_combined_delay_light_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_combined_delay_moderate_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_moderate_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_combined_delay_moderate_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.058744799927808344,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_moderate_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_combined_delay_moderate_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_combined_delay_moderate_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_combined_delay_moderate_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_combined_delay_moderate_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_combined_delay_moderate_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_combined_delay_moderate_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_combined_delay_moderate_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_combined_delay_moderate_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_combined_delay_severe_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_severe_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_combined_delay_severe_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.0458159000845626,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_combined_delay_severe_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_combined_delay_severe_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_combined_delay_severe_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_combined_delay_severe_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_combined_delay_severe_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_combined_delay_severe_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_combined_delay_severe_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_combined_delay_severe_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_combined_delay_severe_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_light_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_light_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_light_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.04485959990415722,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_light_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_reassignment_opportunity_light_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_reassignment_opportunity_light_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_moderate_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_moderate_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_moderate_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.04285529989283532,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_moderate_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_reassignment_opportunity_moderate_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_reassignment_opportunity_moderate_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_severe_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_severe_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_severe_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.04674800008069724,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_severe_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_reassignment_opportunity_severe_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_reassignment_opportunity_severe_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_service_delay_only_light_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_light_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_service_delay_only_light_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.044274099986068904,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_light_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_service_delay_only_light_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_service_delay_only_light_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_service_delay_only_light_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_service_delay_only_light_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_service_delay_only_light_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_service_delay_only_light_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_service_delay_only_light_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_service_delay_only_light_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_service_delay_only_moderate_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_moderate_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_service_delay_only_moderate_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.044452200061641634,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_moderate_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_service_delay_only_moderate_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_service_delay_only_moderate_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_service_delay_only_moderate_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_service_delay_only_moderate_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_service_delay_only_moderate_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_service_delay_only_moderate_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_service_delay_only_moderate_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_service_delay_only_moderate_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_service_delay_only_severe_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_severe_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_service_delay_only_severe_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.045404600095935166,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_service_delay_only_severe_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_service_delay_only_severe_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_service_delay_only_severe_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_service_delay_only_severe_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_service_delay_only_severe_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_service_delay_only_severe_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_service_delay_only_severe_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_service_delay_only_severe_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_service_delay_only_severe_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_light_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_light_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.04355349997058511,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_light_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_travel_delay_only_light_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_travel_delay_only_light_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_travel_delay_only_light_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_travel_delay_only_light_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_travel_delay_only_light_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_travel_delay_only_light_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_travel_delay_only_light_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_travel_delay_only_light_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_moderate_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_moderate_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_moderate_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.04764369991607964,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_travel_delay_only_moderate_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_travel_delay_only_moderate_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_travel_delay_only_moderate_batch_result.json\n",
+            "stderr_tail": ""
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_severe_batch",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_severe_batch.json",
+            "result_json_output_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_severe_batch_result.json",
+            "return_code": 0,
+            "duration_seconds": 0.0569609000813216,
+            "configured_experiment_count": 9,
+            "completed_experiment_count": 9,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "ranking_row_count": 3,
+            "recommendation_count": 1,
+            "result_json_exists": true,
+            "output_paths_ok": true,
+            "problem_count": 0,
+            "problems": [],
+            "output_path_checks": [
+                {
+                    "output_key": "overview_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_overview.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "summary_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "aggregate_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_aggregate_summary.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "ranking_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_ranking.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "recommendation_csv_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_recommendation.csv",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                },
+                {
+                    "output_key": "result_json_output_path",
+                    "path": "data/results/campaign_batches/campaign_travel_delay_only_severe_batch_result.json",
+                    "exists": true,
+                    "was_written": true,
+                    "under_expected_dir": true,
+                    "problems": []
+                }
+            ],
+            "stdout_tail": "FieldOps Lab - batch experiment mode started.\nLoading batch config: data\\experiments\\campaign_batches\\campaign_travel_delay_only_severe_batch.json\n\n\nBatch experiment finished.\n  Batch ID: campaign_travel_delay_only_severe_batch\n  Experiments: 9\n  Completed: 9/9 (100.00%)\n  Overview CSV written to: data/results/campaign_batches/campaign_travel_delay_only_severe_batch_overview.csv\n  Summary CSV written to: data/results/campaign_batches/campaign_travel_delay_only_severe_batch_summary.csv\n  Aggregate CSV written to: data/results/campaign_batches/campaign_travel_delay_only_severe_batch_aggregate_summary.csv\n  Ranking CSV written to: data/results/campaign_batches/campaign_travel_delay_only_severe_batch_ranking.csv\n  Recommendation CSV written to: data/results/campaign_batches/campaign_travel_delay_only_severe_batch_recommendation.csv\n  Result JSON written to: data/results/campaign_batches/campaign_travel_delay_only_severe_batch_result.json\n",
+            "stderr_tail": ""
+        }
+    ],
+    "interpretation": {
+        "status": "campaign_execution_index",
+        "warning": "This validates structural execution of campaign batches. It does not prove scientific validity by itself."
+    }
+}
