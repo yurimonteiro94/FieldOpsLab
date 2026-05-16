@@ -1,0 +1,197 @@
+{
+    "report_type": "fieldops_lab_executable_campaign_batch_config_index",
+    "generated_at_local": "2026-05-16T04:02:14",
+    "overview": {
+        "output_config_dir": "data\\experiments\\campaign_batches",
+        "generated_batch_config_count": 12,
+        "generated_experiment_count": 108,
+        "semantic_status": "template_based_executable_candidate",
+        "scientific_status": "not_final_campaign_semantics"
+    },
+    "generated_configs": [
+        {
+            "batch_id": "campaign_combined_delay_light_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_light_batch_blueprint_blueprint.json",
+            "scenario_family_id": "combined_delay",
+            "severity_id": "light",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "light_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_light_batch.json"
+        },
+        {
+            "batch_id": "campaign_combined_delay_moderate_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_moderate_batch_blueprint_blueprint.json",
+            "scenario_family_id": "combined_delay",
+            "severity_id": "moderate",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "moderate_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_moderate_batch.json"
+        },
+        {
+            "batch_id": "campaign_combined_delay_severe_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_severe_batch_blueprint_blueprint.json",
+            "scenario_family_id": "combined_delay",
+            "severity_id": "severe",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "severe_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_combined_delay_severe_batch.json"
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_light_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_light_batch_blueprint_blueprint.json",
+            "scenario_family_id": "reassignment_opportunity",
+            "severity_id": "light",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "light_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_light_batch.json"
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_moderate_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_moderate_batch_blueprint_blueprint.json",
+            "scenario_family_id": "reassignment_opportunity",
+            "severity_id": "moderate",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "reassignment_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_moderate_batch.json"
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_severe_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_severe_batch_blueprint_blueprint.json",
+            "scenario_family_id": "reassignment_opportunity",
+            "severity_id": "severe",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "reassignment_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_reassignment_opportunity_severe_batch.json"
+        },
+        {
+            "batch_id": "campaign_service_delay_only_light_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_light_batch_blueprint_blueprint.json",
+            "scenario_family_id": "service_delay_only",
+            "severity_id": "light",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "light_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_light_batch.json"
+        },
+        {
+            "batch_id": "campaign_service_delay_only_moderate_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_moderate_batch_blueprint_blueprint.json",
+            "scenario_family_id": "service_delay_only",
+            "severity_id": "moderate",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "moderate_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_moderate_batch.json"
+        },
+        {
+            "batch_id": "campaign_service_delay_only_severe_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_severe_batch_blueprint_blueprint.json",
+            "scenario_family_id": "service_delay_only",
+            "severity_id": "severe",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "severe_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_service_delay_only_severe_batch.json"
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_light_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_light_batch_blueprint_blueprint.json",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "light_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_light_batch.json"
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_moderate_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_moderate_batch_blueprint_blueprint.json",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "moderate",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "moderate_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_moderate_batch.json"
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_severe_batch",
+            "source_blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_severe_batch_blueprint_blueprint.json",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "severe",
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "generated_experiment_count": 9,
+            "template_reuse_modes": [
+                "severe_severity_template_reused"
+            ],
+            "semantic_status": "template_based_executable_candidate",
+            "scientific_status": "not_final_campaign_semantics",
+            "config_path": "data\\experiments\\campaign_batches\\campaign_travel_delay_only_severe_batch.json"
+        }
+    ],
+    "interpretation": {
+        "warning": "Generated configs reuse sample perturbation plan templates. They validate the pipeline, but they are not final scientific campaign configs.",
+        "next_step": "Generate family-specific perturbation plans and then regenerate executable campaign configs with full semantic fidelity."
+    }
+}
