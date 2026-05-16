@@ -1,12 +1,12 @@
 {
     "report_type": "fieldops_lab_policy_trigger_behavior_audit",
-    "generated_at_local": "2026-05-16T05:01:18",
+    "generated_at_local": "2026-05-16T05:03:27",
     "summary": {
         "row_count": 36,
         "threshold_row_count": 24,
         "triggered_threshold_row_count": 16,
         "service_delay_not_triggering_threshold_count": 0,
-        "warning_count": 6,
+        "warning_count": 0,
         "fuzzy_logic_status": "not_used_in_main_pipeline",
         "scientific_status": "policy_trigger_behavior_diagnostic_only"
     },
@@ -46,7 +46,7 @@
             "mean_delta_travel": 10.0,
             "mean_delta_service": 7.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "no_trigger",
+            "trigger_behavior_class": "expected_no_trigger",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_combined_delay_light_batch_result.json"
@@ -66,7 +66,7 @@
             "mean_delta_travel": 10.0,
             "mean_delta_service": 7.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "no_trigger",
+            "trigger_behavior_class": "expected_no_trigger",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_combined_delay_light_batch_result.json"
@@ -106,9 +106,9 @@
             "mean_delta_travel": -17.0,
             "mean_delta_service": 35.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "combined_delay_not_triggering_threshold",
-            "warning_count": 1,
-            "warnings": "Combined delay did not trigger replanning despite moderate/severe disruption.",
+            "trigger_behavior_class": "triggered_and_applied",
+            "warning_count": 0,
+            "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_combined_delay_moderate_batch_result.json"
         },
         {
@@ -126,7 +126,7 @@
             "mean_delta_travel": 50.0,
             "mean_delta_service": 35.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "combined_delay_triggers_threshold",
+            "trigger_behavior_class": "triggered_without_solver",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_combined_delay_moderate_batch_result.json"
@@ -166,9 +166,9 @@
             "mean_delta_travel": -17.0,
             "mean_delta_service": 63.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "combined_delay_not_triggering_threshold",
-            "warning_count": 1,
-            "warnings": "Combined delay did not trigger replanning despite moderate/severe disruption.",
+            "trigger_behavior_class": "triggered_and_applied",
+            "warning_count": 0,
+            "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_combined_delay_severe_batch_result.json"
         },
         {
@@ -186,7 +186,7 @@
             "mean_delta_travel": 90.0,
             "mean_delta_service": 63.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "combined_delay_triggers_threshold",
+            "trigger_behavior_class": "triggered_without_solver",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_combined_delay_severe_batch_result.json"
@@ -226,7 +226,7 @@
             "mean_delta_travel": 10.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "no_trigger",
+            "trigger_behavior_class": "expected_no_trigger",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_light_batch_result.json"
@@ -246,7 +246,7 @@
             "mean_delta_travel": 10.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "no_trigger",
+            "trigger_behavior_class": "expected_no_trigger",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_light_batch_result.json"
@@ -286,9 +286,9 @@
             "mean_delta_travel": -17.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "travel_delay_not_triggering_threshold",
-            "warning_count": 1,
-            "warnings": "Travel-related moderate/severe delay did not trigger replanning.",
+            "trigger_behavior_class": "triggered_and_applied",
+            "warning_count": 0,
+            "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_moderate_batch_result.json"
         },
         {
@@ -306,7 +306,7 @@
             "mean_delta_travel": 50.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "travel_delay_triggers_threshold",
+            "trigger_behavior_class": "triggered_without_solver",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_moderate_batch_result.json"
@@ -346,9 +346,9 @@
             "mean_delta_travel": -17.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "travel_delay_not_triggering_threshold",
-            "warning_count": 1,
-            "warnings": "Travel-related moderate/severe delay did not trigger replanning.",
+            "trigger_behavior_class": "triggered_and_applied",
+            "warning_count": 0,
+            "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_severe_batch_result.json"
         },
         {
@@ -366,7 +366,7 @@
             "mean_delta_travel": 90.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "travel_delay_triggers_threshold",
+            "trigger_behavior_class": "triggered_without_solver",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_reassignment_opportunity_severe_batch_result.json"
@@ -406,7 +406,7 @@
             "mean_delta_travel": 0.0,
             "mean_delta_service": 7.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "no_trigger",
+            "trigger_behavior_class": "expected_no_trigger",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_service_delay_only_light_batch_result.json"
@@ -426,7 +426,7 @@
             "mean_delta_travel": 0.0,
             "mean_delta_service": 7.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "no_trigger",
+            "trigger_behavior_class": "expected_no_trigger",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_service_delay_only_light_batch_result.json"
@@ -466,7 +466,7 @@
             "mean_delta_travel": 0.0,
             "mean_delta_service": 35.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "triggered",
+            "trigger_behavior_class": "triggered_and_applied",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_service_delay_only_moderate_batch_result.json"
@@ -486,7 +486,7 @@
             "mean_delta_travel": 0.0,
             "mean_delta_service": 35.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "triggered",
+            "trigger_behavior_class": "triggered_without_solver",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_service_delay_only_moderate_batch_result.json"
@@ -526,7 +526,7 @@
             "mean_delta_travel": 0.0,
             "mean_delta_service": 63.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "triggered",
+            "trigger_behavior_class": "triggered_and_applied",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_service_delay_only_severe_batch_result.json"
@@ -546,7 +546,7 @@
             "mean_delta_travel": 0.0,
             "mean_delta_service": 63.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "triggered",
+            "trigger_behavior_class": "triggered_without_solver",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_service_delay_only_severe_batch_result.json"
@@ -586,7 +586,7 @@
             "mean_delta_travel": 10.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "no_trigger",
+            "trigger_behavior_class": "expected_no_trigger",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_result.json"
@@ -606,7 +606,7 @@
             "mean_delta_travel": 10.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "no_trigger",
+            "trigger_behavior_class": "expected_no_trigger",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_result.json"
@@ -646,9 +646,9 @@
             "mean_delta_travel": -17.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "travel_delay_not_triggering_threshold",
-            "warning_count": 1,
-            "warnings": "Travel-related moderate/severe delay did not trigger replanning.",
+            "trigger_behavior_class": "triggered_and_applied",
+            "warning_count": 0,
+            "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_moderate_batch_result.json"
         },
         {
@@ -666,7 +666,7 @@
             "mean_delta_travel": 50.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "travel_delay_triggers_threshold",
+            "trigger_behavior_class": "triggered_without_solver",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_moderate_batch_result.json"
@@ -706,9 +706,9 @@
             "mean_delta_travel": -17.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "travel_delay_not_triggering_threshold",
-            "warning_count": 1,
-            "warnings": "Travel-related moderate/severe delay did not trigger replanning.",
+            "trigger_behavior_class": "triggered_and_applied",
+            "warning_count": 0,
+            "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_severe_batch_result.json"
         },
         {
@@ -726,7 +726,7 @@
             "mean_delta_travel": 90.0,
             "mean_delta_service": 0.0,
             "mean_delta_lateness": 0.0,
-            "trigger_behavior_class": "travel_delay_triggers_threshold",
+            "trigger_behavior_class": "triggered_without_solver",
             "warning_count": 0,
             "warnings": "",
             "result_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_severe_batch_result.json"

@@ -181,46 +181,64 @@ def classify_trigger_behavior(
     warnings: list[str] = []
 
     should_count = int(summary["policy_should_replan_count"])
+    request_count = int(summary["replanning_request_count"])
+    applied_count = int(summary["replanning_applied_count"])
     experiment_count = int(summary["experiment_count"])
-    service_delta = float(summary["mean_delta_service"])
-    travel_delta = float(summary["mean_delta_travel"])
 
     if option == "no_replanning_baseline":
         return "baseline_policy", warnings
 
     if option not in ("threshold_without_solver", "threshold_with_greedy_replanning"):
-        return "unknown_policy_option", warnings
+        return "unknown_policy_option", [f"Unknown policy option: {option}"]
 
     if experiment_count == 0:
         return "missing_option", ["Policy option has no experiments."]
 
-    if family == "service_delay_only" and severity in ("moderate", "severe"):
-        if service_delta > 0 and should_count == 0:
-            warnings.append(
-                "Threshold policy did not request replanning for a moderate/severe service-only delay."
-            )
-            return "service_delay_not_triggering_threshold", warnings
+    expected_to_trigger = severity in ("moderate", "severe")
 
-    if family == "combined_delay" and severity in ("moderate", "severe"):
-        if travel_delta > 0 and should_count > 0:
-            return "combined_delay_triggers_threshold", warnings
+    if not expected_to_trigger:
+        if should_count == 0 and request_count == 0 and applied_count == 0:
+            return "expected_no_trigger", warnings
 
         warnings.append(
-            "Combined delay did not trigger replanning despite moderate/severe disruption."
+            "Light scenario triggered replanning. This may be valid, but it should be reviewed."
         )
-        return "combined_delay_not_triggering_threshold", warnings
-
-    if family in ("travel_delay_only", "reassignment_opportunity") and severity in ("moderate", "severe"):
-        if travel_delta > 0 and should_count > 0:
-            return "travel_delay_triggers_threshold", warnings
-
-        warnings.append(
-            "Travel-related moderate/severe delay did not trigger replanning."
-        )
-        return "travel_delay_not_triggering_threshold", warnings
+        return "unexpected_light_trigger", warnings
 
     if should_count == 0:
-        return "no_trigger", warnings
+        warnings.append(
+            "Moderate/severe scenario did not request replanning under the threshold policy."
+        )
+        return "expected_trigger_missing", warnings
+
+    if request_count != should_count:
+        warnings.append(
+            "Replanning request count does not match policy should-replan count."
+        )
+
+    if option == "threshold_without_solver":
+        if applied_count != 0:
+            warnings.append(
+                "Threshold-without-solver option applied replanning, but it should only request replanning."
+            )
+            return "triggered_without_solver_but_applied", warnings
+
+        if warnings:
+            return "triggered_without_solver_with_warning", warnings
+
+        return "triggered_without_solver", warnings
+
+    if option == "threshold_with_greedy_replanning":
+        if applied_count == should_count:
+            if warnings:
+                return "triggered_and_applied_with_warning", warnings
+
+            return "triggered_and_applied", warnings
+
+        warnings.append(
+            "Threshold-with-greedy option requested replanning, but not all requested replans were applied."
+        )
+        return "triggered_but_not_fully_applied", warnings
 
     return "triggered", warnings
 
@@ -399,11 +417,11 @@ def write_markdown(path: Path, summary: dict[str, Any], rows: list[dict[str, Any
     lines.append("## Conservative interpretation")
     lines.append("")
     lines.append(
-        "If travel-related delays trigger replanning but service-only delays do not, then the current threshold policy is primarily travel-delay-driven."
+        "This audit classifies trigger behavior using policy decisions, replanning requests, and applied replanning counts. It does not infer triggering from post-replanning metric deltas."
     )
     lines.append("")
     lines.append(
-        "That may be acceptable as a first policy, but it should be explicitly documented. If service delays are operationally relevant, the policy should later include service-delay thresholds or downstream schedule impact."
+        "Metric deltas are still shown for context, but a negative travel delta after greedy replanning must not be interpreted as absence of an original travel delay."
     )
 
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

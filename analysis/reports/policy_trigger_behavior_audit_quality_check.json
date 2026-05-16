@@ -1,27 +1,25 @@
 {
     "report_type": "fieldops_lab_policy_trigger_behavior_audit_quality_check",
-    "generated_at_local": "2026-05-16T05:01:18",
+    "generated_at_local": "2026-05-16T05:03:27",
     "audit_json_path": "analysis\\reports\\policy_trigger_behavior_audit.json",
     "audit_md_path": "analysis\\reports\\policy_trigger_behavior_audit.md",
     "audit_csv_path": "analysis\\reports\\policy_trigger_behavior_audit.csv",
     "all_required_checks_passed": true,
     "problem_count": 0,
-    "warning_count": 1,
+    "warning_count": 0,
     "row_count": 36,
     "csv_row_count": 36,
     "threshold_row_count": 24,
     "triggered_threshold_row_count": 16,
     "service_delay_not_triggering_threshold_count": 0,
     "problems": [],
-    "warnings": [
-        "Audit contains 6 methodological warning(s)."
-    ],
+    "warnings": [],
     "summary": {
         "row_count": 36,
         "threshold_row_count": 24,
         "triggered_threshold_row_count": 16,
         "service_delay_not_triggering_threshold_count": 0,
-        "warning_count": 6,
+        "warning_count": 0,
         "fuzzy_logic_status": "not_used_in_main_pipeline",
         "scientific_status": "policy_trigger_behavior_diagnostic_only"
     }

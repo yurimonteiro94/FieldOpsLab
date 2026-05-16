@@ -8,7 +8,7 @@ Audit JSON: `analysis\reports\policy_trigger_behavior_audit.json`
 | --- | --- |
 | all_required_checks_passed | yes |
 | problem_count | 0 |
-| warning_count | 1 |
+| warning_count | 0 |
 | row_count | 36 |
 | csv_row_count | 36 |
 | threshold_row_count | 24 |
@@ -21,7 +21,7 @@ Audit JSON: `analysis\reports\policy_trigger_behavior_audit.json`
 
 ## Warnings
 
-- WARNING: Audit contains 6 methodological warning(s).
+- None.
 
 ## Conservative interpretation
 
