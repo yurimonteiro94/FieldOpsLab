@@ -1,0 +1,30 @@
+{
+    "report_type": "fieldops_lab_service_delay_impact_audit_quality_check",
+    "generated_at_local": "2026-05-16T04:57:09",
+    "audit_json_path": "analysis\\reports\\service_delay_impact_audit.json",
+    "audit_md_path": "analysis\\reports\\service_delay_impact_audit.md",
+    "audit_csv_path": "analysis\\reports\\service_delay_impact_audit.csv",
+    "all_required_checks_passed": true,
+    "problem_count": 0,
+    "warning_count": 2,
+    "batch_count": 12,
+    "csv_row_count": 12,
+    "service_only_batch_count": 3,
+    "combined_delay_batch_count": 3,
+    "visible_but_neutral_and_kept_plan_count": 4,
+    "problems": [],
+    "warnings": [
+        "Service delay is visible but neutral under current objective/makespan in 4 batch(es).",
+        "Audit contains 4 methodological warning(s)."
+    ],
+    "summary": {
+        "batch_count": 12,
+        "service_related_batch_count": 6,
+        "service_only_batch_count": 3,
+        "combined_delay_batch_count": 3,
+        "visible_but_neutral_and_kept_plan_count": 4,
+        "warning_count": 4,
+        "fuzzy_logic_status": "not_used_in_main_pipeline",
+        "scientific_status": "service_delay_impact_diagnostic_only"
+    }
+}
