@@ -5,10 +5,26 @@
 
 #include <filesystem>
 #include <fstream>
+#include <string>
 
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
+
+static const json* find_ranking_row(
+    const json& rows,
+    const std::string& scenario_id,
+    int rank
+) {
+    for (const auto& row : rows) {
+        if (row.at("scenario_id").get<std::string>() == scenario_id &&
+            row.at("rank").get<int>() == rank) {
+            return &row;
+        }
+    }
+
+    return nullptr;
+}
 
 void test_no_replanning_batch_result_json_writer() {
     NoReplanningBatchExperimentConfig config =
@@ -264,5 +280,117 @@ void test_no_replanning_batch_result_json_writer() {
     FIELDOPS_EXPECT_TRUE(
         data.at("experiments").at(11).at("metrics").at("delta_objective_value").get<double>() <
         data.at("experiments").at(9).at("metrics").at("delta_objective_value").get<double>()
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        data.contains("rankings")
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("rankings").at("row_count").get<int>(),
+        12
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        data.at("rankings").at("rows").size(),
+        12
+    );
+
+    FIELDOPS_EXPECT_TRUE(
+        data.at("rankings")
+            .at("ranking_score_definition")
+            .get<std::string>()
+            .find("Lower is better") != std::string::npos
+    );
+
+    const json& ranking_rows =
+        data.at("rankings").at("rows");
+
+    const json* reassignment_winner =
+        find_ranking_row(
+            ranking_rows,
+            "sample_delay_reassignment_001",
+            1
+        );
+
+    FIELDOPS_EXPECT_TRUE(
+        reassignment_winner != nullptr
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        reassignment_winner->at("policy_id").get<std::string>(),
+        "threshold_delay_replanning_policy_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        reassignment_winner->at("replanning_method_id").get<std::string>(),
+        "greedy_replanning_solver_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        reassignment_winner->at("execution_mode").get<std::string>(),
+        "replanning_applied_execution"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        reassignment_winner->at("replanning_applied_count").get<int>(),
+        1
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        reassignment_winner->at("ranking_score").get<double>(),
+        -52.0
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        reassignment_winner->at("mean_delta_total_travel_time").get<double>(),
+        -17.0
+    );
+
+    const json* reassignment_baseline =
+        find_ranking_row(
+            ranking_rows,
+            "sample_delay_reassignment_001",
+            2
+        );
+
+    FIELDOPS_EXPECT_TRUE(
+        reassignment_baseline != nullptr
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        reassignment_baseline->at("policy_id").get<std::string>(),
+        "no_replanning_policy_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        reassignment_baseline->at("ranking_score").get<double>(),
+        65.0
+    );
+
+    const json* moderate_winner =
+        find_ranking_row(
+            ranking_rows,
+            "sample_delay_moderate_001",
+            1
+        );
+
+    FIELDOPS_EXPECT_TRUE(
+        moderate_winner != nullptr
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        moderate_winner->at("policy_id").get<std::string>(),
+        "threshold_delay_replanning_policy_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        moderate_winner->at("replanning_method_id").get<std::string>(),
+        "greedy_replanning_solver_v1"
+    );
+
+    FIELDOPS_EXPECT_EQ(
+        moderate_winner->at("ranking_score").get<double>(),
+        -52.0
     );
 }

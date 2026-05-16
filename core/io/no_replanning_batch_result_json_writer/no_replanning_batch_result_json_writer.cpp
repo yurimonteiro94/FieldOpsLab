@@ -1,12 +1,77 @@
 #include "core/io/no_replanning_batch_result_json_writer/no_replanning_batch_result_json_writer.h"
 
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <map>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
+
+struct BatchJsonRankingKey {
+    std::string scenario_id;
+    std::string policy_id;
+    std::string replanning_method_id;
+    std::string execution_mode;
+
+    bool operator<(const BatchJsonRankingKey& other) const {
+        if (scenario_id != other.scenario_id) {
+            return scenario_id < other.scenario_id;
+        }
+
+        if (policy_id != other.policy_id) {
+            return policy_id < other.policy_id;
+        }
+
+        if (replanning_method_id != other.replanning_method_id) {
+            return replanning_method_id < other.replanning_method_id;
+        }
+
+        return execution_mode < other.execution_mode;
+    }
+};
+
+struct BatchJsonRankingStats {
+    int experiment_count = 0;
+
+    int policy_should_replan_count = 0;
+    int replanning_request_count = 0;
+    int replanning_success_count = 0;
+    int replanning_applied_count = 0;
+
+    double sum_delta_objective_value = 0.0;
+    double sum_delta_makespan = 0.0;
+    double sum_delta_total_travel_time = 0.0;
+    double sum_delta_total_service_time = 0.0;
+    double sum_delta_total_waiting_time = 0.0;
+
+    double sum_late_task_count = 0.0;
+    double sum_total_lateness = 0.0;
+    double sum_effect_count = 0.0;
+};
+
+struct BatchJsonRankingRow {
+    BatchJsonRankingKey key;
+    BatchJsonRankingStats stats;
+
+    int rank = 0;
+
+    double ranking_score = 0.0;
+
+    double mean_delta_objective_value = 0.0;
+    double mean_delta_makespan = 0.0;
+    double mean_delta_total_travel_time = 0.0;
+    double mean_delta_total_service_time = 0.0;
+    double mean_delta_total_waiting_time = 0.0;
+
+    double mean_late_task_count = 0.0;
+    double mean_total_lateness = 0.0;
+    double mean_effect_count = 0.0;
+};
 
 static json string_vector_to_json(
     const std::vector<std::string>& values
@@ -269,6 +334,271 @@ static json experiment_results_to_json(
     return experiments;
 }
 
+static BatchJsonRankingKey build_ranking_key(
+    const NoReplanningExperimentResult& result
+) {
+    BatchJsonRankingKey key;
+
+    key.scenario_id = result.metadata.scenario_id;
+    key.policy_id = result.policy_decision.policy_id;
+    key.replanning_method_id = get_replanning_method_id(result);
+    key.execution_mode = result.execution_mode;
+
+    return key;
+}
+
+static bool replanning_was_successful(
+    const NoReplanningExperimentResult& result
+) {
+    if (!result.has_replanning_result) {
+        return false;
+    }
+
+    return result.replanning_result.is_successful();
+}
+
+static void add_result_to_ranking_stats(
+    BatchJsonRankingStats& stats,
+    const NoReplanningExperimentResult& result
+) {
+    stats.experiment_count += 1;
+
+    if (result.policy_decision.should_replan()) {
+        stats.policy_should_replan_count += 1;
+    }
+
+    if (result.has_replanning_request) {
+        stats.replanning_request_count += 1;
+    }
+
+    if (replanning_was_successful(result)) {
+        stats.replanning_success_count += 1;
+    }
+
+    if (result.replanning_result_was_applied_to_execution) {
+        stats.replanning_applied_count += 1;
+    }
+
+    stats.sum_delta_objective_value +=
+        result.comparison.delta_objective_value;
+
+    stats.sum_delta_makespan +=
+        result.comparison.delta_makespan;
+
+    stats.sum_delta_total_travel_time +=
+        result.comparison.delta_total_travel_time;
+
+    stats.sum_delta_total_service_time +=
+        result.comparison.delta_total_service_time;
+
+    stats.sum_delta_total_waiting_time +=
+        result.comparison.delta_total_waiting_time;
+
+    stats.sum_late_task_count +=
+        result.executed_metrics.late_task_count;
+
+    stats.sum_total_lateness +=
+        result.executed_metrics.total_lateness;
+
+    stats.sum_effect_count +=
+        result.effects.size();
+}
+
+static double mean_value(double sum, int count) {
+    if (count == 0) {
+        return 0.0;
+    }
+
+    return sum / static_cast<double>(count);
+}
+
+static BatchJsonRankingRow build_ranking_row(
+    const BatchJsonRankingKey& key,
+    const BatchJsonRankingStats& stats
+) {
+    BatchJsonRankingRow row;
+
+    row.key = key;
+    row.stats = stats;
+
+    row.mean_delta_objective_value =
+        mean_value(
+            stats.sum_delta_objective_value,
+            stats.experiment_count
+        );
+
+    row.mean_delta_makespan =
+        mean_value(
+            stats.sum_delta_makespan,
+            stats.experiment_count
+        );
+
+    row.mean_delta_total_travel_time =
+        mean_value(
+            stats.sum_delta_total_travel_time,
+            stats.experiment_count
+        );
+
+    row.mean_delta_total_service_time =
+        mean_value(
+            stats.sum_delta_total_service_time,
+            stats.experiment_count
+        );
+
+    row.mean_delta_total_waiting_time =
+        mean_value(
+            stats.sum_delta_total_waiting_time,
+            stats.experiment_count
+        );
+
+    row.mean_late_task_count =
+        mean_value(
+            stats.sum_late_task_count,
+            stats.experiment_count
+        );
+
+    row.mean_total_lateness =
+        mean_value(
+            stats.sum_total_lateness,
+            stats.experiment_count
+        );
+
+    row.mean_effect_count =
+        mean_value(
+            stats.sum_effect_count,
+            stats.experiment_count
+        );
+
+    row.ranking_score = row.mean_delta_objective_value;
+
+    return row;
+}
+
+static std::vector<BatchJsonRankingRow> build_ranking_rows(
+    const NoReplanningBatchExperimentResult& batch_result
+) {
+    std::map<BatchJsonRankingKey, BatchJsonRankingStats> grouped_stats;
+
+    for (const auto& result : batch_result.results) {
+        BatchJsonRankingKey key = build_ranking_key(result);
+
+        add_result_to_ranking_stats(grouped_stats[key], result);
+    }
+
+    std::vector<BatchJsonRankingRow> rows;
+
+    for (const auto& entry : grouped_stats) {
+        rows.push_back(
+            build_ranking_row(entry.first, entry.second)
+        );
+    }
+
+    std::sort(
+        rows.begin(),
+        rows.end(),
+        [](const BatchJsonRankingRow& first,
+           const BatchJsonRankingRow& second) {
+            if (first.key.scenario_id != second.key.scenario_id) {
+                return first.key.scenario_id < second.key.scenario_id;
+            }
+
+            if (first.ranking_score != second.ranking_score) {
+                return first.ranking_score < second.ranking_score;
+            }
+
+            if (first.mean_delta_makespan != second.mean_delta_makespan) {
+                return first.mean_delta_makespan < second.mean_delta_makespan;
+            }
+
+            if (first.mean_delta_total_travel_time !=
+                second.mean_delta_total_travel_time) {
+                return first.mean_delta_total_travel_time <
+                       second.mean_delta_total_travel_time;
+            }
+
+            if (first.key.policy_id != second.key.policy_id) {
+                return first.key.policy_id < second.key.policy_id;
+            }
+
+            if (first.key.replanning_method_id !=
+                second.key.replanning_method_id) {
+                return first.key.replanning_method_id <
+                       second.key.replanning_method_id;
+            }
+
+            return first.key.execution_mode < second.key.execution_mode;
+        }
+    );
+
+    std::string current_scenario_id;
+    int current_rank = 0;
+
+    for (auto& row : rows) {
+        if (row.key.scenario_id != current_scenario_id) {
+            current_scenario_id = row.key.scenario_id;
+            current_rank = 1;
+        } else {
+            current_rank += 1;
+        }
+
+        row.rank = current_rank;
+    }
+
+    return rows;
+}
+
+static json ranking_row_to_json(const BatchJsonRankingRow& row) {
+    return {
+        {"scenario_id", row.key.scenario_id},
+        {"rank", row.rank},
+        {"policy_id", row.key.policy_id},
+        {"replanning_method_id", row.key.replanning_method_id},
+        {"execution_mode", row.key.execution_mode},
+        {"experiment_count", row.stats.experiment_count},
+        {"policy_should_replan_count", row.stats.policy_should_replan_count},
+        {"replanning_request_count", row.stats.replanning_request_count},
+        {"replanning_success_count", row.stats.replanning_success_count},
+        {"replanning_applied_count", row.stats.replanning_applied_count},
+        {"ranking_score", row.ranking_score},
+        {"mean_delta_objective_value", row.mean_delta_objective_value},
+        {"mean_delta_makespan", row.mean_delta_makespan},
+        {"mean_delta_total_travel_time", row.mean_delta_total_travel_time},
+        {"mean_delta_total_service_time", row.mean_delta_total_service_time},
+        {"mean_delta_total_waiting_time", row.mean_delta_total_waiting_time},
+        {"mean_late_task_count", row.mean_late_task_count},
+        {"mean_total_lateness", row.mean_total_lateness},
+        {"mean_effect_count", row.mean_effect_count}
+    };
+}
+
+static json rankings_to_json(
+    const NoReplanningBatchExperimentResult& batch_result
+) {
+    std::vector<BatchJsonRankingRow> rows =
+        build_ranking_rows(batch_result);
+
+    json ranking_rows = json::array();
+
+    for (const auto& row : rows) {
+        ranking_rows.push_back(ranking_row_to_json(row));
+    }
+
+    return {
+        {"ranking_score_definition",
+            "Lower is better. Current ranking_score equals mean_delta_objective_value."},
+        {"tie_breakers",
+            json::array({
+                "mean_delta_makespan",
+                "mean_delta_total_travel_time",
+                "policy_id",
+                "replanning_method_id",
+                "execution_mode"
+            })},
+        {"row_count", rows.size()},
+        {"rows", ranking_rows}
+    };
+}
+
 void write_no_replanning_batch_result_to_json(
     const NoReplanningBatchExperimentResult& batch_result,
     const std::string& output_path,
@@ -292,7 +622,8 @@ void write_no_replanning_batch_result_to_json(
             {"ranking_csv_was_written", batch_result.ranking_csv_was_written},
             {"result_json_was_written", batch_result.result_json_was_written}
         }},
-        {"experiments", experiment_results_to_json(batch_result)}
+        {"experiments", experiment_results_to_json(batch_result)},
+        {"rankings", rankings_to_json(batch_result)}
     };
 
     std::filesystem::path path(output_path);
