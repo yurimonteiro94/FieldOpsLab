@@ -1,6 +1,6 @@
 {
     "manifest_type": "fieldops_lab_batch_analysis_manifest",
-    "generated_at_local": "2026-05-16T03:20:54",
+    "generated_at_local": "2026-05-16T03:33:32",
     "batch": {
         "batch_id": "sample_no_replanning_batch_001",
         "name": "Sample no-replanning and replanning batch",

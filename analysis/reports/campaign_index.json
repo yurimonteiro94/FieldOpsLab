@@ -1,0 +1,47 @@
+{
+    "manifest_type": "fieldops_lab_campaign_index",
+    "generated_at_local": "2026-05-16T03:33:33",
+    "campaign": {
+        "manifest_count": 1,
+        "total_configured_experiment_count": 12,
+        "total_completed_experiment_count": 12,
+        "global_completion_percent": 100.0,
+        "complete_batch_count": 1,
+        "quality_ok_batch_count": 1,
+        "incomplete_batch_count": 0,
+        "quality_problem_batch_count": 0,
+        "objective_only_batch_count": 1,
+        "fuzzy_used_batch_count": 0,
+        "incomplete_batches": [],
+        "quality_problem_batches": [],
+        "objective_only_batches": [
+            "sample_no_replanning_batch_001"
+        ],
+        "fuzzy_used_batches": []
+    },
+    "batches": [
+        {
+            "manifest_path": "analysis\\reports\\sample_no_replanning_batch_001_analysis_manifest.json",
+            "batch_id": "sample_no_replanning_batch_001",
+            "batch_name": "Sample no-replanning and replanning batch",
+            "configured_experiment_count": 12,
+            "completed_experiment_count": 12,
+            "completion_percent": 100.0,
+            "is_complete": true,
+            "experiment_count": 12,
+            "ranking_config_id": "default_objective_delta_ranking_v1",
+            "ranking_row_count": 12,
+            "recommendation_count": 4,
+            "generated_file_count": 8,
+            "all_expected_files_ok": true,
+            "missing_or_invalid_file_count": 0,
+            "fuzzy_logic_status": "not_used_in_main_pipeline",
+            "scientific_status": "pipeline_validation_only",
+            "warning": "This batch is still small and handcrafted. It validates the pipeline, but it is not enough for final research conclusions."
+        }
+    ],
+    "interpretation": {
+        "status": "campaign_index_only",
+        "warning": "This file consolidates analysis manifests. It does not prove scientific validity by itself."
+    }
+}
