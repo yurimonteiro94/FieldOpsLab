@@ -9,6 +9,7 @@
 #include <nlohmann/json.hpp>
 
 #include "core/analysis/batch_ranking/batch_ranking.h"
+#include "core/analysis/batch_recommendation/batch_recommendation.h"
 
 using json = nlohmann::json;
 
@@ -327,6 +328,79 @@ static json rankings_to_json(
     };
 }
 
+static json recommendation_to_json(
+    const BatchScenarioRecommendation& recommendation
+) {
+    return {
+        {"scenario_id", recommendation.scenario_id},
+        {"recommended_policy_id", recommendation.recommended_policy_id},
+        {"recommended_replanning_method_id",
+            recommendation.recommended_replanning_method_id},
+        {"recommended_execution_mode",
+            recommendation.recommended_execution_mode},
+        {"recommended_rank", recommendation.recommended_rank},
+
+        {"experiment_count", recommendation.experiment_count},
+        {"policy_should_replan_count",
+            recommendation.policy_should_replan_count},
+        {"replanning_request_count",
+            recommendation.replanning_request_count},
+        {"replanning_success_count",
+            recommendation.replanning_success_count},
+        {"replanning_applied_count",
+            recommendation.replanning_applied_count},
+
+        {"best_score", recommendation.best_score},
+        {"second_best_score", recommendation.second_best_score},
+        {"score_margin_to_second",
+            recommendation.score_margin_to_second},
+        {"has_second_option", recommendation.has_second_option},
+        {"has_clear_winner", recommendation.has_clear_winner},
+
+        {"mean_delta_objective_value",
+            recommendation.mean_delta_objective_value},
+        {"mean_delta_makespan",
+            recommendation.mean_delta_makespan},
+        {"mean_delta_total_travel_time",
+            recommendation.mean_delta_total_travel_time},
+        {"mean_delta_total_service_time",
+            recommendation.mean_delta_total_service_time},
+        {"mean_delta_total_waiting_time",
+            recommendation.mean_delta_total_waiting_time},
+
+        {"mean_late_task_count",
+            recommendation.mean_late_task_count},
+        {"mean_total_lateness",
+            recommendation.mean_total_lateness},
+        {"mean_effect_count",
+            recommendation.mean_effect_count},
+
+        {"recommendation_reason",
+            recommendation.recommendation_reason}
+    };
+}
+
+static json recommendations_to_json(
+    const NoReplanningBatchExperimentResult& batch_result
+) {
+    std::vector<BatchScenarioRecommendation> recommendations =
+        build_batch_scenario_recommendations(batch_result);
+
+    json recommendation_rows = json::array();
+
+    for (const auto& recommendation : recommendations) {
+        recommendation_rows.push_back(
+            recommendation_to_json(recommendation)
+        );
+    }
+
+    return {
+        {"recommendation_definition", batch_recommendation_definition()},
+        {"recommendation_count", recommendations.size()},
+        {"rows", recommendation_rows}
+    };
+}
+
 void write_no_replanning_batch_result_to_json(
     const NoReplanningBatchExperimentResult& batch_result,
     const std::string& output_path,
@@ -351,7 +425,8 @@ void write_no_replanning_batch_result_to_json(
             {"result_json_was_written", batch_result.result_json_was_written}
         }},
         {"experiments", experiment_results_to_json(batch_result)},
-        {"rankings", rankings_to_json(batch_result)}
+        {"rankings", rankings_to_json(batch_result)},
+        {"recommendations", recommendations_to_json(batch_result)}
     };
 
     std::filesystem::path path(output_path);
