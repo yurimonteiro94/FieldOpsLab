@@ -1,0 +1,261 @@
+{
+    "blueprint_type": "fieldops_lab_campaign_batch_blueprint",
+    "generated_at_local": "2026-05-16T03:49:05",
+    "executable_status": "blueprint_not_executable_yet",
+    "source_plan": {
+        "path": "analysis\\reports\\experiment_campaign_plan.json",
+        "design_status": "planning_only",
+        "fuzzy_logic_status": "not_used_in_main_pipeline",
+        "scientific_status": "campaign_design_only"
+    },
+    "batch": {
+        "batch_id": "campaign_travel_delay_only_light_batch_blueprint",
+        "scenario_family_id": "travel_delay_only",
+        "severity_id": "light",
+        "name": "travel_delay_only / light",
+        "description": "Planned campaign batch blueprint. This file organizes planned runs, but it is not an executable FieldOps Lab batch config yet.",
+        "replication_count": 3,
+        "planned_run_count": 3,
+        "policy_option_count": 3,
+        "planned_algorithm_run_count": 9
+    },
+    "scenario_family": {
+        "family_id": "travel_delay_only",
+        "description": "Only travel time is perturbed.",
+        "uses_travel_delay": true,
+        "uses_service_delay": false,
+        "creates_reassignment_opportunity": false
+    },
+    "severity": {
+        "severity_id": "light",
+        "nominal_delay_minutes": 10,
+        "description": "Small disruption. Usually useful to test whether replanning is unnecessary."
+    },
+    "policy_options": [
+        {
+            "policy_option_id": "no_replanning_baseline",
+            "policy_id": "no_replanning_policy_v1",
+            "replanning_method_id": "replanning_not_implemented_v1",
+            "description": "Baseline option. The original plan is kept."
+        },
+        {
+            "policy_option_id": "threshold_without_solver",
+            "policy_id": "threshold_delay_replanning_policy_v1",
+            "replanning_method_id": "replanning_not_implemented_v1",
+            "description": "Decision policy may request replanning, but no solver is applied. Useful as a control option."
+        },
+        {
+            "policy_option_id": "threshold_with_greedy_replanning",
+            "policy_id": "threshold_delay_replanning_policy_v1",
+            "replanning_method_id": "greedy_replanning_solver_v1",
+            "description": "Decision policy may request replanning and applies the current greedy replanning solver."
+        }
+    ],
+    "planned_runs": [
+        {
+            "planned_run_id": "planned_travel_delay_only_light_rep001",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 1,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "planned_policy_option_count": 3,
+            "planned_algorithm_run_count": 3,
+            "status": "planned_not_executed"
+        },
+        {
+            "planned_run_id": "planned_travel_delay_only_light_rep002",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 2,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "planned_policy_option_count": 3,
+            "planned_algorithm_run_count": 3,
+            "status": "planned_not_executed"
+        },
+        {
+            "planned_run_id": "planned_travel_delay_only_light_rep003",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 3,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "planned_policy_option_count": 3,
+            "planned_algorithm_run_count": 3,
+            "status": "planned_not_executed"
+        }
+    ],
+    "algorithm_runs": [
+        {
+            "algorithm_run_id": "planned_travel_delay_only_light_rep001__no_replanning_baseline",
+            "planned_run_id": "planned_travel_delay_only_light_rep001",
+            "policy_option_id": "no_replanning_baseline",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 1,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "policy_id": "no_replanning_policy_v1",
+            "replanning_method_id": "replanning_not_implemented_v1",
+            "execution_status": "planned_not_executed",
+            "configuration_status": "blueprint_not_executable_yet"
+        },
+        {
+            "algorithm_run_id": "planned_travel_delay_only_light_rep001__threshold_without_solver",
+            "planned_run_id": "planned_travel_delay_only_light_rep001",
+            "policy_option_id": "threshold_without_solver",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 1,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "policy_id": "threshold_delay_replanning_policy_v1",
+            "replanning_method_id": "replanning_not_implemented_v1",
+            "execution_status": "planned_not_executed",
+            "configuration_status": "blueprint_not_executable_yet"
+        },
+        {
+            "algorithm_run_id": "planned_travel_delay_only_light_rep001__threshold_with_greedy_replanning",
+            "planned_run_id": "planned_travel_delay_only_light_rep001",
+            "policy_option_id": "threshold_with_greedy_replanning",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 1,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "policy_id": "threshold_delay_replanning_policy_v1",
+            "replanning_method_id": "greedy_replanning_solver_v1",
+            "execution_status": "planned_not_executed",
+            "configuration_status": "blueprint_not_executable_yet"
+        },
+        {
+            "algorithm_run_id": "planned_travel_delay_only_light_rep002__no_replanning_baseline",
+            "planned_run_id": "planned_travel_delay_only_light_rep002",
+            "policy_option_id": "no_replanning_baseline",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 2,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "policy_id": "no_replanning_policy_v1",
+            "replanning_method_id": "replanning_not_implemented_v1",
+            "execution_status": "planned_not_executed",
+            "configuration_status": "blueprint_not_executable_yet"
+        },
+        {
+            "algorithm_run_id": "planned_travel_delay_only_light_rep002__threshold_without_solver",
+            "planned_run_id": "planned_travel_delay_only_light_rep002",
+            "policy_option_id": "threshold_without_solver",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 2,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "policy_id": "threshold_delay_replanning_policy_v1",
+            "replanning_method_id": "replanning_not_implemented_v1",
+            "execution_status": "planned_not_executed",
+            "configuration_status": "blueprint_not_executable_yet"
+        },
+        {
+            "algorithm_run_id": "planned_travel_delay_only_light_rep002__threshold_with_greedy_replanning",
+            "planned_run_id": "planned_travel_delay_only_light_rep002",
+            "policy_option_id": "threshold_with_greedy_replanning",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 2,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "policy_id": "threshold_delay_replanning_policy_v1",
+            "replanning_method_id": "greedy_replanning_solver_v1",
+            "execution_status": "planned_not_executed",
+            "configuration_status": "blueprint_not_executable_yet"
+        },
+        {
+            "algorithm_run_id": "planned_travel_delay_only_light_rep003__no_replanning_baseline",
+            "planned_run_id": "planned_travel_delay_only_light_rep003",
+            "policy_option_id": "no_replanning_baseline",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 3,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "policy_id": "no_replanning_policy_v1",
+            "replanning_method_id": "replanning_not_implemented_v1",
+            "execution_status": "planned_not_executed",
+            "configuration_status": "blueprint_not_executable_yet"
+        },
+        {
+            "algorithm_run_id": "planned_travel_delay_only_light_rep003__threshold_without_solver",
+            "planned_run_id": "planned_travel_delay_only_light_rep003",
+            "policy_option_id": "threshold_without_solver",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 3,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "policy_id": "threshold_delay_replanning_policy_v1",
+            "replanning_method_id": "replanning_not_implemented_v1",
+            "execution_status": "planned_not_executed",
+            "configuration_status": "blueprint_not_executable_yet"
+        },
+        {
+            "algorithm_run_id": "planned_travel_delay_only_light_rep003__threshold_with_greedy_replanning",
+            "planned_run_id": "planned_travel_delay_only_light_rep003",
+            "policy_option_id": "threshold_with_greedy_replanning",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_id": 3,
+            "planned_travel_delay_minutes": 10,
+            "planned_service_delay_minutes": 0,
+            "creates_reassignment_opportunity": false,
+            "expected_descriptor": "stable_low_disruption",
+            "conservative_action": "keep_current_plan_or_validate",
+            "policy_id": "threshold_delay_replanning_policy_v1",
+            "replanning_method_id": "greedy_replanning_solver_v1",
+            "execution_status": "planned_not_executed",
+            "configuration_status": "blueprint_not_executable_yet"
+        }
+    ],
+    "quality_gate": {
+        "planned_run_count_matches_replications": true,
+        "algorithm_run_count_matches_policy_options": true
+    },
+    "interpretation": {
+        "status": "planning_blueprint_only",
+        "warning": "This blueprint is not yet executable. It should be used as an intermediate layer before generating concrete experiment JSON configs."
+    }
+}

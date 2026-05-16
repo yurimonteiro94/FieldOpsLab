@@ -1,0 +1,166 @@
+{
+    "index_type": "fieldops_lab_campaign_batch_blueprint_index",
+    "generated_at_local": "2026-05-16T03:49:05",
+    "source_plan": {
+        "path": "analysis\\reports\\experiment_campaign_plan.json",
+        "design_status": "planning_only",
+        "fuzzy_logic_status": "not_used_in_main_pipeline",
+        "scientific_status": "campaign_design_only"
+    },
+    "campaign": {
+        "blueprint_count": 12,
+        "total_planned_run_count": 36,
+        "total_planned_algorithm_run_count": 108,
+        "executable_status": "blueprint_not_executable_yet"
+    },
+    "blueprints": [
+        {
+            "batch_id": "campaign_combined_delay_light_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_light_batch_blueprint_blueprint.json",
+            "scenario_family_id": "combined_delay",
+            "severity_id": "light",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_combined_delay_moderate_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_moderate_batch_blueprint_blueprint.json",
+            "scenario_family_id": "combined_delay",
+            "severity_id": "moderate",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_combined_delay_severe_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_severe_batch_blueprint_blueprint.json",
+            "scenario_family_id": "combined_delay",
+            "severity_id": "severe",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_light_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_light_batch_blueprint_blueprint.json",
+            "scenario_family_id": "reassignment_opportunity",
+            "severity_id": "light",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_moderate_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_moderate_batch_blueprint_blueprint.json",
+            "scenario_family_id": "reassignment_opportunity",
+            "severity_id": "moderate",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_reassignment_opportunity_severe_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_severe_batch_blueprint_blueprint.json",
+            "scenario_family_id": "reassignment_opportunity",
+            "severity_id": "severe",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_service_delay_only_light_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_light_batch_blueprint_blueprint.json",
+            "scenario_family_id": "service_delay_only",
+            "severity_id": "light",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_service_delay_only_moderate_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_moderate_batch_blueprint_blueprint.json",
+            "scenario_family_id": "service_delay_only",
+            "severity_id": "moderate",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_service_delay_only_severe_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_severe_batch_blueprint_blueprint.json",
+            "scenario_family_id": "service_delay_only",
+            "severity_id": "severe",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_light_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_light_batch_blueprint_blueprint.json",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "light",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_moderate_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_moderate_batch_blueprint_blueprint.json",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "moderate",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        },
+        {
+            "batch_id": "campaign_travel_delay_only_severe_batch_blueprint",
+            "blueprint_path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_severe_batch_blueprint_blueprint.json",
+            "scenario_family_id": "travel_delay_only",
+            "severity_id": "severe",
+            "replication_count": 3,
+            "planned_run_count": 3,
+            "policy_option_count": 3,
+            "planned_algorithm_run_count": 9,
+            "executable_status": "blueprint_not_executable_yet",
+            "interpretation_status": "planning_blueprint_only"
+        }
+    ],
+    "interpretation": {
+        "status": "planning_blueprint_index_only",
+        "warning": "This index organizes blueprint files. It does not execute experiments and does not prove scientific validity."
+    }
+}

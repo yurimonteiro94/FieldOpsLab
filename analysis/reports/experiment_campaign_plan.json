@@ -1,7 +1,7 @@
 {
     "plan": {
         "plan_type": "fieldops_lab_experiment_campaign_plan",
-        "generated_at_local": "2026-05-16T03:44:16",
+        "generated_at_local": "2026-05-16T03:49:05",
         "design_status": "planning_only",
         "replication_count_per_condition": 3,
         "scenario_family_count": 4,
