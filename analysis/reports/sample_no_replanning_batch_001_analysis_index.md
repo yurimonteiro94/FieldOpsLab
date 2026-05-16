@@ -15,7 +15,7 @@ This file is an index for the generated analysis reports. It centralizes the pos
 | configured_experiment_count | 12 |
 | completed_experiment_count | 12 |
 | completion_percent | 100.0 |
-| is_complete | True |
+| is_complete | yes |
 | recommendation_count | 4 |
 
 ## Ranking status
@@ -35,7 +35,7 @@ This file is an index for the generated analysis reports. It centralizes the pos
 | ranking_sensitivity | `analysis\reports\sample_no_replanning_batch_001_ranking_sensitivity.md` | ok |
 | scenario_descriptors_markdown | `analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.md` | ok |
 | scenario_descriptors_csv | `analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.csv` | ok |
-| pipeline_log | `analysis\reports\sample_no_replanning_batch_001_pipeline_log.txt` | missing |
+| pipeline_log | `analysis\reports\sample_no_replanning_batch_001_pipeline_log.txt` | ok |
 
 ## Recommended reading order
 

@@ -65,5 +65,10 @@ C:\Python314\python.exe C:\Users\yuri\Documents\FieldOpsLab\analysis\scripts\gen
 Scenario descriptor report written to: analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.md
 Scenario descriptor CSV written to: analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.csv
 
-Pipeline finished successfully.
+Analysis reports generated successfully.
+Writing preliminary pipeline log before generating the index report.
+
+Index report generated successfully.
 Index report: analysis\reports\sample_no_replanning_batch_001_analysis_index.md
+
+Pipeline finished successfully.

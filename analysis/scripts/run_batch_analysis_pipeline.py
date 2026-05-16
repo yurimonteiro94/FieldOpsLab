@@ -13,6 +13,11 @@ def ensure_parent(path):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
 
 
+def write_text(path, content):
+    ensure_parent(path)
+    Path(path).write_text(content, encoding="utf-8")
+
+
 def run_command(command, log_lines):
     log_lines.append("")
     log_lines.append("Command:")
@@ -42,11 +47,6 @@ def run_command(command, log_lines):
     return output
 
 
-def write_text(path, content):
-    ensure_parent(path)
-    Path(path).write_text(content, encoding="utf-8")
-
-
 def file_status(path):
     path = Path(path)
 
@@ -63,10 +63,15 @@ def markdown_escape(value):
     return str(value).replace("|", "\\|")
 
 
+def yes_no(value):
+    return "yes" if bool(value) else "no"
+
+
 def build_index_report(data, outputs, pipeline_log_path):
     batch = data.get("batch", {})
     rankings = data.get("rankings", {})
     recommendations = data.get("recommendations", {})
+    ranking_config = rankings.get("ranking_config", {})
 
     lines = []
 
@@ -90,14 +95,13 @@ def build_index_report(data, outputs, pipeline_log_path):
     lines.append(f"| configured_experiment_count | {batch.get('configured_experiment_count', '')} |")
     lines.append(f"| completed_experiment_count | {batch.get('completed_experiment_count', '')} |")
     lines.append(f"| completion_percent | {batch.get('completion_percent', '')} |")
-    lines.append(f"| is_complete | {batch.get('is_complete', '')} |")
+    lines.append(f"| is_complete | {yes_no(batch.get('is_complete', False))} |")
     lines.append(f"| recommendation_count | {recommendations.get('recommendation_count', '')} |")
     lines.append("")
     lines.append("## Ranking status")
     lines.append("")
     lines.append("| Field | Value |")
     lines.append("| --- | --- |")
-    ranking_config = rankings.get("ranking_config", {})
     lines.append(f"| ranking_config_id | `{markdown_escape(ranking_config.get('ranking_config_id', ''))}` |")
     lines.append(f"| ranking_score_definition | {markdown_escape(rankings.get('ranking_score_definition', ''))} |")
     lines.append("")
@@ -232,14 +236,20 @@ def main():
             ("scenario_descriptors_csv", str(descriptors_csv)),
         ]
 
+        log_lines.append("")
+        log_lines.append("Analysis reports generated successfully.")
+        log_lines.append("Writing preliminary pipeline log before generating the index report.")
+        write_text(pipeline_log_txt, "\n".join(log_lines))
+
         data = read_json(batch_result_json)
         index_content = build_index_report(data, outputs, str(pipeline_log_txt))
         write_text(index_report_md, index_content)
 
         log_lines.append("")
-        log_lines.append("Pipeline finished successfully.")
+        log_lines.append("Index report generated successfully.")
         log_lines.append(f"Index report: {index_report_md}")
-
+        log_lines.append("")
+        log_lines.append("Pipeline finished successfully.")
         write_text(pipeline_log_txt, "\n".join(log_lines))
 
         print("Batch analysis pipeline finished.")
