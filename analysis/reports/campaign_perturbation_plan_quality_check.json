@@ -1,8 +1,8 @@
 {
     "report_type": "fieldops_lab_campaign_perturbation_plan_quality_check",
-    "generated_at_local": "2026-05-16T04:29:32",
-    "all_required_checks_passed": false,
-    "problem_count": 12,
+    "generated_at_local": "2026-05-16T04:35:18",
+    "all_required_checks_passed": true,
+    "problem_count": 0,
     "warning_count": 0,
     "checked_plan_count": 12,
     "expected_plan_count": 12,
@@ -11,20 +11,7 @@
     "semantic_status": "family_specific_template_based_perturbation_plan",
     "scientific_status": "candidate_campaign_semantics",
     "fuzzy_logic_status": "not_used_in_main_pipeline",
-    "problems": [
-        "Unexpected travel perturbation count. expected=1; actual=2",
-        "Unexpected total travel delay. expected=10; actual=17",
-        "Unexpected travel perturbation count. expected=1; actual=2",
-        "Unexpected total travel delay. expected=50; actual=85",
-        "Unexpected travel perturbation count. expected=1; actual=2",
-        "Unexpected total travel delay. expected=90; actual=153",
-        "Unexpected travel perturbation count. expected=0; actual=1",
-        "Unexpected total travel delay. expected=0; actual=7",
-        "Unexpected travel perturbation count. expected=0; actual=1",
-        "Unexpected total travel delay. expected=0; actual=35",
-        "Unexpected travel perturbation count. expected=0; actual=1",
-        "Unexpected total travel delay. expected=0; actual=63"
-    ],
+    "problems": [],
     "warnings": [],
     "plan_checks": [
         {
@@ -35,18 +22,15 @@
             "scenario_family_id": "combined_delay",
             "severity_id": "light",
             "perturbation_count": 2,
-            "travel_perturbation_count": 2,
+            "travel_perturbation_count": 1,
             "service_perturbation_count": 1,
             "expected_travel_delay": 10,
-            "actual_travel_delay": 17,
+            "actual_travel_delay": 10,
             "expected_service_delay": 7,
             "actual_service_delay": 7,
-            "problem_count": 2,
+            "problem_count": 0,
             "warning_count": 0,
-            "problems": [
-                "Unexpected travel perturbation count. expected=1; actual=2",
-                "Unexpected total travel delay. expected=10; actual=17"
-            ],
+            "problems": [],
             "warnings": []
         },
         {
@@ -57,18 +41,15 @@
             "scenario_family_id": "combined_delay",
             "severity_id": "moderate",
             "perturbation_count": 2,
-            "travel_perturbation_count": 2,
+            "travel_perturbation_count": 1,
             "service_perturbation_count": 1,
             "expected_travel_delay": 50,
-            "actual_travel_delay": 85,
+            "actual_travel_delay": 50,
             "expected_service_delay": 35,
             "actual_service_delay": 35,
-            "problem_count": 2,
+            "problem_count": 0,
             "warning_count": 0,
-            "problems": [
-                "Unexpected travel perturbation count. expected=1; actual=2",
-                "Unexpected total travel delay. expected=50; actual=85"
-            ],
+            "problems": [],
             "warnings": []
         },
         {
@@ -79,18 +60,15 @@
             "scenario_family_id": "combined_delay",
             "severity_id": "severe",
             "perturbation_count": 2,
-            "travel_perturbation_count": 2,
+            "travel_perturbation_count": 1,
             "service_perturbation_count": 1,
             "expected_travel_delay": 90,
-            "actual_travel_delay": 153,
+            "actual_travel_delay": 90,
             "expected_service_delay": 63,
             "actual_service_delay": 63,
-            "problem_count": 2,
+            "problem_count": 0,
             "warning_count": 0,
-            "problems": [
-                "Unexpected travel perturbation count. expected=1; actual=2",
-                "Unexpected total travel delay. expected=90; actual=153"
-            ],
+            "problems": [],
             "warnings": []
         },
         {
@@ -158,18 +136,15 @@
             "scenario_family_id": "service_delay_only",
             "severity_id": "light",
             "perturbation_count": 1,
-            "travel_perturbation_count": 1,
+            "travel_perturbation_count": 0,
             "service_perturbation_count": 1,
             "expected_travel_delay": 0,
-            "actual_travel_delay": 7,
+            "actual_travel_delay": 0,
             "expected_service_delay": 7,
             "actual_service_delay": 7,
-            "problem_count": 2,
+            "problem_count": 0,
             "warning_count": 0,
-            "problems": [
-                "Unexpected travel perturbation count. expected=0; actual=1",
-                "Unexpected total travel delay. expected=0; actual=7"
-            ],
+            "problems": [],
             "warnings": []
         },
         {
@@ -180,18 +155,15 @@
             "scenario_family_id": "service_delay_only",
             "severity_id": "moderate",
             "perturbation_count": 1,
-            "travel_perturbation_count": 1,
+            "travel_perturbation_count": 0,
             "service_perturbation_count": 1,
             "expected_travel_delay": 0,
-            "actual_travel_delay": 35,
+            "actual_travel_delay": 0,
             "expected_service_delay": 35,
             "actual_service_delay": 35,
-            "problem_count": 2,
+            "problem_count": 0,
             "warning_count": 0,
-            "problems": [
-                "Unexpected travel perturbation count. expected=0; actual=1",
-                "Unexpected total travel delay. expected=0; actual=35"
-            ],
+            "problems": [],
             "warnings": []
         },
         {
@@ -202,18 +174,15 @@
             "scenario_family_id": "service_delay_only",
             "severity_id": "severe",
             "perturbation_count": 1,
-            "travel_perturbation_count": 1,
+            "travel_perturbation_count": 0,
             "service_perturbation_count": 1,
             "expected_travel_delay": 0,
-            "actual_travel_delay": 63,
+            "actual_travel_delay": 0,
             "expected_service_delay": 63,
             "actual_service_delay": 63,
-            "problem_count": 2,
+            "problem_count": 0,
             "warning_count": 0,
-            "problems": [
-                "Unexpected travel perturbation count. expected=0; actual=1",
-                "Unexpected total travel delay. expected=0; actual=63"
-            ],
+            "problems": [],
             "warnings": []
         },
         {

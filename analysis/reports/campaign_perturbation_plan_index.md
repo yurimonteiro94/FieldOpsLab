@@ -9,7 +9,7 @@ This report indexes family-specific perturbation plans generated for the campaig
 | output_plan_dir | `data\perturbations\campaign_plans` |
 | generated_perturbation_plan_count | 12 |
 | generated_perturbation_count | 15 |
-| travel_perturbation_count | 15 |
+| travel_perturbation_count | 9 |
 | service_perturbation_count | 6 |
 | semantic_status | family_specific_template_based_perturbation_plan |
 | scientific_status | candidate_campaign_semantics |

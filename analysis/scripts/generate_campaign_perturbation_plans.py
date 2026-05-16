@@ -140,27 +140,35 @@ def perturbation_type(perturbation: dict[str, Any]) -> str:
 
 
 def is_travel_perturbation(perturbation: dict[str, Any]) -> bool:
-    kind = perturbation_type(perturbation)
+    kind = str(perturbation.get("type", "")).upper()
+
+    if "SERVICE" in kind:
+        return False
 
     if "TRAVEL" in kind:
         return True
 
     keys = {str(key).lower() for key in perturbation.keys()}
+    joined_keys = " ".join(keys)
 
-    return "from_location_id" in keys and "to_location_id" in keys
-
-
+    return (
+        "from_location_id" in keys
+        and "to_location_id" in keys
+        and "service" not in joined_keys
+    )
 def is_service_perturbation(perturbation: dict[str, Any]) -> bool:
-    kind = perturbation_type(perturbation)
+    kind = str(perturbation.get("type", "")).upper()
+
+    if "TRAVEL" in kind:
+        return False
 
     if "SERVICE" in kind:
         return True
 
     keys = {str(key).lower() for key in perturbation.keys()}
+    joined_keys = " ".join(keys)
 
-    return "current_task_id" in keys or "service" in " ".join(keys)
-
-
+    return "current_task_id" in keys or "service" in joined_keys
 def find_delay_key(perturbation: dict[str, Any]) -> str:
     preferred_keys = [
         "delay_duration",
