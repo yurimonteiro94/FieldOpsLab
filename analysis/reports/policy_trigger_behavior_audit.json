@@ -1,6 +1,6 @@
 {
     "report_type": "fieldops_lab_policy_trigger_behavior_audit",
-    "generated_at_local": "2026-05-16T05:41:52",
+    "generated_at_local": "2026-05-16T05:55:32",
     "summary": {
         "row_count": 36,
         "threshold_row_count": 24,

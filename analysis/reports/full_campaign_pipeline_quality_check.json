@@ -1,16 +1,16 @@
 {
     "report_type": "fieldops_lab_full_campaign_pipeline_quality_check",
-    "generated_at_local": "2026-05-16T05:41:53",
+    "generated_at_local": "2026-05-16T05:55:33",
     "manifest_path": "analysis\\reports\\full_campaign_pipeline_manifest.json",
     "pipeline_report_path": "analysis\\reports\\full_campaign_pipeline_report.md",
     "pipeline_log_path": "analysis\\reports\\full_campaign_pipeline_log.txt",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 1,
-    "step_count": 22,
+    "step_count": 24,
     "failed_step_count": 0,
-    "required_output_file_count": 10,
-    "required_quality_file_count": 10,
+    "required_output_file_count": 11,
+    "required_quality_file_count": 11,
     "problems": [],
     "warnings": [
         "Final diagnostic report has 2 methodological warning(s)."
@@ -19,22 +19,22 @@
         {
             "path": "analysis\\reports\\full_campaign_pipeline_report.md",
             "exists": true,
-            "size_bytes": 2644
+            "size_bytes": 3000
         },
         {
             "path": "analysis\\reports\\full_campaign_pipeline_manifest.json",
             "exists": true,
-            "size_bytes": 24153
+            "size_bytes": 26546
         },
         {
             "path": "analysis\\reports\\full_campaign_pipeline_log.txt",
             "exists": true,
-            "size_bytes": 21786
+            "size_bytes": 23819
         },
         {
             "path": "analysis\\reports\\campaign_execution_index.json",
             "exists": true,
-            "size_bytes": 51404
+            "size_bytes": 51406
         },
         {
             "path": "analysis\\reports\\campaign_result_summary.json",
@@ -60,6 +60,11 @@
             "path": "analysis\\reports\\campaign_decision_matrix.json",
             "exists": true,
             "size_bytes": 17591
+        },
+        {
+            "path": "analysis\\reports\\campaign_ranking_profile_sensitivity.json",
+            "exists": true,
+            "size_bytes": 248151
         },
         {
             "path": "analysis\\reports\\campaign_final_diagnostic_report.json",
@@ -110,6 +115,11 @@
         },
         {
             "path": "analysis\\reports\\campaign_decision_matrix_quality_check.json",
+            "passed": true,
+            "problem_count": 0
+        },
+        {
+            "path": "analysis\\reports\\campaign_ranking_profile_sensitivity_quality_check.json",
             "passed": true,
             "problem_count": 0
         },

@@ -17,6 +17,7 @@ REQUIRED_QUALITY_FILES = [
     "analysis/reports/service_delay_impact_audit_quality_check.json",
     "analysis/reports/policy_trigger_behavior_audit_quality_check.json",
     "analysis/reports/campaign_decision_matrix_quality_check.json",
+    "analysis/reports/campaign_ranking_profile_sensitivity_quality_check.json",
     "analysis/reports/campaign_final_diagnostic_report_quality_check.json",
 ]
 
@@ -30,6 +31,7 @@ REQUIRED_OUTPUT_FILES = [
     "analysis/reports/service_delay_impact_audit.json",
     "analysis/reports/policy_trigger_behavior_audit.json",
     "analysis/reports/campaign_decision_matrix.json",
+    "analysis/reports/campaign_ranking_profile_sensitivity.json",
     "analysis/reports/campaign_final_diagnostic_report.json",
 ]
 

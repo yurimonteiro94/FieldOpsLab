@@ -326,6 +326,27 @@ def build_steps(fieldops_exe: Path) -> list[tuple[str, list[str]]]:
             ),
         ),
         (
+            "generate_campaign_ranking_profile_sensitivity",
+            py_command(
+                Path("analysis/scripts/generate_campaign_ranking_profile_sensitivity.py"),
+                Path("data/results/campaign_batches"),
+                REPORTS_DIR / "campaign_ranking_profile_sensitivity.md",
+                REPORTS_DIR / "campaign_ranking_profile_sensitivity.json",
+                REPORTS_DIR / "campaign_ranking_profile_sensitivity.csv",
+            ),
+        ),
+        (
+            "verify_campaign_ranking_profile_sensitivity",
+            py_command(
+                Path("analysis/scripts/verify_campaign_ranking_profile_sensitivity.py"),
+                REPORTS_DIR / "campaign_ranking_profile_sensitivity.json",
+                REPORTS_DIR / "campaign_ranking_profile_sensitivity.md",
+                REPORTS_DIR / "campaign_ranking_profile_sensitivity.csv",
+                REPORTS_DIR / "campaign_ranking_profile_sensitivity_quality_check.md",
+                REPORTS_DIR / "campaign_ranking_profile_sensitivity_quality_check.json",
+            ),
+        ),
+        (
             "generate_campaign_final_diagnostic_report",
             py_command(
                 Path("analysis/scripts/generate_campaign_final_diagnostic_report.py"),
@@ -373,6 +394,8 @@ def build_manifest(fieldops_exe: Path, steps: list[dict[str, Any]]) -> dict[str,
             "service_delay_impact_audit": path_text(REPORTS_DIR / "service_delay_impact_audit.json"),
             "policy_trigger_behavior_audit": path_text(REPORTS_DIR / "policy_trigger_behavior_audit.json"),
             "campaign_decision_matrix": path_text(REPORTS_DIR / "campaign_decision_matrix.json"),
+            "campaign_ranking_profile_sensitivity": path_text(REPORTS_DIR / "campaign_ranking_profile_sensitivity.json"),
+            "campaign_ranking_profile_sensitivity_quality_check": path_text(REPORTS_DIR / "campaign_ranking_profile_sensitivity_quality_check.json"),
             "campaign_final_diagnostic_report": path_text(REPORTS_DIR / "campaign_final_diagnostic_report.json"),
             "campaign_final_diagnostic_quality_check": path_text(REPORTS_DIR / "campaign_final_diagnostic_report_quality_check.json"),
         },
