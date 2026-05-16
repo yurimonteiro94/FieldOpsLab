@@ -1,0 +1,106 @@
+{
+    "report_type": "fieldops_lab_analysis_output_quality_check",
+    "manifest_path": "analysis\\reports\\sample_no_replanning_batch_001_analysis_manifest.json",
+    "all_required_checks_passed": false,
+    "problem_count": 2,
+    "warning_count": 1,
+    "checked_file_count": 8,
+    "file_checks": [
+        {
+            "label": "summary_text",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_summary.txt",
+            "exists": true,
+            "size_bytes": 2786,
+            "status_from_manifest": "ok",
+            "expected_text": "FieldOps Lab batch result summary",
+            "expected_text_found": true,
+            "sha256": "48d89832504528b18667b8a7e7c8ac826d5576aad21cccf2bcd1b67f3bd9a18c",
+            "problems": []
+        },
+        {
+            "label": "main_markdown_report",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_report.md",
+            "exists": true,
+            "size_bytes": 2559,
+            "status_from_manifest": "ok",
+            "expected_text": "# FieldOps Lab batch report",
+            "expected_text_found": false,
+            "sha256": "60e44058bf529214b572052489f0d0408d5dcc45565f7db6efcd13b1d912ba83",
+            "problems": [
+                "Expected text not found: # FieldOps Lab batch report"
+            ]
+        },
+        {
+            "label": "recommendation_audit",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_audit.md",
+            "exists": true,
+            "size_bytes": 2559,
+            "status_from_manifest": "ok",
+            "expected_text": "# FieldOps Lab recommendation audit",
+            "expected_text_found": true,
+            "sha256": "60e44058bf529214b572052489f0d0408d5dcc45565f7db6efcd13b1d912ba83",
+            "problems": []
+        },
+        {
+            "label": "ranking_sensitivity",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_ranking_sensitivity.md",
+            "exists": true,
+            "size_bytes": 7604,
+            "status_from_manifest": "ok",
+            "expected_text": "# FieldOps Lab ranking sensitivity report",
+            "expected_text_found": true,
+            "sha256": "d1f6f989429c35c5e44372ef72a94fa971563d982bcc91bbd4994bdc0803c44f",
+            "problems": []
+        },
+        {
+            "label": "scenario_descriptors_markdown",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_scenario_descriptors.md",
+            "exists": true,
+            "size_bytes": 5158,
+            "status_from_manifest": "ok",
+            "expected_text": "# FieldOps Lab scenario descriptor report",
+            "expected_text_found": true,
+            "sha256": "0786d15352c19164848914245063acdbb7abbcba92047da43e9c6104f994ef41",
+            "problems": []
+        },
+        {
+            "label": "scenario_descriptors_csv",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_scenario_descriptors.csv",
+            "exists": true,
+            "size_bytes": 1552,
+            "status_from_manifest": "ok",
+            "expected_text": "scenario_id,",
+            "expected_text_found": true,
+            "sha256": "85ef4ec443253e3ce9d493bcb2065c565deedc6c8d7fa308d86b67cdc69c4e6e",
+            "problems": []
+        },
+        {
+            "label": "analysis_index",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_analysis_index.md",
+            "exists": true,
+            "size_bytes": 2238,
+            "status_from_manifest": "ok",
+            "expected_text": "# FieldOps Lab batch analysis index",
+            "expected_text_found": true,
+            "sha256": "51ab75e71fe44829bee4fa30104bfdec6367a43cb37e60057430e9cfd7dafb06",
+            "problems": []
+        },
+        {
+            "label": "pipeline_log",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_pipeline_log.txt",
+            "exists": true,
+            "size_bytes": 5157,
+            "status_from_manifest": "ok",
+            "expected_text": "FieldOps Lab batch analysis pipeline",
+            "expected_text_found": true,
+            "sha256": "0c356042842711b24f13ce4ae75c595e589806e2024bd009b55d906a56d33280",
+            "problems": []
+        }
+    ],
+    "duplicate_content_problems": [
+        "Duplicate file content detected. labels=['main_markdown_report', 'recommendation_audit']; paths=['analysis\\\\reports\\\\sample_no_replanning_batch_001_report.md', 'analysis\\\\reports\\\\sample_no_replanning_batch_001_audit.md']"
+    ],
+    "suspicious_same_size_warnings": [
+        "Suspicious same file size detected. size_bytes=2559; labels=['main_markdown_report', 'recommendation_audit']. This is not necessarily wrong, but it should be reviewed."
+    ]
+}
