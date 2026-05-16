@@ -36,6 +36,7 @@ void test_solution_comparison_json_writer();
 
 void test_batch_ranking();
 void test_batch_ranking_config();
+void test_batch_ranking_config_validator();
 void test_batch_recommendation();
 
 void test_no_replanning_experiment();
@@ -160,6 +161,11 @@ int main() {
     failed_tests += run_test(
         "BatchRankingConfig",
         test_batch_ranking_config
+    );
+
+    failed_tests += run_test(
+        "BatchRankingConfigValidator",
+        test_batch_ranking_config_validator
     );
 
     failed_tests += run_test(

@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "core/analysis/batch_ranking/batch_ranking_config_validator/batch_ranking_config_validator.h"
 #include "core/experiment/no_replanning_batch_result_validator/no_replanning_batch_result_validator.h"
 #include "core/io/no_replanning_batch_aggregate_csv_writer/no_replanning_batch_aggregate_csv_writer.h"
 #include "core/io/no_replanning_batch_overview_csv_writer/no_replanning_batch_overview_csv_writer.h"
@@ -213,6 +214,8 @@ static void write_batch_result_json_if_enabled(
 NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     const NoReplanningBatchExperimentConfig& config
 ) {
+    validate_batch_ranking_config(config.ranking_config);
+
     NoReplanningBatchExperimentResult batch_result;
 
     batch_result.batch_id = config.batch_id;
