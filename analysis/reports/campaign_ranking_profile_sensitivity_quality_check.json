@@ -1,0 +1,23 @@
+{
+    "report_type": "fieldops_lab_campaign_ranking_profile_sensitivity_quality_check",
+    "generated_at_local": "2026-05-16T05:46:33",
+    "sensitivity_json_path": "analysis\\reports\\campaign_ranking_profile_sensitivity.json",
+    "sensitivity_markdown_path": "analysis\\reports\\campaign_ranking_profile_sensitivity.md",
+    "sensitivity_csv_path": "analysis\\reports\\campaign_ranking_profile_sensitivity.csv",
+    "all_required_checks_passed": true,
+    "problem_count": 0,
+    "warning_count": 0,
+    "result_file_count": 12,
+    "ranking_profile_count": 4,
+    "scenario_summary_count": 12,
+    "recommendation_count": 48,
+    "ranking_row_count": 144,
+    "csv_row_count": 144,
+    "sensitive_to_ranking_profile_count": 0,
+    "problems": [],
+    "warnings": [],
+    "interpretation": {
+        "status": "ranking_profile_sensitivity_quality_check",
+        "warning": "This check validates structure and consistency, not final scientific validity."
+    }
+}
