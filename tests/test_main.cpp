@@ -45,6 +45,7 @@ void test_no_replanning_batch_experiment();
 void test_no_replanning_batch_config_json_loader();
 void test_no_replanning_batch_aggregate_csv_writer();
 void test_no_replanning_batch_ranking_csv_writer();
+void test_no_replanning_batch_recommendation_csv_writer();
 void test_no_replanning_batch_result_json_writer();
 
 void test_policy();
@@ -190,6 +191,11 @@ int main() {
     failed_tests += run_test(
         "NoReplanningBatchRankingCsvWriter",
         test_no_replanning_batch_ranking_csv_writer
+    );
+
+    failed_tests += run_test(
+        "NoReplanningBatchRecommendationCsvWriter",
+        test_no_replanning_batch_recommendation_csv_writer
     );
 
     failed_tests += run_test(

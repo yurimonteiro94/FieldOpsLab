@@ -87,6 +87,11 @@ static int run_batch_mode(int argc, char* argv[]) {
                   << batch_result.ranking_csv_output_path << "\n";
     }
 
+    if (batch_result.recommendation_csv_was_written) {
+        std::cout << "  Recommendation CSV written to: "
+                  << batch_result.recommendation_csv_output_path << "\n";
+    }
+
     if (batch_result.result_json_was_written) {
         std::cout << "  Result JSON written to: "
                   << batch_result.result_json_output_path << "\n";

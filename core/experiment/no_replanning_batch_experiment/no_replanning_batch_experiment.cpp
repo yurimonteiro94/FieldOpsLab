@@ -4,6 +4,7 @@
 
 #include "core/io/no_replanning_batch_aggregate_csv_writer/no_replanning_batch_aggregate_csv_writer.h"
 #include "core/io/no_replanning_batch_ranking_csv_writer/no_replanning_batch_ranking_csv_writer.h"
+#include "core/io/no_replanning_batch_recommendation_csv_writer/no_replanning_batch_recommendation_csv_writer.h"
 #include "core/io/no_replanning_batch_result_json_writer/no_replanning_batch_result_json_writer.h"
 #include "core/io/no_replanning_experiment_summary_csv_writer/no_replanning_experiment_summary_csv_writer.h"
 
@@ -73,6 +74,20 @@ static void write_batch_ranking_if_enabled(
     );
 }
 
+static void write_batch_recommendation_if_enabled(
+    const NoReplanningBatchExperimentConfig& config,
+    const NoReplanningBatchExperimentResult& result
+) {
+    if (!config.export_recommendation_csv) {
+        return;
+    }
+
+    write_no_replanning_batch_recommendation_csv(
+        result,
+        config.recommendation_csv_output_path
+    );
+}
+
 static void write_batch_result_json_if_enabled(
     const NoReplanningBatchExperimentConfig& config,
     const NoReplanningBatchExperimentResult& result
@@ -99,6 +114,8 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.summary_csv_output_path = config.summary_csv_output_path;
     batch_result.aggregate_csv_output_path = config.aggregate_csv_output_path;
     batch_result.ranking_csv_output_path = config.ranking_csv_output_path;
+    batch_result.recommendation_csv_output_path =
+        config.recommendation_csv_output_path;
     batch_result.result_json_output_path = config.result_json_output_path;
 
     if (config.export_summary_csv) {
@@ -111,6 +128,10 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
 
     if (config.export_ranking_csv) {
         remove_existing_output_file(config.ranking_csv_output_path);
+    }
+
+    if (config.export_recommendation_csv) {
+        remove_existing_output_file(config.recommendation_csv_output_path);
     }
 
     if (config.export_result_json) {
@@ -155,6 +176,12 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.ranking_csv_was_written =
         config.export_ranking_csv &&
         !config.ranking_csv_output_path.empty();
+
+    write_batch_recommendation_if_enabled(config, batch_result);
+
+    batch_result.recommendation_csv_was_written =
+        config.export_recommendation_csv &&
+        !config.recommendation_csv_output_path.empty();
 
     batch_result.result_json_was_written =
         config.export_result_json &&
