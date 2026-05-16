@@ -1,0 +1,33 @@
+{
+    "report_type": "fieldops_lab_campaign_quality_check",
+    "generated_at_local": "2026-05-16T03:38:27",
+    "campaign_json_path": "analysis\\reports\\campaign_index.json",
+    "campaign_markdown_path": "analysis\\reports\\campaign_index.md",
+    "campaign_csv_path": "analysis\\reports\\campaign_index.csv",
+    "all_required_checks_passed": true,
+    "problem_count": 0,
+    "warning_count": 1,
+    "problems": [],
+    "warnings": [
+        "Campaign contains 1 objective-only batch(es). Treat conclusions as preliminary."
+    ],
+    "campaign": {
+        "manifest_count": 1,
+        "total_configured_experiment_count": 12,
+        "total_completed_experiment_count": 12,
+        "global_completion_percent": 100.0,
+        "complete_batch_count": 1,
+        "quality_ok_batch_count": 1,
+        "incomplete_batch_count": 0,
+        "quality_problem_batch_count": 0,
+        "objective_only_batch_count": 1,
+        "fuzzy_used_batch_count": 0,
+        "incomplete_batches": [],
+        "quality_problem_batches": [],
+        "objective_only_batches": [
+            "sample_no_replanning_batch_001"
+        ],
+        "fuzzy_used_batches": []
+    },
+    "batch_count": 1
+}
