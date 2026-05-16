@@ -1,0 +1,16 @@
+{
+    "report_type": "fieldops_lab_experiment_campaign_plan_quality_check",
+    "plan_json_path": "analysis\\reports\\experiment_campaign_plan.json",
+    "plan_markdown_path": "analysis\\reports\\experiment_campaign_plan.md",
+    "plan_csv_path": "analysis\\reports\\experiment_campaign_plan.csv",
+    "all_required_checks_passed": true,
+    "problem_count": 0,
+    "warning_count": 0,
+    "planned_run_count": 36,
+    "csv_row_count": 36,
+    "planned_algorithm_run_count": 108,
+    "fuzzy_logic_status": "not_used_in_main_pipeline",
+    "scientific_status": "campaign_design_only",
+    "problems": [],
+    "warnings": []
+}
