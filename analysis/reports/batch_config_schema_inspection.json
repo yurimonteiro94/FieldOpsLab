@@ -1,0 +1,483 @@
+{
+    "report_type": "fieldops_lab_batch_config_schema_inspection",
+    "generated_at_local": "2026-05-16T03:59:01",
+    "inputs": {
+        "sample_config_path": "data\\experiments\\sample_no_replanning_batch_001.json",
+        "blueprint_index_path": "analysis\\reports\\campaign_batch_blueprint_index.json",
+        "blueprint_dir": "analysis\\reports\\campaign_batch_blueprints"
+    },
+    "sample_config": {
+        "top_level_shape": [
+            {
+                "key": "aggregate_csv_output_path",
+                "type": "str",
+                "item_count": 1
+            },
+            {
+                "key": "batch_id",
+                "type": "str",
+                "item_count": 1
+            },
+            {
+                "key": "description",
+                "type": "str",
+                "item_count": 1
+            },
+            {
+                "key": "experiments",
+                "type": "array",
+                "item_count": 12
+            },
+            {
+                "key": "export_aggregate_csv",
+                "type": "bool",
+                "item_count": 1
+            },
+            {
+                "key": "export_individual_results",
+                "type": "bool",
+                "item_count": 1
+            },
+            {
+                "key": "export_ranking_csv",
+                "type": "bool",
+                "item_count": 1
+            },
+            {
+                "key": "export_result_json",
+                "type": "bool",
+                "item_count": 1
+            },
+            {
+                "key": "export_summary_csv",
+                "type": "bool",
+                "item_count": 1
+            },
+            {
+                "key": "name",
+                "type": "str",
+                "item_count": 1
+            },
+            {
+                "key": "ranking_csv_output_path",
+                "type": "str",
+                "item_count": 1
+            },
+            {
+                "key": "result_json_output_path",
+                "type": "str",
+                "item_count": 1
+            },
+            {
+                "key": "summary_csv_output_path",
+                "type": "str",
+                "item_count": 1
+            },
+            {
+                "key": "verbose",
+                "type": "bool",
+                "item_count": 1
+            }
+        ],
+        "candidate_experiment_arrays": [
+            {
+                "path": "experiments",
+                "length": 12,
+                "object_count": 12,
+                "candidate_score": 5,
+                "sample_keys": [
+                    "experiment_id",
+                    "instance_path",
+                    "notes",
+                    "perturbation_plan_path",
+                    "policy_id",
+                    "replanning_method_id",
+                    "replication_id",
+                    "scenario_id",
+                    "seed"
+                ]
+            }
+        ],
+        "key_path_count": 25,
+        "most_common_key_paths": [
+            {
+                "path": "experiments[].experiment_id",
+                "count": 12
+            },
+            {
+                "path": "experiments[].scenario_id",
+                "count": 12
+            },
+            {
+                "path": "experiments[].replication_id",
+                "count": 12
+            },
+            {
+                "path": "experiments[].seed",
+                "count": 12
+            },
+            {
+                "path": "experiments[].notes",
+                "count": 12
+            },
+            {
+                "path": "experiments[].policy_id",
+                "count": 12
+            },
+            {
+                "path": "experiments[].replanning_method_id",
+                "count": 12
+            },
+            {
+                "path": "experiments[].instance_path",
+                "count": 12
+            },
+            {
+                "path": "experiments[].perturbation_plan_path",
+                "count": 12
+            },
+            {
+                "path": "experiments[].max_single_delay_threshold",
+                "count": 8
+            },
+            {
+                "path": "experiments[].total_delay_threshold",
+                "count": 8
+            },
+            {
+                "path": "batch_id",
+                "count": 1
+            },
+            {
+                "path": "name",
+                "count": 1
+            },
+            {
+                "path": "description",
+                "count": 1
+            },
+            {
+                "path": "summary_csv_output_path",
+                "count": 1
+            },
+            {
+                "path": "aggregate_csv_output_path",
+                "count": 1
+            },
+            {
+                "path": "ranking_csv_output_path",
+                "count": 1
+            },
+            {
+                "path": "result_json_output_path",
+                "count": 1
+            },
+            {
+                "path": "verbose",
+                "count": 1
+            },
+            {
+                "path": "export_individual_results",
+                "count": 1
+            },
+            {
+                "path": "export_summary_csv",
+                "count": 1
+            },
+            {
+                "path": "export_aggregate_csv",
+                "count": 1
+            },
+            {
+                "path": "export_ranking_csv",
+                "count": 1
+            },
+            {
+                "path": "export_result_json",
+                "count": 1
+            },
+            {
+                "path": "experiments",
+                "count": 1
+            }
+        ]
+    },
+    "blueprint_index": {
+        "blueprint_count": 12,
+        "family_counter": {
+            "combined_delay": 3,
+            "reassignment_opportunity": 3,
+            "service_delay_only": 3,
+            "travel_delay_only": 3
+        },
+        "severity_counter": {
+            "light": 4,
+            "moderate": 4,
+            "severe": 4
+        },
+        "status_counter": {
+            "blueprint_not_executable_yet": 12
+        },
+        "total_planned_run_count": 36,
+        "total_planned_algorithm_run_count": 108
+    },
+    "blueprint_files": [
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_light_batch_blueprint_blueprint.json",
+            "file_name": "campaign_combined_delay_light_batch_blueprint_blueprint.json",
+            "size_bytes": 13063,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_moderate_batch_blueprint_blueprint.json",
+            "file_name": "campaign_combined_delay_moderate_batch_blueprint_blueprint.json",
+            "size_bytes": 13232,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_combined_delay_severe_batch_blueprint_blueprint.json",
+            "file_name": "campaign_combined_delay_severe_batch_blueprint_blueprint.json",
+            "size_bytes": 13329,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_light_batch_blueprint_blueprint.json",
+            "file_name": "campaign_reassignment_opportunity_light_batch_blueprint_blueprint.json",
+            "size_bytes": 13449,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_moderate_batch_blueprint_blueprint.json",
+            "file_name": "campaign_reassignment_opportunity_moderate_batch_blueprint_blueprint.json",
+            "size_bytes": 13582,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_reassignment_opportunity_severe_batch_blueprint_blueprint.json",
+            "file_name": "campaign_reassignment_opportunity_severe_batch_blueprint_blueprint.json",
+            "size_bytes": 13499,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_light_batch_blueprint_blueprint.json",
+            "file_name": "campaign_service_delay_only_light_batch_blueprint_blueprint.json",
+            "size_bytes": 13187,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_moderate_batch_blueprint_blueprint.json",
+            "file_name": "campaign_service_delay_only_moderate_batch_blueprint_blueprint.json",
+            "size_bytes": 13356,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_service_delay_only_severe_batch_blueprint_blueprint.json",
+            "file_name": "campaign_service_delay_only_severe_batch_blueprint_blueprint.json",
+            "size_bytes": 13285,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_light_batch_blueprint_blueprint.json",
+            "file_name": "campaign_travel_delay_only_light_batch_blueprint_blueprint.json",
+            "size_bytes": 13161,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_moderate_batch_blueprint_blueprint.json",
+            "file_name": "campaign_travel_delay_only_moderate_batch_blueprint_blueprint.json",
+            "size_bytes": 13318,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        },
+        {
+            "path": "analysis\\reports\\campaign_batch_blueprints\\campaign_travel_delay_only_severe_batch_blueprint_blueprint.json",
+            "file_name": "campaign_travel_delay_only_severe_batch_blueprint_blueprint.json",
+            "size_bytes": 13247,
+            "top_level_key_count": 12,
+            "top_level_keys": [
+                "algorithm_runs",
+                "batch",
+                "blueprint_type",
+                "executable_status",
+                "generated_at_local",
+                "interpretation",
+                "planned_runs",
+                "policy_options",
+                "quality_gate",
+                "scenario_family",
+                "severity",
+                "source_plan"
+            ],
+            "key_path_count": 68
+        }
+    ],
+    "interpretation": {
+        "status": "schema_inspection_only",
+        "next_step": "Use this inspection to implement a safer blueprint-to-executable-batch-config generator.",
+        "warning": "This report does not modify executable configs. It only inspects the current structure."
+    }
+}
