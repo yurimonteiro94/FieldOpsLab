@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <map>
+#include <sstream>
 
 bool BatchRankingKey::operator<(const BatchRankingKey& other) const {
     if (scenario_id != other.scenario_id) {
@@ -19,10 +20,43 @@ bool BatchRankingKey::operator<(const BatchRankingKey& other) const {
     return execution_mode < other.execution_mode;
 }
 
-std::string batch_ranking_score_definition() {
+static bool is_default_ranking_config(
+    const BatchRankingConfig& config
+) {
     return
-        "Lower is better. Current ranking_score equals "
-        "mean_delta_objective_value.";
+        config.ranking_config_id == "default_objective_delta_ranking_v1" &&
+        config.objective_value_weight == 1.0 &&
+        config.makespan_weight == 0.0 &&
+        config.total_travel_time_weight == 0.0 &&
+        config.total_service_time_weight == 0.0 &&
+        config.total_waiting_time_weight == 0.0 &&
+        config.late_task_count_weight == 0.0 &&
+        config.total_lateness_weight == 0.0 &&
+        config.effect_count_weight == 0.0 &&
+        config.policy_should_replan_count_weight == 0.0 &&
+        config.replanning_request_count_weight == 0.0 &&
+        config.replanning_success_count_weight == 0.0 &&
+        config.replanning_applied_count_weight == 0.0;
+}
+
+std::string batch_ranking_score_definition(
+    const BatchRankingConfig& config
+) {
+    if (is_default_ranking_config(config)) {
+        return
+            "Lower is better. Current ranking_score equals "
+            "mean_delta_objective_value.";
+    }
+
+    std::ostringstream text;
+
+    text
+        << "Lower is better. Current ranking_score is a weighted sum. "
+        << "ranking_config_id="
+        << config.ranking_config_id
+        << ".";
+
+    return text.str();
 }
 
 std::vector<std::string> batch_ranking_tie_breakers() {
@@ -123,9 +157,74 @@ static double mean_value(double sum, int count) {
     return sum / static_cast<double>(count);
 }
 
+static double count_mean_value(int value, int count) {
+    if (count == 0) {
+        return 0.0;
+    }
+
+    return static_cast<double>(value) / static_cast<double>(count);
+}
+
+static double calculate_ranking_score(
+    const BatchRankingRow& row,
+    const BatchRankingConfig& config
+) {
+    const int count = row.stats.experiment_count;
+
+    return
+        config.objective_value_weight *
+            row.mean_delta_objective_value +
+
+        config.makespan_weight *
+            row.mean_delta_makespan +
+
+        config.total_travel_time_weight *
+            row.mean_delta_total_travel_time +
+
+        config.total_service_time_weight *
+            row.mean_delta_total_service_time +
+
+        config.total_waiting_time_weight *
+            row.mean_delta_total_waiting_time +
+
+        config.late_task_count_weight *
+            row.mean_late_task_count +
+
+        config.total_lateness_weight *
+            row.mean_total_lateness +
+
+        config.effect_count_weight *
+            row.mean_effect_count +
+
+        config.policy_should_replan_count_weight *
+            count_mean_value(
+                row.stats.policy_should_replan_count,
+                count
+            ) +
+
+        config.replanning_request_count_weight *
+            count_mean_value(
+                row.stats.replanning_request_count,
+                count
+            ) +
+
+        config.replanning_success_count_weight *
+            count_mean_value(
+                row.stats.replanning_success_count,
+                count
+            ) +
+
+        config.replanning_applied_count_weight *
+            count_mean_value(
+                row.stats.replanning_applied_count,
+                count
+            );
+}
+
 static BatchRankingRow build_ranking_row(
     const BatchRankingKey& key,
-    const BatchRankingStats& stats
+    const BatchRankingStats& stats,
+    const BatchRankingConfig& config
 ) {
     BatchRankingRow row;
 
@@ -180,7 +279,7 @@ static BatchRankingRow build_ranking_row(
             stats.experiment_count
         );
 
-    row.ranking_score = row.mean_delta_objective_value;
+    row.ranking_score = calculate_ranking_score(row, config);
 
     return row;
 }
@@ -200,7 +299,8 @@ static void sort_ranking_rows(std::vector<BatchRankingRow>& rows) {
             }
 
             if (first.mean_delta_makespan != second.mean_delta_makespan) {
-                return first.mean_delta_makespan < second.mean_delta_makespan;
+                return first.mean_delta_makespan <
+                       second.mean_delta_makespan;
             }
 
             if (first.mean_delta_total_travel_time !=
@@ -243,6 +343,16 @@ static void assign_ranks(std::vector<BatchRankingRow>& rows) {
 std::vector<BatchRankingRow> build_batch_ranking_rows(
     const NoReplanningBatchExperimentResult& batch_result
 ) {
+    return build_batch_ranking_rows(
+        batch_result,
+        batch_result.ranking_config
+    );
+}
+
+std::vector<BatchRankingRow> build_batch_ranking_rows(
+    const NoReplanningBatchExperimentResult& batch_result,
+    const BatchRankingConfig& ranking_config
+) {
     std::map<BatchRankingKey, BatchRankingStats> grouped_stats;
 
     for (const auto& result : batch_result.results) {
@@ -255,7 +365,11 @@ std::vector<BatchRankingRow> build_batch_ranking_rows(
 
     for (const auto& entry : grouped_stats) {
         rows.push_back(
-            build_ranking_row(entry.first, entry.second)
+            build_ranking_row(
+                entry.first,
+                entry.second,
+                ranking_config
+            )
         );
     }
 

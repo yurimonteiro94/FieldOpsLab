@@ -3,12 +3,15 @@
 #include <string>
 #include <vector>
 
+#include "core/analysis/batch_ranking/batch_ranking_config.h"
 #include "core/experiment/no_replanning_experiment/no_replanning_experiment.h"
 
 struct NoReplanningBatchExperimentConfig {
     std::string batch_id = "sample_no_replanning_batch";
     std::string name = "Sample no-replanning batch";
     std::string description = "Sample no-replanning batch experiment.";
+
+    BatchRankingConfig ranking_config;
 
     std::string summary_csv_output_path =
         "data/results/sample_no_replanning_batch_summary_001.csv";
@@ -40,6 +43,8 @@ struct NoReplanningBatchExperimentResult {
     std::string batch_id;
     std::string name;
     std::string description;
+
+    BatchRankingConfig ranking_config;
 
     std::string summary_csv_output_path;
     std::string aggregate_csv_output_path;

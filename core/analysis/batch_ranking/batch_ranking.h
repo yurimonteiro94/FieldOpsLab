@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include "core/analysis/batch_ranking/batch_ranking_config.h"
 #include "core/experiment/no_replanning_batch_experiment/no_replanning_batch_experiment.h"
 
 struct BatchRankingKey {
@@ -52,10 +53,17 @@ struct BatchRankingRow {
     double mean_effect_count = 0.0;
 };
 
-std::string batch_ranking_score_definition();
+std::string batch_ranking_score_definition(
+    const BatchRankingConfig& config = BatchRankingConfig()
+);
 
 std::vector<std::string> batch_ranking_tie_breakers();
 
 std::vector<BatchRankingRow> build_batch_ranking_rows(
     const NoReplanningBatchExperimentResult& batch_result
+);
+
+std::vector<BatchRankingRow> build_batch_ranking_rows(
+    const NoReplanningBatchExperimentResult& batch_result,
+    const BatchRankingConfig& ranking_config
 );

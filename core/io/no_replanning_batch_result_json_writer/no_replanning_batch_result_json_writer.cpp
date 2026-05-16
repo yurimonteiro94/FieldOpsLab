@@ -70,6 +70,30 @@ static json technician_runtime_states_to_json(
     return data;
 }
 
+static json ranking_config_to_json(
+    const BatchRankingConfig& config
+) {
+    return {
+        {"ranking_config_id", config.ranking_config_id},
+        {"objective_value_weight", config.objective_value_weight},
+        {"makespan_weight", config.makespan_weight},
+        {"total_travel_time_weight", config.total_travel_time_weight},
+        {"total_service_time_weight", config.total_service_time_weight},
+        {"total_waiting_time_weight", config.total_waiting_time_weight},
+        {"late_task_count_weight", config.late_task_count_weight},
+        {"total_lateness_weight", config.total_lateness_weight},
+        {"effect_count_weight", config.effect_count_weight},
+        {"policy_should_replan_count_weight",
+            config.policy_should_replan_count_weight},
+        {"replanning_request_count_weight",
+            config.replanning_request_count_weight},
+        {"replanning_success_count_weight",
+            config.replanning_success_count_weight},
+        {"replanning_applied_count_weight",
+            config.replanning_applied_count_weight}
+    };
+}
+
 static std::string get_replanning_method_id(
     const NoReplanningExperimentResult& result
 ) {
@@ -162,14 +186,20 @@ static json replanning_request_to_json(
             request.technician_runtime_states.size()},
         {"runtime_effect_count", request.runtime_effects.size()},
         {"tasks", {
-            {"completed_task_ids", string_vector_to_json(request.completed_task_ids)},
-            {"locked_task_ids", string_vector_to_json(request.locked_task_ids)},
-            {"candidate_task_ids", string_vector_to_json(request.candidate_task_ids)}
+            {"completed_task_ids",
+                string_vector_to_json(request.completed_task_ids)},
+            {"locked_task_ids",
+                string_vector_to_json(request.locked_task_ids)},
+            {"candidate_task_ids",
+                string_vector_to_json(request.candidate_task_ids)}
         }},
         {"technicians", {
-            {"available_technician_ids", string_vector_to_json(request.available_technician_ids)},
-            {"busy_technician_ids", string_vector_to_json(request.busy_technician_ids)},
-            {"finished_technician_ids", string_vector_to_json(request.finished_technician_ids)}
+            {"available_technician_ids",
+                string_vector_to_json(request.available_technician_ids)},
+            {"busy_technician_ids",
+                string_vector_to_json(request.busy_technician_ids)},
+            {"finished_technician_ids",
+                string_vector_to_json(request.finished_technician_ids)}
         }},
         {"technician_runtime_states",
             technician_runtime_states_to_json(
@@ -190,11 +220,13 @@ static json experiment_result_to_json(
         {"notes", result.metadata.notes},
 
         {"instance_id", result.instance.instance_id},
-        {"perturbation_plan_id", result.perturbation_plan.perturbation_plan_id},
+        {"perturbation_plan_id",
+            result.perturbation_plan.perturbation_plan_id},
 
         {"policy", {
             {"policy_id", result.policy_decision.policy_id},
-            {"decision", policy_decision_type_to_string(result.policy_decision.type)},
+            {"decision",
+                policy_decision_type_to_string(result.policy_decision.type)},
             {"should_replan", result.policy_decision.should_replan()},
             {"decision_time", result.policy_decision.decision_time},
             {"reason", result.policy_decision.reason}
@@ -208,7 +240,8 @@ static json experiment_result_to_json(
             {"status", get_replanning_status(result)},
             {"has_new_solution", get_replanning_has_new_solution(result)},
             {"is_successful", get_replanning_is_successful(result)},
-            {"generated_solution_id", get_replanning_generated_solution_id(result)},
+            {"generated_solution_id",
+                get_replanning_generated_solution_id(result)},
             {"was_applied_to_execution",
                 result.replanning_result_was_applied_to_execution}
         }},
@@ -222,41 +255,65 @@ static json experiment_result_to_json(
         }},
 
         {"metrics", {
-            {"planned_objective_value", result.planned_metrics.objective_value},
-            {"executed_objective_value", result.executed_metrics.objective_value},
-            {"delta_objective_value", result.comparison.delta_objective_value},
-            {"percent_objective_value", result.comparison.percent_objective_value},
+            {"planned_objective_value",
+                result.planned_metrics.objective_value},
+            {"executed_objective_value",
+                result.executed_metrics.objective_value},
+            {"delta_objective_value",
+                result.comparison.delta_objective_value},
+            {"percent_objective_value",
+                result.comparison.percent_objective_value},
 
             {"planned_makespan", result.planned_metrics.makespan},
             {"executed_makespan", result.executed_metrics.makespan},
             {"delta_makespan", result.comparison.delta_makespan},
             {"percent_makespan", result.comparison.percent_makespan},
 
-            {"planned_total_travel_time", result.planned_metrics.total_travel_time},
-            {"executed_total_travel_time", result.executed_metrics.total_travel_time},
-            {"delta_total_travel_time", result.comparison.delta_total_travel_time},
-            {"percent_total_travel_time", result.comparison.percent_total_travel_time},
+            {"planned_total_travel_time",
+                result.planned_metrics.total_travel_time},
+            {"executed_total_travel_time",
+                result.executed_metrics.total_travel_time},
+            {"delta_total_travel_time",
+                result.comparison.delta_total_travel_time},
+            {"percent_total_travel_time",
+                result.comparison.percent_total_travel_time},
 
-            {"planned_total_service_time", result.planned_metrics.total_service_time},
-            {"executed_total_service_time", result.executed_metrics.total_service_time},
-            {"delta_total_service_time", result.comparison.delta_total_service_time},
-            {"percent_total_service_time", result.comparison.percent_total_service_time},
+            {"planned_total_service_time",
+                result.planned_metrics.total_service_time},
+            {"executed_total_service_time",
+                result.executed_metrics.total_service_time},
+            {"delta_total_service_time",
+                result.comparison.delta_total_service_time},
+            {"percent_total_service_time",
+                result.comparison.percent_total_service_time},
 
-            {"planned_total_waiting_time", result.planned_metrics.total_waiting_time},
-            {"executed_total_waiting_time", result.executed_metrics.total_waiting_time},
-            {"delta_total_waiting_time", result.comparison.delta_total_waiting_time},
-            {"percent_total_waiting_time", result.comparison.percent_total_waiting_time},
+            {"planned_total_waiting_time",
+                result.planned_metrics.total_waiting_time},
+            {"executed_total_waiting_time",
+                result.executed_metrics.total_waiting_time},
+            {"delta_total_waiting_time",
+                result.comparison.delta_total_waiting_time},
+            {"percent_total_waiting_time",
+                result.comparison.percent_total_waiting_time},
 
-            {"planned_late_task_count", result.planned_metrics.late_task_count},
-            {"executed_late_task_count", result.executed_metrics.late_task_count},
-            {"delta_late_task_count", result.comparison.delta_late_task_count},
+            {"planned_late_task_count",
+                result.planned_metrics.late_task_count},
+            {"executed_late_task_count",
+                result.executed_metrics.late_task_count},
+            {"delta_late_task_count",
+                result.comparison.delta_late_task_count},
 
-            {"planned_total_lateness", result.planned_metrics.total_lateness},
-            {"executed_total_lateness", result.executed_metrics.total_lateness},
-            {"delta_total_lateness", result.comparison.delta_total_lateness},
+            {"planned_total_lateness",
+                result.planned_metrics.total_lateness},
+            {"executed_total_lateness",
+                result.executed_metrics.total_lateness},
+            {"delta_total_lateness",
+                result.comparison.delta_total_lateness},
 
-            {"assigned_task_count", result.executed_metrics.assigned_task_count},
-            {"unassigned_task_count", result.executed_metrics.unassigned_task_count},
+            {"assigned_task_count",
+                result.executed_metrics.assigned_task_count},
+            {"unassigned_task_count",
+                result.executed_metrics.unassigned_task_count},
             {"effect_count", result.effects.size()}
         }}
     };
@@ -292,16 +349,23 @@ static json ranking_row_to_json(const BatchRankingRow& row) {
         {"replanning_method_id", row.key.replanning_method_id},
         {"execution_mode", row.key.execution_mode},
         {"experiment_count", row.stats.experiment_count},
-        {"policy_should_replan_count", row.stats.policy_should_replan_count},
-        {"replanning_request_count", row.stats.replanning_request_count},
-        {"replanning_success_count", row.stats.replanning_success_count},
-        {"replanning_applied_count", row.stats.replanning_applied_count},
+        {"policy_should_replan_count",
+            row.stats.policy_should_replan_count},
+        {"replanning_request_count",
+            row.stats.replanning_request_count},
+        {"replanning_success_count",
+            row.stats.replanning_success_count},
+        {"replanning_applied_count",
+            row.stats.replanning_applied_count},
         {"ranking_score", row.ranking_score},
         {"mean_delta_objective_value", row.mean_delta_objective_value},
         {"mean_delta_makespan", row.mean_delta_makespan},
-        {"mean_delta_total_travel_time", row.mean_delta_total_travel_time},
-        {"mean_delta_total_service_time", row.mean_delta_total_service_time},
-        {"mean_delta_total_waiting_time", row.mean_delta_total_waiting_time},
+        {"mean_delta_total_travel_time",
+            row.mean_delta_total_travel_time},
+        {"mean_delta_total_service_time",
+            row.mean_delta_total_service_time},
+        {"mean_delta_total_waiting_time",
+            row.mean_delta_total_waiting_time},
         {"mean_late_task_count", row.mean_late_task_count},
         {"mean_total_lateness", row.mean_total_lateness},
         {"mean_effect_count", row.mean_effect_count}
@@ -321,7 +385,9 @@ static json rankings_to_json(
     }
 
     return {
-        {"ranking_score_definition", batch_ranking_score_definition()},
+        {"ranking_score_definition",
+            batch_ranking_score_definition(batch_result.ranking_config)},
+        {"ranking_config", ranking_config_to_json(batch_result.ranking_config)},
         {"tie_breakers", ranking_tie_breakers_to_json()},
         {"row_count", rows.size()},
         {"rows", ranking_rows}
@@ -339,7 +405,6 @@ static json recommendation_to_json(
         {"recommended_execution_mode",
             recommendation.recommended_execution_mode},
         {"recommended_rank", recommendation.recommended_rank},
-
         {"experiment_count", recommendation.experiment_count},
         {"policy_should_replan_count",
             recommendation.policy_should_replan_count},
@@ -349,34 +414,25 @@ static json recommendation_to_json(
             recommendation.replanning_success_count},
         {"replanning_applied_count",
             recommendation.replanning_applied_count},
-
         {"best_score", recommendation.best_score},
         {"second_best_score", recommendation.second_best_score},
         {"score_margin_to_second",
             recommendation.score_margin_to_second},
         {"has_second_option", recommendation.has_second_option},
         {"has_clear_winner", recommendation.has_clear_winner},
-
         {"mean_delta_objective_value",
             recommendation.mean_delta_objective_value},
-        {"mean_delta_makespan",
-            recommendation.mean_delta_makespan},
+        {"mean_delta_makespan", recommendation.mean_delta_makespan},
         {"mean_delta_total_travel_time",
             recommendation.mean_delta_total_travel_time},
         {"mean_delta_total_service_time",
             recommendation.mean_delta_total_service_time},
         {"mean_delta_total_waiting_time",
             recommendation.mean_delta_total_waiting_time},
-
-        {"mean_late_task_count",
-            recommendation.mean_late_task_count},
-        {"mean_total_lateness",
-            recommendation.mean_total_lateness},
-        {"mean_effect_count",
-            recommendation.mean_effect_count},
-
-        {"recommendation_reason",
-            recommendation.recommendation_reason}
+        {"mean_late_task_count", recommendation.mean_late_task_count},
+        {"mean_total_lateness", recommendation.mean_total_lateness},
+        {"mean_effect_count", recommendation.mean_effect_count},
+        {"recommendation_reason", recommendation.recommendation_reason}
     };
 }
 
@@ -386,18 +442,16 @@ static json recommendations_to_json(
     std::vector<BatchScenarioRecommendation> recommendations =
         build_batch_scenario_recommendations(batch_result);
 
-    json recommendation_rows = json::array();
+    json rows = json::array();
 
     for (const auto& recommendation : recommendations) {
-        recommendation_rows.push_back(
-            recommendation_to_json(recommendation)
-        );
+        rows.push_back(recommendation_to_json(recommendation));
     }
 
     return {
         {"recommendation_definition", batch_recommendation_definition()},
         {"recommendation_count", recommendations.size()},
-        {"rows", recommendation_rows}
+        {"rows", rows}
     };
 }
 
@@ -415,18 +469,26 @@ void write_no_replanning_batch_result_to_json(
             {"experiment_count", batch_result.experiment_count()}
         }},
         {"outputs", {
-            {"summary_csv_output_path", batch_result.summary_csv_output_path},
-            {"aggregate_csv_output_path", batch_result.aggregate_csv_output_path},
-            {"ranking_csv_output_path", batch_result.ranking_csv_output_path},
+            {"summary_csv_output_path",
+                batch_result.summary_csv_output_path},
+            {"aggregate_csv_output_path",
+                batch_result.aggregate_csv_output_path},
+            {"ranking_csv_output_path",
+                batch_result.ranking_csv_output_path},
             {"recommendation_csv_output_path",
                 batch_result.recommendation_csv_output_path},
-            {"result_json_output_path", batch_result.result_json_output_path},
-            {"summary_csv_was_written", batch_result.summary_csv_was_written},
-            {"aggregate_csv_was_written", batch_result.aggregate_csv_was_written},
-            {"ranking_csv_was_written", batch_result.ranking_csv_was_written},
+            {"result_json_output_path",
+                batch_result.result_json_output_path},
+            {"summary_csv_was_written",
+                batch_result.summary_csv_was_written},
+            {"aggregate_csv_was_written",
+                batch_result.aggregate_csv_was_written},
+            {"ranking_csv_was_written",
+                batch_result.ranking_csv_was_written},
             {"recommendation_csv_was_written",
                 batch_result.recommendation_csv_was_written},
-            {"result_json_was_written", batch_result.result_json_was_written}
+            {"result_json_was_written",
+                batch_result.result_json_was_written}
         }},
         {"experiments", experiment_results_to_json(batch_result)},
         {"rankings", rankings_to_json(batch_result)},

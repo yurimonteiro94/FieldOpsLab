@@ -111,6 +111,8 @@ NoReplanningBatchExperimentResult run_no_replanning_batch_experiment(
     batch_result.batch_id = config.batch_id;
     batch_result.name = config.name;
     batch_result.description = config.description;
+    batch_result.ranking_config = config.ranking_config;
+
     batch_result.summary_csv_output_path = config.summary_csv_output_path;
     batch_result.aggregate_csv_output_path = config.aggregate_csv_output_path;
     batch_result.ranking_csv_output_path = config.ranking_csv_output_path;
