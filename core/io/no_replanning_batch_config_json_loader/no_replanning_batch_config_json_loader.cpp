@@ -218,6 +218,13 @@ NoReplanningBatchExperimentConfig load_no_replanning_batch_config_from_json(
             config.description
         );
 
+    config.overview_csv_output_path =
+        get_optional_string(
+            data,
+            "overview_csv_output_path",
+            config.overview_csv_output_path
+        );
+
     config.summary_csv_output_path =
         get_optional_string(
             data,
@@ -237,6 +244,13 @@ NoReplanningBatchExperimentConfig load_no_replanning_batch_config_from_json(
             data,
             "ranking_csv_output_path",
             config.ranking_csv_output_path
+        );
+
+    config.recommendation_csv_output_path =
+        get_optional_string(
+            data,
+            "recommendation_csv_output_path",
+            config.recommendation_csv_output_path
         );
 
     config.result_json_output_path =

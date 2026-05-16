@@ -2,18 +2,15 @@
     "report_type": "fieldops_lab_executed_campaign_batch_result_path_check",
     "result_path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_result.json",
     "expected_result_dir": "data\\results\\campaign_batches",
-    "all_required_checks_passed": false,
-    "problem_count": 4,
+    "all_required_checks_passed": true,
+    "problem_count": 0,
     "checks": [
         {
             "key": "overview_csv_output_path",
-            "path": "data\\results\\sample_no_replanning_batch_overview_001.csv",
-            "under_expected_dir": false,
+            "path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_overview.csv",
+            "under_expected_dir": true,
             "was_written": true,
-            "problems": [
-                "Path still points to sample batch output.",
-                "Path is not under expected campaign result directory."
-            ]
+            "problems": []
         },
         {
             "key": "summary_csv_output_path",
@@ -38,13 +35,10 @@
         },
         {
             "key": "recommendation_csv_output_path",
-            "path": "data\\results\\sample_no_replanning_batch_recommendation_001.csv",
-            "under_expected_dir": false,
+            "path": "data\\results\\campaign_batches\\campaign_travel_delay_only_light_batch_recommendation.csv",
+            "under_expected_dir": true,
             "was_written": true,
-            "problems": [
-                "Path still points to sample batch output.",
-                "Path is not under expected campaign result directory."
-            ]
+            "problems": []
         },
         {
             "key": "result_json_output_path",
