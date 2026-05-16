@@ -25,7 +25,7 @@ This report consolidates the executed campaign, result summary, semantic inspect
 
 | Label | Path | Size bytes |
 | --- | --- | ---: |
-| campaign_execution_index | `analysis\reports\campaign_execution_index.json` | 51406 |
+| campaign_execution_index | `analysis\reports\campaign_execution_index.json` | 51398 |
 | campaign_result_summary | `analysis\reports\campaign_result_summary.json` | 19677 |
 | campaign_result_semantic_inspection | `analysis\reports\campaign_result_semantic_inspection.json` | 34722 |
 | service_delay_impact_audit | `analysis\reports\service_delay_impact_audit.json` | 16040 |
@@ -64,6 +64,44 @@ This report consolidates the executed campaign, result summary, semantic inspect
 | campaign_travel_delay_only_light_batch | travel_delay_only | light | keep_current_plan_candidate | low | diagnostic_only_low_evidence | expected_no_trigger | not_service_related | weak or tied recommendation |
 | campaign_travel_delay_only_moderate_batch | travel_delay_only | moderate | replan_candidate_with_makespan_monitoring | medium | preliminary_pattern_candidate | triggered_and_applied | not_service_related | replanning improves objective but increases makespan |
 | campaign_travel_delay_only_severe_batch | travel_delay_only | severe | replan_candidate_with_makespan_monitoring | medium | preliminary_pattern_candidate | triggered_and_applied | not_service_related | replanning improves objective but increases makespan |
+
+## Ranking profile sensitivity integration
+
+This section connects the final diagnostic report to the ranking profile sensitivity analysis.
+
+| Field | Value |
+| --- | --- |
+| ranking_profile_count | 4 |
+| scenario_summary_count | 12 |
+| recommendation_count | 48 |
+| ranking_row_count | 144 |
+| sensitive_to_ranking_profile_count | 2 |
+
+### Ranking stability counts
+
+| Stability class | Count |
+| --- | ---: |
+| same_policy_different_class | 2 |
+| stable_across_profiles | 10 |
+
+### Ranking sensitivity by final diagnostic row
+
+| Batch | Family | Severity | Ranking stability | Unique policies |
+| --- | --- | --- | --- | ---: |
+| campaign_combined_delay_light_batch | combined_delay | light | stable_across_profiles | 1 |
+| campaign_combined_delay_moderate_batch | combined_delay | moderate | stable_across_profiles | 1 |
+| campaign_combined_delay_severe_batch | combined_delay | severe | stable_across_profiles | 1 |
+| campaign_reassignment_opportunity_light_batch | reassignment_opportunity | light | stable_across_profiles | 1 |
+| campaign_reassignment_opportunity_moderate_batch | reassignment_opportunity | moderate | stable_across_profiles | 1 |
+| campaign_reassignment_opportunity_severe_batch | reassignment_opportunity | severe | stable_across_profiles | 1 |
+| campaign_service_delay_only_light_batch | service_delay_only | light | stable_across_profiles | 1 |
+| campaign_service_delay_only_moderate_batch | service_delay_only | moderate | same_policy_different_class | 1 |
+| campaign_service_delay_only_severe_batch | service_delay_only | severe | same_policy_different_class | 1 |
+| campaign_travel_delay_only_light_batch | travel_delay_only | light | stable_across_profiles | 1 |
+| campaign_travel_delay_only_moderate_batch | travel_delay_only | moderate | stable_across_profiles | 1 |
+| campaign_travel_delay_only_severe_batch | travel_delay_only | severe | stable_across_profiles | 1 |
+
+Conservative interpretation: stable recommendations across ranking profiles are less fragile, but this still does not validate the ranking profile scientifically.
 
 ## What this report supports
 

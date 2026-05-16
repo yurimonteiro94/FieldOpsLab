@@ -1,13 +1,13 @@
 {
     "report_type": "fieldops_lab_campaign_final_diagnostic_report",
-    "generated_at_local": "2026-05-16T05:55:32",
+    "generated_at_local": "2026-05-16T06:05:28",
     "source_files": [
         {
             "label": "campaign_execution_index",
             "path": "analysis\\reports\\campaign_execution_index.json",
             "exists": true,
             "top_level_keys": 15,
-            "size_bytes": 51406
+            "size_bytes": 51398
         },
         {
             "label": "campaign_result_summary",
@@ -81,7 +81,10 @@
         "fuzzy_logic_status": "not_used_in_main_pipeline",
         "scientific_status": "final_diagnostic_report_only",
         "general_project_completeness_estimate_percent": 30,
-        "campaign_pipeline_completeness_estimate_percent": 90
+        "campaign_pipeline_completeness_estimate_percent": 90,
+        "ranking_profile_count": 4,
+        "ranking_scenario_summary_count": 12,
+        "ranking_sensitive_to_profile_count": 2
     },
     "rows": [
         {
@@ -108,7 +111,10 @@
             "provisional_action": "review_service_delay_modeling_before_concluding",
             "evidence_strength": "low",
             "methodological_caution": "service delay visible but weak under current objective/makespan; weak or tied recommendation",
-            "scientific_use_status": "diagnostic_only_requires_modeling_review"
+            "scientific_use_status": "diagnostic_only_requires_modeling_review",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_combined_delay_moderate_batch",
@@ -134,7 +140,10 @@
             "provisional_action": "replan_candidate_with_makespan_monitoring",
             "evidence_strength": "medium",
             "methodological_caution": "replanning improves objective but increases makespan",
-            "scientific_use_status": "preliminary_pattern_candidate"
+            "scientific_use_status": "preliminary_pattern_candidate",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_combined_delay_severe_batch",
@@ -160,7 +169,10 @@
             "provisional_action": "replan_candidate_with_makespan_monitoring",
             "evidence_strength": "medium",
             "methodological_caution": "replanning improves objective but increases makespan",
-            "scientific_use_status": "preliminary_pattern_candidate"
+            "scientific_use_status": "preliminary_pattern_candidate",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_reassignment_opportunity_light_batch",
@@ -186,7 +198,10 @@
             "provisional_action": "keep_current_plan_candidate",
             "evidence_strength": "low",
             "methodological_caution": "weak or tied recommendation",
-            "scientific_use_status": "diagnostic_only_low_evidence"
+            "scientific_use_status": "diagnostic_only_low_evidence",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_reassignment_opportunity_moderate_batch",
@@ -212,7 +227,10 @@
             "provisional_action": "replan_candidate_with_makespan_monitoring",
             "evidence_strength": "medium",
             "methodological_caution": "replanning improves objective but increases makespan",
-            "scientific_use_status": "preliminary_pattern_candidate"
+            "scientific_use_status": "preliminary_pattern_candidate",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_reassignment_opportunity_severe_batch",
@@ -238,7 +256,10 @@
             "provisional_action": "replan_candidate_with_makespan_monitoring",
             "evidence_strength": "medium",
             "methodological_caution": "replanning improves objective but increases makespan",
-            "scientific_use_status": "preliminary_pattern_candidate"
+            "scientific_use_status": "preliminary_pattern_candidate",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_service_delay_only_light_batch",
@@ -264,7 +285,10 @@
             "provisional_action": "review_service_delay_modeling_before_concluding",
             "evidence_strength": "low",
             "methodological_caution": "service delay visible but weak under current objective/makespan; weak or tied recommendation",
-            "scientific_use_status": "diagnostic_only_requires_modeling_review"
+            "scientific_use_status": "diagnostic_only_requires_modeling_review",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_service_delay_only_moderate_batch",
@@ -290,7 +314,10 @@
             "provisional_action": "review_service_delay_modeling_before_concluding",
             "evidence_strength": "low",
             "methodological_caution": "service delay visible but weak under current objective/makespan; weak or tied recommendation",
-            "scientific_use_status": "diagnostic_only_requires_modeling_review"
+            "scientific_use_status": "diagnostic_only_requires_modeling_review",
+            "ranking_stability_class": "same_policy_different_class",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_service_delay_only_severe_batch",
@@ -316,7 +343,10 @@
             "provisional_action": "review_service_delay_modeling_before_concluding",
             "evidence_strength": "low",
             "methodological_caution": "service delay visible but weak under current objective/makespan; weak or tied recommendation",
-            "scientific_use_status": "diagnostic_only_requires_modeling_review"
+            "scientific_use_status": "diagnostic_only_requires_modeling_review",
+            "ranking_stability_class": "same_policy_different_class",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_travel_delay_only_light_batch",
@@ -342,7 +372,10 @@
             "provisional_action": "keep_current_plan_candidate",
             "evidence_strength": "low",
             "methodological_caution": "weak or tied recommendation",
-            "scientific_use_status": "diagnostic_only_low_evidence"
+            "scientific_use_status": "diagnostic_only_low_evidence",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_travel_delay_only_moderate_batch",
@@ -368,7 +401,10 @@
             "provisional_action": "replan_candidate_with_makespan_monitoring",
             "evidence_strength": "medium",
             "methodological_caution": "replanning improves objective but increases makespan",
-            "scientific_use_status": "preliminary_pattern_candidate"
+            "scientific_use_status": "preliminary_pattern_candidate",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         },
         {
             "batch_id": "campaign_travel_delay_only_severe_batch",
@@ -394,12 +430,31 @@
             "provisional_action": "replan_candidate_with_makespan_monitoring",
             "evidence_strength": "medium",
             "methodological_caution": "replanning improves objective but increases makespan",
-            "scientific_use_status": "preliminary_pattern_candidate"
+            "scientific_use_status": "preliminary_pattern_candidate",
+            "ranking_stability_class": "stable_across_profiles",
+            "ranking_unique_policy_count": 1,
+            "ranking_profile_recommendations": ""
         }
     ],
     "interpretation": {
         "status": "diagnostic_consolidation",
         "warning": "This report consolidates campaign diagnostics. It is not a final scientific conclusion and should not be used as proof without broader instances, stronger ranking criteria, and statistical validation.",
         "fuzzy_logic_status": "not_used_in_main_pipeline"
+    },
+    "ranking_profile_sensitivity": {
+        "integrated_at_local": "2026-05-16T06:05:28",
+        "ranking_profile_count": 4,
+        "scenario_summary_count": 12,
+        "recommendation_count": 48,
+        "ranking_row_count": 144,
+        "sensitive_to_ranking_profile_count": 2,
+        "stability_counts": {
+            "stable_across_profiles": 10,
+            "same_policy_different_class": 2
+        },
+        "interpretation": {
+            "status": "ranking_sensitivity_integrated_into_final_diagnostic",
+            "warning": "This integration is diagnostic. It does not prove which ranking profile is scientifically correct."
+        }
     }
 }

@@ -1,6 +1,6 @@
 {
     "blueprint_type": "fieldops_lab_campaign_batch_blueprint",
-    "generated_at_local": "2026-05-16T05:55:30",
+    "generated_at_local": "2026-05-16T06:05:25",
     "executable_status": "blueprint_not_executable_yet",
     "source_plan": {
         "path": "analysis\\reports\\experiment_campaign_plan.json",

@@ -1,13 +1,13 @@
 {
     "report_type": "fieldops_lab_full_campaign_pipeline_quality_check",
-    "generated_at_local": "2026-05-16T05:55:33",
+    "generated_at_local": "2026-05-16T06:05:28",
     "manifest_path": "analysis\\reports\\full_campaign_pipeline_manifest.json",
     "pipeline_report_path": "analysis\\reports\\full_campaign_pipeline_report.md",
     "pipeline_log_path": "analysis\\reports\\full_campaign_pipeline_log.txt",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 1,
-    "step_count": 24,
+    "step_count": 25,
     "failed_step_count": 0,
     "required_output_file_count": 11,
     "required_quality_file_count": 11,
@@ -19,22 +19,22 @@
         {
             "path": "analysis\\reports\\full_campaign_pipeline_report.md",
             "exists": true,
-            "size_bytes": 3000
+            "size_bytes": 3073
         },
         {
             "path": "analysis\\reports\\full_campaign_pipeline_manifest.json",
             "exists": true,
-            "size_bytes": 26546
+            "size_bytes": 27547
         },
         {
             "path": "analysis\\reports\\full_campaign_pipeline_log.txt",
             "exists": true,
-            "size_bytes": 23819
+            "size_bytes": 24767
         },
         {
             "path": "analysis\\reports\\campaign_execution_index.json",
             "exists": true,
-            "size_bytes": 51406
+            "size_bytes": 51398
         },
         {
             "path": "analysis\\reports\\campaign_result_summary.json",
@@ -69,7 +69,7 @@
         {
             "path": "analysis\\reports\\campaign_final_diagnostic_report.json",
             "exists": true,
-            "size_bytes": 20248
+            "size_bytes": 23047
         }
     ],
     "quality_checks": [

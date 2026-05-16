@@ -362,6 +362,16 @@ def build_steps(fieldops_exe: Path) -> list[tuple[str, list[str]]]:
             ),
         ),
         (
+            "integrate_ranking_sensitivity_into_final_diagnostic_report",
+            py_command(
+                Path("analysis/scripts/integrate_ranking_sensitivity_into_final_diagnostic_report.py"),
+                REPORTS_DIR / "campaign_final_diagnostic_report.json",
+                REPORTS_DIR / "campaign_final_diagnostic_report.md",
+                REPORTS_DIR / "campaign_final_diagnostic_report.csv",
+                REPORTS_DIR / "campaign_ranking_profile_sensitivity.json",
+            ),
+        ),
+        (
             "verify_campaign_final_diagnostic_report",
             py_command(
                 Path("analysis/scripts/verify_campaign_final_diagnostic_report.py"),
