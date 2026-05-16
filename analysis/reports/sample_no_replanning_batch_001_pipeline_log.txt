@@ -47,7 +47,7 @@ Generated output files:
 Command:
 C:\Python314\python.exe C:\Users\yuri\Documents\FieldOpsLab\analysis\scripts\generate_batch_markdown_report.py data\results\sample_no_replanning_batch_result_001.json analysis\reports\sample_no_replanning_batch_001_report.md
 
-Batch recommendation audit written to: analysis\reports\sample_no_replanning_batch_001_report.md
+Markdown batch report written to: analysis\reports\sample_no_replanning_batch_001_report.md
 
 Command:
 C:\Python314\python.exe C:\Users\yuri\Documents\FieldOpsLab\analysis\scripts\audit_batch_recommendations.py data\results\sample_no_replanning_batch_result_001.json analysis\reports\sample_no_replanning_batch_001_audit.md
@@ -66,7 +66,10 @@ Scenario descriptor report written to: analysis\reports\sample_no_replanning_bat
 Scenario descriptor CSV written to: analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.csv
 
 Analysis reports generated successfully.
-Writing preliminary pipeline log before generating the index report.
+Writing preliminary pipeline log before generating manifest and index.
+
+Manifest JSON generated successfully.
+Manifest JSON: analysis\reports\sample_no_replanning_batch_001_analysis_manifest.json
 
 Index report generated successfully.
 Index report: analysis\reports\sample_no_replanning_batch_001_analysis_index.md

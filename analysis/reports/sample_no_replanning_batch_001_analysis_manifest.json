@@ -1,0 +1,81 @@
+{
+    "manifest_type": "fieldops_lab_batch_analysis_manifest",
+    "generated_at_local": "2026-05-16T03:14:13",
+    "batch": {
+        "batch_id": "sample_no_replanning_batch_001",
+        "name": "Sample no-replanning and replanning batch",
+        "configured_experiment_count": 12,
+        "completed_experiment_count": 12,
+        "completion_percent": 100.0,
+        "is_complete": true,
+        "experiment_count": 12
+    },
+    "ranking": {
+        "ranking_config_id": "default_objective_delta_ranking_v1",
+        "ranking_score_definition": "Lower is better. Current ranking_score equals mean_delta_objective_value.",
+        "row_count": 12
+    },
+    "recommendations": {
+        "recommendation_count": 4
+    },
+    "generated_files": [
+        {
+            "label": "summary_text",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_summary.txt",
+            "status": "ok",
+            "size_bytes": 2786
+        },
+        {
+            "label": "main_markdown_report",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_report.md",
+            "status": "ok",
+            "size_bytes": 2559
+        },
+        {
+            "label": "recommendation_audit",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_audit.md",
+            "status": "ok",
+            "size_bytes": 2559
+        },
+        {
+            "label": "ranking_sensitivity",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_ranking_sensitivity.md",
+            "status": "ok",
+            "size_bytes": 7604
+        },
+        {
+            "label": "scenario_descriptors_markdown",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_scenario_descriptors.md",
+            "status": "ok",
+            "size_bytes": 5158
+        },
+        {
+            "label": "scenario_descriptors_csv",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_scenario_descriptors.csv",
+            "status": "ok",
+            "size_bytes": 1552
+        },
+        {
+            "label": "analysis_index",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_analysis_index.md",
+            "status": "ok",
+            "size_bytes": 2238
+        },
+        {
+            "label": "pipeline_log",
+            "path": "analysis\\reports\\sample_no_replanning_batch_001_pipeline_log.txt",
+            "status": "ok",
+            "size_bytes": 5157
+        }
+    ],
+    "quality_gate": {
+        "all_expected_files_ok": true,
+        "missing_or_invalid_file_count": 0,
+        "missing_or_invalid_files": []
+    },
+    "interpretation": {
+        "fuzzy_logic_status": "not_used_in_main_pipeline",
+        "scientific_status": "pipeline_validation_only",
+        "warning": "This batch is still small and handcrafted. It validates the pipeline, but it is not enough for final research conclusions."
+    }
+}

@@ -373,7 +373,7 @@ def main() -> int:
         print(f"Error: {error}", file=sys.stderr)
         return 1
 
-    print(f"Batch recommendation audit written to: {output_path}")
+    print(f"Markdown batch report written to: {output_path}")
     return 0
 
 

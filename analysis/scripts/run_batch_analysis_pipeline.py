@@ -1,6 +1,7 @@
 import json
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 
@@ -16,6 +17,14 @@ def ensure_parent(path):
 def write_text(path, content):
     ensure_parent(path)
     Path(path).write_text(content, encoding="utf-8")
+
+
+def write_json(path, data):
+    ensure_parent(path)
+    Path(path).write_text(
+        json.dumps(data, indent=4, ensure_ascii=False),
+        encoding="utf-8",
+    )
 
 
 def run_command(command, log_lines):
@@ -59,6 +68,15 @@ def file_status(path):
     return "ok"
 
 
+def file_size(path):
+    path = Path(path)
+
+    if not path.exists() or not path.is_file():
+        return 0
+
+    return path.stat().st_size
+
+
 def markdown_escape(value):
     return str(value).replace("|", "\\|")
 
@@ -67,7 +85,85 @@ def yes_no(value):
     return "yes" if bool(value) else "no"
 
 
-def build_index_report(data, outputs, pipeline_log_path):
+def build_manifest(data, outputs, index_report_path, pipeline_log_path):
+    batch = data.get("batch", {})
+    rankings = data.get("rankings", {})
+    recommendations = data.get("recommendations", {})
+    ranking_config = rankings.get("ranking_config", {})
+
+    generated_files = []
+
+    for label, path in outputs:
+        generated_files.append(
+            {
+                "label": label,
+                "path": str(path),
+                "status": file_status(path),
+                "size_bytes": file_size(path),
+            }
+        )
+
+    generated_files.append(
+        {
+            "label": "analysis_index",
+            "path": str(index_report_path),
+            "status": file_status(index_report_path),
+            "size_bytes": file_size(index_report_path),
+        }
+    )
+
+    generated_files.append(
+        {
+            "label": "pipeline_log",
+            "path": str(pipeline_log_path),
+            "status": file_status(pipeline_log_path),
+            "size_bytes": file_size(pipeline_log_path),
+        }
+    )
+
+    missing_files = [
+        item for item in generated_files
+        if item["status"] != "ok"
+    ]
+
+    return {
+        "manifest_type": "fieldops_lab_batch_analysis_manifest",
+        "generated_at_local": datetime.now().isoformat(timespec="seconds"),
+        "batch": {
+            "batch_id": batch.get("batch_id", ""),
+            "name": batch.get("name", ""),
+            "configured_experiment_count": batch.get("configured_experiment_count", 0),
+            "completed_experiment_count": batch.get("completed_experiment_count", 0),
+            "completion_percent": batch.get("completion_percent", 0),
+            "is_complete": batch.get("is_complete", False),
+            "experiment_count": batch.get("experiment_count", 0),
+        },
+        "ranking": {
+            "ranking_config_id": ranking_config.get("ranking_config_id", ""),
+            "ranking_score_definition": rankings.get("ranking_score_definition", ""),
+            "row_count": rankings.get("row_count", 0),
+        },
+        "recommendations": {
+            "recommendation_count": recommendations.get("recommendation_count", 0),
+        },
+        "generated_files": generated_files,
+        "quality_gate": {
+            "all_expected_files_ok": len(missing_files) == 0,
+            "missing_or_invalid_file_count": len(missing_files),
+            "missing_or_invalid_files": missing_files,
+        },
+        "interpretation": {
+            "fuzzy_logic_status": "not_used_in_main_pipeline",
+            "scientific_status": "pipeline_validation_only",
+            "warning": (
+                "This batch is still small and handcrafted. "
+                "It validates the pipeline, but it is not enough for final research conclusions."
+            ),
+        },
+    }
+
+
+def build_index_report(data, outputs, manifest_path, pipeline_log_path):
     batch = data.get("batch", {})
     rankings = data.get("rankings", {})
     recommendations = data.get("recommendations", {})
@@ -113,6 +209,7 @@ def build_index_report(data, outputs, pipeline_log_path):
     for label, path in outputs:
         lines.append(f"| {markdown_escape(label)} | `{markdown_escape(path)}` | {file_status(path)} |")
 
+    lines.append(f"| analysis_manifest | `{markdown_escape(manifest_path)}` | {file_status(manifest_path)} |")
     lines.append(f"| pipeline_log | `{markdown_escape(pipeline_log_path)}` | {file_status(pipeline_log_path)} |")
     lines.append("")
     lines.append("## Recommended reading order")
@@ -122,6 +219,7 @@ def build_index_report(data, outputs, pipeline_log_path):
     lines.append("3. Recommendation audit")
     lines.append("4. Ranking sensitivity")
     lines.append("5. Scenario descriptors")
+    lines.append("6. Analysis manifest JSON")
     lines.append("")
     lines.append("## Conservative interpretation")
     lines.append("")
@@ -165,6 +263,7 @@ def main():
     sensitivity_report_md = output_dir / f"{report_prefix}_ranking_sensitivity.md"
     descriptors_report_md = output_dir / f"{report_prefix}_scenario_descriptors.md"
     descriptors_csv = output_dir / f"{report_prefix}_scenario_descriptors.csv"
+    manifest_json = output_dir / f"{report_prefix}_analysis_manifest.json"
     index_report_md = output_dir / f"{report_prefix}_analysis_index.md"
     pipeline_log_txt = output_dir / f"{report_prefix}_pipeline_log.txt"
 
@@ -238,19 +337,52 @@ def main():
 
         log_lines.append("")
         log_lines.append("Analysis reports generated successfully.")
-        log_lines.append("Writing preliminary pipeline log before generating the index report.")
+        log_lines.append("Writing preliminary pipeline log before generating manifest and index.")
         write_text(pipeline_log_txt, "\n".join(log_lines))
 
         data = read_json(batch_result_json)
-        index_content = build_index_report(data, outputs, str(pipeline_log_txt))
+
+        manifest = build_manifest(
+            data=data,
+            outputs=outputs,
+            index_report_path=str(index_report_md),
+            pipeline_log_path=str(pipeline_log_txt),
+        )
+        write_json(manifest_json, manifest)
+
+        index_content = build_index_report(
+            data=data,
+            outputs=outputs,
+            manifest_path=str(manifest_json),
+            pipeline_log_path=str(pipeline_log_txt),
+        )
         write_text(index_report_md, index_content)
 
+        manifest = build_manifest(
+            data=data,
+            outputs=outputs,
+            index_report_path=str(index_report_md),
+            pipeline_log_path=str(pipeline_log_txt),
+        )
+        write_json(manifest_json, manifest)
+
+        log_lines.append("")
+        log_lines.append("Manifest JSON generated successfully.")
+        log_lines.append(f"Manifest JSON: {manifest_json}")
         log_lines.append("")
         log_lines.append("Index report generated successfully.")
         log_lines.append(f"Index report: {index_report_md}")
         log_lines.append("")
         log_lines.append("Pipeline finished successfully.")
         write_text(pipeline_log_txt, "\n".join(log_lines))
+
+        manifest = build_manifest(
+            data=data,
+            outputs=outputs,
+            index_report_path=str(index_report_md),
+            pipeline_log_path=str(pipeline_log_txt),
+        )
+        write_json(manifest_json, manifest)
 
         print("Batch analysis pipeline finished.")
         print(f"Summary TXT: {summary_txt}")
@@ -259,6 +391,7 @@ def main():
         print(f"Ranking sensitivity report: {sensitivity_report_md}")
         print(f"Scenario descriptor report: {descriptors_report_md}")
         print(f"Scenario descriptor CSV: {descriptors_csv}")
+        print(f"Manifest JSON: {manifest_json}")
         print(f"Index report: {index_report_md}")
         print(f"Pipeline log: {pipeline_log_txt}")
 

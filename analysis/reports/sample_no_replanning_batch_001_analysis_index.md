@@ -35,6 +35,7 @@ This file is an index for the generated analysis reports. It centralizes the pos
 | ranking_sensitivity | `analysis\reports\sample_no_replanning_batch_001_ranking_sensitivity.md` | ok |
 | scenario_descriptors_markdown | `analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.md` | ok |
 | scenario_descriptors_csv | `analysis\reports\sample_no_replanning_batch_001_scenario_descriptors.csv` | ok |
+| analysis_manifest | `analysis\reports\sample_no_replanning_batch_001_analysis_manifest.json` | ok |
 | pipeline_log | `analysis\reports\sample_no_replanning_batch_001_pipeline_log.txt` | ok |
 
 ## Recommended reading order
@@ -44,6 +45,7 @@ This file is an index for the generated analysis reports. It centralizes the pos
 3. Recommendation audit
 4. Ranking sensitivity
 5. Scenario descriptors
+6. Analysis manifest JSON
 
 ## Conservative interpretation
 
