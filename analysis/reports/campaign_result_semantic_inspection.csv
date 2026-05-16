@@ -1,0 +1,13 @@
+batch_id,scenario_family_id,severity_id,experiment_count,option_count,baseline_mean_delta_objective_value,baseline_mean_delta_makespan,baseline_mean_delta_total_travel_time,baseline_mean_delta_total_service_time,baseline_mean_effect_count,problem_count,warning_count,result_json_path
+campaign_combined_delay_light_batch,combined_delay,light,9,3,0.0,0.0,10.0,7.0,2.0,0,0,data\results\campaign_batches\campaign_combined_delay_light_batch_result.json
+campaign_combined_delay_moderate_batch,combined_delay,moderate,9,3,15.0,15.0,50.0,35.0,2.0,0,0,data\results\campaign_batches\campaign_combined_delay_moderate_batch_result.json
+campaign_combined_delay_severe_batch,combined_delay,severe,9,3,55.0,55.0,90.0,63.0,2.0,0,0,data\results\campaign_batches\campaign_combined_delay_severe_batch_result.json
+campaign_reassignment_opportunity_light_batch,reassignment_opportunity,light,9,3,0.0,0.0,10.0,0.0,1.0,0,0,data\results\campaign_batches\campaign_reassignment_opportunity_light_batch_result.json
+campaign_reassignment_opportunity_moderate_batch,reassignment_opportunity,moderate,9,3,15.0,15.0,50.0,0.0,1.0,0,0,data\results\campaign_batches\campaign_reassignment_opportunity_moderate_batch_result.json
+campaign_reassignment_opportunity_severe_batch,reassignment_opportunity,severe,9,3,55.0,55.0,90.0,0.0,1.0,0,0,data\results\campaign_batches\campaign_reassignment_opportunity_severe_batch_result.json
+campaign_service_delay_only_light_batch,service_delay_only,light,9,3,0.0,0.0,0.0,7.0,1.0,0,0,data\results\campaign_batches\campaign_service_delay_only_light_batch_result.json
+campaign_service_delay_only_moderate_batch,service_delay_only,moderate,9,3,0.0,0.0,0.0,35.0,1.0,0,0,data\results\campaign_batches\campaign_service_delay_only_moderate_batch_result.json
+campaign_service_delay_only_severe_batch,service_delay_only,severe,9,3,0.0,0.0,0.0,63.0,1.0,0,0,data\results\campaign_batches\campaign_service_delay_only_severe_batch_result.json
+campaign_travel_delay_only_light_batch,travel_delay_only,light,9,3,0.0,0.0,10.0,0.0,1.0,0,0,data\results\campaign_batches\campaign_travel_delay_only_light_batch_result.json
+campaign_travel_delay_only_moderate_batch,travel_delay_only,moderate,9,3,15.0,15.0,50.0,0.0,1.0,0,0,data\results\campaign_batches\campaign_travel_delay_only_moderate_batch_result.json
+campaign_travel_delay_only_severe_batch,travel_delay_only,severe,9,3,55.0,55.0,90.0,0.0,1.0,0,0,data\results\campaign_batches\campaign_travel_delay_only_severe_batch_result.json
