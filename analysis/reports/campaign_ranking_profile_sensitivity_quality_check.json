@@ -1,6 +1,6 @@
 {
     "report_type": "fieldops_lab_campaign_ranking_profile_sensitivity_quality_check",
-    "generated_at_local": "2026-05-16T05:46:33",
+    "generated_at_local": "2026-05-16T05:49:03",
     "sensitivity_json_path": "analysis\\reports\\campaign_ranking_profile_sensitivity.json",
     "sensitivity_markdown_path": "analysis\\reports\\campaign_ranking_profile_sensitivity.md",
     "sensitivity_csv_path": "analysis\\reports\\campaign_ranking_profile_sensitivity.csv",

@@ -116,33 +116,35 @@ def normalize_id(value: Any) -> str:
 
 
 def infer_family_and_severity(batch_id: str, scenario_id: str) -> tuple[str, str]:
-    text = f"{batch_id} {scenario_id}"
-
-    families = [
+    family_tokens = [
         "combined_delay",
         "reassignment_opportunity",
         "service_delay_only",
         "travel_delay_only",
     ]
 
-    severities = ["light", "moderate", "severe"]
+    severity_tokens = ["light", "moderate", "severe"]
 
-    family = ""
-    severity = ""
+    batch_text = str(batch_id)
+    scenario_text = str(scenario_id)
 
-    for item in families:
-        if item in text:
-            family = item
-            break
+    def find_token(text: str, tokens: list[str]) -> str:
+        for token in tokens:
+            if token in text:
+                return token
+        return ""
 
-    for item in severities:
-        if item in text:
-            severity = item
-            break
+    # Prefer batch_id because result rows may contain scenario_id values inherited
+    # from earlier templates. The batch_id is the safer source for campaign family.
+    family = find_token(batch_text, family_tokens)
+    if not family:
+        family = find_token(scenario_text, family_tokens)
+
+    severity = find_token(batch_text, severity_tokens)
+    if not severity:
+        severity = find_token(scenario_text, severity_tokens)
 
     return family, severity
-
-
 def discover_result_files(result_dir: Path) -> list[Path]:
     if not result_dir.exists():
         raise RuntimeError(f"Result directory does not exist: {result_dir}")

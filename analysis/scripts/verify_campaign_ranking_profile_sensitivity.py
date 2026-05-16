@@ -49,6 +49,32 @@ def read_csv_row_count(path: Path) -> int:
         raise RuntimeError(f"CSV file not found: {path}") from exc
 
 
+def infer_expected_family_and_severity(batch_id: str) -> tuple[str, str]:
+    family_tokens = [
+        "combined_delay",
+        "reassignment_opportunity",
+        "service_delay_only",
+        "travel_delay_only",
+    ]
+
+    severity_tokens = ["light", "moderate", "severe"]
+
+    family = ""
+    severity = ""
+
+    for token in family_tokens:
+        if token in batch_id:
+            family = token
+            break
+
+    for token in severity_tokens:
+        if token in batch_id:
+            severity = token
+            break
+
+    return family, severity
+
+
 def build_report(json_path: Path, markdown_path: Path, csv_path: Path) -> dict[str, Any]:
     problems: list[str] = []
     warnings: list[str] = []
@@ -138,6 +164,34 @@ def build_report(json_path: Path, markdown_path: Path, csv_path: Path) -> dict[s
 
     if missing_recommended_count > 0:
         problems.append(f"{missing_recommended_count} row(s) missing is_recommended.")
+
+    summary_rows = data.get("summary_rows", [])
+    if not isinstance(summary_rows, list):
+        problems.append("summary_rows must be a list.")
+        summary_rows = []
+
+    for index, row in enumerate(summary_rows, start=1):
+        if not isinstance(row, dict):
+            problems.append(f"Summary row {index} is not an object.")
+            continue
+
+        batch_id = str(row.get("batch_id", ""))
+        actual_family = str(row.get("scenario_family_id", ""))
+        actual_severity = str(row.get("severity_id", ""))
+
+        expected_family, expected_severity = infer_expected_family_and_severity(batch_id)
+
+        if expected_family and actual_family != expected_family:
+            problems.append(
+                "Summary row family mismatch. "
+                f"row={index}; batch_id={batch_id}; expected={expected_family}; actual={actual_family}"
+            )
+
+        if expected_severity and actual_severity != expected_severity:
+            problems.append(
+                "Summary row severity mismatch. "
+                f"row={index}; batch_id={batch_id}; expected={expected_severity}; actual={actual_severity}"
+            )
 
     return {
         "report_type": "fieldops_lab_campaign_ranking_profile_sensitivity_quality_check",
