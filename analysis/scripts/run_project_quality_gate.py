@@ -154,6 +154,30 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
             ],
         ),
         QualityGateStep(
+            name="generate_experimental_design_matrix",
+            command=[
+                "py",
+                "-3",
+                "analysis\\scripts\\generate_experimental_design_matrix.py",
+                "analysis\\reports\\experimental_design_matrix.md",
+                "analysis\\reports\\experimental_design_matrix.json",
+                "analysis\\reports\\experimental_design_matrix.csv",
+            ],
+        ),
+        QualityGateStep(
+            name="verify_experimental_design_matrix",
+            command=[
+                "py",
+                "-3",
+                "analysis\\scripts\\verify_experimental_design_matrix.py",
+                "analysis\\reports\\experimental_design_matrix.json",
+                "analysis\\reports\\experimental_design_matrix.md",
+                "analysis\\reports\\experimental_design_matrix.csv",
+                "analysis\\reports\\experimental_design_matrix_quality_check.md",
+                "analysis\\reports\\experimental_design_matrix_quality_check.json",
+            ],
+        ),
+        QualityGateStep(
                 name="generate_project_status_report",
                 command=[
                     "py",

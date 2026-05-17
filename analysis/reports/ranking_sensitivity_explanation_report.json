@@ -1,6 +1,6 @@
 {
   "report_type": "ranking_sensitivity_explanation_report",
-  "generated_at_local": "2026-05-17T04:21:18",
+  "generated_at_local": "2026-05-17T04:35:30",
   "input_status": {
     "all_required_inputs_available": true,
     "sensitive_scenario_report_path": "analysis\\reports\\ranking_sensitive_scenario_report.json",
