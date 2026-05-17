@@ -1,0 +1,77 @@
+{
+  "report_type": "ranking_sensitive_scenario_report",
+  "generated_at_local": "2026-05-17T02:32:46",
+  "input_status": {
+    "all_required_inputs_available": true,
+    "source_path": "analysis\\reports\\campaign_ranking_profile_sensitivity.json",
+    "source_exists": true,
+    "source_report_type": "fieldops_lab_campaign_ranking_profile_sensitivity",
+    "source_scenario_summary_count": 12,
+    "source_ranking_row_count": 144,
+    "source_ranking_profile_count": 4,
+    "source_has_summary_rows": true,
+    "source_has_ranking_rows": true
+  },
+  "summary": {
+    "scenario_summary_count": 12,
+    "ranking_row_count": 144,
+    "ranking_profile_count": 4,
+    "sensitive_scenario_count": 2,
+    "policy_change_sensitive_scenario_count": 0,
+    "class_change_sensitive_scenario_count": 2,
+    "stable_scenario_count": 10,
+    "ranking_fragility_status": "some_scenarios_sensitive_to_ranking_profile"
+  },
+  "sensitive_scenarios": [
+    {
+      "batch_id": "campaign_service_delay_only_moderate_batch",
+      "scenario_id": "family_id_service_delay_only_description_only_service_time_is_perturbed_uses_travel_delay_false_uses_service_delay_true_creates_reassignment_opportunity_false_severity_id_moderate_nominal_delay_minutes_50_description_medium_disruption_useful_to_test_trade_offs_between_keeping_the_plan_and_replanning",
+      "scenario_family_id": "service_delay_only",
+      "severity_id": "moderate",
+      "ranking_profile_count": 4,
+      "profile_count": 4,
+      "sensitive_to_ranking_profile": true,
+      "sensitivity_reason": "same_policy_but_recommendation_class_changes_across_profiles",
+      "unique_recommended_policy_count": 1,
+      "unique_recommendation_class_count": 2,
+      "recommended_policies": [
+        "no_replanning_policy_v1"
+      ],
+      "recommendation_classes": [
+        "keep_plan_candidate",
+        "weak_or_tied"
+      ],
+      "stability_class": "same_policy_different_class",
+      "recommended_profile_policy_pairs": "balanced_operational=no_replanning_policy_v1+replanning_not_implemented_v1; conservative_replanning=no_replanning_policy_v1+replanning_not_implemented_v1; makespan_priority=no_replanning_policy_v1+replanning_not_implemented_v1; objective_only=no_replanning_policy_v1+replanning_not_implemented_v1",
+      "investigation_status": "requires_recommendation_class_explanation",
+      "interpretation": "The recommended policy remains the same, but the recommendation class changes under different ranking profiles. This means the policy choice looks stable, but the strength or quality of the recommendation is fragile."
+    },
+    {
+      "batch_id": "campaign_service_delay_only_severe_batch",
+      "scenario_id": "family_id_service_delay_only_description_only_service_time_is_perturbed_uses_travel_delay_false_uses_service_delay_true_creates_reassignment_opportunity_false_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
+      "scenario_family_id": "service_delay_only",
+      "severity_id": "severe",
+      "ranking_profile_count": 4,
+      "profile_count": 4,
+      "sensitive_to_ranking_profile": true,
+      "sensitivity_reason": "same_policy_but_recommendation_class_changes_across_profiles",
+      "unique_recommended_policy_count": 1,
+      "unique_recommendation_class_count": 2,
+      "recommended_policies": [
+        "no_replanning_policy_v1"
+      ],
+      "recommendation_classes": [
+        "keep_plan_candidate",
+        "weak_or_tied"
+      ],
+      "stability_class": "same_policy_different_class",
+      "recommended_profile_policy_pairs": "balanced_operational=no_replanning_policy_v1+replanning_not_implemented_v1; conservative_replanning=no_replanning_policy_v1+replanning_not_implemented_v1; makespan_priority=no_replanning_policy_v1+replanning_not_implemented_v1; objective_only=no_replanning_policy_v1+replanning_not_implemented_v1",
+      "investigation_status": "requires_recommendation_class_explanation",
+      "interpretation": "The recommended policy remains the same, but the recommendation class changes under different ranking profiles. This means the policy choice looks stable, but the strength or quality of the recommendation is fragile."
+    }
+  ],
+  "interpretation": {
+    "conservative_reading": "A ranking-sensitive scenario is a scenario where the recommended policy changes, or where the recommendation class changes, when the ranking profile changes.",
+    "scientific_warning": "This report identifies recommendation fragility in the current diagnostic campaign. It does not prove statistical significance or general validity."
+  }
+}

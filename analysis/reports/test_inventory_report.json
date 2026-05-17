@@ -1,20 +1,20 @@
 {
     "report_type": "fieldops_lab_test_inventory_report",
-    "generated_at_local": "2026-05-17T01:53:37",
+    "generated_at_local": "2026-05-17T02:33:04",
     "project_root": "C:\\Users\\yuri\\Documents\\FieldOpsLab",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 0,
     "overview": {
-        "analysis_script_count": 47,
-        "python_test_count": 17,
+        "analysis_script_count": 49,
+        "python_test_count": 18,
         "cpp_test_source_count": 45,
         "cpp_test_support_header_count": 1,
-        "script_with_direct_python_test_count": 47,
+        "script_with_direct_python_test_count": 49,
         "script_without_direct_python_test_count": 0,
         "script_needing_test_review_count": 0,
         "patch_script_count": 0,
-        "row_count": 47
+        "row_count": 49
     },
     "rows": [
         {
@@ -223,7 +223,7 @@
             "script_stem": "generate_campaign_ranking_profile_sensitivity",
             "is_patch_script": false,
             "direct_python_test_count": 4,
-            "related_python_test_count": 7,
+            "related_python_test_count": 8,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -235,6 +235,7 @@
             "related_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_campaign_report_consistency.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_quality_report_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_all_analysis_scripts_compile.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_current_pipeline_report_integrity.py",
@@ -342,6 +343,22 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
+            ]
+        },
+        {
+            "script_path": "analysis\\scripts\\generate_ranking_sensitive_scenario_report.py",
+            "script_name": "generate_ranking_sensitive_scenario_report.py",
+            "script_stem": "generate_ranking_sensitive_scenario_report",
+            "is_patch_script": false,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
+            "generic_python_test_count": 4,
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py"
             ]
         },
         {
@@ -732,7 +749,7 @@
             "script_stem": "verify_campaign_ranking_profile_sensitivity",
             "is_patch_script": false,
             "direct_python_test_count": 5,
-            "related_python_test_count": 7,
+            "related_python_test_count": 8,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -745,6 +762,7 @@
             "related_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_campaign_report_consistency.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_quality_report_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_all_analysis_scripts_compile.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_current_pipeline_report_integrity.py",
@@ -926,6 +944,22 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
+            ]
+        },
+        {
+            "script_path": "analysis\\scripts\\verify_ranking_sensitive_scenario_report.py",
+            "script_name": "verify_ranking_sensitive_scenario_report.py",
+            "script_stem": "verify_ranking_sensitive_scenario_report",
+            "is_patch_script": false,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
+            "generic_python_test_count": 4,
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py"
             ]
         },
         {
