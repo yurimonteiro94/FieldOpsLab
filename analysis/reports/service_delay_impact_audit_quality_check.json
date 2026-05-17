@@ -1,6 +1,6 @@
 {
     "report_type": "fieldops_lab_service_delay_impact_audit_quality_check",
-    "generated_at_local": "2026-05-17T00:18:51",
+    "generated_at_local": "2026-05-17T01:18:04",
     "audit_json_path": "analysis\\reports\\service_delay_impact_audit.json",
     "audit_md_path": "analysis\\reports\\service_delay_impact_audit.md",
     "audit_csv_path": "analysis\\reports\\service_delay_impact_audit.csv",

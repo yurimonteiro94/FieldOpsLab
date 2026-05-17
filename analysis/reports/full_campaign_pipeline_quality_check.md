@@ -21,7 +21,7 @@ Manifest: `analysis\reports\full_campaign_pipeline_manifest.json`
 | `analysis\reports\full_campaign_pipeline_report.md` | yes | 3260 |
 | `analysis\reports\full_campaign_pipeline_manifest.json` | yes | 28774 |
 | `analysis\reports\full_campaign_pipeline_log.txt` | yes | 25804 |
-| `analysis\reports\campaign_execution_index.json` | yes | 51397 |
+| `analysis\reports\campaign_execution_index.json` | yes | 51401 |
 | `analysis\reports\campaign_result_summary.json` | yes | 19677 |
 | `analysis\reports\campaign_result_semantic_inspection.json` | yes | 34722 |
 | `analysis\reports\service_delay_impact_audit.json` | yes | 16040 |
