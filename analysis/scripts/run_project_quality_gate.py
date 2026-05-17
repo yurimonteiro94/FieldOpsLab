@@ -49,6 +49,30 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
                 "-v",
             ],
         ),
+        QualityGateStep(
+            name="generate_test_inventory_report",
+            command=[
+                'py',
+                '-3',
+                'analysis\\scripts\\generate_test_inventory_report.py',
+                'analysis\\reports\\test_inventory_report.md',
+                'analysis\\reports\\test_inventory_report.json',
+                'analysis\\reports\\test_inventory_report.csv',
+            ],
+        ),
+        QualityGateStep(
+            name="verify_test_inventory_report",
+            command=[
+                'py',
+                '-3',
+                'analysis\\scripts\\verify_test_inventory_report.py',
+                'analysis\\reports\\test_inventory_report.json',
+                'analysis\\reports\\test_inventory_report.md',
+                'analysis\\reports\\test_inventory_report.csv',
+                'analysis\\reports\\test_inventory_quality_check.md',
+                'analysis\\reports\\test_inventory_quality_check.json',
+            ],
+        ),
     ]
 
     if include_full_pipeline:
