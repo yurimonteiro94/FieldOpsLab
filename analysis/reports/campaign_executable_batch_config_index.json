@@ -1,6 +1,6 @@
 {
     "index_type": "fieldops_lab_executable_campaign_batch_config_index",
-    "generated_at_local": "2026-05-17T01:18:02",
+    "generated_at_local": "2026-05-17T01:41:30",
     "output_config_dir": "data\\experiments\\campaign_batches",
     "generated_batch_config_count": 12,
     "generated_experiment_count": 108,

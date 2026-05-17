@@ -1,6 +1,6 @@
 {
     "index_type": "fieldops_lab_campaign_batch_blueprint_index",
-    "generated_at_local": "2026-05-17T01:18:01",
+    "generated_at_local": "2026-05-17T01:41:30",
     "source_plan": {
         "path": "analysis\\reports\\experiment_campaign_plan.json",
         "design_status": "planning_only",
