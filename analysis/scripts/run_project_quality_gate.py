@@ -16,12 +16,8 @@ class QualityGateStep:
     command: list[str]
 
 
-def _path(*parts: str) -> str:
-    return str(Path(*parts))
-
-
-def _base_steps() -> list[QualityGateStep]:
-    return [
+def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
+    steps = [
         QualityGateStep(
             name="cmake_configure",
             command=["cmake", "-S", ".", "-B", "build", "-G", "Ninja"],
@@ -32,7 +28,7 @@ def _base_steps() -> list[QualityGateStep]:
         ),
         QualityGateStep(
             name="fieldops_cpp_tests",
-            command=[_path("build", "fieldops_tests.exe")],
+            command=[str(Path("build") / "fieldops_tests.exe")],
         ),
         QualityGateStep(
             name="ctest",
@@ -47,26 +43,21 @@ def _base_steps() -> list[QualityGateStep]:
                 "unittest",
                 "discover",
                 "-s",
-                _path("tests", "python"),
+                str(Path("tests") / "python"),
                 "-p",
                 "test_*.py",
                 "-v",
             ],
         ),
-    ]
-
-
-def _test_inventory_steps() -> list[QualityGateStep]:
-    return [
         QualityGateStep(
             name="generate_test_inventory_report",
             command=[
                 "py",
                 "-3",
-                _path("analysis", "scripts", "generate_test_inventory_report.py"),
-                _path("analysis", "reports", "test_inventory_report.md"),
-                _path("analysis", "reports", "test_inventory_report.json"),
-                _path("analysis", "reports", "test_inventory_report.csv"),
+                str(Path("analysis") / "scripts" / "generate_test_inventory_report.py"),
+                str(Path("analysis") / "reports" / "test_inventory_report.md"),
+                str(Path("analysis") / "reports" / "test_inventory_report.json"),
+                str(Path("analysis") / "reports" / "test_inventory_report.csv"),
             ],
         ),
         QualityGateStep(
@@ -74,82 +65,97 @@ def _test_inventory_steps() -> list[QualityGateStep]:
             command=[
                 "py",
                 "-3",
-                _path("analysis", "scripts", "verify_test_inventory_report.py"),
-                _path("analysis", "reports", "test_inventory_report.json"),
-                _path("analysis", "reports", "test_inventory_report.md"),
-                _path("analysis", "reports", "test_inventory_report.csv"),
-                _path("analysis", "reports", "test_inventory_quality_check.md"),
-                _path("analysis", "reports", "test_inventory_quality_check.json"),
+                str(Path("analysis") / "scripts" / "verify_test_inventory_report.py"),
+                str(Path("analysis") / "reports" / "test_inventory_report.json"),
+                str(Path("analysis") / "reports" / "test_inventory_report.md"),
+                str(Path("analysis") / "reports" / "test_inventory_report.csv"),
+                str(Path("analysis") / "reports" / "test_inventory_quality_check.md"),
+                str(Path("analysis") / "reports" / "test_inventory_quality_check.json"),
             ],
         ),
     ]
-
-
-def _full_campaign_pipeline_steps() -> list[QualityGateStep]:
-    return [
-        QualityGateStep(
-            name="run_full_campaign_pipeline",
-            command=[
-                "py",
-                "-3",
-                _path("analysis", "scripts", "run_full_campaign_pipeline.py"),
-                _path("build", "fieldops_lab.exe"),
-            ],
-        ),
-        QualityGateStep(
-            name="verify_full_campaign_pipeline",
-            command=[
-                "py",
-                "-3",
-                _path("analysis", "scripts", "verify_full_campaign_pipeline.py"),
-                _path("analysis", "reports", "full_campaign_pipeline_manifest.json"),
-                _path("analysis", "reports", "full_campaign_pipeline_report.md"),
-                _path("analysis", "reports", "full_campaign_pipeline_log.txt"),
-                _path("analysis", "reports", "full_campaign_pipeline_quality_check.md"),
-                _path("analysis", "reports", "full_campaign_pipeline_quality_check.json"),
-            ],
-        ),
-    ]
-
-
-def _project_status_steps() -> list[QualityGateStep]:
-    return [
-        QualityGateStep(
-            name="generate_project_status_report",
-            command=[
-                "py",
-                "-3",
-                _path("analysis", "scripts", "generate_project_status_report.py"),
-                _path("analysis", "reports", "project_status_report.md"),
-                _path("analysis", "reports", "project_status_report.json"),
-                _path("analysis", "reports", "project_status_report.csv"),
-            ],
-        ),
-        QualityGateStep(
-            name="verify_project_status_report",
-            command=[
-                "py",
-                "-3",
-                _path("analysis", "scripts", "verify_project_status_report.py"),
-                _path("analysis", "reports", "project_status_report.json"),
-                _path("analysis", "reports", "project_status_report.md"),
-                _path("analysis", "reports", "project_status_report.csv"),
-                _path("analysis", "reports", "project_status_quality_check.md"),
-                _path("analysis", "reports", "project_status_quality_check.json"),
-            ],
-        ),
-    ]
-
-
-def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
-    steps = []
-    steps.extend(_base_steps())
-    steps.extend(_test_inventory_steps())
 
     if include_full_pipeline:
-        steps.extend(_full_campaign_pipeline_steps())
+        steps.extend(
+            [
+                QualityGateStep(
+                    name="run_full_campaign_pipeline",
+                    command=[
+                        "py",
+                        "-3",
+                        str(Path("analysis") / "scripts" / "run_full_campaign_pipeline.py"),
+                        str(Path("build") / "fieldops_lab.exe"),
+                    ],
+                ),
+                QualityGateStep(
+                    name="verify_full_campaign_pipeline",
+                    command=[
+                        "py",
+                        "-3",
+                        str(Path("analysis") / "scripts" / "verify_full_campaign_pipeline.py"),
+                        str(Path("analysis") / "reports" / "full_campaign_pipeline_manifest.json"),
+                        str(Path("analysis") / "reports" / "full_campaign_pipeline_report.md"),
+                        str(Path("analysis") / "reports" / "full_campaign_pipeline_log.txt"),
+                        str(Path("analysis") / "reports" / "full_campaign_pipeline_quality_check.md"),
+                        str(Path("analysis") / "reports" / "full_campaign_pipeline_quality_check.json"),
+                    ],
+                ),
+            ]
+        )
 
-    steps.extend(_project_status_steps())
+    steps.extend(
+        [
+            QualityGateStep(
+                name="generate_project_status_report",
+                command=[
+                    "py",
+                    "-3",
+                    str(Path("analysis") / "scripts" / "generate_project_status_report.py"),
+                    str(Path("analysis") / "reports" / "project_status_report.md"),
+                    str(Path("analysis") / "reports" / "project_status_report.json"),
+                    str(Path("analysis") / "reports" / "project_status_report.csv"),
+                ],
+            ),
+            QualityGateStep(
+                name="verify_project_status_report",
+                command=[
+                    "py",
+                    "-3",
+                    str(Path("analysis") / "scripts" / "verify_project_status_report.py"),
+                    str(Path("analysis") / "reports" / "project_status_report.json"),
+                    str(Path("analysis") / "reports" / "project_status_report.md"),
+                    str(Path("analysis") / "reports" / "project_status_report.csv"),
+                    str(Path("analysis") / "reports" / "project_status_quality_check.md"),
+                    str(Path("analysis") / "reports" / "project_status_quality_check.json"),
+                ],
+            ),
+            QualityGateStep(
+                name="generate_scientific_validation_plan",
+                command=[
+                    "py",
+                    "-3",
+                    str(Path("analysis") / "scripts" / "generate_scientific_validation_plan.py"),
+                    str(Path("analysis") / "reports" / "scientific_validation_plan.md"),
+                    str(Path("analysis") / "reports" / "scientific_validation_plan.json"),
+                    str(Path("analysis") / "reports" / "scientific_validation_plan.csv"),
+                ],
+            ),
+            QualityGateStep(
+                name="verify_scientific_validation_plan",
+                command=[
+                    "py",
+                    "-3",
+                    str(Path("analysis") / "scripts" / "verify_scientific_validation_plan.py"),
+                    str(Path("analysis") / "reports" / "scientific_validation_plan.json"),
+                    str(Path("analysis") / "reports" / "scientific_validation_plan.md"),
+                    str(Path("analysis") / "reports" / "scientific_validation_plan.csv"),
+                    str(Path("analysis") / "reports" / "scientific_validation_plan_quality_check.md"),
+                    str(Path("analysis") / "reports" / "scientific_validation_plan_quality_check.json"),
+                ],
+            ),
+        ]
+    )
+
     return steps
 
 
@@ -191,10 +197,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--quick",
         action="store_true",
-        help=(
-            "Run build, C++ tests, CTest, Python tests, test inventory, "
-            "and project status, but skip the full campaign pipeline."
-        ),
+        help="Run the structural quality gate without executing the full campaign pipeline.",
     )
 
     return parser.parse_args()
