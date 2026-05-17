@@ -8,7 +8,7 @@
     "scientific_status": "diagnostic_only_with_methodological_warnings",
     "structural_all_required_checks_passed": true,
     "analysis_script_count": 53,
-    "python_test_count": 24,
+    "python_test_count": 25,
     "cpp_test_source_count": 45,
     "pipeline_step_count": 26,
     "pipeline_failed_step_count": 0,
@@ -21,6 +21,10 @@
     "policy_change_explanation_count": 0,
     "class_change_explanation_count": 2,
     "all_sensitive_scenarios_have_explanation": true,
+    "experimental_design_experiment_count": 648,
+    "experimental_design_scenario_count": 108,
+    "experimental_design_replication_count": 3,
+    "experimental_design_reproducible": true,
     "methodological_warning_count": 2
   },
   "quality_inputs": [
@@ -74,6 +78,13 @@
       "warning_count": 0
     },
     {
+      "path": "analysis/reports/experimental_design_matrix_quality_check.json",
+      "exists": true,
+      "passed": true,
+      "problem_count": 0,
+      "warning_count": 0
+    },
+    {
       "path": "analysis/reports/project_status_quality_check.json",
       "exists": true,
       "passed": true,
@@ -88,7 +99,8 @@
     "The current reports still expose 2 methodological warning(s).",
     "The current ranking sensitivity analysis found 2 scenario(s) sensitive to ranking profile choice.",
     "The current ranking-sensitive scenario(s) have 2 diagnostic explanation(s), but these explanations are still not statistical proof.",
-    "All currently ranking-sensitive scenario(s) have diagnostic explanations, but they still need broader replications and statistical validation."
+    "All currently ranking-sensitive scenario(s) have diagnostic explanations, but they still need broader replications and statistical validation.",
+    "The experimental design matrix defines 648 planned experiment(s), but execution, replications, and statistical comparison are still pending."
   ],
   "validation_actions": [
     {
@@ -98,7 +110,7 @@
       "action": "Define a broader experimental design with controlled factors for instance size, demand density, delay type, delay severity, policy, and random seed.",
       "acceptance_criterion": "A complete experiment matrix exists and each scenario can be reproduced from explicit configuration files.",
       "evidence_output": "experiment_design_matrix",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": "SCI-002",

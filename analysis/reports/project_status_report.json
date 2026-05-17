@@ -1,12 +1,12 @@
 {
   "report_type": "fieldops_lab_project_status_report",
-  "generated_at_local": "2026-05-17T04:35:30",
+  "generated_at_local": "2026-05-17T04:47:33",
   "summary_metrics": {
     "engineering_status": "passed_current_structural_quality_gate",
     "scientific_status": "diagnostic_only_with_methodological_warnings",
     "structural_all_required_checks_passed": true,
     "analysis_script_count": 53,
-    "python_test_count": 24,
+    "python_test_count": 25,
     "cpp_test_source_count": 45,
     "script_without_direct_python_test_count": 0,
     "script_needing_test_review_count": 0,
@@ -22,6 +22,10 @@
     "policy_change_explanation_count": 0,
     "class_change_explanation_count": 2,
     "all_sensitive_scenarios_have_explanation": true,
+    "experimental_design_experiment_count": 648,
+    "experimental_design_scenario_count": 108,
+    "experimental_design_replication_count": 3,
+    "experimental_design_reproducible": true,
     "methodological_warning_count": 2
   },
   "quality_summaries": [
@@ -69,6 +73,13 @@
     },
     {
       "quality_file": "analysis/reports/ranking_sensitivity_explanation_quality_check.json",
+      "exists": true,
+      "passed": true,
+      "problem_count": 0,
+      "warning_count": 0
+    },
+    {
+      "quality_file": "analysis/reports/experimental_design_matrix_quality_check.json",
       "exists": true,
       "passed": true,
       "problem_count": 0,

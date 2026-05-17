@@ -1,13 +1,13 @@
 {
     "report_type": "fieldops_lab_test_inventory_report",
-    "generated_at_local": "2026-05-17T04:35:29",
+    "generated_at_local": "2026-05-17T04:47:32",
     "project_root": "C:\\Users\\yuri\\Documents\\FieldOpsLab",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 0,
     "overview": {
         "analysis_script_count": 53,
-        "python_test_count": 24,
+        "python_test_count": 25,
         "cpp_test_source_count": 45,
         "cpp_test_support_header_count": 1,
         "script_with_direct_python_test_count": 53,
@@ -313,7 +313,7 @@
             "script_stem": "generate_experimental_design_matrix",
             "is_patch_script": false,
             "direct_python_test_count": 3,
-            "related_python_test_count": 3,
+            "related_python_test_count": 4,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -323,6 +323,7 @@
             ],
             "related_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_experimental_design_matrix_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_experimental_design_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_experimental_design_matrix_integration.py"
             ]
@@ -348,11 +349,12 @@
             "script_name": "generate_project_status_report.py",
             "script_stem": "generate_project_status_report",
             "is_patch_script": false,
-            "direct_python_test_count": 8,
-            "related_python_test_count": 8,
+            "direct_python_test_count": 9,
+            "related_python_test_count": 9,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_experimental_design_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_ranking_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_project_status_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
@@ -363,6 +365,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ],
             "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_experimental_design_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_ranking_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_project_status_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
@@ -437,17 +440,19 @@
             "script_name": "generate_scientific_validation_plan.py",
             "script_stem": "generate_scientific_validation_plan",
             "is_patch_script": false,
-            "direct_python_test_count": 4,
-            "related_python_test_count": 4,
+            "direct_python_test_count": 5,
+            "related_python_test_count": 5,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_experimental_design_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_ranking_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_scientific_validation_plan_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ],
             "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_experimental_design_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_ranking_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_scientific_validation_plan_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
@@ -930,7 +935,7 @@
             "script_stem": "verify_experimental_design_matrix",
             "is_patch_script": false,
             "direct_python_test_count": 3,
-            "related_python_test_count": 3,
+            "related_python_test_count": 4,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -940,6 +945,7 @@
             ],
             "related_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_experimental_design_matrix_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_experimental_design_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_experimental_design_matrix_integration.py"
             ]
@@ -1027,7 +1033,7 @@
             "script_stem": "verify_project_status_report",
             "is_patch_script": false,
             "direct_python_test_count": 5,
-            "related_python_test_count": 8,
+            "related_python_test_count": 9,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -1038,6 +1044,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ],
             "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_experimental_design_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_ranking_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_project_status_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
@@ -1098,7 +1105,7 @@
             "script_stem": "verify_scientific_validation_plan",
             "is_patch_script": false,
             "direct_python_test_count": 4,
-            "related_python_test_count": 4,
+            "related_python_test_count": 5,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -1108,6 +1115,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ],
             "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_experimental_design_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_final_reports_ranking_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_scientific_validation_plan_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",

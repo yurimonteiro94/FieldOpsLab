@@ -4,7 +4,7 @@
   "all_required_checks_passed": true,
   "problem_count": 0,
   "warning_count": 1,
-  "csv_row_count": 21,
+  "csv_row_count": 25,
   "problems": [],
   "warnings": [
     "Project still has methodological warning(s)."
@@ -14,7 +14,7 @@
     "scientific_status": "diagnostic_only_with_methodological_warnings",
     "structural_all_required_checks_passed": true,
     "analysis_script_count": 53,
-    "python_test_count": 24,
+    "python_test_count": 25,
     "cpp_test_source_count": 45,
     "script_without_direct_python_test_count": 0,
     "script_needing_test_review_count": 0,
@@ -30,6 +30,10 @@
     "policy_change_explanation_count": 0,
     "class_change_explanation_count": 2,
     "all_sensitive_scenarios_have_explanation": true,
+    "experimental_design_experiment_count": 648,
+    "experimental_design_scenario_count": 108,
+    "experimental_design_replication_count": 3,
+    "experimental_design_reproducible": true,
     "methodological_warning_count": 2
   }
 }

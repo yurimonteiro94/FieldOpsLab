@@ -20,6 +20,7 @@ QUALITY_FILE_PATHS = [
     REPORTS_DIR / "campaign_final_ranking_integration_quality_check.json",
     REPORTS_DIR / "ranking_sensitive_scenario_quality_check.json",
     REPORTS_DIR / "ranking_sensitivity_explanation_quality_check.json",
+    REPORTS_DIR / "experimental_design_matrix_quality_check.json",
     REPORTS_DIR / "project_status_quality_check.json",
 ]
 
@@ -138,7 +139,11 @@ def build_validation_actions(context: dict[str, Any]) -> list[dict[str, str]]:
             "action": "Define a broader experimental design with controlled factors for instance size, demand density, delay type, delay severity, policy, and random seed.",
             "acceptance_criterion": "A complete experiment matrix exists and each scenario can be reproduced from explicit configuration files.",
             "evidence_output": "experiment_design_matrix",
-            "status": "pending",
+            "status": (
+                "in_progress"
+                if as_int(context.get("experimental_design_experiment_count"), default=0) > 0
+                else "pending"
+            ),
         },
         {
             "id": "SCI-002",
@@ -365,6 +370,17 @@ def build_open_scientific_risks(context: dict[str, Any]) -> list[str]:
             f"The current explanation report found {policy_change_explanation_count} policy-change sensitivity explanation(s), meaning some policy recommendations change across ranking profiles."
         )
 
+    experimental_design_experiment_count = as_int(
+        context.get("experimental_design_experiment_count"),
+        default=0,
+    )
+    if experimental_design_experiment_count > 0:
+        risks.append(
+            f"The experimental design matrix defines {experimental_design_experiment_count} planned experiment(s), "
+            "but execution, replications, and statistical comparison are still pending."
+        )
+
+
     return risks
 
 
@@ -445,6 +461,21 @@ def build_report() -> dict[str, Any]:
         ),
         "all_sensitive_scenarios_have_explanation": bool(
             recursive_find(project_status, "all_sensitive_scenarios_have_explanation")
+        ),
+        "experimental_design_experiment_count": as_int(
+            recursive_find(project_status, "experimental_design_experiment_count"),
+            default=0,
+        ),
+        "experimental_design_scenario_count": as_int(
+            recursive_find(project_status, "experimental_design_scenario_count"),
+            default=0,
+        ),
+        "experimental_design_replication_count": as_int(
+            recursive_find(project_status, "experimental_design_replication_count"),
+            default=0,
+        ),
+        "experimental_design_reproducible": bool(
+            recursive_find(project_status, "experimental_design_reproducible")
         ),
         "methodological_warning_count": as_int(
             methodological_warning_count,
@@ -543,6 +574,10 @@ def write_markdown_report(report: dict[str, Any], output_path: Path) -> None:
         f"| ranking_sensitivity_explanation | policy_change_explanation_count | {context['policy_change_explanation_count']} |",
         f"| ranking_sensitivity_explanation | class_change_explanation_count | {context['class_change_explanation_count']} |",
         f"| ranking_sensitivity_explanation | all_sensitive_scenarios_have_explanation | {'yes' if context['all_sensitive_scenarios_have_explanation'] else 'no'} |",
+        f"| experimental_design | experiment_count | {context['experimental_design_experiment_count']} |",
+        f"| experimental_design | scenario_count | {context['experimental_design_scenario_count']} |",
+        f"| experimental_design | replication_count | {context['experimental_design_replication_count']} |",
+        f"| experimental_design | reproducible_from_explicit_factors | {'yes' if context['experimental_design_reproducible'] else 'no'} |",
         f"| warnings | methodological_warning_count | {context['methodological_warning_count']} |",
         "",
         "## Quality inputs",

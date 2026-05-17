@@ -18,7 +18,7 @@ This report summarizes the current engineering and diagnostic status of the proj
 | overall | scientific_status | diagnostic_only_with_methodological_warnings |
 | overall | structural_all_required_checks_passed | yes |
 | tests | analysis_script_count | 53 |
-| tests | python_test_count | 24 |
+| tests | python_test_count | 25 |
 | tests | cpp_test_source_count | 45 |
 | tests | script_without_direct_python_test_count | 0 |
 | tests | script_needing_test_review_count | 0 |
@@ -34,6 +34,10 @@ This report summarizes the current engineering and diagnostic status of the proj
 | ranking_sensitivity_explanation | policy_change_explanation_count | 0 |
 | ranking_sensitivity_explanation | class_change_explanation_count | 2 |
 | ranking_sensitivity_explanation | all_sensitive_scenarios_have_explanation | yes |
+| experimental_design | experimental_design_experiment_count | 648 |
+| experimental_design | experimental_design_scenario_count | 108 |
+| experimental_design | experimental_design_replication_count | 3 |
+| experimental_design | experimental_design_reproducible | yes |
 | warnings | methodological_warning_count | 2 |
 
 ## Quality summaries
@@ -47,6 +51,7 @@ This report summarizes the current engineering and diagnostic status of the proj
 | `analysis/reports/campaign_final_ranking_integration_quality_check.json` | yes | 0 | 0 |
 | `analysis/reports/ranking_sensitive_scenario_quality_check.json` | yes | 0 | 0 |
 | `analysis/reports/ranking_sensitivity_explanation_quality_check.json` | yes | 0 | 0 |
+| `analysis/reports/experimental_design_matrix_quality_check.json` | yes | 0 | 0 |
 
 ## Conservative interpretation
 

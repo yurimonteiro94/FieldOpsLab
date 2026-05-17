@@ -117,6 +117,60 @@ def quality_summary(relative_path: str) -> dict[str, Any]:
     }
 
 
+
+def nested_value(data: Any, key: str) -> Any:
+    if isinstance(data, dict):
+        if key in data:
+            return data[key]
+
+        for value in data.values():
+            found = nested_value(value, key)
+            if found is not None:
+                return found
+
+    if isinstance(data, list):
+        for item in data:
+            found = nested_value(item, key)
+            if found is not None:
+                return found
+
+    return None
+
+
+def nested_int_value(data: Any, key: str, default: int = 0) -> int:
+    value = nested_value(data, key)
+    if value is None:
+        return default
+
+    if isinstance(value, bool):
+        return int(value)
+
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        try:
+            return int(float(value))
+        except (TypeError, ValueError):
+            return default
+
+
+def nested_bool_value(data: Any, key: str, default: bool = False) -> bool:
+    value = nested_value(data, key)
+    if value is None:
+        return default
+
+    if isinstance(value, bool):
+        return value
+
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in {"true", "yes", "1"}:
+            return True
+        if normalized in {"false", "no", "0"}:
+            return False
+
+    return bool(value)
+
 def build_report() -> dict[str, Any]:
     full_pipeline_quality = load_json_or_empty(
         "analysis/reports/full_campaign_pipeline_quality_check.json"
@@ -146,6 +200,13 @@ def build_report() -> dict[str, Any]:
         "analysis/reports/ranking_sensitivity_explanation_report.json"
     )
 
+    experimental_design_quality = load_json_or_empty(
+        "analysis/reports/experimental_design_matrix_quality_check.json"
+    )
+    experimental_design_report = load_json_or_empty(
+        "analysis/reports/experimental_design_matrix.json"
+    )
+
     quality_files = [
         "analysis/reports/full_campaign_pipeline_quality_check.json",
         "analysis/reports/test_inventory_quality_check.json",
@@ -154,6 +215,7 @@ def build_report() -> dict[str, Any]:
         "analysis/reports/campaign_final_ranking_integration_quality_check.json",
         "analysis/reports/ranking_sensitive_scenario_quality_check.json",
         "analysis/reports/ranking_sensitivity_explanation_quality_check.json",
+        "analysis/reports/experimental_design_matrix_quality_check.json",
     ]
 
     quality_summaries = [quality_summary(path) for path in quality_files]
@@ -287,6 +349,26 @@ def build_report() -> dict[str, Any]:
         "policy_change_explanation_count": policy_change_explanation_count,
         "class_change_explanation_count": class_change_explanation_count,
         "all_sensitive_scenarios_have_explanation": all_sensitive_scenarios_have_explanation,
+        "experimental_design_experiment_count": nested_int_value(
+            experimental_design_report,
+            "experiment_count",
+            default=first_count(experimental_design_quality, ["csv_row_count"], default=0),
+        ),
+        "experimental_design_scenario_count": nested_int_value(
+            experimental_design_report,
+            "scenario_count",
+            default=0,
+        ),
+        "experimental_design_replication_count": nested_int_value(
+            experimental_design_report,
+            "replication_count",
+            default=0,
+        ),
+        "experimental_design_reproducible": nested_bool_value(
+            experimental_design_report,
+            "all_experiments_reproducible_from_explicit_factors",
+            default=False,
+        ),
         "methodological_warning_count": methodological_warning_count,
     }
 
@@ -402,6 +484,26 @@ def summary_rows(report: dict[str, Any]) -> list[dict[str, str]]:
             "ranking_sensitivity_explanation",
             "all_sensitive_scenarios_have_explanation",
             "yes" if metrics["all_sensitive_scenarios_have_explanation"] else "no",
+        ),
+        (
+            "experimental_design",
+            "experimental_design_experiment_count",
+            metrics["experimental_design_experiment_count"],
+        ),
+        (
+            "experimental_design",
+            "experimental_design_scenario_count",
+            metrics["experimental_design_scenario_count"],
+        ),
+        (
+            "experimental_design",
+            "experimental_design_replication_count",
+            metrics["experimental_design_replication_count"],
+        ),
+        (
+            "experimental_design",
+            "experimental_design_reproducible",
+            "yes" if metrics["experimental_design_reproducible"] else "no",
         ),
         (
             "warnings",

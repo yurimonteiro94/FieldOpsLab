@@ -9,7 +9,7 @@ Status JSON: `analysis\reports\project_status_report.json`
 | all_required_checks_passed | yes |
 | problem_count | 0 |
 | warning_count | 1 |
-| csv_row_count | 21 |
+| csv_row_count | 25 |
 
 ## Problems
 
