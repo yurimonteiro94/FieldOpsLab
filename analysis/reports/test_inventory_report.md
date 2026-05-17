@@ -8,14 +8,14 @@ This report audits the structural organization of C++ and Python tests.
 | --- | --- |
 | all_required_checks_passed | yes |
 | problem_count | 0 |
-| warning_count | 2 |
+| warning_count | 0 |
 | analysis_script_count | 43 |
-| python_test_count | 11 |
+| python_test_count | 12 |
 | cpp_test_source_count | 45 |
 | cpp_test_support_header_count | 1 |
-| script_with_direct_python_test_count | 31 |
-| script_without_direct_python_test_count | 12 |
-| script_needing_test_review_count | 11 |
+| script_with_direct_python_test_count | 43 |
+| script_without_direct_python_test_count | 0 |
+| script_needing_test_review_count | 0 |
 | patch_script_count | 0 |
 | row_count | 43 |
 
@@ -25,50 +25,49 @@ This report audits the structural organization of C++ and Python tests.
 
 ## Warnings
 
-- WARNING: 12 analysis script(s) do not have a direct Python test reference.
-- WARNING: 11 analysis script(s) rely on generic or indirect test coverage.
+- None.
 
 ## Analysis script test signals
 
 | Script | Direct tests | Related tests | Generic tests | Status |
 | --- | ---: | ---: | ---: | --- |
-| `analysis\scripts\audit_batch_recommendations.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
+| `analysis\scripts\audit_batch_recommendations.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\audit_policy_trigger_behavior.py` | 3 | 6 | 4 | direct_test_found |
 | `analysis\scripts\audit_service_delay_impact.py` | 3 | 6 | 4 | direct_test_found |
 | `analysis\scripts\connect_campaign_batch_configs_to_perturbation_plans.py` | 1 | 1 | 4 | direct_test_found |
-| `analysis\scripts\generate_batch_markdown_report.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
+| `analysis\scripts\generate_batch_markdown_report.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\generate_campaign_batch_blueprints.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\generate_campaign_decision_matrix.py` | 4 | 8 | 4 | direct_test_found |
 | `analysis\scripts\generate_campaign_final_diagnostic_report.py` | 3 | 7 | 4 | direct_test_found |
-| `analysis\scripts\generate_campaign_index.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
+| `analysis\scripts\generate_campaign_index.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\generate_campaign_perturbation_plans.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\generate_campaign_ranking_profile_sensitivity.py` | 4 | 7 | 4 | direct_test_found |
 | `analysis\scripts\generate_campaign_result_summary.py` | 3 | 6 | 4 | direct_test_found |
 | `analysis\scripts\generate_executable_campaign_batch_configs.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\generate_experiment_campaign_plan.py` | 3 | 4 | 4 | direct_test_found |
-| `analysis\scripts\generate_fuzzy_decision_report.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
-| `analysis\scripts\generate_scenario_descriptors.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
+| `analysis\scripts\generate_fuzzy_decision_report.py` | 1 | 1 | 4 | direct_test_found |
+| `analysis\scripts\generate_scenario_descriptors.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\generate_test_inventory_report.py` | 1 | 1 | 4 | direct_test_found |
-| `analysis\scripts\inspect_batch_config_schema.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
+| `analysis\scripts\inspect_batch_config_schema.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\inspect_campaign_result_semantics.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\integrate_ranking_sensitivity_into_final_diagnostic_report.py` | 4 | 4 | 4 | direct_test_found |
-| `analysis\scripts\run_batch_analysis_pipeline.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
+| `analysis\scripts\run_batch_analysis_pipeline.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\run_executable_campaign_batches.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\run_full_campaign_pipeline.py` | 3 | 6 | 4 | direct_test_found |
 | `analysis\scripts\run_project_quality_gate.py` | 1 | 1 | 4 | direct_test_found |
-| `analysis\scripts\run_ranking_sensitivity.py` | 0 | 5 | 4 | related_test_found |
-| `analysis\scripts\summarize_batch_result.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
-| `analysis\scripts\verify_analysis_outputs.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
+| `analysis\scripts\run_ranking_sensitivity.py` | 1 | 6 | 4 | direct_test_found |
+| `analysis\scripts\summarize_batch_result.py` | 1 | 1 | 4 | direct_test_found |
+| `analysis\scripts\verify_analysis_outputs.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\verify_campaign_batch_blueprints.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\verify_campaign_decision_matrix.py` | 6 | 8 | 4 | direct_test_found |
 | `analysis\scripts\verify_campaign_execution_index.py` | 4 | 4 | 4 | direct_test_found |
 | `analysis\scripts\verify_campaign_final_diagnostic_report.py` | 4 | 7 | 4 | direct_test_found |
-| `analysis\scripts\verify_campaign_index.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
+| `analysis\scripts\verify_campaign_index.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\verify_campaign_perturbation_plans.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\verify_campaign_ranking_profile_sensitivity.py` | 5 | 7 | 4 | direct_test_found |
 | `analysis\scripts\verify_campaign_result_summary.py` | 4 | 6 | 4 | direct_test_found |
 | `analysis\scripts\verify_executable_campaign_batch_configs.py` | 3 | 3 | 4 | direct_test_found |
-| `analysis\scripts\verify_executed_campaign_batch_result_paths.py` | 0 | 0 | 4 | covered_by_generic_contract_tests |
+| `analysis\scripts\verify_executed_campaign_batch_result_paths.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\verify_experiment_campaign_plan.py` | 3 | 4 | 4 | direct_test_found |
 | `analysis\scripts\verify_final_diagnostic_ranking_integration.py` | 4 | 4 | 4 | direct_test_found |
 | `analysis\scripts\verify_full_campaign_pipeline.py` | 3 | 6 | 4 | direct_test_found |

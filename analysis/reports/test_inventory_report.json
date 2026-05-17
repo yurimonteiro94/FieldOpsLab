@@ -1,18 +1,18 @@
 {
     "report_type": "fieldops_lab_test_inventory_report",
-    "generated_at_local": "2026-05-17T01:00:24",
+    "generated_at_local": "2026-05-17T01:04:21",
     "project_root": "C:\\Users\\yuri\\Documents\\FieldOpsLab",
     "all_required_checks_passed": true,
     "problem_count": 0,
-    "warning_count": 2,
+    "warning_count": 0,
     "overview": {
         "analysis_script_count": 43,
-        "python_test_count": 11,
+        "python_test_count": 12,
         "cpp_test_source_count": 45,
         "cpp_test_support_header_count": 1,
-        "script_with_direct_python_test_count": 31,
-        "script_without_direct_python_test_count": 12,
-        "script_needing_test_review_count": 11,
+        "script_with_direct_python_test_count": 43,
+        "script_without_direct_python_test_count": 0,
+        "script_needing_test_review_count": 0,
         "patch_script_count": 0,
         "row_count": 43
     },
@@ -22,12 +22,16 @@
             "script_name": "audit_batch_recommendations.py",
             "script_stem": "audit_batch_recommendations",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\audit_policy_trigger_behavior.py",
@@ -96,12 +100,16 @@
             "script_name": "generate_batch_markdown_report.py",
             "script_stem": "generate_batch_markdown_report",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\generate_campaign_batch_blueprints.py",
@@ -178,12 +186,16 @@
             "script_name": "generate_campaign_index.py",
             "script_stem": "generate_campaign_index",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\generate_campaign_perturbation_plans.py",
@@ -299,24 +311,32 @@
             "script_name": "generate_fuzzy_decision_report.py",
             "script_stem": "generate_fuzzy_decision_report",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\generate_scenario_descriptors.py",
             "script_name": "generate_scenario_descriptors.py",
             "script_stem": "generate_scenario_descriptors",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\generate_test_inventory_report.py",
@@ -339,12 +359,16 @@
             "script_name": "inspect_batch_config_schema.py",
             "script_stem": "inspect_batch_config_schema",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\inspect_campaign_result_semantics.py",
@@ -393,12 +417,16 @@
             "script_name": "run_batch_analysis_pipeline.py",
             "script_stem": "run_batch_analysis_pipeline",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\run_executable_campaign_batches.py",
@@ -464,15 +492,18 @@
             "script_name": "run_ranking_sensitivity.py",
             "script_stem": "run_ranking_sensitivity",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 5,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 6,
             "generic_python_test_count": 4,
-            "status": "related_test_found",
-            "direct_python_tests": [],
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
             "related_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_campaign_report_consistency.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_all_analysis_scripts_compile.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_current_pipeline_report_integrity.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py"
             ]
@@ -482,24 +513,32 @@
             "script_name": "summarize_batch_result.py",
             "script_stem": "summarize_batch_result",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\verify_analysis_outputs.py",
             "script_name": "verify_analysis_outputs.py",
             "script_stem": "verify_analysis_outputs",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\verify_campaign_batch_blueprints.py",
@@ -601,12 +640,16 @@
             "script_name": "verify_campaign_index.py",
             "script_stem": "verify_campaign_index",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\verify_campaign_perturbation_plans.py",
@@ -703,12 +746,16 @@
             "script_name": "verify_executed_campaign_batch_result_paths.py",
             "script_stem": "verify_executed_campaign_batch_result_paths",
             "is_patch_script": false,
-            "direct_python_test_count": 0,
-            "related_python_test_count": 0,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
             "generic_python_test_count": 4,
-            "status": "covered_by_generic_contract_tests",
-            "direct_python_tests": [],
-            "related_python_tests": []
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
         },
         {
             "script_path": "analysis\\scripts\\verify_experiment_campaign_plan.py",
@@ -842,10 +889,7 @@
         }
     ],
     "problems": [],
-    "warnings": [
-        "12 analysis script(s) do not have a direct Python test reference.",
-        "11 analysis script(s) rely on generic or indirect test coverage."
-    ],
+    "warnings": [],
     "interpretation": {
         "status": "test_inventory_diagnostic_only",
         "scientific_status": "test_structure_review_only",
