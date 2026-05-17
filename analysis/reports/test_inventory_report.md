@@ -9,15 +9,15 @@ This report audits the structural organization of C++ and Python tests.
 | all_required_checks_passed | yes |
 | problem_count | 0 |
 | warning_count | 0 |
-| analysis_script_count | 45 |
-| python_test_count | 15 |
+| analysis_script_count | 47 |
+| python_test_count | 16 |
 | cpp_test_source_count | 45 |
 | cpp_test_support_header_count | 1 |
-| script_with_direct_python_test_count | 45 |
+| script_with_direct_python_test_count | 47 |
 | script_without_direct_python_test_count | 0 |
 | script_needing_test_review_count | 0 |
 | patch_script_count | 0 |
-| row_count | 45 |
+| row_count | 47 |
 
 ## Problems
 
@@ -48,6 +48,7 @@ This report audits the structural organization of C++ and Python tests.
 | `analysis\scripts\generate_fuzzy_decision_report.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\generate_project_status_report.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\generate_scenario_descriptors.py` | 1 | 1 | 4 | direct_test_found |
+| `analysis\scripts\generate_scientific_validation_plan.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\generate_test_inventory_report.py` | 3 | 4 | 4 | direct_test_found |
 | `analysis\scripts\inspect_batch_config_schema.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\inspect_campaign_result_semantics.py` | 3 | 3 | 4 | direct_test_found |
@@ -74,6 +75,7 @@ This report audits the structural organization of C++ and Python tests.
 | `analysis\scripts\verify_full_campaign_pipeline.py` | 4 | 7 | 4 | direct_test_found |
 | `analysis\scripts\verify_policy_trigger_behavior_audit.py` | 4 | 6 | 4 | direct_test_found |
 | `analysis\scripts\verify_project_status_report.py` | 3 | 3 | 4 | direct_test_found |
+| `analysis\scripts\verify_scientific_validation_plan.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\verify_service_delay_impact_audit.py` | 4 | 6 | 4 | direct_test_found |
 | `analysis\scripts\verify_test_inventory_report.py` | 4 | 4 | 4 | direct_test_found |
 
