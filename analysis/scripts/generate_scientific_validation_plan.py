@@ -18,6 +18,8 @@ QUALITY_FILE_PATHS = [
     REPORTS_DIR / "campaign_final_diagnostic_report_quality_check.json",
     REPORTS_DIR / "campaign_ranking_profile_sensitivity_quality_check.json",
     REPORTS_DIR / "campaign_final_ranking_integration_quality_check.json",
+    REPORTS_DIR / "ranking_sensitive_scenario_quality_check.json",
+    REPORTS_DIR / "ranking_sensitivity_explanation_quality_check.json",
     REPORTS_DIR / "project_status_quality_check.json",
 ]
 
@@ -126,6 +128,7 @@ def summarize_quality_file(path: Path) -> dict[str, Any]:
     }
 
 
+
 def build_validation_actions(context: dict[str, Any]) -> list[dict[str, str]]:
     actions = [
         {
@@ -179,7 +182,7 @@ def build_validation_actions(context: dict[str, Any]) -> list[dict[str, str]]:
             "category": "external_validation",
             "action": "Prepare at least one real or semi-real company instance for external validation after the synthetic campaign is stable.",
             "acceptance_criterion": "The project includes a documented mapping from real operation data to FieldOps Lab input data.",
-            "evidence_output": "real_case_mapping_document",
+            "evidence_output": "real_instance_mapping",
             "status": "pending",
         },
         {
@@ -188,7 +191,7 @@ def build_validation_actions(context: dict[str, Any]) -> list[dict[str, str]]:
             "category": "perturbation_modeling",
             "action": "Justify perturbation distributions, delay ranges, and event frequencies with literature, operational data, or conservative assumptions.",
             "acceptance_criterion": "Every perturbation family has a documented rationale and can be traced to either data, literature, or declared assumption.",
-            "evidence_output": "perturbation_model_rationale",
+            "evidence_output": "perturbation_modeling_rationale",
             "status": "pending",
         },
         {
@@ -206,23 +209,52 @@ def build_validation_actions(context: dict[str, Any]) -> list[dict[str, str]]:
             "category": "presentation_readiness",
             "action": "Prepare a concise explanation for non-technical stakeholders separating what the platform already proves from what it only diagnoses.",
             "acceptance_criterion": "A non-technical summary exists and avoids overstating the scientific maturity of the current campaign.",
-            "evidence_output": "stakeholder_validation_summary",
+            "evidence_output": "stakeholder_summary",
             "status": "pending",
         },
     ]
 
-    sensitive_count = as_int(context.get("sensitive_to_ranking_profile_count"), default=0)
+    sensitive_count = as_int(
+        context.get("sensitive_to_ranking_profile_count"),
+        default=0,
+    )
 
-    if sensitive_count > 0:
+    ranking_sensitive_scenario_count = as_int(
+        context.get("ranking_sensitive_scenario_count"),
+        default=sensitive_count,
+    )
+
+    explanation_count = as_int(
+        context.get("ranking_sensitivity_explanation_count"),
+        default=0,
+    )
+
+    all_sensitive_explained = bool(
+        context.get("all_ranking_sensitive_scenarios_explained")
+    )
+
+    if ranking_sensitive_scenario_count > 0 and all_sensitive_explained:
         actions.append(
             {
                 "id": "SCI-010",
                 "priority": "high",
                 "category": "robustness_analysis",
-                "action": "Investigate scenarios where the recommended policy changes under different ranking profiles.",
-                "acceptance_criterion": "Every ranking-sensitive scenario has an explanation of which metrics caused the policy change.",
-                "evidence_output": "ranking_fragility_explanation_report",
+                "action": "Use the ranking sensitivity explanation report as input for broader replicated experiments.",
+                "acceptance_criterion": "Every explained ranking-sensitive scenario is retested under repeated replications and statistical comparisons.",
+                "evidence_output": "replicated_ranking_sensitivity_validation",
                 "status": "pending",
+            }
+        )
+    elif ranking_sensitive_scenario_count > 0:
+        actions.append(
+            {
+                "id": "SCI-010",
+                "priority": "high",
+                "category": "robustness_analysis",
+                "action": "Complete diagnostic explanations for ranking-sensitive scenarios.",
+                "acceptance_criterion": "Every ranking-sensitive scenario has an explanation of which metrics, classes, and ranking weights caused the sensitivity signal.",
+                "evidence_output": "ranking_sensitivity_explanation_report",
+                "status": "in_progress" if explanation_count > 0 else "pending",
             }
         )
     else:
@@ -241,6 +273,9 @@ def build_validation_actions(context: dict[str, Any]) -> list[dict[str, str]]:
     return actions
 
 
+
+
+
 def build_open_scientific_risks(context: dict[str, Any]) -> list[str]:
     risks = [
         "The current campaign is structurally consistent, but it is still not enough to prove general scientific validity.",
@@ -248,8 +283,48 @@ def build_open_scientific_risks(context: dict[str, Any]) -> list[str]:
         "The project still needs broader experiments, repeated replications, and statistical comparisons before strong conclusions.",
     ]
 
-    methodological_warning_count = as_int(context.get("methodological_warning_count"), default=0)
-    sensitive_count = as_int(context.get("sensitive_to_ranking_profile_count"), default=0)
+    methodological_warning_count = as_int(
+        context.get("methodological_warning_count"),
+        default=0,
+    )
+
+    sensitive_count = as_int(
+        context.get("sensitive_to_ranking_profile_count"),
+        default=0,
+    )
+
+    ranking_sensitive_scenario_count = as_int(
+        context.get("ranking_sensitive_scenario_count"),
+        default=sensitive_count,
+    )
+
+    explanation_count = as_int(
+        context.get("ranking_sensitivity_explanation_count"),
+        default=0,
+    )
+
+    class_change_explanation_count = as_int(
+        context.get("ranking_class_change_explanation_count"),
+        default=0,
+    )
+
+    policy_change_explanation_count = as_int(
+        context.get("ranking_policy_change_explanation_count"),
+        default=0,
+    )
+
+    explicitly_all_sensitive_explained = bool(
+        context.get("all_ranking_sensitive_scenarios_explained")
+    )
+
+    derived_all_sensitive_explained = (
+        ranking_sensitive_scenario_count > 0
+        and explanation_count >= ranking_sensitive_scenario_count
+    )
+
+    all_sensitive_explained = (
+        explicitly_all_sensitive_explained or derived_all_sensitive_explained
+    )
 
     if methodological_warning_count > 0:
         risks.append(
@@ -259,6 +334,35 @@ def build_open_scientific_risks(context: dict[str, Any]) -> list[str]:
     if sensitive_count > 0:
         risks.append(
             f"The current ranking sensitivity analysis found {sensitive_count} scenario(s) sensitive to ranking profile choice."
+        )
+
+    if ranking_sensitive_scenario_count > 0 and explanation_count > 0:
+        risks.append(
+            f"The current ranking-sensitive scenario(s) have {explanation_count} diagnostic explanation(s), but these explanations are still not statistical proof."
+        )
+
+    if ranking_sensitive_scenario_count > 0 and all_sensitive_explained:
+        risks.append(
+            "All currently ranking-sensitive scenario(s) have diagnostic explanations, but they still need broader replications and statistical validation."
+        )
+
+    if ranking_sensitive_scenario_count > 0 and not all_sensitive_explained:
+        unexplained_count = max(
+            0,
+            ranking_sensitive_scenario_count - explanation_count,
+        )
+        risks.append(
+            f"The current ranking-sensitive scenario(s) still have {unexplained_count} unexplained case(s)."
+        )
+
+    if class_change_explanation_count > 0:
+        risks.append(
+            f"The current explanation report found {class_change_explanation_count} class-change sensitivity explanation(s), meaning some policy choices are stable but recommendation strength remains fragile."
+        )
+
+    if policy_change_explanation_count > 0:
+        risks.append(
+            f"The current explanation report found {policy_change_explanation_count} policy-change sensitivity explanation(s), meaning some policy recommendations change across ranking profiles."
         )
 
     return risks
@@ -326,6 +430,21 @@ def build_report() -> dict[str, Any]:
         "ranking_fragility_status": as_str(
             recursive_find(project_status, "ranking_fragility_status"),
             default="unknown",
+        ),
+        "ranking_sensitivity_explanation_count": as_int(
+            recursive_find(project_status, "ranking_sensitivity_explanation_count"),
+            default=0,
+        ),
+        "policy_change_explanation_count": as_int(
+            recursive_find(project_status, "policy_change_explanation_count"),
+            default=0,
+        ),
+        "class_change_explanation_count": as_int(
+            recursive_find(project_status, "class_change_explanation_count"),
+            default=0,
+        ),
+        "all_sensitive_scenarios_have_explanation": bool(
+            recursive_find(project_status, "all_sensitive_scenarios_have_explanation")
         ),
         "methodological_warning_count": as_int(
             methodological_warning_count,
@@ -420,6 +539,10 @@ def write_markdown_report(report: dict[str, Any], output_path: Path) -> None:
         f"| ranking_sensitivity | ranking_row_count | {context['ranking_row_count']} |",
         f"| ranking_sensitivity | scenario_summary_count | {context['scenario_summary_count']} |",
         f"| ranking_sensitivity | sensitive_to_ranking_profile_count | {context['sensitive_to_ranking_profile_count']} |",
+        f"| ranking_sensitivity_explanation | explanation_count | {context['ranking_sensitivity_explanation_count']} |",
+        f"| ranking_sensitivity_explanation | policy_change_explanation_count | {context['policy_change_explanation_count']} |",
+        f"| ranking_sensitivity_explanation | class_change_explanation_count | {context['class_change_explanation_count']} |",
+        f"| ranking_sensitivity_explanation | all_sensitive_scenarios_have_explanation | {'yes' if context['all_sensitive_scenarios_have_explanation'] else 'no'} |",
         f"| warnings | methodological_warning_count | {context['methodological_warning_count']} |",
         "",
         "## Quality inputs",

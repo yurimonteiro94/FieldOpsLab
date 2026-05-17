@@ -8,7 +8,7 @@
     "scientific_status": "diagnostic_only_with_methodological_warnings",
     "structural_all_required_checks_passed": true,
     "analysis_script_count": 51,
-    "python_test_count": 21,
+    "python_test_count": 22,
     "cpp_test_source_count": 45,
     "pipeline_step_count": 26,
     "pipeline_failed_step_count": 0,
@@ -17,6 +17,10 @@
     "scenario_summary_count": 12,
     "sensitive_to_ranking_profile_count": 2,
     "ranking_fragility_status": "some_scenarios_sensitive_to_ranking_profile",
+    "ranking_sensitivity_explanation_count": 2,
+    "policy_change_explanation_count": 0,
+    "class_change_explanation_count": 2,
+    "all_sensitive_scenarios_have_explanation": true,
     "methodological_warning_count": 2
   },
   "quality_inputs": [
@@ -56,6 +60,20 @@
       "warning_count": 0
     },
     {
+      "path": "analysis/reports/ranking_sensitive_scenario_quality_check.json",
+      "exists": true,
+      "passed": true,
+      "problem_count": 0,
+      "warning_count": 0
+    },
+    {
+      "path": "analysis/reports/ranking_sensitivity_explanation_quality_check.json",
+      "exists": true,
+      "passed": true,
+      "problem_count": 0,
+      "warning_count": 0
+    },
+    {
       "path": "analysis/reports/project_status_quality_check.json",
       "exists": true,
       "passed": true,
@@ -68,7 +86,9 @@
     "Current recommendations may depend on the selected scenario set, ranking profile, and diagnostic assumptions.",
     "The project still needs broader experiments, repeated replications, and statistical comparisons before strong conclusions.",
     "The current reports still expose 2 methodological warning(s).",
-    "The current ranking sensitivity analysis found 2 scenario(s) sensitive to ranking profile choice."
+    "The current ranking sensitivity analysis found 2 scenario(s) sensitive to ranking profile choice.",
+    "The current ranking-sensitive scenario(s) have 2 diagnostic explanation(s), but these explanations are still not statistical proof.",
+    "All currently ranking-sensitive scenario(s) have diagnostic explanations, but they still need broader replications and statistical validation."
   ],
   "validation_actions": [
     {
@@ -122,7 +142,7 @@
       "category": "external_validation",
       "action": "Prepare at least one real or semi-real company instance for external validation after the synthetic campaign is stable.",
       "acceptance_criterion": "The project includes a documented mapping from real operation data to FieldOps Lab input data.",
-      "evidence_output": "real_case_mapping_document",
+      "evidence_output": "real_instance_mapping",
       "status": "pending"
     },
     {
@@ -131,7 +151,7 @@
       "category": "perturbation_modeling",
       "action": "Justify perturbation distributions, delay ranges, and event frequencies with literature, operational data, or conservative assumptions.",
       "acceptance_criterion": "Every perturbation family has a documented rationale and can be traced to either data, literature, or declared assumption.",
-      "evidence_output": "perturbation_model_rationale",
+      "evidence_output": "perturbation_modeling_rationale",
       "status": "pending"
     },
     {
@@ -149,17 +169,17 @@
       "category": "presentation_readiness",
       "action": "Prepare a concise explanation for non-technical stakeholders separating what the platform already proves from what it only diagnoses.",
       "acceptance_criterion": "A non-technical summary exists and avoids overstating the scientific maturity of the current campaign.",
-      "evidence_output": "stakeholder_validation_summary",
+      "evidence_output": "stakeholder_summary",
       "status": "pending"
     },
     {
       "id": "SCI-010",
       "priority": "high",
       "category": "robustness_analysis",
-      "action": "Investigate scenarios where the recommended policy changes under different ranking profiles.",
-      "acceptance_criterion": "Every ranking-sensitive scenario has an explanation of which metrics caused the policy change.",
-      "evidence_output": "ranking_fragility_explanation_report",
-      "status": "pending"
+      "action": "Complete diagnostic explanations for ranking-sensitive scenarios.",
+      "acceptance_criterion": "Every ranking-sensitive scenario has an explanation of which metrics, classes, and ranking weights caused the sensitivity signal.",
+      "evidence_output": "ranking_sensitivity_explanation_report",
+      "status": "in_progress"
     }
   ],
   "conservative_conclusion": "The project is structurally consistent and ready for the next scientific validation phase. This plan does not prove scientific validity. It defines what must be done before stronger scientific claims are made."

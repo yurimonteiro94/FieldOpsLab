@@ -19,7 +19,7 @@ This plan does not prove scientific validity. It defines what must be done befor
 | Category | Field | Value |
 | --- | --- | ---: |
 | tests | analysis_script_count | 51 |
-| tests | python_test_count | 21 |
+| tests | python_test_count | 22 |
 | tests | cpp_test_source_count | 45 |
 | pipeline | pipeline_step_count | 26 |
 | pipeline | pipeline_failed_step_count | 0 |
@@ -27,6 +27,10 @@ This plan does not prove scientific validity. It defines what must be done befor
 | ranking_sensitivity | ranking_row_count | 144 |
 | ranking_sensitivity | scenario_summary_count | 12 |
 | ranking_sensitivity | sensitive_to_ranking_profile_count | 2 |
+| ranking_sensitivity_explanation | explanation_count | 2 |
+| ranking_sensitivity_explanation | policy_change_explanation_count | 0 |
+| ranking_sensitivity_explanation | class_change_explanation_count | 2 |
+| ranking_sensitivity_explanation | all_sensitive_scenarios_have_explanation | yes |
 | warnings | methodological_warning_count | 2 |
 
 ## Quality inputs
@@ -38,6 +42,8 @@ This plan does not prove scientific validity. It defines what must be done befor
 | `analysis/reports/campaign_final_diagnostic_report_quality_check.json` | yes | yes | 0 | 2 |
 | `analysis/reports/campaign_ranking_profile_sensitivity_quality_check.json` | yes | yes | 0 | 0 |
 | `analysis/reports/campaign_final_ranking_integration_quality_check.json` | yes | yes | 0 | 0 |
+| `analysis/reports/ranking_sensitive_scenario_quality_check.json` | yes | yes | 0 | 0 |
+| `analysis/reports/ranking_sensitivity_explanation_quality_check.json` | yes | yes | 0 | 0 |
 | `analysis/reports/project_status_quality_check.json` | yes | yes | 0 | 1 |
 
 ## Open scientific risks
@@ -47,6 +53,8 @@ This plan does not prove scientific validity. It defines what must be done befor
 - The project still needs broader experiments, repeated replications, and statistical comparisons before strong conclusions.
 - The current reports still expose 2 methodological warning(s).
 - The current ranking sensitivity analysis found 2 scenario(s) sensitive to ranking profile choice.
+- The current ranking-sensitive scenario(s) have 2 diagnostic explanation(s), but these explanations are still not statistical proof.
+- All currently ranking-sensitive scenario(s) have diagnostic explanations, but they still need broader replications and statistical validation.
 
 ## Validation actions
 
@@ -61,7 +69,7 @@ This plan does not prove scientific validity. It defines what must be done befor
 | SCI-007 | medium | perturbation_modeling | Justify perturbation distributions, delay ranges, and event frequencies with literature, operational data, or conservative assumptions. | Every perturbation family has a documented rationale and can be traced to either data, literature, or declared assumption. | pending |
 | SCI-008 | medium | traceability | Create traceability from scenario descriptors to diagnostics, ranking sensitivity, final recommendation, and scientific limitation. | For each scenario, the final recommendation can be traced back to input assumptions, metrics, and warnings. | pending |
 | SCI-009 | low | presentation_readiness | Prepare a concise explanation for non-technical stakeholders separating what the platform already proves from what it only diagnoses. | A non-technical summary exists and avoids overstating the scientific maturity of the current campaign. | pending |
-| SCI-010 | high | robustness_analysis | Investigate scenarios where the recommended policy changes under different ranking profiles. | Every ranking-sensitive scenario has an explanation of which metrics caused the policy change. | pending |
+| SCI-010 | high | robustness_analysis | Complete diagnostic explanations for ranking-sensitive scenarios. | Every ranking-sensitive scenario has an explanation of which metrics, classes, and ranking weights caused the sensitivity signal. | in_progress |
 
 ## Conservative conclusion
 

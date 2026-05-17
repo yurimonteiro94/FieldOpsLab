@@ -132,9 +132,20 @@ def build_quality_report(
         problems.append("Project status CSV must contain at least one data row.")
 
     expected_csv_row_count = 16
-    if csv_row_count != expected_csv_row_count:
+    with status_csv_path.open("r", encoding="utf-8") as csv_file:
+        status_csv_row_count = max(0, sum(1 for _ in csv_file) - 1)
+
+    expected_project_status_csv_row_count = (
+        len(metrics)
+        if isinstance(metrics, dict)
+        else 0
+    )
+
+    if expected_project_status_csv_row_count <= 0:
+        problems.append("summary_metrics must not be empty.")
+    elif status_csv_row_count != expected_project_status_csv_row_count:
         problems.append(
-            f"Project status CSV row count must be {expected_csv_row_count}, found {csv_row_count}."
+            f"Project status CSV row count must be {expected_project_status_csv_row_count}, found {status_csv_row_count}."
         )
 
     return {

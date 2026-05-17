@@ -18,7 +18,7 @@ This report summarizes the current engineering and diagnostic status of the proj
 | overall | scientific_status | diagnostic_only_with_methodological_warnings |
 | overall | structural_all_required_checks_passed | yes |
 | tests | analysis_script_count | 51 |
-| tests | python_test_count | 21 |
+| tests | python_test_count | 22 |
 | tests | cpp_test_source_count | 45 |
 | tests | script_without_direct_python_test_count | 0 |
 | tests | script_needing_test_review_count | 0 |
@@ -29,6 +29,11 @@ This report summarizes the current engineering and diagnostic status of the proj
 | ranking_sensitivity | scenario_summary_count | 12 |
 | ranking_sensitivity | sensitive_to_ranking_profile_count | 2 |
 | ranking_sensitivity | ranking_fragility_status | some_scenarios_sensitive_to_ranking_profile |
+| ranking_sensitivity_explanation | ranking_sensitive_scenario_count | 2 |
+| ranking_sensitivity_explanation | ranking_sensitivity_explanation_count | 2 |
+| ranking_sensitivity_explanation | policy_change_explanation_count | 0 |
+| ranking_sensitivity_explanation | class_change_explanation_count | 2 |
+| ranking_sensitivity_explanation | all_sensitive_scenarios_have_explanation | yes |
 | warnings | methodological_warning_count | 2 |
 
 ## Quality summaries
@@ -40,6 +45,8 @@ This report summarizes the current engineering and diagnostic status of the proj
 | `analysis/reports/campaign_final_diagnostic_report_quality_check.json` | yes | 0 | 2 |
 | `analysis/reports/campaign_ranking_profile_sensitivity_quality_check.json` | yes | 0 | 0 |
 | `analysis/reports/campaign_final_ranking_integration_quality_check.json` | yes | 0 | 0 |
+| `analysis/reports/ranking_sensitive_scenario_quality_check.json` | yes | 0 | 0 |
+| `analysis/reports/ranking_sensitivity_explanation_quality_check.json` | yes | 0 | 0 |
 
 ## Conservative interpretation
 

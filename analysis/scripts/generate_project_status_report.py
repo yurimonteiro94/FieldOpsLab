@@ -139,6 +139,12 @@ def build_report() -> dict[str, Any]:
     final_ranking_integration_quality = load_json_or_empty(
         "analysis/reports/campaign_final_ranking_integration_quality_check.json"
     )
+    ranking_sensitive_scenario_report = load_json_or_empty(
+        "analysis/reports/ranking_sensitive_scenario_report.json"
+    )
+    ranking_sensitivity_explanation_report = load_json_or_empty(
+        "analysis/reports/ranking_sensitivity_explanation_report.json"
+    )
 
     quality_files = [
         "analysis/reports/full_campaign_pipeline_quality_check.json",
@@ -146,6 +152,8 @@ def build_report() -> dict[str, Any]:
         "analysis/reports/campaign_final_diagnostic_report_quality_check.json",
         "analysis/reports/campaign_ranking_profile_sensitivity_quality_check.json",
         "analysis/reports/campaign_final_ranking_integration_quality_check.json",
+        "analysis/reports/ranking_sensitive_scenario_quality_check.json",
+        "analysis/reports/ranking_sensitivity_explanation_quality_check.json",
     ]
 
     quality_summaries = [quality_summary(path) for path in quality_files]
@@ -204,6 +212,30 @@ def build_report() -> dict[str, Any]:
         else "no_policy_change_detected_under_current_profiles"
     )
 
+    ranking_sensitive_summary = ranking_sensitive_scenario_report.get("summary", {})
+    if not isinstance(ranking_sensitive_summary, dict):
+        ranking_sensitive_summary = {}
+
+    ranking_explanation_summary = ranking_sensitivity_explanation_report.get("summary", {})
+    if not isinstance(ranking_explanation_summary, dict):
+        ranking_explanation_summary = {}
+
+    ranking_sensitive_scenario_count = int_value(
+        ranking_sensitive_summary.get("sensitive_scenario_count", 0)
+    )
+    ranking_sensitivity_explanation_count = int_value(
+        ranking_explanation_summary.get("explanation_count", 0)
+    )
+    policy_change_explanation_count = int_value(
+        ranking_explanation_summary.get("policy_change_explanation_count", 0)
+    )
+    class_change_explanation_count = int_value(
+        ranking_explanation_summary.get("class_change_explanation_count", 0)
+    )
+    all_sensitive_scenarios_have_explanation = bool(
+        ranking_explanation_summary.get("all_sensitive_scenarios_have_explanation", False)
+    )
+
     summary_metrics = {
         "engineering_status": engineering_status,
         "scientific_status": scientific_status,
@@ -250,8 +282,37 @@ def build_report() -> dict[str, Any]:
         "scenario_summary_count": scenario_summary_count,
         "sensitive_to_ranking_profile_count": sensitive_to_ranking_profile_count,
         "ranking_fragility_status": ranking_fragility_status,
+        "ranking_sensitive_scenario_count": ranking_sensitive_scenario_count,
+        "ranking_sensitivity_explanation_count": ranking_sensitivity_explanation_count,
+        "policy_change_explanation_count": policy_change_explanation_count,
+        "class_change_explanation_count": class_change_explanation_count,
+        "all_sensitive_scenarios_have_explanation": all_sensitive_scenarios_have_explanation,
         "methodological_warning_count": methodological_warning_count,
     }
+
+    ranking_sensitive_summary = ranking_sensitive_scenario_report.get("summary", {})
+    if not isinstance(ranking_sensitive_summary, dict):
+        ranking_sensitive_summary = {}
+
+    ranking_explanation_summary = ranking_sensitivity_explanation_report.get("summary", {})
+    if not isinstance(ranking_explanation_summary, dict):
+        ranking_explanation_summary = {}
+
+    ranking_sensitive_scenario_count = int_value(
+        ranking_sensitive_summary.get("sensitive_scenario_count", 0)
+    )
+    ranking_sensitivity_explanation_count = int_value(
+        ranking_explanation_summary.get("explanation_count", 0)
+    )
+    policy_change_explanation_count = int_value(
+        ranking_explanation_summary.get("policy_change_explanation_count", 0)
+    )
+    class_change_explanation_count = int_value(
+        ranking_explanation_summary.get("class_change_explanation_count", 0)
+    )
+    all_sensitive_scenarios_have_explanation = bool(
+        ranking_explanation_summary.get("all_sensitive_scenarios_have_explanation", False)
+    )
 
     return {
         "report_type": "fieldops_lab_project_status_report",
@@ -316,6 +377,31 @@ def summary_rows(report: dict[str, Any]) -> list[dict[str, str]]:
             "ranking_sensitivity",
             "ranking_fragility_status",
             metrics["ranking_fragility_status"],
+        ),
+        (
+            "ranking_sensitivity_explanation",
+            "ranking_sensitive_scenario_count",
+            metrics["ranking_sensitive_scenario_count"],
+        ),
+        (
+            "ranking_sensitivity_explanation",
+            "ranking_sensitivity_explanation_count",
+            metrics["ranking_sensitivity_explanation_count"],
+        ),
+        (
+            "ranking_sensitivity_explanation",
+            "policy_change_explanation_count",
+            metrics["policy_change_explanation_count"],
+        ),
+        (
+            "ranking_sensitivity_explanation",
+            "class_change_explanation_count",
+            metrics["class_change_explanation_count"],
+        ),
+        (
+            "ranking_sensitivity_explanation",
+            "all_sensitive_scenarios_have_explanation",
+            "yes" if metrics["all_sensitive_scenarios_have_explanation"] else "no",
         ),
         (
             "warnings",
