@@ -130,6 +130,30 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
             ],
         ),
         QualityGateStep(
+            name="generate_ranking_sensitivity_explanation_report",
+            command=[
+                "py",
+                "-3",
+                "analysis\\scripts\\generate_ranking_sensitivity_explanation_report.py",
+                "analysis\\reports\\ranking_sensitivity_explanation_report.md",
+                "analysis\\reports\\ranking_sensitivity_explanation_report.json",
+                "analysis\\reports\\ranking_sensitivity_explanation_report.csv",
+            ],
+        ),
+        QualityGateStep(
+            name="verify_ranking_sensitivity_explanation_report",
+            command=[
+                "py",
+                "-3",
+                "analysis\\scripts\\verify_ranking_sensitivity_explanation_report.py",
+                "analysis\\reports\\ranking_sensitivity_explanation_report.json",
+                "analysis\\reports\\ranking_sensitivity_explanation_report.md",
+                "analysis\\reports\\ranking_sensitivity_explanation_report.csv",
+                "analysis\\reports\\ranking_sensitivity_explanation_quality_check.md",
+                "analysis\\reports\\ranking_sensitivity_explanation_quality_check.json",
+            ],
+        ),
+        QualityGateStep(
                 name="generate_project_status_report",
                 command=[
                     "py",

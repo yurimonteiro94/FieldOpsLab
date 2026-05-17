@@ -1,13 +1,13 @@
 {
     "report_type": "fieldops_lab_test_inventory_report",
-    "generated_at_local": "2026-05-17T02:54:21",
+    "generated_at_local": "2026-05-17T03:30:43",
     "project_root": "C:\\Users\\yuri\\Documents\\FieldOpsLab",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 0,
     "overview": {
         "analysis_script_count": 51,
-        "python_test_count": 20,
+        "python_test_count": 21,
         "cpp_test_source_count": 45,
         "cpp_test_support_header_count": 1,
         "script_with_direct_python_test_count": 51,
@@ -328,8 +328,8 @@
             "script_name": "generate_project_status_report.py",
             "script_stem": "generate_project_status_report",
             "is_patch_script": false,
-            "direct_python_test_count": 5,
-            "related_python_test_count": 5,
+            "direct_python_test_count": 6,
+            "related_python_test_count": 6,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -337,6 +337,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ],
             "related_python_tests": [
@@ -344,6 +345,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ]
         },
@@ -352,19 +354,21 @@
             "script_name": "generate_ranking_sensitive_scenario_report.py",
             "script_stem": "generate_ranking_sensitive_scenario_report",
             "is_patch_script": false,
-            "direct_python_test_count": 3,
-            "related_python_test_count": 3,
+            "direct_python_test_count": 4,
+            "related_python_test_count": 4,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ],
             "related_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ]
         },
         {
@@ -372,15 +376,19 @@
             "script_name": "generate_ranking_sensitivity_explanation_report.py",
             "script_stem": "generate_ranking_sensitivity_explanation_report",
             "is_patch_script": false,
-            "direct_python_test_count": 1,
-            "related_python_test_count": 1,
+            "direct_python_test_count": 3,
+            "related_python_test_count": 3,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitivity_explanation_report_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitivity_explanation_report_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ],
             "related_python_tests": [
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitivity_explanation_report_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitivity_explanation_report_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ]
         },
         {
@@ -540,15 +548,16 @@
             "script_name": "run_full_campaign_pipeline.py",
             "script_stem": "run_full_campaign_pipeline",
             "is_patch_script": false,
-            "direct_python_test_count": 4,
-            "related_python_test_count": 9,
+            "direct_python_test_count": 5,
+            "related_python_test_count": 10,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_all_analysis_scripts_compile.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ],
             "related_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_quality_report_contracts.py",
@@ -559,6 +568,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ]
         },
@@ -567,8 +577,8 @@
             "script_name": "run_project_quality_gate.py",
             "script_stem": "run_project_quality_gate",
             "is_patch_script": false,
-            "direct_python_test_count": 5,
-            "related_python_test_count": 5,
+            "direct_python_test_count": 6,
+            "related_python_test_count": 6,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -576,6 +586,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_inventory_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ],
             "related_python_tests": [
@@ -583,6 +594,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_inventory_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ]
         },
@@ -592,7 +604,7 @@
             "script_stem": "run_ranking_sensitivity",
             "is_patch_script": false,
             "direct_python_test_count": 1,
-            "related_python_test_count": 7,
+            "related_python_test_count": 9,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -605,7 +617,9 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_current_pipeline_report_integrity.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ]
         },
         {
@@ -906,8 +920,8 @@
             "script_name": "verify_full_campaign_pipeline.py",
             "script_stem": "verify_full_campaign_pipeline",
             "is_patch_script": false,
-            "direct_python_test_count": 6,
-            "related_python_test_count": 9,
+            "direct_python_test_count": 7,
+            "related_python_test_count": 10,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -916,6 +930,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ],
             "related_python_tests": [
@@ -927,6 +942,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ]
         },
@@ -960,7 +976,7 @@
             "script_stem": "verify_project_status_report",
             "is_patch_script": false,
             "direct_python_test_count": 4,
-            "related_python_test_count": 5,
+            "related_python_test_count": 6,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -974,6 +990,7 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
             ]
         },
@@ -982,19 +999,21 @@
             "script_name": "verify_ranking_sensitive_scenario_report.py",
             "script_stem": "verify_ranking_sensitive_scenario_report",
             "is_patch_script": false,
-            "direct_python_test_count": 3,
-            "related_python_test_count": 3,
+            "direct_python_test_count": 4,
+            "related_python_test_count": 4,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ],
             "related_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitive_scenario_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ]
         },
         {
@@ -1002,15 +1021,19 @@
             "script_name": "verify_ranking_sensitivity_explanation_report.py",
             "script_stem": "verify_ranking_sensitivity_explanation_report",
             "is_patch_script": false,
-            "direct_python_test_count": 1,
-            "related_python_test_count": 1,
+            "direct_python_test_count": 3,
+            "related_python_test_count": 3,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitivity_explanation_report_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitivity_explanation_report_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ],
             "related_python_tests": [
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitivity_explanation_report_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_ranking_sensitivity_explanation_report_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_project_quality_gate_contract.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py"
             ]
         },
         {
