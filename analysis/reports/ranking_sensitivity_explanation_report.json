@@ -1,0 +1,314 @@
+{
+  "report_type": "ranking_sensitivity_explanation_report",
+  "generated_at_local": "2026-05-17T02:54:03",
+  "input_status": {
+    "all_required_inputs_available": true,
+    "sensitive_scenario_report_path": "analysis\\reports\\ranking_sensitive_scenario_report.json",
+    "ranking_sensitivity_source_path": "analysis\\reports\\campaign_ranking_profile_sensitivity.json",
+    "sensitive_scenario_report_exists": true,
+    "ranking_sensitivity_source_exists": true,
+    "sensitive_scenario_count": 2,
+    "source_ranking_row_count": 144,
+    "source_recommended_row_count": 48
+  },
+  "summary": {
+    "source_sensitive_scenario_count": 2,
+    "explanation_count": 2,
+    "policy_change_explanation_count": 0,
+    "class_change_explanation_count": 2,
+    "all_sensitive_scenarios_have_explanation": true,
+    "source_ranking_row_count": 144,
+    "source_recommended_row_count": 48
+  },
+  "explanations": [
+    {
+      "batch_id": "campaign_service_delay_only_moderate_batch",
+      "scenario_id": "family_id_service_delay_only_description_only_service_time_is_perturbed_uses_travel_delay_false_uses_service_delay_true_creates_reassignment_opportunity_false_severity_id_moderate_nominal_delay_minutes_50_description_medium_disruption_useful_to_test_trade_offs_between_keeping_the_plan_and_replanning",
+      "scenario_family_id": "service_delay_only",
+      "severity_id": "moderate",
+      "ranking_profile_count": 4,
+      "sensitive_to_ranking_profile": true,
+      "sensitivity_reason": "same_policy_but_recommendation_class_changes_across_profiles",
+      "recommended_policy_count": 1,
+      "recommendation_class_count": 2,
+      "recommended_policies": [
+        "no_replanning_policy_v1"
+      ],
+      "recommendation_classes": [
+        "keep_plan_candidate",
+        "weak_or_tied"
+      ],
+      "profile_explanations": [
+        {
+          "profile_id": "balanced_operational",
+          "policy_id": "no_replanning_policy_v1",
+          "replanning_method_id": "replanning_not_implemented_v1",
+          "recommendation_key": "no_replanning_policy_v1+replanning_not_implemented_v1",
+          "recommendation_class": "weak_or_tied",
+          "rank": 1,
+          "ranking_score": 0.0,
+          "dominant_metric": "mean_delta_total_service_time",
+          "metrics": {
+            "mean_delta_objective_value": 0.0,
+            "mean_delta_makespan": 0.0,
+            "mean_delta_total_travel_time": 0.0,
+            "mean_delta_total_service_time": 35.0,
+            "mean_delta_total_waiting_time": 0.0,
+            "mean_total_lateness": 0.0,
+            "mean_late_task_count": 0.0,
+            "mean_effect_count": 1.0
+          }
+        },
+        {
+          "profile_id": "conservative_replanning",
+          "policy_id": "no_replanning_policy_v1",
+          "replanning_method_id": "replanning_not_implemented_v1",
+          "recommendation_key": "no_replanning_policy_v1+replanning_not_implemented_v1",
+          "recommendation_class": "keep_plan_candidate",
+          "rank": 1,
+          "ranking_score": 0.0,
+          "dominant_metric": "mean_delta_total_service_time",
+          "metrics": {
+            "mean_delta_objective_value": 0.0,
+            "mean_delta_makespan": 0.0,
+            "mean_delta_total_travel_time": 0.0,
+            "mean_delta_total_service_time": 35.0,
+            "mean_delta_total_waiting_time": 0.0,
+            "mean_total_lateness": 0.0,
+            "mean_late_task_count": 0.0,
+            "mean_effect_count": 1.0
+          }
+        },
+        {
+          "profile_id": "makespan_priority",
+          "policy_id": "no_replanning_policy_v1",
+          "replanning_method_id": "replanning_not_implemented_v1",
+          "recommendation_key": "no_replanning_policy_v1+replanning_not_implemented_v1",
+          "recommendation_class": "weak_or_tied",
+          "rank": 1,
+          "ranking_score": 0.0,
+          "dominant_metric": "mean_delta_total_service_time",
+          "metrics": {
+            "mean_delta_objective_value": 0.0,
+            "mean_delta_makespan": 0.0,
+            "mean_delta_total_travel_time": 0.0,
+            "mean_delta_total_service_time": 35.0,
+            "mean_delta_total_waiting_time": 0.0,
+            "mean_total_lateness": 0.0,
+            "mean_late_task_count": 0.0,
+            "mean_effect_count": 1.0
+          }
+        },
+        {
+          "profile_id": "objective_only",
+          "policy_id": "no_replanning_policy_v1",
+          "replanning_method_id": "replanning_not_implemented_v1",
+          "recommendation_key": "no_replanning_policy_v1+replanning_not_implemented_v1",
+          "recommendation_class": "weak_or_tied",
+          "rank": 1,
+          "ranking_score": 0.0,
+          "dominant_metric": "mean_delta_total_service_time",
+          "metrics": {
+            "mean_delta_objective_value": 0.0,
+            "mean_delta_makespan": 0.0,
+            "mean_delta_total_travel_time": 0.0,
+            "mean_delta_total_service_time": 35.0,
+            "mean_delta_total_waiting_time": 0.0,
+            "mean_total_lateness": 0.0,
+            "mean_late_task_count": 0.0,
+            "mean_effect_count": 1.0
+          }
+        }
+      ],
+      "metric_ranges": {
+        "mean_delta_objective_value": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_delta_makespan": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_delta_total_travel_time": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_delta_total_service_time": {
+          "minimum": 35.0,
+          "maximum": 35.0,
+          "spread": 0.0
+        },
+        "mean_delta_total_waiting_time": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_total_lateness": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_late_task_count": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_effect_count": {
+          "minimum": 1.0,
+          "maximum": 1.0,
+          "spread": 0.0
+        }
+      },
+      "investigation_status": "requires_recommendation_class_explanation",
+      "interpretation": "The recommended policy remains the same, but the recommendation class changes under different ranking profiles. This means the policy choice looks stable, but the strength or quality of the recommendation is fragile."
+    },
+    {
+      "batch_id": "campaign_service_delay_only_severe_batch",
+      "scenario_id": "family_id_service_delay_only_description_only_service_time_is_perturbed_uses_travel_delay_false_uses_service_delay_true_creates_reassignment_opportunity_false_severity_id_severe_nominal_delay_minutes_90_description_large_disruption_useful_to_test_robustness_risk_and_operational_recovery",
+      "scenario_family_id": "service_delay_only",
+      "severity_id": "severe",
+      "ranking_profile_count": 4,
+      "sensitive_to_ranking_profile": true,
+      "sensitivity_reason": "same_policy_but_recommendation_class_changes_across_profiles",
+      "recommended_policy_count": 1,
+      "recommendation_class_count": 2,
+      "recommended_policies": [
+        "no_replanning_policy_v1"
+      ],
+      "recommendation_classes": [
+        "keep_plan_candidate",
+        "weak_or_tied"
+      ],
+      "profile_explanations": [
+        {
+          "profile_id": "balanced_operational",
+          "policy_id": "no_replanning_policy_v1",
+          "replanning_method_id": "replanning_not_implemented_v1",
+          "recommendation_key": "no_replanning_policy_v1+replanning_not_implemented_v1",
+          "recommendation_class": "weak_or_tied",
+          "rank": 1,
+          "ranking_score": 0.0,
+          "dominant_metric": "mean_delta_total_service_time",
+          "metrics": {
+            "mean_delta_objective_value": 0.0,
+            "mean_delta_makespan": 0.0,
+            "mean_delta_total_travel_time": 0.0,
+            "mean_delta_total_service_time": 63.0,
+            "mean_delta_total_waiting_time": 0.0,
+            "mean_total_lateness": 0.0,
+            "mean_late_task_count": 0.0,
+            "mean_effect_count": 1.0
+          }
+        },
+        {
+          "profile_id": "conservative_replanning",
+          "policy_id": "no_replanning_policy_v1",
+          "replanning_method_id": "replanning_not_implemented_v1",
+          "recommendation_key": "no_replanning_policy_v1+replanning_not_implemented_v1",
+          "recommendation_class": "keep_plan_candidate",
+          "rank": 1,
+          "ranking_score": 0.0,
+          "dominant_metric": "mean_delta_total_service_time",
+          "metrics": {
+            "mean_delta_objective_value": 0.0,
+            "mean_delta_makespan": 0.0,
+            "mean_delta_total_travel_time": 0.0,
+            "mean_delta_total_service_time": 63.0,
+            "mean_delta_total_waiting_time": 0.0,
+            "mean_total_lateness": 0.0,
+            "mean_late_task_count": 0.0,
+            "mean_effect_count": 1.0
+          }
+        },
+        {
+          "profile_id": "makespan_priority",
+          "policy_id": "no_replanning_policy_v1",
+          "replanning_method_id": "replanning_not_implemented_v1",
+          "recommendation_key": "no_replanning_policy_v1+replanning_not_implemented_v1",
+          "recommendation_class": "weak_or_tied",
+          "rank": 1,
+          "ranking_score": 0.0,
+          "dominant_metric": "mean_delta_total_service_time",
+          "metrics": {
+            "mean_delta_objective_value": 0.0,
+            "mean_delta_makespan": 0.0,
+            "mean_delta_total_travel_time": 0.0,
+            "mean_delta_total_service_time": 63.0,
+            "mean_delta_total_waiting_time": 0.0,
+            "mean_total_lateness": 0.0,
+            "mean_late_task_count": 0.0,
+            "mean_effect_count": 1.0
+          }
+        },
+        {
+          "profile_id": "objective_only",
+          "policy_id": "no_replanning_policy_v1",
+          "replanning_method_id": "replanning_not_implemented_v1",
+          "recommendation_key": "no_replanning_policy_v1+replanning_not_implemented_v1",
+          "recommendation_class": "weak_or_tied",
+          "rank": 1,
+          "ranking_score": 0.0,
+          "dominant_metric": "mean_delta_total_service_time",
+          "metrics": {
+            "mean_delta_objective_value": 0.0,
+            "mean_delta_makespan": 0.0,
+            "mean_delta_total_travel_time": 0.0,
+            "mean_delta_total_service_time": 63.0,
+            "mean_delta_total_waiting_time": 0.0,
+            "mean_total_lateness": 0.0,
+            "mean_late_task_count": 0.0,
+            "mean_effect_count": 1.0
+          }
+        }
+      ],
+      "metric_ranges": {
+        "mean_delta_objective_value": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_delta_makespan": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_delta_total_travel_time": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_delta_total_service_time": {
+          "minimum": 63.0,
+          "maximum": 63.0,
+          "spread": 0.0
+        },
+        "mean_delta_total_waiting_time": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_total_lateness": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_late_task_count": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "spread": 0.0
+        },
+        "mean_effect_count": {
+          "minimum": 1.0,
+          "maximum": 1.0,
+          "spread": 0.0
+        }
+      },
+      "investigation_status": "requires_recommendation_class_explanation",
+      "interpretation": "The recommended policy remains the same, but the recommendation class changes under different ranking profiles. This means the policy choice looks stable, but the strength or quality of the recommendation is fragile."
+    }
+  ],
+  "conservative_interpretation": "This report explains why the current diagnostic campaign marks some scenarios as ranking-sensitive. It still does not prove statistical significance or scientific generalization."
+}

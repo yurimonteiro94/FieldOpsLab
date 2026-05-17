@@ -9,10 +9,10 @@ Inventory JSON: `analysis\reports\test_inventory_report.json`
 | all_required_checks_passed | yes |
 | problem_count | 0 |
 | warning_count | 0 |
-| row_count | 49 |
-| csv_row_count | 49 |
-| analysis_script_count | 49 |
-| python_test_count | 19 |
+| row_count | 51 |
+| csv_row_count | 51 |
+| analysis_script_count | 51 |
+| python_test_count | 20 |
 | cpp_test_source_count | 45 |
 | script_without_direct_python_test_count | 0 |
 | script_needing_test_review_count | 0 |

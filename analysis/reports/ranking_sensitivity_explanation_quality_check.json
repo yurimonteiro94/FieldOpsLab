@@ -1,0 +1,9 @@
+{
+  "report_type": "ranking_sensitivity_explanation_quality_check",
+  "all_required_checks_passed": true,
+  "problem_count": 0,
+  "warning_count": 0,
+  "csv_row_count": 8,
+  "problems": [],
+  "warnings": []
+}

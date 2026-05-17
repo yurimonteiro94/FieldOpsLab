@@ -17,8 +17,8 @@ This report summarizes the current engineering and diagnostic status of the proj
 | overall | engineering_status | passed_current_structural_quality_gate |
 | overall | scientific_status | diagnostic_only_with_methodological_warnings |
 | overall | structural_all_required_checks_passed | yes |
-| tests | analysis_script_count | 49 |
-| tests | python_test_count | 19 |
+| tests | analysis_script_count | 51 |
+| tests | python_test_count | 20 |
 | tests | cpp_test_source_count | 45 |
 | tests | script_without_direct_python_test_count | 0 |
 | tests | script_needing_test_review_count | 0 |
