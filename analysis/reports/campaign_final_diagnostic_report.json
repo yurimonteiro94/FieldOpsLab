@@ -1,6 +1,6 @@
 {
     "report_type": "fieldops_lab_campaign_final_diagnostic_report",
-    "generated_at_local": "2026-05-17T01:41:33",
+    "generated_at_local": "2026-05-17T03:33:10",
     "source_files": [
         {
             "label": "campaign_execution_index",
@@ -442,7 +442,7 @@
         "fuzzy_logic_status": "not_used_in_main_pipeline"
     },
     "ranking_profile_sensitivity": {
-        "integrated_at_local": "2026-05-17T01:41:33",
+        "integrated_at_local": "2026-05-17T03:33:10",
         "ranking_profile_count": 4,
         "scenario_summary_count": 12,
         "recommendation_count": 48,
