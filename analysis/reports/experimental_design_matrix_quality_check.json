@@ -1,0 +1,10 @@
+{
+  "report_type": "experimental_design_matrix_quality_check",
+  "input_json": "analysis\\reports\\experimental_design_matrix.json",
+  "all_required_checks_passed": true,
+  "problem_count": 0,
+  "warning_count": 0,
+  "csv_row_count": 648,
+  "problems": [],
+  "warnings": []
+}

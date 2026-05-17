@@ -9,15 +9,15 @@ This report audits the structural organization of C++ and Python tests.
 | all_required_checks_passed | yes |
 | problem_count | 0 |
 | warning_count | 0 |
-| analysis_script_count | 51 |
-| python_test_count | 22 |
+| analysis_script_count | 53 |
+| python_test_count | 23 |
 | cpp_test_source_count | 45 |
 | cpp_test_support_header_count | 1 |
-| script_with_direct_python_test_count | 51 |
+| script_with_direct_python_test_count | 53 |
 | script_without_direct_python_test_count | 0 |
 | script_needing_test_review_count | 0 |
 | patch_script_count | 0 |
-| row_count | 51 |
+| row_count | 53 |
 
 ## Problems
 
@@ -45,6 +45,7 @@ This report audits the structural organization of C++ and Python tests.
 | `analysis\scripts\generate_campaign_result_summary.py` | 3 | 6 | 4 | direct_test_found |
 | `analysis\scripts\generate_executable_campaign_batch_configs.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\generate_experiment_campaign_plan.py` | 3 | 4 | 4 | direct_test_found |
+| `analysis\scripts\generate_experimental_design_matrix.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\generate_fuzzy_decision_report.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\generate_project_status_report.py` | 7 | 7 | 4 | direct_test_found |
 | `analysis\scripts\generate_ranking_sensitive_scenario_report.py` | 4 | 4 | 4 | direct_test_found |
@@ -73,6 +74,7 @@ This report audits the structural organization of C++ and Python tests.
 | `analysis\scripts\verify_executable_campaign_batch_configs.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\verify_executed_campaign_batch_result_paths.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\verify_experiment_campaign_plan.py` | 3 | 4 | 4 | direct_test_found |
+| `analysis\scripts\verify_experimental_design_matrix.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\verify_final_diagnostic_ranking_integration.py` | 4 | 4 | 4 | direct_test_found |
 | `analysis\scripts\verify_full_campaign_pipeline.py` | 7 | 10 | 4 | direct_test_found |
 | `analysis\scripts\verify_policy_trigger_behavior_audit.py` | 4 | 6 | 4 | direct_test_found |

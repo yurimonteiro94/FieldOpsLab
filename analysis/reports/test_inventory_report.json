@@ -1,20 +1,20 @@
 {
     "report_type": "fieldops_lab_test_inventory_report",
-    "generated_at_local": "2026-05-17T04:12:25",
+    "generated_at_local": "2026-05-17T04:21:18",
     "project_root": "C:\\Users\\yuri\\Documents\\FieldOpsLab",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 0,
     "overview": {
-        "analysis_script_count": 51,
-        "python_test_count": 22,
+        "analysis_script_count": 53,
+        "python_test_count": 23,
         "cpp_test_source_count": 45,
         "cpp_test_support_header_count": 1,
-        "script_with_direct_python_test_count": 51,
+        "script_with_direct_python_test_count": 53,
         "script_without_direct_python_test_count": 0,
         "script_needing_test_review_count": 0,
         "patch_script_count": 0,
-        "row_count": 51
+        "row_count": 53
     },
     "rows": [
         {
@@ -305,6 +305,22 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_all_analysis_scripts_compile.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py"
+            ]
+        },
+        {
+            "script_path": "analysis\\scripts\\generate_experimental_design_matrix.py",
+            "script_name": "generate_experimental_design_matrix.py",
+            "script_stem": "generate_experimental_design_matrix",
+            "is_patch_script": false,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
+            "generic_python_test_count": 4,
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_experimental_design_matrix_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_experimental_design_matrix_contracts.py"
             ]
         },
         {
@@ -896,6 +912,22 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_all_analysis_scripts_compile.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py"
+            ]
+        },
+        {
+            "script_path": "analysis\\scripts\\verify_experimental_design_matrix.py",
+            "script_name": "verify_experimental_design_matrix.py",
+            "script_stem": "verify_experimental_design_matrix",
+            "is_patch_script": false,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
+            "generic_python_test_count": 4,
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_experimental_design_matrix_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_experimental_design_matrix_contracts.py"
             ]
         },
         {
