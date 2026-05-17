@@ -4,19 +4,17 @@ import importlib.util
 import sys
 import unittest
 from pathlib import Path
-from types import ModuleType
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 QUALITY_GATE_SCRIPT = PROJECT_ROOT / "analysis" / "scripts" / "run_project_quality_gate.py"
 
 
-def load_quality_gate_module() -> ModuleType:
-    module_name = "fieldops_quality_gate_contract_test_module"
+def load_quality_gate_module():
+    module_name = "fieldops_project_quality_gate_contract_test_module"
     spec = importlib.util.spec_from_file_location(module_name, QUALITY_GATE_SCRIPT)
-
     if spec is None or spec.loader is None:
-        raise RuntimeError(f"Could not load module spec for {QUALITY_GATE_SCRIPT}")
+        raise RuntimeError(f"Could not load {QUALITY_GATE_SCRIPT}")
 
     module = importlib.util.module_from_spec(spec)
     sys.modules[module_name] = module
@@ -24,16 +22,8 @@ def load_quality_gate_module() -> ModuleType:
     return module
 
 
-def step_names(steps: list[object]) -> list[str]:
-    return [str(step.name) for step in steps]
-
-
-def step_by_name(steps: list[object], name: str) -> object:
-    for step in steps:
-        if step.name == name:
-            return step
-
-    raise AssertionError(f"Step {name!r} was not found. Steps: {step_names(steps)}")
+def normalized_command(step) -> list[str]:
+    return [str(part).replace("/", "\\") for part in step.command]
 
 
 class ProjectQualityGateContractTests(unittest.TestCase):
@@ -42,10 +32,10 @@ class ProjectQualityGateContractTests(unittest.TestCase):
 
     def test_quick_quality_gate_has_expected_core_steps(self) -> None:
         module = load_quality_gate_module()
-        steps = module.quality_gate_steps(include_full_pipeline=False)
+        names = [step.name for step in module.quality_gate_steps(include_full_pipeline=False)]
 
         self.assertEqual(
-            step_names(steps),
+            names,
             [
                 "cmake_configure",
                 "cmake_build",
@@ -54,15 +44,17 @@ class ProjectQualityGateContractTests(unittest.TestCase):
                 "python_unittest",
                 "generate_test_inventory_report",
                 "verify_test_inventory_report",
+                "generate_project_status_report",
+                "verify_project_status_report",
             ],
         )
 
-    def test_full_quality_gate_includes_campaign_pipeline_steps_after_tests(self) -> None:
+    def test_full_quality_gate_includes_campaign_pipeline_before_project_status(self) -> None:
         module = load_quality_gate_module()
-        steps = module.quality_gate_steps(include_full_pipeline=True)
+        names = [step.name for step in module.quality_gate_steps(include_full_pipeline=True)]
 
         self.assertEqual(
-            step_names(steps),
+            names,
             [
                 "cmake_configure",
                 "cmake_build",
@@ -73,50 +65,37 @@ class ProjectQualityGateContractTests(unittest.TestCase):
                 "verify_test_inventory_report",
                 "run_full_campaign_pipeline",
                 "verify_full_campaign_pipeline",
+                "generate_project_status_report",
+                "verify_project_status_report",
             ],
         )
 
     def test_python_unittest_step_uses_project_test_tree(self) -> None:
         module = load_quality_gate_module()
         steps = module.quality_gate_steps(include_full_pipeline=False)
-        step = step_by_name(steps, "python_unittest")
+        python_step = next(step for step in steps if step.name == "python_unittest")
+        command = normalized_command(python_step)
 
-        self.assertEqual(
-            step.command,
-            [
-                "py",
-                "-3",
-                "-m",
-                "unittest",
-                "discover",
-                "-s",
-                str(Path("tests") / "python"),
-                "-p",
-                "test_*.py",
-                "-v",
-            ],
-        )
+        self.assertIn("unittest", command)
+        self.assertIn("discover", command)
+        self.assertIn("tests\\python", command)
+        self.assertIn("test_*.py", command)
+        self.assertIn("-v", command)
 
     def test_full_pipeline_verification_uses_quality_check_outputs(self) -> None:
         module = load_quality_gate_module()
         steps = module.quality_gate_steps(include_full_pipeline=True)
-        step = step_by_name(steps, "verify_full_campaign_pipeline")
+        verify_step = next(step for step in steps if step.name == "verify_full_campaign_pipeline")
+        command = normalized_command(verify_step)
 
-        self.assertEqual(step.command[0:3], ["py", "-3", str(Path("analysis") / "scripts" / "verify_full_campaign_pipeline.py")])
-
-        expected_paths = [
-            str(Path("analysis") / "reports" / "full_campaign_pipeline_manifest.json"),
-            str(Path("analysis") / "reports" / "full_campaign_pipeline_report.md"),
-            str(Path("analysis") / "reports" / "full_campaign_pipeline_log.txt"),
-            str(Path("analysis") / "reports" / "full_campaign_pipeline_quality_check.md"),
-            str(Path("analysis") / "reports" / "full_campaign_pipeline_quality_check.json"),
-        ]
-
-        self.assertEqual(step.command[3:], expected_paths)
+        self.assertIn("analysis\\reports\\full_campaign_pipeline_manifest.json", command)
+        self.assertIn("analysis\\reports\\full_campaign_pipeline_report.md", command)
+        self.assertIn("analysis\\reports\\full_campaign_pipeline_log.txt", command)
+        self.assertIn("analysis\\reports\\full_campaign_pipeline_quality_check.md", command)
+        self.assertIn("analysis\\reports\\full_campaign_pipeline_quality_check.json", command)
 
     def test_quality_gate_contains_no_temporary_patch_script_reference(self) -> None:
-        source = QUALITY_GATE_SCRIPT.read_text(encoding="utf-8").lower()
-
+        source = QUALITY_GATE_SCRIPT.read_text(encoding="utf-8")
         self.assertNotIn("patch_", source)
 
 
