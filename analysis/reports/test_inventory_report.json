@@ -1,20 +1,20 @@
 {
     "report_type": "fieldops_lab_test_inventory_report",
-    "generated_at_local": "2026-05-17T01:18:00",
+    "generated_at_local": "2026-05-17T01:34:16",
     "project_root": "C:\\Users\\yuri\\Documents\\FieldOpsLab",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 0,
     "overview": {
-        "analysis_script_count": 43,
-        "python_test_count": 13,
+        "analysis_script_count": 45,
+        "python_test_count": 14,
         "cpp_test_source_count": 45,
         "cpp_test_support_header_count": 1,
-        "script_with_direct_python_test_count": 43,
+        "script_with_direct_python_test_count": 45,
         "script_without_direct_python_test_count": 0,
         "script_needing_test_review_count": 0,
         "patch_script_count": 0,
-        "row_count": 43
+        "row_count": 45
     },
     "rows": [
         {
@@ -320,6 +320,22 @@
             ],
             "related_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+            ]
+        },
+        {
+            "script_path": "analysis\\scripts\\generate_project_status_report.py",
+            "script_name": "generate_project_status_report.py",
+            "script_stem": "generate_project_status_report",
+            "is_patch_script": false,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
+            "generic_python_test_count": 4,
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_project_status_report_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_project_status_report_contracts.py"
             ]
         },
         {
@@ -851,6 +867,22 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_campaign_decision_matrix_regression.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+            ]
+        },
+        {
+            "script_path": "analysis\\scripts\\verify_project_status_report.py",
+            "script_name": "verify_project_status_report.py",
+            "script_stem": "verify_project_status_report",
+            "is_patch_script": false,
+            "direct_python_test_count": 1,
+            "related_python_test_count": 1,
+            "generic_python_test_count": 4,
+            "status": "direct_test_found",
+            "direct_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_project_status_report_contracts.py"
+            ],
+            "related_python_tests": [
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_project_status_report_contracts.py"
             ]
         },
         {

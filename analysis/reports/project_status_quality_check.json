@@ -1,0 +1,30 @@
+{
+  "report_type": "fieldops_lab_project_status_quality_check",
+  "status_json": "analysis\\reports\\project_status_report.json",
+  "all_required_checks_passed": true,
+  "problem_count": 0,
+  "warning_count": 1,
+  "csv_row_count": 16,
+  "problems": [],
+  "warnings": [
+    "Project still has methodological warning(s)."
+  ],
+  "summary_metrics": {
+    "engineering_status": "passed_current_structural_quality_gate",
+    "scientific_status": "diagnostic_only_with_methodological_warnings",
+    "structural_all_required_checks_passed": true,
+    "analysis_script_count": 45,
+    "python_test_count": 14,
+    "cpp_test_source_count": 45,
+    "script_without_direct_python_test_count": 0,
+    "script_needing_test_review_count": 0,
+    "pipeline_step_count": 26,
+    "pipeline_failed_step_count": 0,
+    "final_diagnostic_row_count": 12,
+    "ranking_row_count": 144,
+    "scenario_summary_count": 12,
+    "sensitive_to_ranking_profile_count": 2,
+    "ranking_fragility_status": "some_scenarios_sensitive_to_ranking_profile",
+    "methodological_warning_count": 2
+  }
+}
