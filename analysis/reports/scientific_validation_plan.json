@@ -8,7 +8,7 @@
     "scientific_status": "diagnostic_only_with_methodological_warnings",
     "structural_all_required_checks_passed": true,
     "analysis_script_count": 49,
-    "python_test_count": 18,
+    "python_test_count": 19,
     "cpp_test_source_count": 45,
     "pipeline_step_count": 26,
     "pipeline_failed_step_count": 0,

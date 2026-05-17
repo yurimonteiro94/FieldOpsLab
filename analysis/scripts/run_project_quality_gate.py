@@ -106,6 +106,30 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
     steps.extend(
         [
             QualityGateStep(
+            name="generate_ranking_sensitive_scenario_report",
+            command=[
+                "py",
+                "-3",
+                str(Path("analysis") / "scripts" / "generate_ranking_sensitive_scenario_report.py"),
+                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.md"),
+                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.json"),
+                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.csv"),
+            ],
+        ),
+        QualityGateStep(
+            name="verify_ranking_sensitive_scenario_report",
+            command=[
+                "py",
+                "-3",
+                str(Path("analysis") / "scripts" / "verify_ranking_sensitive_scenario_report.py"),
+                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.json"),
+                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.md"),
+                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.csv"),
+                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_quality_check.md"),
+                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_quality_check.json"),
+            ],
+        ),
+        QualityGateStep(
                 name="generate_project_status_report",
                 command=[
                     "py",

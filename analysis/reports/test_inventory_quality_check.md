@@ -12,7 +12,7 @@ Inventory JSON: `analysis\reports\test_inventory_report.json`
 | row_count | 49 |
 | csv_row_count | 49 |
 | analysis_script_count | 49 |
-| python_test_count | 18 |
+| python_test_count | 19 |
 | cpp_test_source_count | 45 |
 | script_without_direct_python_test_count | 0 |
 | script_needing_test_review_count | 0 |
