@@ -9,19 +9,19 @@ Manifest: `analysis\reports\full_campaign_pipeline_manifest.json`
 | all_required_checks_passed | yes |
 | problem_count | 0 |
 | warning_count | 1 |
-| step_count | 25 |
+| step_count | 26 |
 | failed_step_count | 0 |
 | required_output_file_count | 11 |
-| required_quality_file_count | 11 |
+| required_quality_file_count | 12 |
 
 ## Output checks
 
 | Path | Exists | Size bytes |
 | --- | --- | ---: |
-| `analysis\reports\full_campaign_pipeline_report.md` | yes | 3073 |
-| `analysis\reports\full_campaign_pipeline_manifest.json` | yes | 27547 |
-| `analysis\reports\full_campaign_pipeline_log.txt` | yes | 24767 |
-| `analysis\reports\campaign_execution_index.json` | yes | 51398 |
+| `analysis\reports\full_campaign_pipeline_report.md` | yes | 3260 |
+| `analysis\reports\full_campaign_pipeline_manifest.json` | yes | 28774 |
+| `analysis\reports\full_campaign_pipeline_log.txt` | yes | 25804 |
+| `analysis\reports\campaign_execution_index.json` | yes | 51397 |
 | `analysis\reports\campaign_result_summary.json` | yes | 19677 |
 | `analysis\reports\campaign_result_semantic_inspection.json` | yes | 34722 |
 | `analysis\reports\service_delay_impact_audit.json` | yes | 16040 |
@@ -44,6 +44,7 @@ Manifest: `analysis\reports\full_campaign_pipeline_manifest.json`
 | `analysis\reports\policy_trigger_behavior_audit_quality_check.json` | yes | 0 |
 | `analysis\reports\campaign_decision_matrix_quality_check.json` | yes | 0 |
 | `analysis\reports\campaign_ranking_profile_sensitivity_quality_check.json` | yes | 0 |
+| `analysis\reports\campaign_final_ranking_integration_quality_check.json` | yes | 0 |
 | `analysis\reports\campaign_final_diagnostic_report_quality_check.json` | yes | 0 |
 
 ## Problems

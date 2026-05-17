@@ -1,12 +1,12 @@
 FieldOps Lab full campaign pipeline
 ================================================================================
-Generated at: 2026-05-16T06:05:25
+Generated at: 2026-05-17T00:18:45
 Project root: C:\Users\yuri\Documents\FieldOpsLab
 FieldOps executable: build\fieldops_lab.exe
 
 ================================================================================
 STEP: generate_experiment_campaign_plan
-START: 2026-05-16T06:05:25
+START: 2026-05-17T00:18:45
 COMMAND: C:\Python314\python.exe analysis\scripts\generate_experiment_campaign_plan.py analysis\reports\experiment_campaign_plan.md analysis\reports\experiment_campaign_plan.json analysis\reports\experiment_campaign_plan.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -15,26 +15,26 @@ Experiment campaign plan JSON written to: analysis\reports\experiment_campaign_p
 Experiment campaign plan CSV written to: analysis\reports\experiment_campaign_plan.csv
 Planned runs: 36
 Planned algorithm runs: 108
-END: 2026-05-16T06:05:25
+END: 2026-05-17T00:18:45
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_experiment_campaign_plan
-START: 2026-05-16T06:05:25
+START: 2026-05-17T00:18:45
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_experiment_campaign_plan.py analysis\reports\experiment_campaign_plan.json analysis\reports\experiment_campaign_plan.md analysis\reports\experiment_campaign_plan.csv analysis\reports\experiment_campaign_plan_quality_check.md analysis\reports\experiment_campaign_plan_quality_check.json
 --------------------------------------------------------------------------------
 [stdout]
 Experiment campaign plan quality report written to: analysis\reports\experiment_campaign_plan_quality_check.md
 Experiment campaign plan quality JSON written to: analysis\reports\experiment_campaign_plan_quality_check.json
 Experiment campaign plan quality check passed.
-END: 2026-05-16T06:05:25
+END: 2026-05-17T00:18:46
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: generate_campaign_batch_blueprints
-START: 2026-05-16T06:05:25
+START: 2026-05-17T00:18:46
 COMMAND: C:\Python314\python.exe analysis\scripts\generate_campaign_batch_blueprints.py analysis\reports\experiment_campaign_plan.json analysis\reports\campaign_batch_blueprints analysis\reports\campaign_batch_blueprint_index.md analysis\reports\campaign_batch_blueprint_index.json analysis\reports\campaign_batch_blueprint_index.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -43,26 +43,26 @@ Campaign batch blueprint index markdown written to: analysis\reports\campaign_ba
 Campaign batch blueprint index JSON written to: analysis\reports\campaign_batch_blueprint_index.json
 Campaign batch blueprint index CSV written to: analysis\reports\campaign_batch_blueprint_index.csv
 Blueprint count: 12
-END: 2026-05-16T06:05:25
+END: 2026-05-17T00:18:46
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_campaign_batch_blueprints
-START: 2026-05-16T06:05:25
+START: 2026-05-17T00:18:46
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_campaign_batch_blueprints.py analysis\reports\campaign_batch_blueprint_index.json analysis\reports\campaign_batch_blueprint_index.md analysis\reports\campaign_batch_blueprint_index.csv analysis\reports\campaign_batch_blueprints analysis\reports\campaign_batch_blueprint_quality_check.md analysis\reports\campaign_batch_blueprint_quality_check.json
 --------------------------------------------------------------------------------
 [stdout]
 Campaign batch blueprint quality report written to: analysis\reports\campaign_batch_blueprint_quality_check.md
 Campaign batch blueprint quality JSON written to: analysis\reports\campaign_batch_blueprint_quality_check.json
 Campaign batch blueprint quality check passed.
-END: 2026-05-16T06:05:25
+END: 2026-05-17T00:18:47
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: generate_campaign_perturbation_plans
-START: 2026-05-16T06:05:25
+START: 2026-05-17T00:18:47
 COMMAND: C:\Python314\python.exe analysis\scripts\generate_campaign_perturbation_plans.py data\experiments\sample_no_replanning_batch_001.json analysis\reports\experiment_campaign_plan.json data\perturbations\campaign_plans analysis\reports\campaign_perturbation_plan_index.md analysis\reports\campaign_perturbation_plan_index.json analysis\reports\campaign_perturbation_plan_index.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -71,13 +71,13 @@ Campaign perturbation plan index markdown written to: analysis\reports\campaign_
 Campaign perturbation plan index JSON written to: analysis\reports\campaign_perturbation_plan_index.json
 Campaign perturbation plan index CSV written to: analysis\reports\campaign_perturbation_plan_index.csv
 Generated perturbation plans: 12
-END: 2026-05-16T06:05:25
+END: 2026-05-17T00:18:48
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_campaign_perturbation_plans
-START: 2026-05-16T06:05:25
+START: 2026-05-17T00:18:48
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_campaign_perturbation_plans.py analysis\reports\campaign_perturbation_plan_index.json analysis\reports\campaign_perturbation_plan_quality_check.md analysis\reports\campaign_perturbation_plan_quality_check.json analysis\reports\campaign_perturbation_plan_quality_check.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -85,13 +85,13 @@ Campaign perturbation plan quality report written to: analysis\reports\campaign_
 Campaign perturbation plan quality JSON written to: analysis\reports\campaign_perturbation_plan_quality_check.json
 Campaign perturbation plan quality CSV written to: analysis\reports\campaign_perturbation_plan_quality_check.csv
 Campaign perturbation plan quality check passed.
-END: 2026-05-16T06:05:25
+END: 2026-05-17T00:18:48
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: generate_executable_campaign_batch_configs
-START: 2026-05-16T06:05:25
+START: 2026-05-17T00:18:48
 COMMAND: C:\Python314\python.exe analysis\scripts\generate_executable_campaign_batch_configs.py data\experiments\sample_no_replanning_batch_001.json analysis\reports\campaign_batch_blueprint_index.json analysis\reports\campaign_batch_blueprints data\experiments\campaign_batches analysis\reports\campaign_executable_batch_config_index.md analysis\reports\campaign_executable_batch_config_index.json analysis\reports\campaign_executable_batch_config_index.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -100,13 +100,13 @@ Executable campaign batch config index markdown written to: analysis\reports\cam
 Executable campaign batch config index JSON written to: analysis\reports\campaign_executable_batch_config_index.json
 Executable campaign batch config index CSV written to: analysis\reports\campaign_executable_batch_config_index.csv
 Generated configs: 12
-END: 2026-05-16T06:05:26
+END: 2026-05-17T00:18:48
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: connect_campaign_batch_configs_to_perturbation_plans
-START: 2026-05-16T06:05:26
+START: 2026-05-17T00:18:48
 COMMAND: C:\Python314\python.exe analysis\scripts\connect_campaign_batch_configs_to_perturbation_plans.py data\experiments\campaign_batches data\perturbations\campaign_plans analysis\reports\campaign_perturbation_connection.md analysis\reports\campaign_perturbation_connection.json analysis\reports\campaign_perturbation_connection.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -114,13 +114,13 @@ Campaign perturbation connection markdown written to: analysis\reports\campaign_
 Campaign perturbation connection JSON written to: analysis\reports\campaign_perturbation_connection.json
 Campaign perturbation connection CSV written to: analysis\reports\campaign_perturbation_connection.csv
 Connected configs: 12
-END: 2026-05-16T06:05:26
+END: 2026-05-17T00:18:49
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_executable_campaign_batch_configs
-START: 2026-05-16T06:05:26
+START: 2026-05-17T00:18:49
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_executable_campaign_batch_configs.py analysis\reports\campaign_executable_batch_config_index.json analysis\reports\campaign_executable_batch_config_quality_check.md analysis\reports\campaign_executable_batch_config_quality_check.json analysis\reports\campaign_executable_batch_config_quality_check.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -128,13 +128,13 @@ Executable campaign batch config quality report written to: analysis\reports\cam
 Executable campaign batch config quality JSON written to: analysis\reports\campaign_executable_batch_config_quality_check.json
 Executable campaign batch config quality CSV written to: analysis\reports\campaign_executable_batch_config_quality_check.csv
 Executable campaign batch config quality check passed.
-END: 2026-05-16T06:05:26
+END: 2026-05-17T00:18:49
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: run_executable_campaign_batches
-START: 2026-05-16T06:05:26
+START: 2026-05-17T00:18:49
 COMMAND: C:\Python314\python.exe analysis\scripts\run_executable_campaign_batches.py build\fieldops_lab.exe data\experiments\campaign_batches data\results\campaign_batches analysis\reports\campaign_execution_index.md analysis\reports\campaign_execution_index.json analysis\reports\campaign_execution_index.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -143,26 +143,26 @@ Campaign execution index JSON written to: analysis\reports\campaign_execution_in
 Campaign execution index CSV written to: analysis\reports\campaign_execution_index.csv
 Executed batches: 12
 Campaign execution validation passed.
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:51
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_campaign_execution_index
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:51
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_campaign_execution_index.py analysis\reports\campaign_execution_index.json analysis\reports\campaign_execution_index.md analysis\reports\campaign_execution_index.csv analysis\reports\campaign_execution_quality_check.md analysis\reports\campaign_execution_quality_check.json
 --------------------------------------------------------------------------------
 [stdout]
 Campaign execution quality report written to: analysis\reports\campaign_execution_quality_check.md
 Campaign execution quality JSON written to: analysis\reports\campaign_execution_quality_check.json
 Campaign execution quality check passed.
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:51
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: generate_campaign_result_summary
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:51
 COMMAND: C:\Python314\python.exe analysis\scripts\generate_campaign_result_summary.py analysis\reports\campaign_execution_index.json analysis\reports\campaign_result_summary.md analysis\reports\campaign_result_summary.json analysis\reports\campaign_result_summary.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -170,26 +170,26 @@ Campaign result summary markdown written to: analysis\reports\campaign_result_su
 Campaign result summary JSON written to: analysis\reports\campaign_result_summary.json
 Campaign result summary CSV written to: analysis\reports\campaign_result_summary.csv
 Recommendation rows: 12
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:51
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_campaign_result_summary
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:51
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_campaign_result_summary.py analysis\reports\campaign_result_summary.json analysis\reports\campaign_result_summary.md analysis\reports\campaign_result_summary.csv analysis\reports\campaign_result_summary_quality_check.md analysis\reports\campaign_result_summary_quality_check.json
 --------------------------------------------------------------------------------
 [stdout]
 Campaign result summary quality report written to: analysis\reports\campaign_result_summary_quality_check.md
 Campaign result summary quality JSON written to: analysis\reports\campaign_result_summary_quality_check.json
 Campaign result summary quality check passed.
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:51
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: inspect_campaign_result_semantics
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:51
 COMMAND: C:\Python314\python.exe analysis\scripts\inspect_campaign_result_semantics.py analysis\reports\campaign_execution_index.json analysis\reports\campaign_result_semantic_inspection.md analysis\reports\campaign_result_semantic_inspection.json analysis\reports\campaign_result_semantic_inspection.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -197,13 +197,13 @@ Campaign result semantic inspection markdown written to: analysis\reports\campai
 Campaign result semantic inspection JSON written to: analysis\reports\campaign_result_semantic_inspection.json
 Campaign result semantic inspection CSV written to: analysis\reports\campaign_result_semantic_inspection.csv
 Campaign result semantic inspection passed.
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:51
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: audit_service_delay_impact
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:51
 COMMAND: C:\Python314\python.exe analysis\scripts\audit_service_delay_impact.py data\results\campaign_batches analysis\reports\service_delay_impact_audit.md analysis\reports\service_delay_impact_audit.json analysis\reports\service_delay_impact_audit.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -211,26 +211,26 @@ Service delay impact audit markdown written to: analysis\reports\service_delay_i
 Service delay impact audit JSON written to: analysis\reports\service_delay_impact_audit.json
 Service delay impact audit CSV written to: analysis\reports\service_delay_impact_audit.csv
 Audited batches: 12
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:51
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_service_delay_impact_audit
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:51
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_service_delay_impact_audit.py analysis\reports\service_delay_impact_audit.json analysis\reports\service_delay_impact_audit.md analysis\reports\service_delay_impact_audit.csv analysis\reports\service_delay_impact_audit_quality_check.md analysis\reports\service_delay_impact_audit_quality_check.json
 --------------------------------------------------------------------------------
 [stdout]
 Service delay impact audit quality report written to: analysis\reports\service_delay_impact_audit_quality_check.md
 Service delay impact audit quality JSON written to: analysis\reports\service_delay_impact_audit_quality_check.json
 Service delay impact audit quality check passed.
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:51
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: audit_policy_trigger_behavior
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:51
 COMMAND: C:\Python314\python.exe analysis\scripts\audit_policy_trigger_behavior.py data\results\campaign_batches analysis\reports\policy_trigger_behavior_audit.md analysis\reports\policy_trigger_behavior_audit.json analysis\reports\policy_trigger_behavior_audit.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -238,26 +238,26 @@ Policy trigger behavior audit markdown written to: analysis\reports\policy_trigg
 Policy trigger behavior audit JSON written to: analysis\reports\policy_trigger_behavior_audit.json
 Policy trigger behavior audit CSV written to: analysis\reports\policy_trigger_behavior_audit.csv
 Audited rows: 36
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:51
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_policy_trigger_behavior_audit
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:51
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_policy_trigger_behavior_audit.py analysis\reports\policy_trigger_behavior_audit.json analysis\reports\policy_trigger_behavior_audit.md analysis\reports\policy_trigger_behavior_audit.csv analysis\reports\policy_trigger_behavior_audit_quality_check.md analysis\reports\policy_trigger_behavior_audit_quality_check.json
 --------------------------------------------------------------------------------
 [stdout]
 Policy trigger behavior audit quality report written to: analysis\reports\policy_trigger_behavior_audit_quality_check.md
 Policy trigger behavior audit quality JSON written to: analysis\reports\policy_trigger_behavior_audit_quality_check.json
 Policy trigger behavior audit quality check passed.
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:51
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: generate_campaign_decision_matrix
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:51
 COMMAND: C:\Python314\python.exe analysis\scripts\generate_campaign_decision_matrix.py analysis\reports\campaign_result_summary.json analysis\reports\campaign_result_semantic_inspection.json analysis\reports\service_delay_impact_audit.json analysis\reports\policy_trigger_behavior_audit.json analysis\reports\campaign_decision_matrix.md analysis\reports\campaign_decision_matrix.json analysis\reports\campaign_decision_matrix.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -265,26 +265,26 @@ Campaign decision matrix markdown written to: analysis\reports\campaign_decision
 Campaign decision matrix JSON written to: analysis\reports\campaign_decision_matrix.json
 Campaign decision matrix CSV written to: analysis\reports\campaign_decision_matrix.csv
 Decision rows: 12
-END: 2026-05-16T06:05:27
+END: 2026-05-17T00:18:52
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_campaign_decision_matrix
-START: 2026-05-16T06:05:27
+START: 2026-05-17T00:18:52
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_campaign_decision_matrix.py analysis\reports\campaign_decision_matrix.json analysis\reports\campaign_decision_matrix.md analysis\reports\campaign_decision_matrix.csv analysis\reports\campaign_decision_matrix_quality_check.md analysis\reports\campaign_decision_matrix_quality_check.json
 --------------------------------------------------------------------------------
 [stdout]
 Campaign decision matrix quality report written to: analysis\reports\campaign_decision_matrix_quality_check.md
 Campaign decision matrix quality JSON written to: analysis\reports\campaign_decision_matrix_quality_check.json
 Campaign decision matrix quality check passed.
-END: 2026-05-16T06:05:28
+END: 2026-05-17T00:18:52
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: generate_campaign_ranking_profile_sensitivity
-START: 2026-05-16T06:05:28
+START: 2026-05-17T00:18:52
 COMMAND: C:\Python314\python.exe analysis\scripts\generate_campaign_ranking_profile_sensitivity.py data\results\campaign_batches analysis\reports\campaign_ranking_profile_sensitivity.md analysis\reports\campaign_ranking_profile_sensitivity.json analysis\reports\campaign_ranking_profile_sensitivity.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -292,26 +292,26 @@ Campaign ranking profile sensitivity markdown written to: analysis\reports\campa
 Campaign ranking profile sensitivity JSON written to: analysis\reports\campaign_ranking_profile_sensitivity.json
 Campaign ranking profile sensitivity CSV written to: analysis\reports\campaign_ranking_profile_sensitivity.csv
 Ranking rows: 144
-END: 2026-05-16T06:05:28
+END: 2026-05-17T00:18:52
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_campaign_ranking_profile_sensitivity
-START: 2026-05-16T06:05:28
+START: 2026-05-17T00:18:52
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_campaign_ranking_profile_sensitivity.py analysis\reports\campaign_ranking_profile_sensitivity.json analysis\reports\campaign_ranking_profile_sensitivity.md analysis\reports\campaign_ranking_profile_sensitivity.csv analysis\reports\campaign_ranking_profile_sensitivity_quality_check.md analysis\reports\campaign_ranking_profile_sensitivity_quality_check.json
 --------------------------------------------------------------------------------
 [stdout]
 Campaign ranking profile sensitivity quality report written to: analysis\reports\campaign_ranking_profile_sensitivity_quality_check.md
 Campaign ranking profile sensitivity quality JSON written to: analysis\reports\campaign_ranking_profile_sensitivity_quality_check.json
 Campaign ranking profile sensitivity quality check passed.
-END: 2026-05-16T06:05:28
+END: 2026-05-17T00:18:52
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: generate_campaign_final_diagnostic_report
-START: 2026-05-16T06:05:28
+START: 2026-05-17T00:18:52
 COMMAND: C:\Python314\python.exe analysis\scripts\generate_campaign_final_diagnostic_report.py analysis\reports\campaign_execution_index.json analysis\reports\campaign_result_summary.json analysis\reports\campaign_result_semantic_inspection.json analysis\reports\service_delay_impact_audit.json analysis\reports\policy_trigger_behavior_audit.json analysis\reports\campaign_decision_matrix.json analysis\reports\campaign_final_diagnostic_report.md analysis\reports\campaign_final_diagnostic_report.json analysis\reports\campaign_final_diagnostic_report.csv
 --------------------------------------------------------------------------------
 [stdout]
@@ -319,13 +319,13 @@ Campaign final diagnostic markdown written to: analysis\reports\campaign_final_d
 Campaign final diagnostic JSON written to: analysis\reports\campaign_final_diagnostic_report.json
 Campaign final diagnostic CSV written to: analysis\reports\campaign_final_diagnostic_report.csv
 Decision rows: 12
-END: 2026-05-16T06:05:28
+END: 2026-05-17T00:18:52
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: integrate_ranking_sensitivity_into_final_diagnostic_report
-START: 2026-05-16T06:05:28
+START: 2026-05-17T00:18:52
 COMMAND: C:\Python314\python.exe analysis\scripts\integrate_ranking_sensitivity_into_final_diagnostic_report.py analysis\reports\campaign_final_diagnostic_report.json analysis\reports\campaign_final_diagnostic_report.md analysis\reports\campaign_final_diagnostic_report.csv analysis\reports\campaign_ranking_profile_sensitivity.json
 --------------------------------------------------------------------------------
 [stdout]
@@ -333,19 +333,32 @@ Ranking sensitivity integrated into final diagnostic report.
 Final JSON updated: analysis\reports\campaign_final_diagnostic_report.json
 Final markdown updated: analysis\reports\campaign_final_diagnostic_report.md
 Final CSV updated: analysis\reports\campaign_final_diagnostic_report.csv
-END: 2026-05-16T06:05:28
+END: 2026-05-17T00:18:52
+RETURN_CODE: 0
+STATUS: ok
+
+================================================================================
+STEP: verify_final_diagnostic_ranking_integration
+START: 2026-05-17T00:18:52
+COMMAND: C:\Python314\python.exe analysis\scripts\verify_final_diagnostic_ranking_integration.py analysis\reports\campaign_final_diagnostic_report.json analysis\reports\campaign_final_diagnostic_report.md analysis\reports\campaign_final_diagnostic_report.csv analysis\reports\campaign_final_ranking_integration_quality_check.md analysis\reports\campaign_final_ranking_integration_quality_check.json
+--------------------------------------------------------------------------------
+[stdout]
+Final diagnostic ranking integration quality report written to: analysis\reports\campaign_final_ranking_integration_quality_check.md
+Final diagnostic ranking integration quality JSON written to: analysis\reports\campaign_final_ranking_integration_quality_check.json
+Final diagnostic ranking integration quality check passed.
+END: 2026-05-17T00:18:53
 RETURN_CODE: 0
 STATUS: ok
 
 ================================================================================
 STEP: verify_campaign_final_diagnostic_report
-START: 2026-05-16T06:05:28
+START: 2026-05-17T00:18:53
 COMMAND: C:\Python314\python.exe analysis\scripts\verify_campaign_final_diagnostic_report.py analysis\reports\campaign_final_diagnostic_report.json analysis\reports\campaign_final_diagnostic_report.md analysis\reports\campaign_final_diagnostic_report.csv analysis\reports\campaign_final_diagnostic_report_quality_check.md analysis\reports\campaign_final_diagnostic_report_quality_check.json
 --------------------------------------------------------------------------------
 [stdout]
 Campaign final diagnostic quality report written to: analysis\reports\campaign_final_diagnostic_report_quality_check.md
 Campaign final diagnostic quality JSON written to: analysis\reports\campaign_final_diagnostic_report_quality_check.json
 Campaign final diagnostic quality check passed.
-END: 2026-05-16T06:05:28
+END: 2026-05-17T00:18:53
 RETURN_CODE: 0
 STATUS: ok

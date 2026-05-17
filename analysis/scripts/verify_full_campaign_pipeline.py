@@ -18,6 +18,7 @@ REQUIRED_QUALITY_FILES = [
     "analysis/reports/policy_trigger_behavior_audit_quality_check.json",
     "analysis/reports/campaign_decision_matrix_quality_check.json",
     "analysis/reports/campaign_ranking_profile_sensitivity_quality_check.json",
+    "analysis/reports/campaign_final_ranking_integration_quality_check.json",
     "analysis/reports/campaign_final_diagnostic_report_quality_check.json",
 ]
 

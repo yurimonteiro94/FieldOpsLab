@@ -1,7 +1,7 @@
 {
     "summary": {
         "summary_type": "fieldops_lab_campaign_result_summary",
-        "generated_at_local": "2026-05-16T06:05:27",
+        "generated_at_local": "2026-05-17T00:18:51",
         "batch_count": 12,
         "recommendation_count": 12,
         "total_completed_experiment_count": 108,

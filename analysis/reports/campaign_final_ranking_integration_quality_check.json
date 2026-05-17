@@ -1,0 +1,31 @@
+{
+    "report_type": "fieldops_lab_final_diagnostic_ranking_integration_quality_check",
+    "generated_at_local": "2026-05-17T00:18:52",
+    "final_json_path": "analysis\\reports\\campaign_final_diagnostic_report.json",
+    "final_markdown_path": "analysis\\reports\\campaign_final_diagnostic_report.md",
+    "final_csv_path": "analysis\\reports\\campaign_final_diagnostic_report.csv",
+    "all_required_checks_passed": true,
+    "problem_count": 0,
+    "warning_count": 0,
+    "json_row_count": 12,
+    "csv_row_count": 12,
+    "ranking_profile_count": 4,
+    "scenario_summary_count": 12,
+    "recommendation_count": 48,
+    "ranking_row_count": 144,
+    "sensitive_to_ranking_profile_count": 2,
+    "stability_counts": {
+        "stable_across_profiles": 10,
+        "same_policy_different_class": 2
+    },
+    "missing_json_field_count": 0,
+    "missing_csv_field_count": 0,
+    "empty_stability_count": 0,
+    "empty_unique_policy_count": 0,
+    "problems": [],
+    "warnings": [],
+    "interpretation": {
+        "status": "final_diagnostic_ranking_integration_quality_check",
+        "warning": "This verifies integration consistency. It does not prove the scientific correctness of any ranking profile."
+    }
+}

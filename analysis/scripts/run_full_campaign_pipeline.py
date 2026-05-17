@@ -372,6 +372,17 @@ def build_steps(fieldops_exe: Path) -> list[tuple[str, list[str]]]:
             ),
         ),
         (
+            "verify_final_diagnostic_ranking_integration",
+            py_command(
+                Path("analysis/scripts/verify_final_diagnostic_ranking_integration.py"),
+                REPORTS_DIR / "campaign_final_diagnostic_report.json",
+                REPORTS_DIR / "campaign_final_diagnostic_report.md",
+                REPORTS_DIR / "campaign_final_diagnostic_report.csv",
+                REPORTS_DIR / "campaign_final_ranking_integration_quality_check.md",
+                REPORTS_DIR / "campaign_final_ranking_integration_quality_check.json",
+            ),
+        ),
+        (
             "verify_campaign_final_diagnostic_report",
             py_command(
                 Path("analysis/scripts/verify_campaign_final_diagnostic_report.py"),
@@ -407,6 +418,7 @@ def build_manifest(fieldops_exe: Path, steps: list[dict[str, Any]]) -> dict[str,
             "campaign_ranking_profile_sensitivity": path_text(REPORTS_DIR / "campaign_ranking_profile_sensitivity.json"),
             "campaign_ranking_profile_sensitivity_quality_check": path_text(REPORTS_DIR / "campaign_ranking_profile_sensitivity_quality_check.json"),
             "campaign_final_diagnostic_report": path_text(REPORTS_DIR / "campaign_final_diagnostic_report.json"),
+            "campaign_final_ranking_integration_quality_check": path_text(REPORTS_DIR / "campaign_final_ranking_integration_quality_check.json"),
             "campaign_final_diagnostic_quality_check": path_text(REPORTS_DIR / "campaign_final_diagnostic_report_quality_check.json"),
         },
         "interpretation": {

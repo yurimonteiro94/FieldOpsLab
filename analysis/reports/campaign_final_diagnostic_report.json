@@ -1,13 +1,13 @@
 {
     "report_type": "fieldops_lab_campaign_final_diagnostic_report",
-    "generated_at_local": "2026-05-16T06:05:28",
+    "generated_at_local": "2026-05-17T00:18:52",
     "source_files": [
         {
             "label": "campaign_execution_index",
             "path": "analysis\\reports\\campaign_execution_index.json",
             "exists": true,
             "top_level_keys": 15,
-            "size_bytes": 51398
+            "size_bytes": 51397
         },
         {
             "label": "campaign_result_summary",
@@ -442,7 +442,7 @@
         "fuzzy_logic_status": "not_used_in_main_pipeline"
     },
     "ranking_profile_sensitivity": {
-        "integrated_at_local": "2026-05-16T06:05:28",
+        "integrated_at_local": "2026-05-17T00:18:52",
         "ranking_profile_count": 4,
         "scenario_summary_count": 12,
         "recommendation_count": 48,

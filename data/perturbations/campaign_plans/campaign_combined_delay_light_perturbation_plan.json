@@ -29,7 +29,7 @@
     "scenario_family_id": "combined_delay",
     "severity_id": "light",
     "planned_run_count": 3,
-    "generated_at_local": "2026-05-16T06:05:25",
+    "generated_at_local": "2026-05-17T00:18:48",
     "semantic_status": "family_specific_template_based_perturbation_plan",
     "scientific_status": "candidate_campaign_semantics"
 }

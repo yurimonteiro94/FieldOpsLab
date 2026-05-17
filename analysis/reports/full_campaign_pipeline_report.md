@@ -7,7 +7,7 @@ This report summarizes the automated execution of the full campaign pipeline.
 | Field | Value |
 | --- | --- |
 | all_steps_passed | yes |
-| step_count | 25 |
+| step_count | 26 |
 | failed_step_count | 0 |
 | fieldops_exe | `build\fieldops_lab.exe` |
 
@@ -39,6 +39,7 @@ This report summarizes the automated execution of the full campaign pipeline.
 | verify_campaign_ranking_profile_sensitivity | ok | 0 |
 | generate_campaign_final_diagnostic_report | ok | 0 |
 | integrate_ranking_sensitivity_into_final_diagnostic_report | ok | 0 |
+| verify_final_diagnostic_ranking_integration | ok | 0 |
 | verify_campaign_final_diagnostic_report | ok | 0 |
 
 ## Important outputs
@@ -54,6 +55,7 @@ This report summarizes the automated execution of the full campaign pipeline.
 | campaign_ranking_profile_sensitivity | `analysis\reports\campaign_ranking_profile_sensitivity.json` |
 | campaign_ranking_profile_sensitivity_quality_check | `analysis\reports\campaign_ranking_profile_sensitivity_quality_check.json` |
 | campaign_final_diagnostic_report | `analysis\reports\campaign_final_diagnostic_report.json` |
+| campaign_final_ranking_integration_quality_check | `analysis\reports\campaign_final_ranking_integration_quality_check.json` |
 | campaign_final_diagnostic_quality_check | `analysis\reports\campaign_final_diagnostic_report_quality_check.json` |
 
 ## Conservative interpretation

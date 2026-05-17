@@ -1,16 +1,16 @@
 {
     "report_type": "fieldops_lab_full_campaign_pipeline_quality_check",
-    "generated_at_local": "2026-05-16T06:05:28",
+    "generated_at_local": "2026-05-17T00:18:53",
     "manifest_path": "analysis\\reports\\full_campaign_pipeline_manifest.json",
     "pipeline_report_path": "analysis\\reports\\full_campaign_pipeline_report.md",
     "pipeline_log_path": "analysis\\reports\\full_campaign_pipeline_log.txt",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 1,
-    "step_count": 25,
+    "step_count": 26,
     "failed_step_count": 0,
     "required_output_file_count": 11,
-    "required_quality_file_count": 11,
+    "required_quality_file_count": 12,
     "problems": [],
     "warnings": [
         "Final diagnostic report has 2 methodological warning(s)."
@@ -19,22 +19,22 @@
         {
             "path": "analysis\\reports\\full_campaign_pipeline_report.md",
             "exists": true,
-            "size_bytes": 3073
+            "size_bytes": 3260
         },
         {
             "path": "analysis\\reports\\full_campaign_pipeline_manifest.json",
             "exists": true,
-            "size_bytes": 27547
+            "size_bytes": 28774
         },
         {
             "path": "analysis\\reports\\full_campaign_pipeline_log.txt",
             "exists": true,
-            "size_bytes": 24767
+            "size_bytes": 25804
         },
         {
             "path": "analysis\\reports\\campaign_execution_index.json",
             "exists": true,
-            "size_bytes": 51398
+            "size_bytes": 51397
         },
         {
             "path": "analysis\\reports\\campaign_result_summary.json",
@@ -120,6 +120,11 @@
         },
         {
             "path": "analysis\\reports\\campaign_ranking_profile_sensitivity_quality_check.json",
+            "passed": true,
+            "problem_count": 0
+        },
+        {
+            "path": "analysis\\reports\\campaign_final_ranking_integration_quality_check.json",
             "passed": true,
             "problem_count": 0
         },
