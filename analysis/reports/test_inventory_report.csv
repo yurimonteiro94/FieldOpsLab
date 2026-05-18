@@ -27,6 +27,7 @@ analysis\scripts\integrate_ranking_sensitivity_into_final_diagnostic_report.py,i
 analysis\scripts\run_batch_analysis_pipeline.py,run_batch_analysis_pipeline.py,run_batch_analysis_pipeline,False,1,1,4,direct_test_found
 analysis\scripts\run_executable_campaign_batches.py,run_executable_campaign_batches.py,run_executable_campaign_batches,False,3,3,4,direct_test_found
 analysis\scripts\run_full_campaign_pipeline.py,run_full_campaign_pipeline.py,run_full_campaign_pipeline,False,5,10,4,direct_test_found
+analysis\scripts\run_local_platform_smoke_check.py,run_local_platform_smoke_check.py,run_local_platform_smoke_check,False,1,1,4,direct_test_found
 analysis\scripts\run_project_quality_gate.py,run_project_quality_gate.py,run_project_quality_gate,False,8,8,4,direct_test_found
 analysis\scripts\run_ranking_sensitivity.py,run_ranking_sensitivity.py,run_ranking_sensitivity,False,1,11,4,direct_test_found
 analysis\scripts\summarize_batch_result.py,summarize_batch_result.py,summarize_batch_result,False,1,1,4,direct_test_found
