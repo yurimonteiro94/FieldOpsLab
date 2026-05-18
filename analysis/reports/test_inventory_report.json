@@ -1,13 +1,13 @@
 {
     "report_type": "fieldops_lab_test_inventory_report",
-    "generated_at_local": "2026-05-18T00:43:57",
+    "generated_at_local": "2026-05-18T01:04:53",
     "project_root": "C:\\Users\\yuri\\Documents\\FieldOpsLab",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 0,
     "overview": {
         "analysis_script_count": 54,
-        "python_test_count": 31,
+        "python_test_count": 32,
         "cpp_test_source_count": 45,
         "cpp_test_support_header_count": 1,
         "script_with_direct_python_test_count": 54,

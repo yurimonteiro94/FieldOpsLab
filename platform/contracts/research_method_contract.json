@@ -1,0 +1,96 @@
+{
+  "contract": "fieldops_lab_research_method_contract",
+  "version": "0.1.0",
+  "status": "draft",
+  "read_only": true,
+  "scientific_maturity": "diagnostic_foundation",
+  "project_question": {
+    "summary": "How can a field service operation choose an appropriate replanning policy when operational disruptions occur during the execution of a dynamic TRSP or WSRP schedule?",
+    "decision_focus": true,
+    "solver_only_focus": false
+  },
+  "research_gap": {
+    "general_area_already_studied": true,
+    "specific_gap": "A replicable experimental and decision framework for comparing replanning policies under controlled dynamic disruptions and recommending policies by scenario class.",
+    "primary_dynamic_focus": [
+      "delay_propagation",
+      "travel_delay",
+      "service_delay"
+    ],
+    "secondary_dynamic_focus": [
+      "new_requests",
+      "cancellations",
+      "priority_changes",
+      "reassignment_opportunities"
+    ]
+  },
+  "contribution_claims": {
+    "claims_new_algorithm_as_primary_contribution": false,
+    "claims_finished_scientific_validation": false,
+    "claims_policy_decision_framework": true,
+    "claims_reproducible_experimental_platform": true,
+    "claims_company_applicability_after_validation": true
+  },
+  "system_role": {
+    "is_scientific_contribution_by_itself": false,
+    "supports_experimental_reproducibility": true,
+    "supports_policy_comparison": true,
+    "supports_read_only_inspection": true,
+    "supports_real_company_data_in_final_version": true
+  },
+  "decision_method_requirements": {
+    "compare_multiple_policies": true,
+    "use_common_scenario_set": true,
+    "use_common_perturbation_set": true,
+    "consider_performance_metrics": true,
+    "consider_stability_metrics": true,
+    "consider_computational_cost": true,
+    "identify_practical_equivalence": true,
+    "avoid_overclaiming_small_average_differences": true,
+    "prefer_simpler_policy_when_practically_equivalent": true
+  },
+  "fuzzy_logic_position": {
+    "mandatory": false,
+    "allowed": true,
+    "use_only_if_defensible": true,
+    "preferred_baseline_alternatives": [
+      "statistical_comparison",
+      "practical_equivalence_thresholds",
+      "dominance_rules",
+      "multi_criteria_scoring",
+      "scenario_classification_rules"
+    ]
+  },
+  "current_completed_foundation": [
+    "core_cpp_tests",
+    "perturbation_model",
+    "replanning_request_result_model",
+    "policy_abstraction",
+    "batch_experiment_artifacts",
+    "generated_quality_reports",
+    "project_quality_gate",
+    "read_only_local_http_api",
+    "web_dashboard_connected_to_api",
+    "local_platform_smoke_check"
+  ],
+  "missing_major_work": [
+    "real_company_data_import",
+    "richer_field_service_data_model",
+    "more_replanning_policies",
+    "statistical_comparison_module",
+    "practical_equivalence_module",
+    "policy_recommendation_method",
+    "experiment_visualization",
+    "cloud_deployment",
+    "firebase_hosting",
+    "access_control_for_real_data",
+    "external_validation",
+    "dissertation_analysis"
+  ],
+  "risk_controls": {
+    "must_not_expose_execution_from_web_dashboard_yet": true,
+    "must_not_claim_scientific_validity_from_tests_only": true,
+    "must_not_store_real_company_sensitive_data_without_access_control": true,
+    "must_keep_generated_reports_reproducible": true
+  }
+}
