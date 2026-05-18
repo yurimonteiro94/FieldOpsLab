@@ -16,6 +16,17 @@ class QualityGateStep:
     command: list[str]
 
 
+def project_path(*parts: str) -> str:
+    return str(Path(*parts))
+
+
+def npm_executable() -> str:
+    if sys.platform.startswith("win"):
+        return "npm.cmd"
+
+    return "npm"
+
+
 def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
     steps = [
         QualityGateStep(
@@ -28,7 +39,7 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
         ),
         QualityGateStep(
             name="fieldops_cpp_tests",
-            command=[str(Path("build") / "fieldops_tests.exe")],
+            command=[project_path("build", "fieldops_tests.exe")],
         ),
         QualityGateStep(
             name="ctest",
@@ -43,10 +54,32 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
                 "unittest",
                 "discover",
                 "-s",
-                str(Path("tests") / "python"),
+                project_path("tests", "python"),
                 "-p",
                 "test_*.py",
                 "-v",
+            ],
+        ),
+        QualityGateStep(
+            name="web_build",
+            command=[
+                npm_executable(),
+                "--prefix",
+                project_path("apps", "web"),
+                "run",
+                "build",
+            ],
+        ),
+        QualityGateStep(
+            name="web_unit_tests",
+            command=[
+                npm_executable(),
+                "--prefix",
+                project_path("apps", "web"),
+                "run",
+                "test",
+                "--",
+                "--run",
             ],
         ),
         QualityGateStep(
@@ -54,10 +87,10 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
             command=[
                 "py",
                 "-3",
-                str(Path("analysis") / "scripts" / "generate_test_inventory_report.py"),
-                str(Path("analysis") / "reports" / "test_inventory_report.md"),
-                str(Path("analysis") / "reports" / "test_inventory_report.json"),
-                str(Path("analysis") / "reports" / "test_inventory_report.csv"),
+                project_path("analysis", "scripts", "generate_test_inventory_report.py"),
+                project_path("analysis", "reports", "test_inventory_report.md"),
+                project_path("analysis", "reports", "test_inventory_report.json"),
+                project_path("analysis", "reports", "test_inventory_report.csv"),
             ],
         ),
         QualityGateStep(
@@ -65,12 +98,12 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
             command=[
                 "py",
                 "-3",
-                str(Path("analysis") / "scripts" / "verify_test_inventory_report.py"),
-                str(Path("analysis") / "reports" / "test_inventory_report.json"),
-                str(Path("analysis") / "reports" / "test_inventory_report.md"),
-                str(Path("analysis") / "reports" / "test_inventory_report.csv"),
-                str(Path("analysis") / "reports" / "test_inventory_quality_check.md"),
-                str(Path("analysis") / "reports" / "test_inventory_quality_check.json"),
+                project_path("analysis", "scripts", "verify_test_inventory_report.py"),
+                project_path("analysis", "reports", "test_inventory_report.json"),
+                project_path("analysis", "reports", "test_inventory_report.md"),
+                project_path("analysis", "reports", "test_inventory_report.csv"),
+                project_path("analysis", "reports", "test_inventory_quality_check.md"),
+                project_path("analysis", "reports", "test_inventory_quality_check.json"),
             ],
         ),
     ]
@@ -83,8 +116,8 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
                     command=[
                         "py",
                         "-3",
-                        str(Path("analysis") / "scripts" / "run_full_campaign_pipeline.py"),
-                        str(Path("build") / "fieldops_lab.exe"),
+                        project_path("analysis", "scripts", "run_full_campaign_pipeline.py"),
+                        project_path("build", "fieldops_lab.exe"),
                     ],
                 ),
                 QualityGateStep(
@@ -92,12 +125,32 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
                     command=[
                         "py",
                         "-3",
-                        str(Path("analysis") / "scripts" / "verify_full_campaign_pipeline.py"),
-                        str(Path("analysis") / "reports" / "full_campaign_pipeline_manifest.json"),
-                        str(Path("analysis") / "reports" / "full_campaign_pipeline_report.md"),
-                        str(Path("analysis") / "reports" / "full_campaign_pipeline_log.txt"),
-                        str(Path("analysis") / "reports" / "full_campaign_pipeline_quality_check.md"),
-                        str(Path("analysis") / "reports" / "full_campaign_pipeline_quality_check.json"),
+                        project_path("analysis", "scripts", "verify_full_campaign_pipeline.py"),
+                        project_path(
+                            "analysis",
+                            "reports",
+                            "full_campaign_pipeline_manifest.json",
+                        ),
+                        project_path(
+                            "analysis",
+                            "reports",
+                            "full_campaign_pipeline_report.md",
+                        ),
+                        project_path(
+                            "analysis",
+                            "reports",
+                            "full_campaign_pipeline_log.txt",
+                        ),
+                        project_path(
+                            "analysis",
+                            "reports",
+                            "full_campaign_pipeline_quality_check.md",
+                        ),
+                        project_path(
+                            "analysis",
+                            "reports",
+                            "full_campaign_pipeline_quality_check.json",
+                        ),
                     ],
                 ),
             ]
@@ -106,86 +159,210 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
     steps.extend(
         [
             QualityGateStep(
-            name="generate_ranking_sensitive_scenario_report",
-            command=[
-                "py",
-                "-3",
-                str(Path("analysis") / "scripts" / "generate_ranking_sensitive_scenario_report.py"),
-                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.md"),
-                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.json"),
-                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.csv"),
-            ],
-        ),
-        QualityGateStep(
-            name="verify_ranking_sensitive_scenario_report",
-            command=[
-                "py",
-                "-3",
-                str(Path("analysis") / "scripts" / "verify_ranking_sensitive_scenario_report.py"),
-                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.json"),
-                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.md"),
-                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_report.csv"),
-                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_quality_check.md"),
-                str(Path("analysis") / "reports" / "ranking_sensitive_scenario_quality_check.json"),
-            ],
-        ),
-        QualityGateStep(
-            name="generate_ranking_sensitivity_explanation_report",
-            command=[
-                "py",
-                "-3",
-                "analysis\\scripts\\generate_ranking_sensitivity_explanation_report.py",
-                "analysis\\reports\\ranking_sensitivity_explanation_report.md",
-                "analysis\\reports\\ranking_sensitivity_explanation_report.json",
-                "analysis\\reports\\ranking_sensitivity_explanation_report.csv",
-            ],
-        ),
-        QualityGateStep(
-            name="verify_ranking_sensitivity_explanation_report",
-            command=[
-                "py",
-                "-3",
-                "analysis\\scripts\\verify_ranking_sensitivity_explanation_report.py",
-                "analysis\\reports\\ranking_sensitivity_explanation_report.json",
-                "analysis\\reports\\ranking_sensitivity_explanation_report.md",
-                "analysis\\reports\\ranking_sensitivity_explanation_report.csv",
-                "analysis\\reports\\ranking_sensitivity_explanation_quality_check.md",
-                "analysis\\reports\\ranking_sensitivity_explanation_quality_check.json",
-            ],
-        ),
-        QualityGateStep(
-            name="generate_experimental_design_matrix",
-            command=[
-                "py",
-                "-3",
-                "analysis\\scripts\\generate_experimental_design_matrix.py",
-                "analysis\\reports\\experimental_design_matrix.md",
-                "analysis\\reports\\experimental_design_matrix.json",
-                "analysis\\reports\\experimental_design_matrix.csv",
-            ],
-        ),
-        QualityGateStep(
-            name="verify_experimental_design_matrix",
-            command=[
-                "py",
-                "-3",
-                "analysis\\scripts\\verify_experimental_design_matrix.py",
-                "analysis\\reports\\experimental_design_matrix.json",
-                "analysis\\reports\\experimental_design_matrix.md",
-                "analysis\\reports\\experimental_design_matrix.csv",
-                "analysis\\reports\\experimental_design_matrix_quality_check.md",
-                "analysis\\reports\\experimental_design_matrix_quality_check.json",
-            ],
-        ),
-        QualityGateStep(
+                name="generate_ranking_sensitive_scenario_report",
+                command=[
+                    "py",
+                    "-3",
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "generate_ranking_sensitive_scenario_report.py",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitive_scenario_report.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitive_scenario_report.json",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitive_scenario_report.csv",
+                    ),
+                ],
+            ),
+            QualityGateStep(
+                name="verify_ranking_sensitive_scenario_report",
+                command=[
+                    "py",
+                    "-3",
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "verify_ranking_sensitive_scenario_report.py",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitive_scenario_report.json",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitive_scenario_report.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitive_scenario_report.csv",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitive_scenario_quality_check.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitive_scenario_quality_check.json",
+                    ),
+                ],
+            ),
+            QualityGateStep(
+                name="generate_ranking_sensitivity_explanation_report",
+                command=[
+                    "py",
+                    "-3",
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "generate_ranking_sensitivity_explanation_report.py",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitivity_explanation_report.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitivity_explanation_report.json",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitivity_explanation_report.csv",
+                    ),
+                ],
+            ),
+            QualityGateStep(
+                name="verify_ranking_sensitivity_explanation_report",
+                command=[
+                    "py",
+                    "-3",
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "verify_ranking_sensitivity_explanation_report.py",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitivity_explanation_report.json",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitivity_explanation_report.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitivity_explanation_report.csv",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitivity_explanation_quality_check.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "ranking_sensitivity_explanation_quality_check.json",
+                    ),
+                ],
+            ),
+            QualityGateStep(
+                name="generate_experimental_design_matrix",
+                command=[
+                    "py",
+                    "-3",
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "generate_experimental_design_matrix.py",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "experimental_design_matrix.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "experimental_design_matrix.json",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "experimental_design_matrix.csv",
+                    ),
+                ],
+            ),
+            QualityGateStep(
+                name="verify_experimental_design_matrix",
+                command=[
+                    "py",
+                    "-3",
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "verify_experimental_design_matrix.py",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "experimental_design_matrix.json",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "experimental_design_matrix.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "experimental_design_matrix.csv",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "experimental_design_matrix_quality_check.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "experimental_design_matrix_quality_check.json",
+                    ),
+                ],
+            ),
+            QualityGateStep(
                 name="generate_project_status_report",
                 command=[
                     "py",
                     "-3",
-                    str(Path("analysis") / "scripts" / "generate_project_status_report.py"),
-                    str(Path("analysis") / "reports" / "project_status_report.md"),
-                    str(Path("analysis") / "reports" / "project_status_report.json"),
-                    str(Path("analysis") / "reports" / "project_status_report.csv"),
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "generate_project_status_report.py",
+                    ),
+                    project_path("analysis", "reports", "project_status_report.md"),
+                    project_path("analysis", "reports", "project_status_report.json"),
+                    project_path("analysis", "reports", "project_status_report.csv"),
                 ],
             ),
             QualityGateStep(
@@ -193,12 +370,24 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
                 command=[
                     "py",
                     "-3",
-                    str(Path("analysis") / "scripts" / "verify_project_status_report.py"),
-                    str(Path("analysis") / "reports" / "project_status_report.json"),
-                    str(Path("analysis") / "reports" / "project_status_report.md"),
-                    str(Path("analysis") / "reports" / "project_status_report.csv"),
-                    str(Path("analysis") / "reports" / "project_status_quality_check.md"),
-                    str(Path("analysis") / "reports" / "project_status_quality_check.json"),
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "verify_project_status_report.py",
+                    ),
+                    project_path("analysis", "reports", "project_status_report.json"),
+                    project_path("analysis", "reports", "project_status_report.md"),
+                    project_path("analysis", "reports", "project_status_report.csv"),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "project_status_quality_check.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "project_status_quality_check.json",
+                    ),
                 ],
             ),
             QualityGateStep(
@@ -206,10 +395,26 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
                 command=[
                     "py",
                     "-3",
-                    str(Path("analysis") / "scripts" / "generate_scientific_validation_plan.py"),
-                    str(Path("analysis") / "reports" / "scientific_validation_plan.md"),
-                    str(Path("analysis") / "reports" / "scientific_validation_plan.json"),
-                    str(Path("analysis") / "reports" / "scientific_validation_plan.csv"),
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "generate_scientific_validation_plan.py",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "scientific_validation_plan.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "scientific_validation_plan.json",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "scientific_validation_plan.csv",
+                    ),
                 ],
             ),
             QualityGateStep(
@@ -217,12 +422,36 @@ def quality_gate_steps(include_full_pipeline: bool) -> list[QualityGateStep]:
                 command=[
                     "py",
                     "-3",
-                    str(Path("analysis") / "scripts" / "verify_scientific_validation_plan.py"),
-                    str(Path("analysis") / "reports" / "scientific_validation_plan.json"),
-                    str(Path("analysis") / "reports" / "scientific_validation_plan.md"),
-                    str(Path("analysis") / "reports" / "scientific_validation_plan.csv"),
-                    str(Path("analysis") / "reports" / "scientific_validation_plan_quality_check.md"),
-                    str(Path("analysis") / "reports" / "scientific_validation_plan_quality_check.json"),
+                    project_path(
+                        "analysis",
+                        "scripts",
+                        "verify_scientific_validation_plan.py",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "scientific_validation_plan.json",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "scientific_validation_plan.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "scientific_validation_plan.csv",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "scientific_validation_plan_quality_check.md",
+                    ),
+                    project_path(
+                        "analysis",
+                        "reports",
+                        "scientific_validation_plan_quality_check.json",
+                    ),
                 ],
             ),
         ]

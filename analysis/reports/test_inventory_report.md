@@ -10,7 +10,7 @@ This report audits the structural organization of C++ and Python tests.
 | problem_count | 0 |
 | warning_count | 0 |
 | analysis_script_count | 53 |
-| python_test_count | 28 |
+| python_test_count | 29 |
 | cpp_test_source_count | 45 |
 | cpp_test_support_header_count | 1 |
 | script_with_direct_python_test_count | 53 |
@@ -52,14 +52,14 @@ This report audits the structural organization of C++ and Python tests.
 | `analysis\scripts\generate_ranking_sensitivity_explanation_report.py` | 3 | 4 | 4 | direct_test_found |
 | `analysis\scripts\generate_scenario_descriptors.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\generate_scientific_validation_plan.py` | 5 | 6 | 4 | direct_test_found |
-| `analysis\scripts\generate_test_inventory_report.py` | 3 | 5 | 4 | direct_test_found |
+| `analysis\scripts\generate_test_inventory_report.py` | 4 | 6 | 4 | direct_test_found |
 | `analysis\scripts\inspect_batch_config_schema.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\inspect_campaign_result_semantics.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\integrate_ranking_sensitivity_into_final_diagnostic_report.py` | 4 | 4 | 4 | direct_test_found |
 | `analysis\scripts\run_batch_analysis_pipeline.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\run_executable_campaign_batches.py` | 3 | 3 | 4 | direct_test_found |
 | `analysis\scripts\run_full_campaign_pipeline.py` | 5 | 10 | 4 | direct_test_found |
-| `analysis\scripts\run_project_quality_gate.py` | 7 | 7 | 4 | direct_test_found |
+| `analysis\scripts\run_project_quality_gate.py` | 8 | 8 | 4 | direct_test_found |
 | `analysis\scripts\run_ranking_sensitivity.py` | 1 | 11 | 4 | direct_test_found |
 | `analysis\scripts\summarize_batch_result.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\verify_analysis_outputs.py` | 1 | 1 | 4 | direct_test_found |
@@ -83,7 +83,7 @@ This report audits the structural organization of C++ and Python tests.
 | `analysis\scripts\verify_ranking_sensitivity_explanation_report.py` | 4 | 4 | 4 | direct_test_found |
 | `analysis\scripts\verify_scientific_validation_plan.py` | 4 | 6 | 4 | direct_test_found |
 | `analysis\scripts\verify_service_delay_impact_audit.py` | 4 | 6 | 4 | direct_test_found |
-| `analysis\scripts\verify_test_inventory_report.py` | 5 | 5 | 4 | direct_test_found |
+| `analysis\scripts\verify_test_inventory_report.py` | 5 | 6 | 4 | direct_test_found |
 
 ## Conservative interpretation
 

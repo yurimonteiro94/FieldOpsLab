@@ -1,12 +1,12 @@
 {
   "report_type": "fieldops_lab_project_status_report",
-  "generated_at_local": "2026-05-17T23:15:01",
+  "generated_at_local": "2026-05-17T23:34:44",
   "summary_metrics": {
     "engineering_status": "passed_current_structural_quality_gate",
     "scientific_status": "diagnostic_only_with_methodological_warnings",
     "structural_all_required_checks_passed": true,
     "analysis_script_count": 53,
-    "python_test_count": 28,
+    "python_test_count": 29,
     "cpp_test_source_count": 45,
     "script_without_direct_python_test_count": 0,
     "script_needing_test_review_count": 0,

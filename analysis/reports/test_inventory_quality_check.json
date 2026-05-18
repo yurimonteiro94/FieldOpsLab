@@ -1,6 +1,6 @@
 {
     "report_type": "fieldops_lab_test_inventory_quality_check",
-    "generated_at_local": "2026-05-17T23:15:00",
+    "generated_at_local": "2026-05-17T23:34:43",
     "inventory_json_path": "analysis\\reports\\test_inventory_report.json",
     "inventory_markdown_path": "analysis\\reports\\test_inventory_report.md",
     "inventory_csv_path": "analysis\\reports\\test_inventory_report.csv",
@@ -10,7 +10,7 @@
     "row_count": 53,
     "csv_row_count": 53,
     "analysis_script_count": 53,
-    "python_test_count": 28,
+    "python_test_count": 29,
     "cpp_test_source_count": 45,
     "script_without_direct_python_test_count": 0,
     "script_needing_test_review_count": 0,
