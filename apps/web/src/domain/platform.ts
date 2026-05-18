@@ -1,58 +1,68 @@
-export type ScientificStatus =
-  | "diagnostic_only_with_methodological_warnings"
-  | "experimental_design"
-  | "validated";
-
-export type EngineeringStatus =
-  | "passed_current_structural_quality_gate"
-  | "needs_attention"
-  | "unknown";
+export type EngineeringStatus = "passed_current_structural_quality_gate";
+export type ScientificStatus = "diagnostic_only_with_methodological_warnings";
+export type PlatformDataSource = "static_fallback" | "local_http_api";
 
 export type ReportCategory =
   | "engineering"
-  | "diagnostic"
   | "scientific_validation"
-  | "experimental_design";
-
-export interface PlatformHealth {
-  service: "fieldops_lab_web";
-  status: "ok";
-  mode: "read_only_dashboard";
-  readOnly: true;
-  allowsArbitraryCommandExecution: false;
-}
+  | "experimental_design"
+  | "diagnostic"
+  | "quality";
 
 export interface PlatformStatus {
-  completionPercent: number;
   engineeringStatus: EngineeringStatus;
   scientificStatus: ScientificStatus;
-  scientificValidityProven: boolean;
-  conservativeNote: string;
+  structuralChecksPassed: boolean;
+  readOnly: boolean;
+  executionSupported: boolean;
+  arbitraryCommandExecutionAllowed: boolean;
 }
 
-export interface ReportArtifact {
+export interface PlatformMetric {
+  label: string;
+  value: string;
+  helperText: string;
+}
+
+export interface PlatformReport {
   id: string;
   title: string;
   category: ReportCategory;
+  description: string;
   path: string;
+  available: boolean;
+
+  /*
+   * Compatibility fields.
+   *
+   * Some UI components still use qualityCheckPath/passed, while newer service
+   * adapters may use qualityPath. Keeping both names avoids fragile refactors
+   * while the dashboard contract is still evolving.
+   */
+  qualityPath?: string;
   qualityCheckPath?: string;
-  exists: boolean;
   passed?: boolean;
-  warningCount?: number;
-  problemCount?: number;
 }
 
-export interface ExperimentalDesignSummary {
-  experimentCount: number;
-  scenarioCount: number;
-  replicationCount: number;
-  reproducibleFromExplicitFactors: boolean;
+export type ReportArtifact = PlatformReport;
+
+export interface PlatformEvidenceWarning {
+  id: string;
+  severity: "info" | "warning";
+  message: string;
 }
 
 export interface DashboardSnapshot {
-  health: PlatformHealth;
+  productCompletenessPercent: number;
+  dataSource: PlatformDataSource;
+  apiBaseUrl?: string;
   status: PlatformStatus;
-  reports: ReportArtifact[];
-  experimentalDesign: ExperimentalDesignSummary;
-  safetyRules: string[];
+  metrics: PlatformMetric[];
+  reports: PlatformReport[];
+  evidenceWarnings: PlatformEvidenceWarning[];
+  conservativeNote: string;
+}
+
+export interface ReadOnlyPlatformApi {
+  getDashboardSnapshot: () => Promise<DashboardSnapshot>;
 }

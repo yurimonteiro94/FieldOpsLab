@@ -1,105 +1,166 @@
-import { Layout } from "../components/Layout";
-import { ReportCard } from "../components/ReportCard";
-import { StatusCard } from "../components/StatusCard";
-import type { ReadOnlyPlatformApi } from "../services/readOnlyPlatformApi";
+import type { ReadOnlyPlatformApi } from "../domain/platform";
 import { useDashboardViewModel } from "../viewModels/useDashboardViewModel";
 
 interface DashboardPageProps {
   api?: ReadOnlyPlatformApi;
 }
 
+function formatStatus(value: string): string {
+  return value.split("_").join(" ");
+}
+
 export function DashboardPage({ api }: DashboardPageProps) {
-  const state = useDashboardViewModel(api);
+  const { loading, errorMessage, snapshot, reload } = useDashboardViewModel(api);
 
-  if (state.kind === "loading") {
+  if (loading) {
     return (
-      <Layout>
-        <section className="panel">
-          <p>Loading FieldOps Lab dashboard...</p>
+      <main className="page-shell">
+        <section className="hero-card">
+          <p className="eyebrow">FieldOps Lab</p>
+          <h1>Loading platform dashboard</h1>
+          <p className="muted">Reading the current platform status.</p>
         </section>
-      </Layout>
+      </main>
     );
   }
 
-  if (state.kind === "error") {
+  if (errorMessage !== null || snapshot === null) {
     return (
-      <Layout>
-        <section className="panel panel-danger">
-          <h2>Dashboard loading failed</h2>
-          <p>{state.message}</p>
+      <main className="page-shell">
+        <section className="hero-card">
+          <p className="eyebrow">FieldOps Lab</p>
+          <h1>Dashboard unavailable</h1>
+          <p className="danger-text">{errorMessage ?? "The dashboard could not load platform data."}</p>
+          <button className="primary-button" type="button" onClick={reload}>
+            Try again
+          </button>
         </section>
-      </Layout>
+      </main>
     );
   }
-
-  const { snapshot } = state;
 
   return (
-    <Layout>
-      <section className="hero-panel">
+    <main className="page-shell">
+      <section className="hero-card">
         <div>
-          <p className="eyebrow">Product maturity</p>
-          <h2>{snapshot.status.completionPercent}% complete</h2>
-          <p>{snapshot.status.conservativeNote}</p>
+          <p className="eyebrow">FieldOps Lab</p>
+          <h1>Dynamic TRSP and WSRP experimental platform</h1>
+          <p className="hero-copy">
+            Read-only dashboard for inspecting engineering status, diagnostic evidence, generated reports,
+            and pending scientific validation work.
+          </p>
         </div>
 
-        <div className="hero-metrics">
-          <span>{state.reportCount} reports</span>
-          <span>{state.passedReportCount} passed checks</span>
-          <span>{state.hasScientificProof ? "validated" : "diagnostic only"}</span>
+        <div className="completion-panel" aria-label="Product completeness">
+          <span className="completion-number">{snapshot.productCompletenessPercent}%</span>
+          <span className="completion-label">overall product completeness</span>
         </div>
       </section>
 
-      <section className="status-grid" aria-label="Current platform status">
-        <StatusCard
-          title="Engineering"
-          value={snapshot.status.engineeringStatus.replace(/_/g, " ")}
-          description="The local structural quality gate is passing in the current pipeline."
-        />
-
-        <StatusCard
-          title="Scientific status"
-          value={snapshot.status.scientificStatus.replace(/_/g, " ")}
-          description="Current evidence is diagnostic and still requires broader experiments and statistical validation."
-        />
-
-        <StatusCard
-          title="Experimental design"
-          value={`${snapshot.experimentalDesign.experimentCount} planned experiments`}
-          description={`${snapshot.experimentalDesign.scenarioCount} scenarios with ${snapshot.experimentalDesign.replicationCount} replications per scenario-policy combination.`}
-        />
+      <section className="notice-card">
+        <strong>Conservative interpretation</strong>
+        <p>{snapshot.conservativeNote}</p>
       </section>
 
-      <section className="panel">
+      <section className="status-grid" aria-label="Platform status">
+        <article className="status-card">
+          <span className="status-label">Engineering status</span>
+          <strong>{formatStatus(snapshot.status.engineeringStatus)}</strong>
+        </article>
+
+        <article className="status-card">
+          <span className="status-label">Scientific status</span>
+          <strong>{formatStatus(snapshot.status.scientificStatus)}</strong>
+        </article>
+
+        <article className="status-card">
+          <span className="status-label">Data source</span>
+          <strong>{formatStatus(snapshot.dataSource)}</strong>
+        </article>
+
+        <article className="status-card">
+          <span className="status-label">Execution</span>
+          <strong>{snapshot.status.executionSupported ? "enabled" : "disabled"}</strong>
+        </article>
+      </section>
+
+      <section className="section-card">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Metrics</p>
+            <h2>Current platform snapshot</h2>
+          </div>
+          {snapshot.apiBaseUrl !== undefined ? (
+            <span className="source-pill">API: {snapshot.apiBaseUrl}</span>
+          ) : (
+            <span className="source-pill">Static fallback</span>
+          )}
+        </div>
+
+        <div className="metric-grid">
+          {snapshot.metrics.map((item) => (
+            <article className="metric-card" key={item.label}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <p>{item.helperText}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section-card">
         <div className="section-heading">
           <div>
             <p className="eyebrow">Reports</p>
-            <h2>Available generated artifacts</h2>
+            <h2>Generated artifacts</h2>
           </div>
-          <span className="mode-badge">No execution exposed</span>
         </div>
 
         <div className="report-grid">
           {snapshot.reports.map((report) => (
-            <ReportCard key={report.id} report={report} />
+            <article className="report-card" key={report.id}>
+              <div>
+                <span className="report-category">{formatStatus(report.category)}</span>
+                <h3>{report.title}</h3>
+                <p>{report.description}</p>
+              </div>
+
+              <dl>
+                <dt>Artifact</dt>
+                <dd>{report.path}</dd>
+                {report.qualityPath !== undefined ? (
+                  <>
+                    <dt>Quality check</dt>
+                    <dd>{report.qualityPath}</dd>
+                  </>
+                ) : null}
+              </dl>
+
+              <span className={report.available ? "availability-ok" : "availability-missing"}>
+                {report.available ? "available" : "missing"}
+              </span>
+            </article>
           ))}
         </div>
       </section>
 
-      <section className="panel">
+      <section className="section-card">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">Safety rules</p>
-            <h2>Current operating limits</h2>
+            <p className="eyebrow">Risk control</p>
+            <h2>Evidence warnings</h2>
           </div>
         </div>
 
-        <ul className="safety-list">
-          {snapshot.safetyRules.map((rule) => (
-            <li key={rule}>{rule}</li>
+        <div className="warning-list">
+          {snapshot.evidenceWarnings.map((warning) => (
+            <article className={`warning-card ${warning.severity}`} key={warning.id}>
+              <strong>{warning.severity}</strong>
+              <p>{warning.message}</p>
+            </article>
           ))}
-        </ul>
+        </div>
       </section>
-    </Layout>
+    </main>
   );
 }
