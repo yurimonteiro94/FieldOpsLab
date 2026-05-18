@@ -1,30 +1,44 @@
 # FieldOps Lab web interface
 
-This folder will contain the web interface for FieldOps Lab.
+This folder contains the web interface for FieldOps Lab.
 
-## Initial role
+Current product completeness estimate: 39%.
 
-The first web interface should be a dashboard for inspecting the current state of the platform.
+## Current stage
 
-It should not pretend that the project is already a complete scientific or commercial platform.
+The current web app is a read-only dashboard skeleton.
 
-## Planned first pages
+It is intentionally conservative:
 
-| Page | Purpose |
+- it does not execute backend commands;
+- it does not expose experiment execution;
+- it does not claim scientific validity;
+- it shows engineering and diagnostic status only;
+- it prepares the structure for future API, Firebase, hosting, and execution workflows.
+
+## Architecture
+
+The current structure follows a simple MVVM-inspired organization:
+
+| Folder | Role |
 | --- | --- |
-| Dashboard | Show engineering status, scientific status, and report availability |
-| Reports | List generated reports and quality checks |
-| Experimental design | Show the planned experimental design matrix |
-| Scientific validation | Show open scientific risks and validation actions |
+| `src/domain` | Shared domain types and platform models |
+| `src/services` | Data access adapters |
+| `src/viewModels` | Screen state and view logic |
+| `src/components` | Reusable UI components |
+| `src/pages` | Application pages |
+| `src/__tests__` | Frontend unit tests |
 
-## Required message to users
+## Current data source
 
-The interface must clearly separate:
+The current dashboard uses a static read-only adapter.
 
-- structural engineering consistency;
-- diagnostic evidence;
-- scientific validation still pending.
+Future versions should replace this adapter with an HTTP client for the Python API without changing the page structure.
 
-## Next implementation step
+## Local commands
 
-After the API skeleton exists, create a first dashboard page that consumes the API locally.
+Install dependencies:
+
+```cmd
+npm install
+This dashboard does not prove scientific validity.
