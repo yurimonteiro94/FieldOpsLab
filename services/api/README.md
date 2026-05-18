@@ -1,30 +1,31 @@
 # FieldOps Lab API service
 
-This folder will contain the API layer for the FieldOps Lab platform.
+This folder contains the first local API skeleton for the FieldOps Lab platform.
 
-## Initial role
+## Current status
 
-The first API version should be read-only.
+The API is intentionally read-only.
 
-It should expose existing generated reports to the future web interface without allowing arbitrary execution.
+It exposes generated reports to the future web interface, but it does not execute backend commands and does not modify project files.
 
-## Planned initial endpoints
+This API does not prove scientific validity. It exposes engineering status, diagnostic reports, experimental design information, and quality-check status.
+
+## Current endpoints
 
 | Method | Path | Purpose |
 | --- | --- | --- |
-| GET | `/api/v1/health` | Return API status and contract version |
-| GET | `/api/v1/project-status` | Return project status summary |
-| GET | `/api/v1/reports` | Return available report paths and quality checks |
+| GET | `/api/v1/health` | Return API status, read-only mode, and available routes |
+| GET | `/api/v1/project-status` | Return project status summary and quality-check status |
+| GET | `/api/v1/reports` | Return available generated reports and quality checks |
 | GET | `/api/v1/experimental-design-matrix` | Return experimental design matrix summary |
 
 ## Safety rule
 
-Do not expose an endpoint that executes arbitrary local commands.
+The API must not expose arbitrary command execution.
 
 Backend execution may only be added after an explicit allowlist model exists.
 
-## Next implementation step
+## Run self-test
 
-Create a minimal local API skeleton that reads JSON files from `analysis/reports`.
-
-The first API implementation should not modify files.
+```cmd
+py -3 services\api\fieldops_api.py --self-test
