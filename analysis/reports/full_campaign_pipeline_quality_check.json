@@ -1,6 +1,6 @@
 {
     "report_type": "fieldops_lab_full_campaign_pipeline_quality_check",
-    "generated_at_local": "2026-05-17T04:12:30",
+    "generated_at_local": "2026-05-17T23:38:44",
     "manifest_path": "analysis\\reports\\full_campaign_pipeline_manifest.json",
     "pipeline_report_path": "analysis\\reports\\full_campaign_pipeline_report.md",
     "pipeline_log_path": "analysis\\reports\\full_campaign_pipeline_log.txt",
@@ -34,7 +34,7 @@
         {
             "path": "analysis\\reports\\campaign_execution_index.json",
             "exists": true,
-            "size_bytes": 51402
+            "size_bytes": 51395
         },
         {
             "path": "analysis\\reports\\campaign_result_summary.json",
