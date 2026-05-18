@@ -1,6 +1,6 @@
 {
     "report_type": "fieldops_lab_service_delay_impact_audit",
-    "generated_at_local": "2026-05-17T23:38:43",
+    "generated_at_local": "2026-05-18T00:33:18",
     "summary": {
         "batch_count": 12,
         "service_related_batch_count": 6,

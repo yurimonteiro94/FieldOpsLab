@@ -25,7 +25,7 @@ This report consolidates the executed campaign, result summary, semantic inspect
 
 | Label | Path | Size bytes |
 | --- | --- | ---: |
-| campaign_execution_index | `analysis\reports\campaign_execution_index.json` | 51395 |
+| campaign_execution_index | `analysis\reports\campaign_execution_index.json` | 51398 |
 | campaign_result_summary | `analysis\reports\campaign_result_summary.json` | 19677 |
 | campaign_result_semantic_inspection | `analysis\reports\campaign_result_semantic_inspection.json` | 34722 |
 | service_delay_impact_audit | `analysis\reports\service_delay_impact_audit.json` | 16040 |
