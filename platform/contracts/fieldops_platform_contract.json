@@ -1,0 +1,120 @@
+{
+  "contract_type": "fieldops_lab_platform_contract",
+  "version": "0.1.0",
+  "product_completeness_estimate_percent": 33,
+  "status": "platform_contract_draft",
+  "purpose": "Define the initial contract between the web interface, API service, local engine, analysis pipeline, and generated reports.",
+  "conservative_interpretation": "This contract starts the transition from local research pipeline to web platform. It does not mean the application is ready for final users.",
+  "layers": [
+    {
+      "id": "core_engine",
+      "responsibility": "Execute instance validation, perturbation handling, policy evaluation, comparisons, and C++ tests.",
+      "current_status": "partially_implemented_locally"
+    },
+    {
+      "id": "analysis_pipeline",
+      "responsibility": "Generate diagnostic reports, ranking reports, experimental design reports, and scientific validation plans.",
+      "current_status": "partially_implemented_locally"
+    },
+    {
+      "id": "api_service",
+      "responsibility": "Expose safe, structured backend operations to the future web interface.",
+      "current_status": "planned"
+    },
+    {
+      "id": "web_interface",
+      "responsibility": "Allow users to configure, run, inspect, and export experiments without using the command line.",
+      "current_status": "planned"
+    },
+    {
+      "id": "storage",
+      "responsibility": "Persist instances, perturbations, campaigns, generated artifacts, reports, and user files.",
+      "current_status": "planned"
+    },
+    {
+      "id": "hosting_deployment",
+      "responsibility": "Host the web interface and backend service in a controlled production-like environment.",
+      "current_status": "planned"
+    }
+  ],
+  "api_draft": {
+    "base_path": "/api/v1",
+    "initial_read_only_policy": true,
+    "endpoints": [
+      {
+        "id": "health",
+        "method": "GET",
+        "path": "/api/v1/health",
+        "purpose": "Return service health and contract version.",
+        "status": "planned"
+      },
+      {
+        "id": "project_status",
+        "method": "GET",
+        "path": "/api/v1/project-status",
+        "purpose": "Return the latest project status report summary.",
+        "status": "planned"
+      },
+      {
+        "id": "reports_index",
+        "method": "GET",
+        "path": "/api/v1/reports",
+        "purpose": "Return available generated reports and quality checks.",
+        "status": "planned"
+      },
+      {
+        "id": "experimental_design_matrix",
+        "method": "GET",
+        "path": "/api/v1/experimental-design-matrix",
+        "purpose": "Return the latest experimental design matrix summary.",
+        "status": "planned"
+      }
+    ]
+  },
+  "execution_policy": {
+    "arbitrary_shell_execution_allowed": false,
+    "write_operations_allowed_initially": false,
+    "backend_execution_requires_allowlist": true,
+    "required_before_execution_endpoint": [
+      "approved command allowlist",
+      "input validation",
+      "output path isolation",
+      "execution logging",
+      "failure reporting",
+      "tests for rejected unsafe operations"
+    ]
+  },
+  "web_draft": {
+    "initial_pages": [
+      {
+        "id": "dashboard",
+        "purpose": "Show engineering status, scientific status, and available reports.",
+        "status": "planned"
+      },
+      {
+        "id": "reports",
+        "purpose": "List generated reports and quality checks.",
+        "status": "planned"
+      },
+      {
+        "id": "experimental_design",
+        "purpose": "Inspect the planned experimental design matrix.",
+        "status": "planned"
+      }
+    ],
+    "must_display_limitations": true
+  },
+  "artifact_paths": {
+    "project_status_report": "analysis/reports/project_status_report.json",
+    "scientific_validation_plan": "analysis/reports/scientific_validation_plan.json",
+    "experimental_design_matrix": "analysis/reports/experimental_design_matrix.json",
+    "experimental_design_matrix_quality_check": "analysis/reports/experimental_design_matrix_quality_check.json"
+  },
+  "quality_requirements": [
+    "The platform contract must be valid JSON.",
+    "The API must start read-only.",
+    "The web interface must not hide scientific limitations.",
+    "Generated reports must remain traceable to quality checks.",
+    "Execution endpoints must not be added before an allowlist model exists."
+  ]
+}
