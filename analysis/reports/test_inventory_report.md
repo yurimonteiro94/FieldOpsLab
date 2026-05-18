@@ -10,7 +10,7 @@ This report audits the structural organization of C++ and Python tests.
 | problem_count | 0 |
 | warning_count | 0 |
 | analysis_script_count | 53 |
-| python_test_count | 29 |
+| python_test_count | 30 |
 | cpp_test_source_count | 45 |
 | cpp_test_support_header_count | 1 |
 | script_with_direct_python_test_count | 53 |

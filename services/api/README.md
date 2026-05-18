@@ -1,31 +1,39 @@
 # FieldOps Lab API service
 
-This folder contains the first local API skeleton for the FieldOps Lab platform.
+This folder contains the API layer for the FieldOps Lab platform.
 
-## Current status
+Current product completeness estimate: 44%.
 
-The API is intentionally read-only.
+## Current stage
 
-It exposes generated reports to the future web interface, but it does not execute backend commands and does not modify project files.
+The current API is read-only.
 
-This API does not prove scientific validity. It exposes engineering status, diagnostic reports, experimental design information, and quality-check status.
+It exposes existing generated reports to the future web interface without allowing arbitrary execution.
 
-## Current endpoints
+This API does not prove scientific validity. It only exposes the current engineering, diagnostic, and validation-report state.
+
+## Current local endpoints
 
 | Method | Path | Purpose |
 | --- | --- | --- |
-| GET | `/api/v1/health` | Return API status, read-only mode, and available routes |
-| GET | `/api/v1/project-status` | Return project status summary and quality-check status |
-| GET | `/api/v1/reports` | Return available generated reports and quality checks |
+| GET | `/api/v1/health` | Return API status and contract version |
+| GET | `/api/v1/project-status` | Return project status summary |
+| GET | `/api/v1/reports` | Return available report paths and quality checks |
 | GET | `/api/v1/experimental-design-matrix` | Return experimental design matrix summary |
 
 ## Safety rule
 
-The API must not expose arbitrary command execution.
+The current API must remain read-only.
+
+It must not expose arbitrary command execution.
+
+It must not expose experiment execution endpoints yet.
 
 Backend execution may only be added after an explicit allowlist model exists.
 
-## Run self-test
+## Local commands from the project root
+
+Run the API self-test:
 
 ```cmd
-py -3 services\api\fieldops_api.py --self-test
+py -3 services\api\fieldops_http_server.py --self-test
