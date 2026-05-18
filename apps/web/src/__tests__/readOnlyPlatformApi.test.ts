@@ -1,115 +1,194 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import {
-  HttpReadOnlyPlatformApi,
-  StaticReadOnlyPlatformApi,
-} from "../services/readOnlyPlatformApi";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ReadOnlyPlatformApi } from "../services/readOnlyPlatformApi";
 
-describe("read-only platform API adapters", () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
+const healthPayload = {
+  allows_arbitrary_command_execution: false,
+  contract: {
+    available: true,
+    path: "platform/contracts/fieldops_platform_contract.json",
+  },
+  mode: "read_only",
+  read_only: true,
+  routes: [
+    {
+      description: "Return API status and read-only mode.",
+      method: "GET",
+      path: "/api/v1/health",
+    },
+  ],
+  service: "fieldops_lab_api",
+  status: "ok",
+};
+
+const projectStatusPayload = {
+  report: "project_status",
+  conservative_note: "This dashboard does not prove scientific validity.",
+  summary_metrics: {
+    product_completeness: 46,
+    engineering_status: "passed_current_structural_quality_gate",
+    scientific_status: "diagnostic_only_with_methodological_warnings",
+  },
+};
+
+const reportsPayload = {
+  read_only: true,
+  execution_supported: false,
+  reports: [
+    {
+      id: "project_status",
+      title: "Project status",
+      category: "engineering",
+      description: "Current structural engineering status.",
+      artifact_path: "analysis/reports/project_status_report.json",
+      quality_path: "analysis/reports/project_status_quality_check.json",
+      available: true,
+      loaded: true,
+      quality_passed: true,
+    },
+  ],
+};
+
+const experimentalDesignPayload = {
+  report: "experimental_design_matrix",
+  summary: {
+    experiment_count: 648,
+    scenario_count: 12,
+    replication_count: 3,
+    reproducible_from_explicit_factors: true,
+  },
+};
+
+function jsonResponse(payload: unknown): Response {
+  return new Response(JSON.stringify(payload), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
+}
 
-  it("returns a conservative static fallback snapshot", async () => {
-    const api = new StaticReadOnlyPlatformApi();
-
-    const snapshot = await api.getDashboardSnapshot();
-
-    expect(snapshot.productCompletenessPercent).toBe(46);
-    expect(snapshot.dataSource).toBe("static_fallback");
-    expect(snapshot.status.readOnly).toBe(true);
-    expect(snapshot.status.executionSupported).toBe(false);
-    expect(snapshot.status.arbitraryCommandExecutionAllowed).toBe(false);
-    expect(snapshot.conservativeNote).toContain("does not prove scientific validity");
-  });
-
-  it("loads dashboard data from the local HTTP API", async () => {
-    const fetchMock = vi.fn(async (url: string) => {
-      if (url.endsWith("/api/v1/health")) {
-        return Response.json({
-          read_only: true,
-          allows_arbitrary_command_execution: false,
-        });
-      }
-
-      if (url.endsWith("/api/v1/project-status")) {
-        return Response.json({
-          summary_metrics: {
-            engineering_status: "passed_current_structural_quality_gate",
-            structural_all_required_checks_passed: true,
-          },
-          conservative_note: "This API response does not prove scientific validity.",
-        });
-      }
-
-      if (url.endsWith("/api/v1/reports")) {
-        return Response.json({
-          reports: [
-            {
-              id: "project_status",
-              title: "Project status",
-              category: "engineering",
-              description: "Project status report.",
-              path: "analysis/reports/project_status_report.json",
-              quality_path: "analysis/reports/project_status_quality_check.json",
-              available: true,
-            },
-          ],
-        });
-      }
-
-      if (url.endsWith("/api/v1/experimental-design-matrix")) {
-        return Response.json({
-          summary: {
-            experiment_count: 648,
-            scenario_count: 108,
-            replication_count: 3,
-            reproducible_from_explicit_factors: true,
-          },
-        });
-      }
-
-      return new Response("not found", { status: 404 });
-    });
-
-    vi.stubGlobal("fetch", fetchMock);
-
-    const api = new HttpReadOnlyPlatformApi("http://127.0.0.1:8080");
-    const snapshot = await api.getDashboardSnapshot();
-
-    expect(snapshot.dataSource).toBe("local_http_api");
-    expect(snapshot.apiBaseUrl).toBe("http://127.0.0.1:8080");
-    expect(snapshot.status.readOnly).toBe(true);
-    expect(snapshot.status.executionSupported).toBe(false);
-    expect(snapshot.status.arbitraryCommandExecutionAllowed).toBe(false);
-    expect(snapshot.metrics.some((item) => item.value === "648")).toBe(true);
-    expect(snapshot.reports[0].id).toBe("project_status");
-    expect(fetchMock).toHaveBeenCalledTimes(4);
-  });
-
-  it("removes trailing slashes from the configured HTTP base URL", async () => {
-    const fetchMock = vi.fn(async (url: string) => {
-      void url;
-      return Response.json({});
-    });
-
-    vi.stubGlobal("fetch", fetchMock);
-
-    const api = new HttpReadOnlyPlatformApi("http://127.0.0.1:8080///");
-    await api.getDashboardSnapshot();
-
-    const requestedUrls = fetchMock.mock.calls.map((call) => String(call[0]));
-
-    expect(requestedUrls.every((url) => url.startsWith("http://127.0.0.1:8080/api/v1/"))).toBe(true);
-  });
-
-  it("rejects failed HTTP responses", async () => {
+describe("ReadOnlyPlatformApi", () => {
+  beforeEach(() => {
     vi.stubGlobal(
       "fetch",
-      vi.fn(async (_url: string) => new Response("server error", { status: 500 })),
+      vi.fn((input: RequestInfo | URL) => {
+        const url = String(input);
+
+        if (url.endsWith("/api/v1/health")) {
+          return Promise.resolve(jsonResponse(healthPayload));
+        }
+
+        if (url.endsWith("/api/v1/project-status")) {
+          return Promise.resolve(jsonResponse(projectStatusPayload));
+        }
+
+        if (url.endsWith("/api/v1/reports")) {
+          return Promise.resolve(jsonResponse(reportsPayload));
+        }
+
+        if (url.endsWith("/api/v1/experimental-design-matrix")) {
+          return Promise.resolve(jsonResponse(experimentalDesignPayload));
+        }
+
+        return Promise.resolve(
+          new Response(JSON.stringify({ error: "not_found" }), {
+            status: 404,
+          }),
+        );
+      }),
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("loads a complete read-only platform snapshot", async () => {
+    const api = new ReadOnlyPlatformApi("http://127.0.0.1:8080");
+    const snapshot = await api.getSnapshot();
+
+    expect(snapshot.health.service).toBe("fieldops_lab_api");
+    expect(snapshot.health.readOnly).toBe(true);
+    expect(snapshot.health.allowsArbitraryCommandExecution).toBe(false);
+    expect(snapshot.status.productCompleteness).toBe(46);
+    expect(snapshot.status.executionStatus).toBe("disabled");
+    expect(snapshot.reports).toHaveLength(1);
+    expect(snapshot.reports[0]?.title).toBe("Project status");
+    expect(snapshot.experimentalDesign.experimentCount).toBe(648);
+    expect(snapshot.warnings.join(" ")).toContain(
+      "does not prove scientific validity",
+    );
+  });
+
+  it("uses only read-only API endpoints", async () => {
+    const api = new ReadOnlyPlatformApi("http://127.0.0.1:8080");
+
+    await api.getSnapshot();
+
+    const fetchMock = globalThis.fetch as unknown as {
+      mock: { calls: Array<[RequestInfo | URL, RequestInit | undefined]> };
+    };
+
+    const requestedUrls = fetchMock.mock.calls.map((call) => String(call[0]));
+    const forbiddenWriteRoute = ["/api", "v1", "execute"].join("/");
+
+    expect(requestedUrls).toContain("http://127.0.0.1:8080/api/v1/health");
+    expect(requestedUrls).toContain(
+      "http://127.0.0.1:8080/api/v1/project-status",
+    );
+    expect(requestedUrls).toContain("http://127.0.0.1:8080/api/v1/reports");
+    expect(requestedUrls).toContain(
+      "http://127.0.0.1:8080/api/v1/experimental-design-matrix",
+    );
+    expect(
+      requestedUrls.some((url) => url.includes(forbiddenWriteRoute)),
+    ).toBe(false);
+  });
+
+  it("throws when the API returns a non-ok response", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() =>
+        Promise.resolve(
+          new Response(JSON.stringify({ error: "not_found" }), {
+            status: 404,
+          }),
+        ),
+      ),
     );
 
-    const api = new HttpReadOnlyPlatformApi("http://127.0.0.1:8080");
+    const api = new ReadOnlyPlatformApi("http://127.0.0.1:8080");
 
-    await expect(api.getDashboardSnapshot()).rejects.toThrow("API request failed");
+    await expect(api.getHealth()).rejects.toThrow("API request failed");
+  });
+
+  it("normalizes missing optional report fields conservatively", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((input: RequestInfo | URL) => {
+        const url = String(input);
+
+        if (url.endsWith("/api/v1/reports")) {
+          return Promise.resolve(
+            jsonResponse({
+              reports: [
+                {
+                  id: "scientific_validation_plan",
+                },
+              ],
+            }),
+          );
+        }
+
+        return Promise.resolve(jsonResponse(healthPayload));
+      }),
+    );
+
+    const api = new ReadOnlyPlatformApi("http://127.0.0.1:8080");
+    const reports = await api.getReports();
+
+    expect(reports[0]?.title).toBe("Scientific Validation Plan");
+    expect(reports[0]?.available).toBe(true);
+    expect(reports[0]?.qualityPassed).toBeNull();
   });
 });

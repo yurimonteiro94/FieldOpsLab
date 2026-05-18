@@ -1,37 +1,44 @@
-import type { ReportArtifact } from "../domain/platform";
+import type { PlatformReport } from "../domain/platform";
+import { formatToken } from "../domain/platform";
 
 interface ReportCardProps {
-  report: ReportArtifact;
+  report: PlatformReport;
 }
 
 export function ReportCard({ report }: ReportCardProps) {
-  const qualityText = report.passed ? "quality check passed" : "needs review";
+  const qualityText =
+    report.qualityPassed === null
+      ? "quality status not exposed"
+      : report.qualityPassed
+        ? "quality check passed"
+        : "needs review";
 
   return (
     <article className="report-card">
       <div>
-        <p className="card-title">{report.category.replace(/_/g, " ")}</p>
+        <span className="report-category">{formatToken(report.category)}</span>
         <h3>{report.title}</h3>
+        <p>{report.description}</p>
       </div>
 
       <dl>
-        <div>
-          <dt>Artifact</dt>
-          <dd>{report.path}</dd>
-        </div>
+        <dt>Artifact</dt>
+        <dd>{report.artifactPath}</dd>
 
-        {report.qualityCheckPath ? (
-          <div>
+        {report.qualityPath ? (
+          <>
             <dt>Quality check</dt>
-            <dd>{report.qualityCheckPath}</dd>
-          </div>
+            <dd>{report.qualityPath}</dd>
+          </>
         ) : null}
 
-        <div>
-          <dt>Status</dt>
-          <dd>{qualityText}</dd>
-        </div>
+        <dt>Status</dt>
+        <dd>{qualityText}</dd>
       </dl>
+
+      <span className={report.available ? "availability-ok" : "availability-warning"}>
+        {report.available ? "available" : "missing"}
+      </span>
     </article>
   );
 }

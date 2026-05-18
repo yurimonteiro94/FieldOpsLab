@@ -1,87 +1,101 @@
-import type { ReadOnlyPlatformApi } from "../domain/platform";
+import { ReportCard } from "../components/ReportCard";
+import { StatusCard } from "../components/StatusCard";
+import { formatPercent, formatToken } from "../domain/platform";
 import { useDashboardViewModel } from "../viewModels/useDashboardViewModel";
 
-interface DashboardPageProps {
-  api?: ReadOnlyPlatformApi;
+function LoadingState() {
+  return (
+    <section className="section-card">
+      <p className="eyebrow">Loading</p>
+      <h2>Loading platform data...</h2>
+      <p>The dashboard is waiting for the local read-only API.</p>
+    </section>
+  );
 }
 
-function formatStatus(value: string): string {
-  return value.split("_").join(" ");
+function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
+  return (
+    <section className="section-card error-card">
+      <p className="eyebrow">API unavailable</p>
+      <h2>Could not load platform data</h2>
+      <p>{message}</p>
+      <p>
+        Start the local API server with{" "}
+        <code>py -3 services\api\fieldops_http_server.py --host 127.0.0.1 --port 8080</code>
+        .
+      </p>
+      <button className="primary-action" onClick={onRetry} type="button">
+        Retry
+      </button>
+    </section>
+  );
 }
 
-export function DashboardPage({ api }: DashboardPageProps) {
-  const { loading, errorMessage, snapshot, reload } = useDashboardViewModel(api);
+export function DashboardPage() {
+  const viewModel = useDashboardViewModel();
 
-  if (loading) {
+  if (viewModel.loading) {
+    return <LoadingState />;
+  }
+
+  if (viewModel.error || !viewModel.snapshot) {
     return (
-      <main className="page-shell">
-        <section className="hero-card">
-          <p className="eyebrow">FieldOps Lab</p>
-          <h1>Loading platform dashboard</h1>
-          <p className="muted">Reading the current platform status.</p>
-        </section>
-      </main>
+      <ErrorState
+        message={viewModel.error ?? "Snapshot unavailable."}
+        onRetry={viewModel.reload}
+      />
     );
   }
 
-  if (errorMessage !== null || snapshot === null) {
-    return (
-      <main className="page-shell">
-        <section className="hero-card">
-          <p className="eyebrow">FieldOps Lab</p>
-          <h1>Dashboard unavailable</h1>
-          <p className="danger-text">{errorMessage ?? "The dashboard could not load platform data."}</p>
-          <button className="primary-button" type="button" onClick={reload}>
-            Try again
-          </button>
-        </section>
-      </main>
-    );
-  }
+  const { snapshot } = viewModel;
+  const mainReports = snapshot.reports.slice(0, 3);
 
   return (
-    <main className="page-shell">
+    <>
       <section className="hero-card">
         <div>
-          <p className="eyebrow">FieldOps Lab</p>
-          <h1>Dynamic TRSP and WSRP experimental platform</h1>
+          <p className="eyebrow">Dynamic TRSP and WSRP</p>
+          <h2>Experimental platform dashboard</h2>
           <p className="hero-copy">
-            Read-only dashboard for inspecting engineering status, diagnostic evidence, generated reports,
-            and pending scientific validation work.
+            Read-only view of engineering status, diagnostic evidence, generated
+            reports, and pending scientific validation work.
           </p>
         </div>
 
-        <div className="completion-panel" aria-label="Product completeness">
-          <span className="completion-number">{snapshot.productCompletenessPercent}%</span>
+        <div aria-label="Product completeness" className="completion-panel">
+          <span className="completion-number">
+            {formatPercent(snapshot.status.productCompleteness)}
+          </span>
           <span className="completion-label">overall product completeness</span>
         </div>
       </section>
 
       <section className="notice-card">
         <strong>Conservative interpretation</strong>
-        <p>{snapshot.conservativeNote}</p>
+        <p>{snapshot.status.conservativeNote}</p>
       </section>
 
-      <section className="status-grid" aria-label="Platform status">
-        <article className="status-card">
-          <span className="status-label">Engineering status</span>
-          <strong>{formatStatus(snapshot.status.engineeringStatus)}</strong>
-        </article>
-
-        <article className="status-card">
-          <span className="status-label">Scientific status</span>
-          <strong>{formatStatus(snapshot.status.scientificStatus)}</strong>
-        </article>
-
-        <article className="status-card">
-          <span className="status-label">Data source</span>
-          <strong>{formatStatus(snapshot.dataSource)}</strong>
-        </article>
-
-        <article className="status-card">
-          <span className="status-label">Execution</span>
-          <strong>{snapshot.status.executionSupported ? "enabled" : "disabled"}</strong>
-        </article>
+      <section aria-label="Platform status" className="status-grid">
+        <StatusCard
+          detail="Current structural checks are passing."
+          label="Engineering status"
+          value={formatToken(snapshot.status.engineeringStatus)}
+        />
+        <StatusCard
+          detail="Scientific evidence still needs validation."
+          label="Scientific status"
+          value={formatToken(snapshot.status.scientificStatus)}
+        />
+        <StatusCard
+          detail={`API base URL: ${snapshot.apiBaseUrl}`}
+          label="Data source"
+          value={snapshot.status.dataSource}
+        />
+        <StatusCard
+          detail="The interface is inspection-only."
+          label="Execution"
+          value={snapshot.status.executionStatus}
+        />
       </section>
 
       <section className="section-card">
@@ -90,21 +104,27 @@ export function DashboardPage({ api }: DashboardPageProps) {
             <p className="eyebrow">Metrics</p>
             <h2>Current platform snapshot</h2>
           </div>
-          {snapshot.apiBaseUrl !== undefined ? (
-            <span className="source-pill">API: {snapshot.apiBaseUrl}</span>
-          ) : (
-            <span className="source-pill">Static fallback</span>
-          )}
+          <span className="source-pill">API: {snapshot.apiBaseUrl}</span>
         </div>
 
         <div className="metric-grid">
-          {snapshot.metrics.map((item) => (
-            <article className="metric-card" key={item.label}>
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-              <p>{item.helperText}</p>
-            </article>
-          ))}
+          <article className="metric-card">
+            <span>Product completeness</span>
+            <strong>{formatPercent(snapshot.status.productCompleteness)}</strong>
+            <p>Complete application estimate.</p>
+          </article>
+
+          <article className="metric-card">
+            <span>Planned experiments</span>
+            <strong>{snapshot.experimentalDesign.experimentCount}</strong>
+            <p>Experiment count exposed by the API.</p>
+          </article>
+
+          <article className="metric-card">
+            <span>Scenario groups</span>
+            <strong>{snapshot.experimentalDesign.scenarioCount}</strong>
+            <p>Scenario count exposed by the experimental design matrix.</p>
+          </article>
         </div>
       </section>
 
@@ -117,50 +137,11 @@ export function DashboardPage({ api }: DashboardPageProps) {
         </div>
 
         <div className="report-grid">
-          {snapshot.reports.map((report) => (
-            <article className="report-card" key={report.id}>
-              <div>
-                <span className="report-category">{formatStatus(report.category)}</span>
-                <h3>{report.title}</h3>
-                <p>{report.description}</p>
-              </div>
-
-              <dl>
-                <dt>Artifact</dt>
-                <dd>{report.path}</dd>
-                {report.qualityPath !== undefined ? (
-                  <>
-                    <dt>Quality check</dt>
-                    <dd>{report.qualityPath}</dd>
-                  </>
-                ) : null}
-              </dl>
-
-              <span className={report.available ? "availability-ok" : "availability-missing"}>
-                {report.available ? "available" : "missing"}
-              </span>
-            </article>
+          {mainReports.map((report) => (
+            <ReportCard key={report.id} report={report} />
           ))}
         </div>
       </section>
-
-      <section className="section-card">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Risk control</p>
-            <h2>Evidence warnings</h2>
-          </div>
-        </div>
-
-        <div className="warning-list">
-          {snapshot.evidenceWarnings.map((warning) => (
-            <article className={`warning-card ${warning.severity}`} key={warning.id}>
-              <strong>{warning.severity}</strong>
-              <p>{warning.message}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-    </main>
+    </>
   );
 }

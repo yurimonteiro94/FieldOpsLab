@@ -1,15 +1,15 @@
 interface StatusCardProps {
-  title: string;
+  label: string;
   value: string;
-  description: string;
+  detail?: string;
 }
 
-export function StatusCard({ title, value, description }: StatusCardProps) {
+export function StatusCard({ label, value, detail }: StatusCardProps) {
   return (
     <article className="status-card">
-      <p className="card-title">{title}</p>
+      <span className="status-label">{label}</span>
       <strong>{value}</strong>
-      <p>{description}</p>
+      {detail ? <p>{detail}</p> : null}
     </article>
   );
 }

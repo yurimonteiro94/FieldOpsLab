@@ -1,68 +1,70 @@
-export type EngineeringStatus = "passed_current_structural_quality_gate";
-export type ScientificStatus = "diagnostic_only_with_methodological_warnings";
-export type PlatformDataSource = "static_fallback" | "local_http_api";
+export type PageId = "dashboard" | "reports" | "scientific-validation";
 
-export type ReportCategory =
-  | "engineering"
-  | "scientific_validation"
-  | "experimental_design"
-  | "diagnostic"
-  | "quality";
-
-export interface PlatformStatus {
-  engineeringStatus: EngineeringStatus;
-  scientificStatus: ScientificStatus;
-  structuralChecksPassed: boolean;
-  readOnly: boolean;
-  executionSupported: boolean;
-  arbitraryCommandExecutionAllowed: boolean;
+export interface PlatformRoute {
+  method: string;
+  path: string;
+  description: string;
 }
 
-export interface PlatformMetric {
-  label: string;
-  value: string;
-  helperText: string;
+export interface ApiHealth {
+  service: string;
+  status: string;
+  mode: string;
+  readOnly: boolean;
+  allowsArbitraryCommandExecution: boolean;
+  routes: PlatformRoute[];
+  contractAvailable: boolean;
+  contractPath: string;
+}
+
+export interface PlatformStatus {
+  productCompleteness: number;
+  engineeringStatus: string;
+  scientificStatus: string;
+  dataSource: string;
+  executionStatus: string;
+  conservativeNote: string;
 }
 
 export interface PlatformReport {
   id: string;
   title: string;
-  category: ReportCategory;
+  category: string;
   description: string;
-  path: string;
+  artifactPath: string;
+  qualityPath: string;
   available: boolean;
-
-  /*
-   * Compatibility fields.
-   *
-   * Some UI components still use qualityCheckPath/passed, while newer service
-   * adapters may use qualityPath. Keeping both names avoids fragile refactors
-   * while the dashboard contract is still evolving.
-   */
-  qualityPath?: string;
-  qualityCheckPath?: string;
-  passed?: boolean;
+  loaded: boolean;
+  qualityPassed: boolean | null;
 }
 
-export type ReportArtifact = PlatformReport;
-
-export interface PlatformEvidenceWarning {
-  id: string;
-  severity: "info" | "warning";
-  message: string;
+export interface ExperimentalDesignSummary {
+  experimentCount: number;
+  scenarioCount: number;
+  replicationCount: number;
+  reproducibleFromExplicitFactors: boolean;
 }
 
-export interface DashboardSnapshot {
-  productCompletenessPercent: number;
-  dataSource: PlatformDataSource;
-  apiBaseUrl?: string;
+export interface PlatformSnapshot {
+  health: ApiHealth;
   status: PlatformStatus;
-  metrics: PlatformMetric[];
   reports: PlatformReport[];
-  evidenceWarnings: PlatformEvidenceWarning[];
-  conservativeNote: string;
+  experimentalDesign: ExperimentalDesignSummary;
+  warnings: string[];
+  apiBaseUrl: string;
 }
 
-export interface ReadOnlyPlatformApi {
-  getDashboardSnapshot: () => Promise<DashboardSnapshot>;
+export interface DashboardViewState {
+  loading: boolean;
+  error: string | null;
+  snapshot: PlatformSnapshot | null;
+  reload: () => void;
+}
+
+export function formatToken(value: string): string {
+  return value.replace(/_/g, " ");
+}
+
+export function formatPercent(value: number): string {
+  return `${Math.round(value)}%`;
 }

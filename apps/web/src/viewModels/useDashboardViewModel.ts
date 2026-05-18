@@ -1,58 +1,63 @@
-import { useEffect, useMemo, useState } from "react";
-import type { DashboardSnapshot, ReadOnlyPlatformApi } from "../domain/platform";
-import { createReadOnlyPlatformApi } from "../services/readOnlyPlatformApi";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { DashboardViewState, PlatformSnapshot } from "../domain/platform";
+import {
+  ReadOnlyPlatformApi,
+  createReadOnlyPlatformApi,
+} from "../services/readOnlyPlatformApi";
 
-export interface DashboardViewModel {
+interface InternalState {
   loading: boolean;
-  errorMessage: string | null;
-  snapshot: DashboardSnapshot | null;
-  reload: () => void;
+  error: string | null;
+  snapshot: PlatformSnapshot | null;
 }
 
-export function useDashboardViewModel(api?: ReadOnlyPlatformApi): DashboardViewModel {
-  const defaultApi = useMemo(() => api ?? createReadOnlyPlatformApi(), [api]);
-  const [reloadToken, setReloadToken] = useState(0);
-  const [snapshot, setSnapshot] = useState<DashboardSnapshot | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+export function useDashboardViewModel(api?: ReadOnlyPlatformApi): DashboardViewState {
+  const client = useMemo(() => api ?? createReadOnlyPlatformApi(), [api]);
+
+  const [state, setState] = useState<InternalState>({
+    loading: true,
+    error: null,
+    snapshot: null,
+  });
+
+  const load = useCallback(() => {
+    setState((current) => ({
+      ...current,
+      loading: true,
+      error: null,
+    }));
+
+    void client
+      .getSnapshot()
+      .then((snapshot) => {
+        setState({
+          loading: false,
+          error: null,
+          snapshot,
+        });
+      })
+      .catch((error: unknown) => {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Unknown API communication error.";
+
+        setState({
+          loading: false,
+          error: message,
+          snapshot: null,
+        });
+      });
+  }, [client]);
 
   useEffect(() => {
-    let cancelled = false;
-
-    async function loadSnapshot(): Promise<void> {
-      setLoading(true);
-      setErrorMessage(null);
-
-      try {
-        const nextSnapshot = await defaultApi.getDashboardSnapshot();
-
-        if (!cancelled) {
-          setSnapshot(nextSnapshot);
-        }
-      } catch (error) {
-        if (!cancelled) {
-          const message = error instanceof Error ? error.message : "Unknown dashboard loading error.";
-          setErrorMessage(message);
-          setSnapshot(null);
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    }
-
-    void loadSnapshot();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [defaultApi, reloadToken]);
+    load();
+  }, [load]);
 
   return {
-    loading,
-    errorMessage,
-    snapshot,
-    reload: () => setReloadToken((current) => current + 1),
+    loading: state.loading,
+    error: state.error,
+    snapshot: state.snapshot,
+    reload: load,
   };
 }
