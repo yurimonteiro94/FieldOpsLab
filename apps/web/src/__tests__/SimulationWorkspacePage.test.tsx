@@ -17,19 +17,14 @@ const healthPayload = {
       path: "/api/v1/health",
     },
     {
-      description: "Return generated report catalog.",
-      method: "GET",
-      path: "/api/v1/reports",
-    },
-    {
-      description: "Return research method framing.",
-      method: "GET",
-      path: "/api/v1/research-method",
-    },
-    {
       description: "Return simulation state contract.",
       method: "GET",
       path: "/api/v1/simulation-state-contract",
+    },
+    {
+      description: "Return simulation state sample.",
+      method: "GET",
+      path: "/api/v1/simulation-state-sample",
     },
   ],
   service: "fieldops_lab_api",
@@ -39,7 +34,7 @@ const healthPayload = {
 const projectStatusPayload = {
   conservative_note: "This dashboard does not prove scientific validity.",
   summary_metrics: {
-    product_completeness: 59,
+    product_completeness: 56,
     engineering_status: "passed_current_structural_quality_gate",
     scientific_status: "diagnostic_only_with_methodological_warnings",
   },
@@ -134,7 +129,7 @@ const researchMethodPayload = {
   },
 };
 
-const simulationStateContractPayload = {
+const simulationContractPayload = {
   read_only: true,
   available: true,
   contract_path: "platform/contracts/simulation_state_contract.json",
@@ -147,18 +142,6 @@ const simulationStateContractPayload = {
     future_job_api_currently_enabled: false,
   },
   contract: {
-    scope: {
-      primary_dissertation_scope: [
-        "delay_propagation",
-        "travel_delay",
-        "service_delay",
-      ],
-      future_platform_perturbations: [
-        "new_requests",
-        "cancellations",
-        "priority_changes",
-      ],
-    },
     modes: [
       {
         id: "optimization_mode",
@@ -175,40 +158,222 @@ const simulationStateContractPayload = {
         execution_enabled: false,
       },
     ],
-    state_schema: {
-      map_entities: [
-        "technicians",
-        "tasks",
-        "depots",
-        "routes",
-        "operational_events",
+    scope: {
+      primary_dissertation_scope: [
+        "delay_propagation",
+        "travel_delay",
+        "service_delay",
       ],
+      future_platform_perturbations: [
+        "new_requests",
+        "cancellations",
+        "priority_changes",
+      ],
+    },
+    state_schema: {
+      map_entities: ["technicians", "tasks", "depots", "routes"],
       timeline: {
-        event_types: [
-          "planned_start",
-          "arrival",
-          "service_start",
-          "delay",
-          "replanning_decision",
+        events: [
+          "simulation_started",
+          "travel_delay_detected",
+          "replanning_evaluation_required",
         ],
       },
     },
     replanning_decision: {
-      decision_fields: [
+      fields: [
         "policy_id",
         "trigger_reason",
-        "computational_cost",
-        "route_stability",
-        "practical_equivalence_status",
+        "delay_minutes",
+        "projected_lateness",
       ],
     },
     future_api_endpoints: [
       {
         method: "POST",
-        path: "/api/v1/simulation-jobs",
+        path: "/api/v1/simulation-runs",
         status: "planned_not_enabled",
         execution_enabled: false,
       },
+    ],
+  },
+};
+
+const simulationSamplePayload = {
+  schema: "fieldops_lab.simulation_state_sample_endpoint",
+  read_only: true,
+  available: true,
+  execution_enabled: false,
+  write_operations_supported: false,
+  browser_triggered_execution_enabled: false,
+  arbitrary_command_execution_allowed: false,
+  artifact_path: "platform/contracts/simulation_state_sample.json",
+  simulation_state_sample: {
+    schema: "fieldops_lab.simulation_state_sample",
+    version: "0.1.0",
+    read_only: true,
+    execution_enabled: false,
+    write_operations_supported: false,
+    browser_triggered_execution_enabled: false,
+    arbitrary_command_execution_allowed: false,
+    purpose:
+      "Provide a conservative sample simulation state for future read-only map and timeline rendering.",
+    clock: {
+      simulation_id: "demo_delay_propagation_001",
+      status: "paused",
+      time_unit: "minutes",
+      start_time: 0,
+      current_time: 135,
+      end_time: 480,
+      speed_multiplier: 1,
+      can_user_advance_time: false,
+      can_user_inject_delay: false,
+    },
+    map: {
+      coordinate_system: "normalized_demo_coordinates",
+      depots: [
+        {
+          id: "depot_001",
+          label: "Main depot",
+          x: 10,
+          y: 10,
+        },
+      ],
+      technicians: [
+        {
+          id: "tech_001",
+          label: "Technician 1",
+          status: "traveling",
+          x: 47,
+          y: 52,
+          current_task_id: "task_003",
+          route_id: "route_001",
+          delay_minutes: 18,
+        },
+        {
+          id: "tech_002",
+          label: "Technician 2",
+          status: "servicing",
+          x: 72,
+          y: 31,
+          current_task_id: "task_005",
+          route_id: "route_002",
+          delay_minutes: 0,
+        },
+      ],
+      tasks: [
+        {
+          id: "task_001",
+          label: "Customer 1",
+          status: "completed",
+          x: 22,
+          y: 20,
+          planned_start: 40,
+          planned_end: 70,
+          actual_start: 42,
+          actual_end: 72,
+          priority: "normal",
+        },
+        {
+          id: "task_003",
+          label: "Customer 3",
+          status: "at_risk",
+          x: 58,
+          y: 68,
+          planned_start: 145,
+          planned_end: 180,
+          actual_start: null,
+          actual_end: null,
+          priority: "high",
+        },
+        {
+          id: "task_005",
+          label: "Customer 5",
+          status: "in_service",
+          x: 72,
+          y: 31,
+          planned_start: 120,
+          planned_end: 160,
+          actual_start: 121,
+          actual_end: null,
+          priority: "normal",
+        },
+      ],
+      routes: [
+        {
+          id: "route_001",
+          technician_id: "tech_001",
+          task_sequence: ["task_001", "task_003"],
+          status: "delayed",
+          total_delay_minutes: 18,
+        },
+      ],
+    },
+    timeline: [
+      {
+        time: 0,
+        type: "simulation_started",
+        label: "Simulation initialized",
+        affected_entity_id: "demo_delay_propagation_001",
+        delay_minutes: 0,
+      },
+      {
+        time: 135,
+        type: "travel_delay_detected",
+        label: "Travel delay detected before Task 3",
+        affected_entity_id: "tech_001",
+        delay_minutes: 18,
+      },
+      {
+        time: 135,
+        type: "replanning_evaluation_required",
+        label: "Delay threshold reached for replanning evaluation",
+        affected_entity_id: "route_001",
+        delay_minutes: 18,
+      },
+    ],
+    replanning_decision: {
+      status: "evaluation_required",
+      trigger: "travel_delay_threshold",
+      trigger_time: 135,
+      affected_route_id: "route_001",
+      affected_technician_id: "tech_001",
+      primary_delay_type: "travel_delay",
+      delay_propagation_detected: true,
+      candidate_policies: [
+        {
+          id: "no_replanning",
+          label: "No replanning",
+          execution_enabled: false,
+        },
+        {
+          id: "threshold_delay_replanning",
+          label: "Threshold delay replanning",
+          execution_enabled: false,
+        },
+      ],
+      decision_fields: [
+        "policy_id",
+        "trigger_reason",
+        "delay_minutes",
+        "projected_lateness",
+      ],
+    },
+    research_scope: {
+      primary_dissertation_scope: [
+        "delay_propagation",
+        "travel_delay",
+        "service_delay",
+      ],
+      future_platform_perturbations: [
+        "new_requests",
+        "cancellations",
+        "priority_changes",
+      ],
+    },
+    safety_notes: [
+      "This sample is static and read-only.",
+      "It must not trigger optimization, simulation execution, shell commands, solver calls, file writes, or backend jobs.",
     ],
   },
 };
@@ -249,7 +414,11 @@ function installSuccessfulFetchMock() {
       }
 
       if (url.endsWith("/api/v1/simulation-state-contract")) {
-        return Promise.resolve(jsonResponse(simulationStateContractPayload));
+        return Promise.resolve(jsonResponse(simulationContractPayload));
+      }
+
+      if (url.endsWith("/api/v1/simulation-state-sample")) {
+        return Promise.resolve(jsonResponse(simulationSamplePayload));
       }
 
       return Promise.resolve(
@@ -270,10 +439,12 @@ describe("Simulation workspace page", () => {
     vi.unstubAllGlobals();
   });
 
-  it("loads the simulation state contract without enabling browser execution", async () => {
+  it("loads the simulation state sample without enabling browser execution", async () => {
     render(<App />);
 
-    expect(await screen.findByText("Experimental platform dashboard")).not.toBeNull();
+    expect(
+      await screen.findByText("Experimental platform dashboard"),
+    ).not.toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Simulation workspace" }));
 
@@ -281,33 +452,43 @@ describe("Simulation workspace page", () => {
       await screen.findByText("Visual operation simulation foundation"),
     ).not.toBeNull();
 
+    expect(screen.getByText("Read-only contract-backed workspace")).not.toBeNull();
+    expect(screen.getByText("demo_delay_propagation_001")).not.toBeNull();
+    expect(screen.getByText("Normalized operation map")).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "Technician 1" })).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "Technician 2" })).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "Customer 3" })).not.toBeNull();
+    expect(screen.getByText("Delay propagation events")).not.toBeNull();
     expect(
-      await screen.findByText("Read-only contract-backed workspace"),
+      screen.getByText("Travel delay detected before Task 3"),
+    ).not.toBeNull();
+    expect(
+      screen.getByText("Delay threshold reached for replanning evaluation"),
+    ).not.toBeNull();
+    expect(screen.getByText("No replanning")).not.toBeNull();
+    expect(screen.getByText("Threshold delay replanning")).not.toBeNull();
+    expect(screen.getAllByText("execution disabled").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Current state is conservative.").length).toBeGreaterThan(0);
+    expect(
+      screen.getByText(/It must not trigger optimization, simulation execution/),
     ).not.toBeNull();
 
-    expect(screen.getByText("Optimization mode and simulation mode")).not.toBeNull();
-    expect(screen.getByText("Future real-time map components")).not.toBeNull();
-    expect(screen.getByText("Timeline events and delay propagation")).not.toBeNull();
-    expect(screen.getByText("Delays first, platform extensible later")).not.toBeNull();
-    expect(screen.getByText("Decision fields to preserve cost and stability evidence")).not.toBeNull();
-    expect(screen.getByText("Browser-triggered execution remains disabled")).not.toBeNull();
-    expect(screen.getByText("Planned endpoints are visible but not enabled")).not.toBeNull();
+    const fetchMock = globalThis.fetch as unknown as {
+      mock: {
+        calls: Array<[RequestInfo | URL, RequestInit | undefined]>;
+      };
+    };
 
-    expect(screen.getByText("platform/contracts/simulation_state_contract.json")).not.toBeNull();
-    expect(screen.getByText("technicians")).not.toBeNull();
-    expect(screen.getByText("replanning decision")).not.toBeNull();
-    expect(screen.getByText("computational cost")).not.toBeNull();
-    expect(screen.getByText("/api/v1/simulation-jobs")).not.toBeNull();
+    const requestedUrls = fetchMock.mock.calls.map((call) => String(call[0]));
 
-    expect(screen.getByText("Browser execution")).not.toBeNull();
-    expect(screen.getByText("Arbitrary command execution")).not.toBeNull();
-    expect(screen.getByText("Write operations")).not.toBeNull();
-    expect(screen.getByText("Future job API")).not.toBeNull();
-
+    expect(requestedUrls).toContain(
+      "http://127.0.0.1:8080/api/v1/simulation-state-contract",
+    );
+    expect(requestedUrls).toContain(
+      "http://127.0.0.1:8080/api/v1/simulation-state-sample",
+    );
     expect(
-      screen.getByText(
-        "Simulation state contract is read-only and does not enable browser-triggered execution.",
-      ),
-    ).not.toBeNull();
+      requestedUrls.some((url) => url.includes("/api/v1/simulation-runs")),
+    ).toBe(false);
   });
 });

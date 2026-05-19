@@ -8,6 +8,8 @@ export type PageId =
   | "campaign-diagnostics"
   | "simulation-workspace";
 
+export type JsonObject = Record<string, unknown>;
+
 export interface PlatformRoute {
   method: string;
   path: string;
@@ -49,7 +51,7 @@ export interface PlatformReport {
   qualityPassed: boolean | null;
 }
 
-export interface ReportResource<T = Record<string, unknown>> {
+export interface ReportResource<T = JsonObject> {
   path: string;
   exists: boolean;
   loaded: boolean;
@@ -76,9 +78,9 @@ export interface ReportDetail {
   writeOperationsSupported: boolean;
   available: boolean;
   metadata: ReportDetailMetadata;
-  artifact: ReportResource<Record<string, unknown>>;
-  markdown: ReportResource<string>;
-  qualityCheck: ReportResource<Record<string, unknown>>;
+  artifact: ReportResource;
+  markdown: ReportResource;
+  qualityCheck: ReportResource;
   conservativeNote: string;
 }
 
@@ -168,6 +170,103 @@ export interface SimulationStateContractSnapshot {
   futureEndpoints: SimulationFutureEndpoint[];
   safetyFlags: SimulationSafetyFlags;
   conservativeNote: string;
+}
+
+export interface SimulationClock {
+  simulationId: string;
+  status: string;
+  timeUnit: string;
+  startTime: number;
+  currentTime: number;
+  endTime: number;
+  speedMultiplier: number;
+  canUserAdvanceTime: boolean;
+  canUserInjectDelay: boolean;
+}
+
+export interface SimulationPoint {
+  id: string;
+  label: string;
+  x: number;
+  y: number;
+}
+
+export interface SimulationTechnician extends SimulationPoint {
+  status: string;
+  currentTaskId: string;
+  routeId: string;
+  delayMinutes: number;
+}
+
+export interface SimulationTask extends SimulationPoint {
+  status: string;
+  plannedStart: number;
+  plannedEnd: number;
+  actualStart: number | null;
+  actualEnd: number | null;
+  priority: string;
+}
+
+export interface SimulationRoute {
+  id: string;
+  technicianId: string;
+  taskSequence: string[];
+  status: string;
+  totalDelayMinutes: number;
+}
+
+export interface SimulationMapState {
+  coordinateSystem: string;
+  depots: SimulationPoint[];
+  technicians: SimulationTechnician[];
+  tasks: SimulationTask[];
+  routes: SimulationRoute[];
+}
+
+export interface SimulationTimelineEvent {
+  time: number;
+  type: string;
+  label: string;
+  affectedEntityId: string;
+  delayMinutes: number;
+}
+
+export interface SimulationCandidatePolicy {
+  id: string;
+  label: string;
+  executionEnabled: boolean;
+}
+
+export interface SimulationReplanningDecision {
+  status: string;
+  trigger: string;
+  triggerTime: number;
+  affectedRouteId: string;
+  affectedTechnicianId: string;
+  primaryDelayType: string;
+  delayPropagationDetected: boolean;
+  candidatePolicies: SimulationCandidatePolicy[];
+  decisionFields: string[];
+}
+
+export interface SimulationStateSampleSnapshot {
+  readOnly: boolean;
+  available: boolean;
+  artifactPath: string;
+  executionEnabled: boolean;
+  writeOperationsSupported: boolean;
+  browserTriggeredExecutionEnabled: boolean;
+  arbitraryCommandExecutionAllowed: boolean;
+  schema: string;
+  version: string;
+  purpose: string;
+  clock: SimulationClock;
+  map: SimulationMapState;
+  timeline: SimulationTimelineEvent[];
+  replanningDecision: SimulationReplanningDecision;
+  primaryDissertationScope: string[];
+  futurePlatformPerturbations: string[];
+  safetyNotes: string[];
 }
 
 export interface PlatformSnapshot {

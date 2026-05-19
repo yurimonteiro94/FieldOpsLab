@@ -2,6 +2,7 @@ import type {
   ApiHealth,
   ExperimentalDesignFactor,
   ExperimentalDesignSummary,
+  JsonObject,
   PlatformReport,
   PlatformRoute,
   PlatformSnapshot,
@@ -9,10 +10,20 @@ import type {
   ReportDetail,
   ReportResource,
   ResearchMethodSnapshot,
+  SimulationCandidatePolicy,
+  SimulationClock,
   SimulationFutureEndpoint,
+  SimulationMapState,
   SimulationModeSummary,
+  SimulationPoint,
+  SimulationReplanningDecision,
+  SimulationRoute,
   SimulationSafetyFlags,
   SimulationStateContractSnapshot,
+  SimulationStateSampleSnapshot,
+  SimulationTask,
+  SimulationTechnician,
+  SimulationTimelineEvent,
 } from "../domain/platform";
 
 type JsonRecord = Record<string, unknown>;
@@ -28,11 +39,7 @@ function asRecord(value: unknown): JsonRecord {
   return {};
 }
 
-function readString(
-  record: JsonRecord,
-  key: string,
-  fallback: string,
-): string {
+function readString(record: JsonRecord, key: string, fallback: string): string {
   const value = record[key];
 
   if (typeof value === "string" && value.trim().length > 0) {
@@ -71,6 +78,22 @@ function readOptionalBoolean(
   return null;
 }
 
+function readBooleanFromKeys(
+  record: JsonRecord,
+  keys: string[],
+  fallback: boolean,
+): boolean {
+  for (const key of keys) {
+    const value = record[key];
+
+    if (typeof value === "boolean") {
+      return value;
+    }
+  }
+
+  return fallback;
+}
+
 function readNumberFromKeys(
   record: JsonRecord,
   keys: string[],
@@ -95,6 +118,25 @@ function readNumberFromKeys(
   return fallback;
 }
 
+function readNullableNumberFromKeys(
+  record: JsonRecord,
+  keys: string[],
+): number | null {
+  for (const key of keys) {
+    const value = record[key];
+
+    if (value === null) {
+      return null;
+    }
+
+    if (typeof value === "number" && Number.isFinite(value)) {
+      return value;
+    }
+  }
+
+  return null;
+}
+
 function readStringFromKeys(
   record: JsonRecord,
   keys: string[],
@@ -104,22 +146,6 @@ function readStringFromKeys(
     const value = record[key];
 
     if (typeof value === "string" && value.trim().length > 0) {
-      return value;
-    }
-  }
-
-  return fallback;
-}
-
-function readBooleanFromKeys(
-  record: JsonRecord,
-  keys: string[],
-  fallback: boolean,
-): boolean {
-  for (const key of keys) {
-    const value = record[key];
-
-    if (typeof value === "boolean") {
       return value;
     }
   }
@@ -324,12 +350,11 @@ function normalizeReport(item: unknown): PlatformReport {
 
 function normalizeReports(payload: JsonRecord): PlatformReport[] {
   const reports = Array.isArray(payload.reports) ? payload.reports : [];
+
   return reports.map(normalizeReport);
 }
 
-function normalizeJsonResource(
-  value: unknown,
-): ReportResource<Record<string, unknown>> {
+function normalizeJsonResource(value: unknown): ReportResource<JsonObject> {
   const record = asRecord(value);
   const data = asRecord(record.data);
 
@@ -343,7 +368,7 @@ function normalizeJsonResource(
   };
 }
 
-function normalizeTextResource(value: unknown): ReportResource<string> {
+function normalizeTextResource(value: unknown): ReportResource {
   const record = asRecord(value);
 
   return {
@@ -793,6 +818,206 @@ function normalizeSimulationStateContract(
   };
 }
 
+function normalizePoint(record: JsonRecord): SimulationPoint {
+  return {
+    id: readString(record, "id", "point"),
+    label: readString(record, "label", readString(record, "id", "Point")),
+    x: readNumberFromKeys(record, ["x"], 0),
+    y: readNumberFromKeys(record, ["y"], 0),
+  };
+}
+
+function normalizeTechnician(record: JsonRecord): SimulationTechnician {
+  const point = normalizePoint(record);
+
+  return {
+    ...point,
+    status: readString(record, "status", "unknown"),
+    currentTaskId: readString(record, "current_task_id", ""),
+    routeId: readString(record, "route_id", ""),
+    delayMinutes: readNumberFromKeys(record, ["delay_minutes", "delayMinutes"], 0),
+  };
+}
+
+function normalizeTask(record: JsonRecord): SimulationTask {
+  const point = normalizePoint(record);
+
+  return {
+    ...point,
+    status: readString(record, "status", "pending"),
+    plannedStart: readNumberFromKeys(record, ["planned_start", "plannedStart"], 0),
+    plannedEnd: readNumberFromKeys(record, ["planned_end", "plannedEnd"], 0),
+    actualStart: readNullableNumberFromKeys(record, ["actual_start", "actualStart"]),
+    actualEnd: readNullableNumberFromKeys(record, ["actual_end", "actualEnd"]),
+    priority: readString(record, "priority", "normal"),
+  };
+}
+
+function normalizeRoute(record: JsonRecord): SimulationRoute {
+  return {
+    id: readString(record, "id", "route"),
+    technicianId: readString(record, "technician_id", ""),
+    taskSequence: readStringArray(record, "task_sequence", []),
+    status: readString(record, "status", "unknown"),
+    totalDelayMinutes: readNumberFromKeys(
+      record,
+      ["total_delay_minutes", "totalDelayMinutes"],
+      0,
+    ),
+  };
+}
+
+function normalizeClock(record: JsonRecord): SimulationClock {
+  return {
+    simulationId: readString(record, "simulation_id", "demo_simulation"),
+    status: readString(record, "status", "paused"),
+    timeUnit: readString(record, "time_unit", "minutes"),
+    startTime: readNumberFromKeys(record, ["start_time", "startTime"], 0),
+    currentTime: readNumberFromKeys(record, ["current_time", "currentTime"], 0),
+    endTime: readNumberFromKeys(record, ["end_time", "endTime"], 0),
+    speedMultiplier: readNumberFromKeys(
+      record,
+      ["speed_multiplier", "speedMultiplier"],
+      1,
+    ),
+    canUserAdvanceTime: readBooleanFromKeys(
+      record,
+      ["can_user_advance_time", "canUserAdvanceTime"],
+      false,
+    ),
+    canUserInjectDelay: readBooleanFromKeys(
+      record,
+      ["can_user_inject_delay", "canUserInjectDelay"],
+      false,
+    ),
+  };
+}
+
+function normalizeMapState(record: JsonRecord): SimulationMapState {
+  return {
+    coordinateSystem: readString(
+      record,
+      "coordinate_system",
+      "normalized_demo_coordinates",
+    ),
+    depots: readRecordArrayFromKeys(record, ["depots"]).map(normalizePoint),
+    technicians: readRecordArrayFromKeys(record, ["technicians"]).map(
+      normalizeTechnician,
+    ),
+    tasks: readRecordArrayFromKeys(record, ["tasks"]).map(normalizeTask),
+    routes: readRecordArrayFromKeys(record, ["routes"]).map(normalizeRoute),
+  };
+}
+
+function normalizeTimelineEvent(record: JsonRecord): SimulationTimelineEvent {
+  return {
+    time: readNumberFromKeys(record, ["time"], 0),
+    type: readString(record, "type", "event"),
+    label: readString(record, "label", "Simulation event"),
+    affectedEntityId: readString(record, "affected_entity_id", ""),
+    delayMinutes: readNumberFromKeys(record, ["delay_minutes", "delayMinutes"], 0),
+  };
+}
+
+function normalizeCandidatePolicy(record: JsonRecord): SimulationCandidatePolicy {
+  return {
+    id: readString(record, "id", "policy"),
+    label: readString(record, "label", readString(record, "id", "Policy")),
+    executionEnabled: readBooleanFromKeys(
+      record,
+      ["execution_enabled", "currently_enabled", "enabled"],
+      false,
+    ),
+  };
+}
+
+function normalizeReplanningDecision(
+  record: JsonRecord,
+): SimulationReplanningDecision {
+  return {
+    status: readString(record, "status", "not_required"),
+    trigger: readString(record, "trigger", "none"),
+    triggerTime: readNumberFromKeys(record, ["trigger_time", "triggerTime"], 0),
+    affectedRouteId: readString(record, "affected_route_id", ""),
+    affectedTechnicianId: readString(record, "affected_technician_id", ""),
+    primaryDelayType: readString(record, "primary_delay_type", "delay"),
+    delayPropagationDetected: readBoolean(
+      record,
+      "delay_propagation_detected",
+      false,
+    ),
+    candidatePolicies: readRecordArrayFromKeys(record, ["candidate_policies"]).map(
+      normalizeCandidatePolicy,
+    ),
+    decisionFields: readStringArray(record, "decision_fields", []),
+  };
+}
+
+function normalizeSimulationStateSample(
+  payload: JsonRecord,
+): SimulationStateSampleSnapshot {
+  const sample = asRecord(payload.simulation_state_sample ?? payload.sample ?? payload);
+  const researchScope = asRecord(sample.research_scope);
+
+  return {
+    readOnly: readBoolean(payload, "read_only", readBoolean(sample, "read_only", true)),
+    available: readBoolean(payload, "available", Object.keys(sample).length > 0),
+    artifactPath: readString(
+      payload,
+      "artifact_path",
+      "platform/contracts/simulation_state_sample.json",
+    ),
+    executionEnabled: readBoolean(
+      payload,
+      "execution_enabled",
+      readBoolean(sample, "execution_enabled", false),
+    ),
+    writeOperationsSupported: readBoolean(
+      payload,
+      "write_operations_supported",
+      readBoolean(sample, "write_operations_supported", false),
+    ),
+    browserTriggeredExecutionEnabled: readBoolean(
+      payload,
+      "browser_triggered_execution_enabled",
+      readBoolean(sample, "browser_triggered_execution_enabled", false),
+    ),
+    arbitraryCommandExecutionAllowed: readBoolean(
+      payload,
+      "arbitrary_command_execution_allowed",
+      readBoolean(sample, "arbitrary_command_execution_allowed", false),
+    ),
+    schema: readString(sample, "schema", "fieldops_lab.simulation_state_sample"),
+    version: readString(sample, "version", "0.1.0"),
+    purpose: readString(
+      sample,
+      "purpose",
+      "Provide a conservative sample simulation state for future read-only map and timeline rendering.",
+    ),
+    clock: normalizeClock(asRecord(sample.clock)),
+    map: normalizeMapState(asRecord(sample.map)),
+    timeline: readRecordArrayFromKeys(sample, ["timeline"]).map(
+      normalizeTimelineEvent,
+    ),
+    replanningDecision: normalizeReplanningDecision(
+      asRecord(sample.replanning_decision),
+    ),
+    primaryDissertationScope: readStringArray(
+      researchScope,
+      "primary_dissertation_scope",
+      ["delay_propagation", "travel_delay", "service_delay"],
+    ),
+    futurePlatformPerturbations: readStringArray(
+      researchScope,
+      "future_platform_perturbations",
+      ["new_requests", "cancellations", "priority_changes"],
+    ),
+    safetyNotes: readStringArray(sample, "safety_notes", [
+      "This sample is static and read-only.",
+    ]),
+  };
+}
+
 async function fetchJson(baseUrl: string, path: string): Promise<JsonRecord> {
   const url = new URL(path, baseUrl).toString();
 
@@ -861,6 +1086,15 @@ export class ReadOnlyPlatformApi {
     return normalizeSimulationStateContract(payload);
   }
 
+  async getSimulationStateSample(): Promise<SimulationStateSampleSnapshot> {
+    const payload = await fetchJson(
+      this.baseUrl,
+      "/api/v1/simulation-state-sample",
+    );
+
+    return normalizeSimulationStateSample(payload);
+  }
+
   async getSnapshot(): Promise<PlatformSnapshot> {
     const [health, status, reports, experimentalDesign, researchMethod] =
       await Promise.all([
@@ -892,8 +1126,6 @@ export class ReadOnlyPlatformApi {
   }
 }
 
-export function createReadOnlyPlatformApi(
-  baseUrl?: string,
-): ReadOnlyPlatformApi {
+export function createReadOnlyPlatformApi(baseUrl?: string): ReadOnlyPlatformApi {
   return new ReadOnlyPlatformApi(baseUrl);
 }
