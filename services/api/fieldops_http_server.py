@@ -373,6 +373,29 @@ def _replanning_decision_response_sample_payload() -> dict[str, Any]:
         ),
     }
 
+
+def _simulation_playback_control_contract_payload() -> dict[str, Any]:
+    payload = _read_json_file(CONTRACTS_ROOT / "simulation_playback_control_contract.json")
+    future_endpoint = payload.get("future_endpoint", {})
+    return {
+        "schema": "fieldops_lab.simulation_playback_control_contract_endpoint",
+        "version": "0.1.0",
+        "read_only": True,
+        "execution_enabled": False,
+        "write_operations_supported": False,
+        "browser_triggered_execution_enabled": False,
+        "simulation_playback_control_contract": payload,
+        "future_endpoint": future_endpoint,
+        "planned_endpoint": future_endpoint,
+        "artifact_path": "platform/contracts/simulation_playback_control_contract.json",
+        "safety_note": (
+            "This endpoint exposes the future simulation playback control contract "
+            "for inspection. It does not play, pause, step, seek, start simulation "
+            "execution, inject delays, run solvers, trigger re-planning, write files, "
+            "or mutate backend state."
+        ),
+    }
+
 def _health_payload() -> dict[str, Any]:
     return {
         "schema": "fieldops_lab.read_only_api_health",
@@ -394,6 +417,7 @@ def _health_payload() -> dict[str, Any]:
             "/api/v1/delay-injection-request-contract",
             "/api/v1/replanning-decision-response-contract",
             "/api/v1/replanning-decision-response-sample",
+            "/api/v1/simulation-playback-control-contract",
         ],
     }
 
@@ -512,6 +536,13 @@ class FieldOpsReadOnlyRequestHandler(BaseHTTPRequestHandler):
             )
             return
 
+        if path == "/api/v1/simulation-playback-control-contract":
+            self._send_json(
+                HTTPStatus.OK,
+                _simulation_playback_control_contract_payload(),
+            )
+            return
+
         self._send_error_payload(HTTPStatus.NOT_FOUND, "Endpoint not found.")
 
     def _handle_report_detail(self, path: str) -> None:
@@ -571,6 +602,7 @@ def run_self_test() -> int:
         ("/api/v1/delay-injection-request-contract", HTTPStatus.OK),
         ("/api/v1/replanning-decision-response-contract", HTTPStatus.OK),
         ("/api/v1/replanning-decision-response-sample", HTTPStatus.OK),
+        ("/api/v1/simulation-playback-control-contract", HTTPStatus.OK),
     ]
 
     try:
