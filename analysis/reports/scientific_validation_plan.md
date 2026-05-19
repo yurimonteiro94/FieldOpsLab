@@ -19,7 +19,7 @@ This plan does not prove scientific validity. It defines what must be done befor
 | Category | Field | Value |
 | --- | --- | ---: |
 | tests | analysis_script_count | 54 |
-| tests | python_test_count | 34 |
+| tests | python_test_count | 35 |
 | tests | cpp_test_source_count | 45 |
 | pipeline | pipeline_step_count | 26 |
 | pipeline | pipeline_failed_step_count | 0 |

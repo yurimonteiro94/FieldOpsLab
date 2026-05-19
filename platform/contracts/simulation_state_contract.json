@@ -1,0 +1,252 @@
+{
+  "contract": "fieldops_lab_simulation_state_contract",
+  "version": "0.1.0",
+  "status": "draft",
+  "read_only": true,
+  "purpose": "Define the initial state contract for the future FieldOps Lab visual simulation mode, including simulated time, map objects, technicians, tasks, perturbation events, and replanning decisions.",
+  "conservative_interpretation": {
+    "is_visual_simulation_implemented": false,
+    "is_real_time_map_implemented": false,
+    "allows_browser_triggered_execution": false,
+    "allows_arbitrary_command_execution": false,
+    "supports_user_delay_injection_in_ui_now": false,
+    "defines_future_safe_contract_only": true
+  },
+  "target_modes": {
+    "optimization_mode": {
+      "purpose": "Run batch experiments, policy comparisons, metrics generation, ranking, and statistical analysis from explicit input data.",
+      "current_status": "partially_supported_by_local_pipeline",
+      "requires_visual_map": false,
+      "requires_controlled_execution_backend": true
+    },
+    "simulation_mode": {
+      "purpose": "Replay or simulate a field operation over operational time, showing technicians, tasks, routes, delays, and replanning effects on a visual map and timeline.",
+      "current_status": "design_contract_only",
+      "requires_visual_map": true,
+      "requires_timeline": true,
+      "requires_user_event_injection": true,
+      "requires_controlled_execution_backend": true
+    }
+  },
+  "simulation_clock": {
+    "required_fields": [
+      "simulation_id",
+      "scenario_id",
+      "current_time",
+      "start_time",
+      "end_time",
+      "time_unit",
+      "speed_multiplier",
+      "status"
+    ],
+    "allowed_status": [
+      "not_started",
+      "running",
+      "paused",
+      "completed",
+      "failed"
+    ],
+    "time_unit": "minutes",
+    "notes": "The simulation clock must be explicit so results can be replayed, inspected, and compared across policies."
+  },
+  "map_layer": {
+    "required_objects": [
+      "depot",
+      "customer_location",
+      "technician_position",
+      "planned_route_segment",
+      "actual_route_segment",
+      "active_delay_marker",
+      "completed_task_marker"
+    ],
+    "required_coordinate_fields": [
+      "latitude",
+      "longitude"
+    ],
+    "fallback_coordinate_mode": "cartesian_xy_for_synthetic_instances",
+    "notes": "The future map may use real geographic coordinates or synthetic coordinates depending on the instance source."
+  },
+  "entities": {
+    "technician": {
+      "required_fields": [
+        "id",
+        "label",
+        "current_location",
+        "status",
+        "assigned_task_ids",
+        "route_progress",
+        "accumulated_delay",
+        "active_task_id"
+      ],
+      "allowed_status": [
+        "idle",
+        "traveling",
+        "servicing",
+        "delayed",
+        "waiting",
+        "finished"
+      ]
+    },
+    "task": {
+      "required_fields": [
+        "id",
+        "customer_id",
+        "location",
+        "service_duration",
+        "time_window",
+        "status",
+        "assigned_technician_id",
+        "planned_start",
+        "planned_finish",
+        "actual_start",
+        "actual_finish"
+      ],
+      "allowed_status": [
+        "unassigned",
+        "assigned",
+        "in_progress",
+        "completed",
+        "cancelled",
+        "delayed"
+      ]
+    },
+    "route_segment": {
+      "required_fields": [
+        "id",
+        "technician_id",
+        "from_location",
+        "to_location",
+        "planned_start",
+        "planned_finish",
+        "actual_start",
+        "actual_finish",
+        "travel_time",
+        "delay"
+      ]
+    }
+  },
+  "timeline_events": {
+    "required_fields": [
+      "id",
+      "time",
+      "event_type",
+      "entity_type",
+      "entity_id",
+      "description",
+      "source"
+    ],
+    "allowed_event_types": [
+      "simulation_started",
+      "technician_departed",
+      "technician_arrived",
+      "service_started",
+      "service_completed",
+      "travel_delay_started",
+      "travel_delay_finished",
+      "service_delay_started",
+      "service_delay_finished",
+      "replanning_triggered",
+      "replanning_applied",
+      "task_cancelled",
+      "new_request_received",
+      "priority_changed",
+      "simulation_completed"
+    ],
+    "allowed_sources": [
+      "generated_instance",
+      "batch_experiment",
+      "user_injected",
+      "policy_engine",
+      "simulation_engine"
+    ]
+  },
+  "perturbation_events": {
+    "primary_dissertation_scope": [
+      "delay_propagation",
+      "travel_delay",
+      "service_delay"
+    ],
+    "future_extension_scope": [
+      "new_request",
+      "cancellation",
+      "priority_change",
+      "technician_unavailability",
+      "reassignment_opportunity"
+    ],
+    "required_fields": [
+      "id",
+      "time",
+      "perturbation_type",
+      "target_entity_type",
+      "target_entity_id",
+      "duration",
+      "severity",
+      "source",
+      "propagation_policy"
+    ],
+    "allowed_user_injected_now": false,
+    "notes": "User-side perturbation injection is a future controlled feature. The current contract defines the shape but does not enable execution."
+  },
+  "replanning_decision": {
+    "required_fields": [
+      "id",
+      "trigger_event_id",
+      "time",
+      "policy_id",
+      "decision",
+      "affected_technician_ids",
+      "affected_task_ids",
+      "objective_delta",
+      "stability_delta",
+      "computational_time_ms"
+    ],
+    "allowed_decisions": [
+      "no_replanning",
+      "replan_current_technician",
+      "replan_subset",
+      "replan_global",
+      "manual_review_required"
+    ],
+    "notes": "The simulation must show not only the new route, but why a replanning decision was triggered and what changed."
+  },
+  "safety_requirements": {
+    "web_dashboard_must_remain_read_only_until_execution_contract_exists": true,
+    "browser_must_not_call_subprocess_or_shell": true,
+    "simulation_execution_requires_allowlisted_backend_job": true,
+    "real_company_data_requires_authentication_and_access_control": true,
+    "user_injected_events_require_validation": true,
+    "simulation_results_must_be_replayable": true
+  },
+  "minimum_future_api_endpoints": [
+    {
+      "id": "simulation_state_snapshot",
+      "method": "GET",
+      "path": "/api/v1/simulation-state/{simulation_id}",
+      "purpose": "Return a read-only snapshot of a known simulation state.",
+      "status": "planned"
+    },
+    {
+      "id": "simulation_event_log",
+      "method": "GET",
+      "path": "/api/v1/simulation-state/{simulation_id}/events",
+      "purpose": "Return the read-only event timeline for a known simulation.",
+      "status": "planned"
+    },
+    {
+      "id": "controlled_simulation_job",
+      "method": "POST",
+      "path": "/api/v1/simulation-jobs",
+      "purpose": "Future controlled execution endpoint for validated simulation jobs only. Not allowed in the current read-only phase.",
+      "status": "future_gated"
+    }
+  ],
+  "quality_requirements": [
+    "The simulation state contract must remain valid JSON.",
+    "The current contract must not claim that the visual simulation is implemented.",
+    "The current contract must not allow browser-triggered execution.",
+    "Delay propagation must be part of the primary dissertation scope.",
+    "Future perturbation types may be listed only as extension scope.",
+    "The future map layer must support both geographic and synthetic coordinates.",
+    "Replanning decisions must include computational cost and stability impact fields."
+  ]
+}
