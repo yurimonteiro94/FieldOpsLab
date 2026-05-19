@@ -1,13 +1,13 @@
 {
     "report_type": "fieldops_lab_test_inventory_report",
-    "generated_at_local": "2026-05-19T17:52:44",
+    "generated_at_local": "2026-05-19T17:58:12",
     "project_root": "C:\\Users\\yuri\\Documents\\FieldOpsLab",
     "all_required_checks_passed": true,
     "problem_count": 0,
     "warning_count": 0,
     "overview": {
         "analysis_script_count": 54,
-        "python_test_count": 33,
+        "python_test_count": 34,
         "cpp_test_source_count": 45,
         "cpp_test_support_header_count": 1,
         "script_with_direct_python_test_count": 54,
@@ -351,7 +351,7 @@
             "script_stem": "generate_project_status_report",
             "is_patch_script": false,
             "direct_python_test_count": 9,
-            "related_python_test_count": 9,
+            "related_python_test_count": 10,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -374,7 +374,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -1056,7 +1057,7 @@
             "script_stem": "verify_project_status_report",
             "is_patch_script": false,
             "direct_python_test_count": 5,
-            "related_python_test_count": 9,
+            "related_python_test_count": 10,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -1075,7 +1076,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {

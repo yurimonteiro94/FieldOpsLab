@@ -5,6 +5,7 @@ import json
 import threading
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -14,15 +15,83 @@ from typing import Any
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 
-PROJECT_STATUS_PATH = REPOSITORY_ROOT / "analysis" / "reports" / "project_status_report.json"
+PROJECT_STATUS_PATH = (
+    REPOSITORY_ROOT / "analysis" / "reports" / "project_status_report.json"
+)
 REPORTS_ROOT = REPOSITORY_ROOT / "analysis" / "reports"
-EXPERIMENTAL_DESIGN_PATH = REPOSITORY_ROOT / "analysis" / "reports" / "experimental_design_matrix.json"
-PLATFORM_CONTRACT_PATH = REPOSITORY_ROOT / "platform" / "contracts" / "fieldops_platform_contract.json"
-RESEARCH_METHOD_CONTRACT_PATH = REPOSITORY_ROOT / "platform" / "contracts" / "research_method_contract.json"
+EXPERIMENTAL_DESIGN_PATH = (
+    REPOSITORY_ROOT / "analysis" / "reports" / "experimental_design_matrix.json"
+)
+PLATFORM_CONTRACT_PATH = (
+    REPOSITORY_ROOT / "platform" / "contracts" / "fieldops_platform_contract.json"
+)
+RESEARCH_METHOD_CONTRACT_PATH = (
+    REPOSITORY_ROOT / "platform" / "contracts" / "research_method_contract.json"
+)
 RESEARCH_FRAMING_PATH = REPOSITORY_ROOT / "platform" / "research_framing.md"
 
+REPORT_DEFINITIONS: list[dict[str, str]] = [
+    {
+        "id": "project_status",
+        "title": "Project status",
+        "category": "engineering",
+        "description": "Current structural engineering status.",
+        "artifact_path": "analysis/reports/project_status_report.json",
+        "markdown_path": "analysis/reports/project_status_report.md",
+        "quality_path": "analysis/reports/project_status_quality_check.json",
+    },
+    {
+        "id": "test_inventory",
+        "title": "Test inventory",
+        "category": "engineering",
+        "description": "Current automated test inventory.",
+        "artifact_path": "analysis/reports/test_inventory_report.json",
+        "markdown_path": "analysis/reports/test_inventory_report.md",
+        "quality_path": "analysis/reports/test_inventory_quality_check.json",
+    },
+    {
+        "id": "experimental_design_matrix",
+        "title": "Experimental design matrix",
+        "category": "scientific_design",
+        "description": "Explicit experimental factors, scenarios, and planned replications.",
+        "artifact_path": "analysis/reports/experimental_design_matrix.json",
+        "markdown_path": "analysis/reports/experimental_design_matrix.md",
+        "quality_path": "analysis/reports/experimental_design_matrix_quality_check.json",
+    },
+    {
+        "id": "ranking_sensitive_scenario",
+        "title": "Ranking-sensitive scenario report",
+        "category": "diagnostic",
+        "description": "Scenarios where ranking decisions may be sensitive.",
+        "artifact_path": "analysis/reports/ranking_sensitive_scenario_report.json",
+        "markdown_path": "analysis/reports/ranking_sensitive_scenario_report.md",
+        "quality_path": "analysis/reports/ranking_sensitive_scenario_quality_check.json",
+    },
+    {
+        "id": "ranking_sensitivity_explanation",
+        "title": "Ranking sensitivity explanation",
+        "category": "diagnostic",
+        "description": "Explanation of ranking sensitivity and practical equivalence risks.",
+        "artifact_path": "analysis/reports/ranking_sensitivity_explanation_report.json",
+        "markdown_path": "analysis/reports/ranking_sensitivity_explanation_report.md",
+        "quality_path": "analysis/reports/ranking_sensitivity_explanation_quality_check.json",
+    },
+    {
+        "id": "scientific_validation_plan",
+        "title": "Scientific validation plan",
+        "category": "scientific_validation",
+        "description": "Planned validation actions and methodological warnings.",
+        "artifact_path": "analysis/reports/scientific_validation_plan.json",
+        "markdown_path": "analysis/reports/scientific_validation_plan.md",
+        "quality_path": "analysis/reports/scientific_validation_plan_quality_check.json",
+    },
+]
 
-def read_json_file(path: Path, fallback: dict[str, Any] | None = None) -> dict[str, Any]:
+
+def read_json_file(
+    path: Path,
+    fallback: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     if not path.exists():
         return fallback or {}
 
@@ -46,62 +115,80 @@ def path_exists_as_bool(path: Path) -> bool:
     return path.exists() and path.is_file()
 
 
-def known_reports() -> list[dict[str, Any]]:
-    report_definitions = [
-        {
-            "id": "project_status",
-            "title": "Project status",
-            "category": "engineering",
-            "description": "Current structural engineering status.",
-            "artifact_path": "analysis/reports/project_status_report.json",
-            "quality_path": "analysis/reports/project_status_quality_check.json",
-        },
-        {
-            "id": "test_inventory",
-            "title": "Test inventory",
-            "category": "engineering",
-            "description": "Current automated test inventory.",
-            "artifact_path": "analysis/reports/test_inventory_report.json",
-            "quality_path": "analysis/reports/test_inventory_quality_check.json",
-        },
-        {
-            "id": "experimental_design_matrix",
-            "title": "Experimental design matrix",
-            "category": "scientific_design",
-            "description": "Explicit experimental factors, scenarios, and planned replications.",
-            "artifact_path": "analysis/reports/experimental_design_matrix.json",
-            "quality_path": "analysis/reports/experimental_design_matrix_quality_check.json",
-        },
-        {
-            "id": "ranking_sensitive_scenario",
-            "title": "Ranking-sensitive scenario report",
-            "category": "diagnostic",
-            "description": "Scenarios where ranking decisions may be sensitive.",
-            "artifact_path": "analysis/reports/ranking_sensitive_scenario_report.json",
-            "quality_path": "analysis/reports/ranking_sensitive_scenario_quality_check.json",
-        },
-        {
-            "id": "ranking_sensitivity_explanation",
-            "title": "Ranking sensitivity explanation",
-            "category": "diagnostic",
-            "description": "Explanation of ranking sensitivity and practical equivalence risks.",
-            "artifact_path": "analysis/reports/ranking_sensitivity_explanation_report.json",
-            "quality_path": "analysis/reports/ranking_sensitivity_explanation_quality_check.json",
-        },
-        {
-            "id": "scientific_validation_plan",
-            "title": "Scientific validation plan",
-            "category": "scientific_validation",
-            "description": "Planned validation actions and methodological warnings.",
-            "artifact_path": "analysis/reports/scientific_validation_plan.json",
-            "quality_path": "analysis/reports/scientific_validation_plan_quality_check.json",
-        },
-    ]
+def quality_passed_from_payload(payload: dict[str, Any]) -> bool | None:
+    for key in [
+        "passed",
+        "all_required_checks_passed",
+        "quality_gate_passed",
+        "quality_check_passed",
+    ]:
+        value = payload.get(key)
 
+        if isinstance(value, bool):
+            return value
+
+    return None
+
+
+def read_json_resource(relative_path: str) -> dict[str, Any]:
+    path = REPOSITORY_ROOT / relative_path
+
+    if not path_exists_as_bool(path):
+        return {
+            "path": relative_path,
+            "exists": False,
+            "loaded": False,
+            "data": None,
+            "error": "missing_file",
+        }
+
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        return {
+            "path": relative_path,
+            "exists": True,
+            "loaded": False,
+            "data": None,
+            "error": f"invalid_json: {error}",
+        }
+
+    return {
+        "path": relative_path,
+        "exists": True,
+        "loaded": isinstance(payload, dict),
+        "data": payload if isinstance(payload, dict) else None,
+        "error": None if isinstance(payload, dict) else "json_root_is_not_object",
+    }
+
+
+def read_text_resource(relative_path: str) -> dict[str, Any]:
+    path = REPOSITORY_ROOT / relative_path
+
+    if not path_exists_as_bool(path):
+        return {
+            "path": relative_path,
+            "exists": False,
+            "loaded": False,
+            "text": "",
+            "error": "missing_file",
+        }
+
+    return {
+        "path": relative_path,
+        "exists": True,
+        "loaded": True,
+        "text": path.read_text(encoding="utf-8"),
+        "error": None,
+    }
+
+
+def known_reports() -> list[dict[str, Any]]:
     reports: list[dict[str, Any]] = []
 
-    for item in report_definitions:
+    for item in REPORT_DEFINITIONS:
         artifact_path = REPOSITORY_ROOT / item["artifact_path"]
+        markdown_path = REPOSITORY_ROOT / item["markdown_path"]
         quality_path = REPOSITORY_ROOT / item["quality_path"]
         quality_payload = read_json_file(quality_path)
 
@@ -110,12 +197,21 @@ def known_reports() -> list[dict[str, Any]]:
                 **item,
                 "available": path_exists_as_bool(artifact_path),
                 "loaded": path_exists_as_bool(artifact_path),
+                "markdown_available": path_exists_as_bool(markdown_path),
                 "quality_available": path_exists_as_bool(quality_path),
-                "quality_passed": quality_payload.get("passed"),
+                "quality_passed": quality_passed_from_payload(quality_payload),
             }
         )
 
     return reports
+
+
+def report_definition_by_id(report_id: str) -> dict[str, str] | None:
+    for item in REPORT_DEFINITIONS:
+        if item["id"] == report_id:
+            return item
+
+    return None
 
 
 def routes() -> list[dict[str, str]]:
@@ -134,6 +230,11 @@ def routes() -> list[dict[str, str]]:
             "method": "GET",
             "path": "/api/v1/reports",
             "description": "Return available generated reports and quality checks.",
+        },
+        {
+            "method": "GET",
+            "path": "/api/v1/reports/{id}",
+            "description": "Return one known generated report by its safe report id.",
         },
         {
             "method": "GET",
@@ -192,7 +293,7 @@ def project_status_payload() -> dict[str, Any]:
         "available": False,
         "read_only": True,
         "summary_metrics": {
-            "product_completeness": 50,
+            "product_completeness": 51,
             "engineering_status": "report_unavailable",
             "scientific_status": "diagnostic_only_with_methodological_warnings",
         },
@@ -223,8 +324,53 @@ def reports_payload() -> dict[str, Any]:
     return {
         "read_only": True,
         "execution_supported": False,
+        "write_operations_supported": False,
         "reports_root": "analysis/reports",
         "reports": known_reports(),
+    }
+
+
+def report_detail_payload(report_id: str) -> tuple[int, dict[str, Any]]:
+    report_definition = report_definition_by_id(report_id)
+
+    if report_definition is None:
+        return HTTPStatus.NOT_FOUND, {
+            "error": "report_not_found",
+            "read_only": True,
+            "available": False,
+            "id": report_id,
+            "known_report_ids": [item["id"] for item in REPORT_DEFINITIONS],
+        }
+
+    artifact = read_json_resource(report_definition["artifact_path"])
+    markdown = read_text_resource(report_definition["markdown_path"])
+    quality_check = read_json_resource(report_definition["quality_path"])
+
+    return HTTPStatus.OK, {
+        "report": "report_detail",
+        "id": report_definition["id"],
+        "title": report_definition["title"],
+        "category": report_definition["category"],
+        "description": report_definition["description"],
+        "read_only": True,
+        "execution_supported": False,
+        "write_operations_supported": False,
+        "available": artifact["loaded"],
+        "metadata": {
+            **report_definition,
+            "quality_passed": quality_passed_from_payload(
+                quality_check["data"]
+                if isinstance(quality_check["data"], dict)
+                else {}
+            ),
+        },
+        "artifact": artifact,
+        "markdown": markdown,
+        "quality_check": quality_check,
+        "conservative_note": (
+            "This endpoint exposes generated report artifacts for inspection only. "
+            "It does not execute experiments, solvers, scripts, or commands."
+        ),
     }
 
 
@@ -249,19 +395,37 @@ def research_method_payload() -> dict[str, Any]:
 
 
 def route_payload(path: str) -> tuple[int, dict[str, Any]]:
-    if path == "/api/v1/health":
+    normalized_path = path.rstrip("/") or "/"
+
+    if normalized_path == "/api/v1/health":
         return HTTPStatus.OK, health_payload()
 
-    if path == "/api/v1/project-status":
+    if normalized_path == "/api/v1/project-status":
         return HTTPStatus.OK, project_status_payload()
 
-    if path == "/api/v1/reports":
+    if normalized_path == "/api/v1/reports":
         return HTTPStatus.OK, reports_payload()
 
-    if path == "/api/v1/experimental-design-matrix":
+    if normalized_path.startswith("/api/v1/reports/"):
+        report_id = urllib.parse.unquote(
+            normalized_path.removeprefix("/api/v1/reports/")
+        )
+
+        if not report_id or "/" in report_id:
+            return HTTPStatus.NOT_FOUND, {
+                "error": "report_not_found",
+                "read_only": True,
+                "available": False,
+                "id": report_id,
+                "known_report_ids": [item["id"] for item in REPORT_DEFINITIONS],
+            }
+
+        return report_detail_payload(report_id)
+
+    if normalized_path == "/api/v1/experimental-design-matrix":
         return HTTPStatus.OK, experimental_design_payload()
 
-    if path == "/api/v1/research-method":
+    if normalized_path == "/api/v1/research-method":
         return HTTPStatus.OK, research_method_payload()
 
     return HTTPStatus.NOT_FOUND, {
@@ -279,7 +443,6 @@ class FieldOpsRequestHandler(BaseHTTPRequestHandler):
 
     def send_json(self, status_code: int, payload: dict[str, Any]) -> None:
         body = json.dumps(payload, indent=2, sort_keys=True).encode("utf-8")
-
         self.send_response(status_code)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
@@ -359,7 +522,6 @@ def run_self_test() -> int:
     host = "127.0.0.1"
     server = create_server(host, 0)
     port = int(server.server_address[1])
-
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
 
@@ -369,6 +531,7 @@ def run_self_test() -> int:
             "/api/v1/health",
             "/api/v1/project-status",
             "/api/v1/reports",
+            "/api/v1/reports/project_status",
             "/api/v1/experimental-design-matrix",
             "/api/v1/research-method",
         ]
@@ -376,10 +539,31 @@ def run_self_test() -> int:
         for path in expected_paths:
             status, payload = read_url_json(base_url + path)
             print(path, status)
+
             if status != HTTPStatus.OK:
                 raise RuntimeError(f"Expected HTTP 200 for {path}, got {status}")
+
             if not payload.get("read_only", True):
                 raise RuntimeError(f"Endpoint {path} did not preserve read-only contract")
+
+        detail_status, detail_payload = read_url_json(
+            base_url + "/api/v1/reports/project_status"
+        )
+
+        if detail_status != HTTPStatus.OK:
+            raise RuntimeError("Report detail endpoint is unavailable")
+
+        if detail_payload.get("id") != "project_status":
+            raise RuntimeError("Report detail endpoint returned an unexpected id")
+
+        unknown_report_status = read_url_status_for_method(
+            base_url + "/api/v1/reports/unknown_report",
+            "GET",
+        )
+        print("GET /api/v1/reports/unknown_report", unknown_report_status)
+
+        if unknown_report_status != HTTPStatus.NOT_FOUND:
+            raise RuntimeError("Unknown report detail should return 404")
 
         post_status = read_url_status_for_method(base_url + "/api/v1/health", "POST")
         print("POST /api/v1/health", post_status)
@@ -387,7 +571,9 @@ def run_self_test() -> int:
         if post_status != HTTPStatus.METHOD_NOT_ALLOWED:
             raise RuntimeError("POST request should be rejected with 405")
 
-        research_status, research_payload = read_url_json(base_url + "/api/v1/research-method")
+        research_status, research_payload = read_url_json(
+            base_url + "/api/v1/research-method"
+        )
 
         if research_status != HTTPStatus.OK:
             raise RuntimeError("Research method endpoint is unavailable")
@@ -418,9 +604,7 @@ def main() -> None:
     if args.self_test:
         raise SystemExit(run_self_test())
 
-
     server = create_server(args.host, args.port)
-
     print(f"FieldOps Lab read-only API listening on http://{args.host}:{args.port}")
     print("Allowed methods: GET, HEAD, OPTIONS")
     print("Execution endpoints are intentionally disabled.")
