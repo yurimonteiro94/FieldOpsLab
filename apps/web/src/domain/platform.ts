@@ -2,6 +2,7 @@ export type PageId =
   | "dashboard"
   | "reports"
   | "experimental-design"
+  | "api-safety"
   | "scientific-validation"
   | "research-method";
 

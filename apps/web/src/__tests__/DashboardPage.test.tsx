@@ -17,6 +17,16 @@ const healthPayload = {
       method: "GET",
       path: "/api/v1/health",
     },
+    {
+      description: "Return generated report catalog.",
+      method: "GET",
+      path: "/api/v1/reports",
+    },
+    {
+      description: "Return research method framing.",
+      method: "GET",
+      path: "/api/v1/research-method",
+    },
   ],
   service: "fieldops_lab_api",
   status: "ok",
@@ -240,8 +250,27 @@ describe("App dashboard", () => {
     expect(await screen.findByText("Experimental design matrix")).not.toBeNull();
     expect(screen.getByText("Current experiment structure")).not.toBeNull();
     expect(screen.getByText("Delay intensity")).not.toBeNull();
-    expect(screen.getByText("Delay severity level used in controlled scenarios.")).not.toBeNull();
+    expect(
+      screen.getByText("Delay severity level used in controlled scenarios."),
+    ).not.toBeNull();
     expect(screen.getByText("Delays")).not.toBeNull();
+  });
+
+  it("navigates to the API safety page", async () => {
+    render(<App />);
+
+    expect(
+      await screen.findByText("Experimental platform dashboard"),
+    ).not.toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "API safety" }));
+
+    expect(await screen.findByText("Read-only API boundary")).not.toBeNull();
+    expect(screen.getByText("Execution is intentionally unavailable")).not.toBeNull();
+    expect(screen.getByText("/api/v1/health")).not.toBeNull();
+    expect(screen.getByText("/api/v1/research-method")).not.toBeNull();
+    expect(screen.getByText("GET-only")).not.toBeNull();
+    expect(screen.getByText("No POST execution panel")).not.toBeNull();
   });
 
   it("navigates to the research method page", async () => {

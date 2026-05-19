@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Layout } from "./components/Layout";
 import type { PageId } from "./domain/platform";
+import { ApiSafetyPage } from "./pages/ApiSafetyPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { ExperimentalDesignPage } from "./pages/ExperimentalDesignPage";
 import { ReportsPage } from "./pages/ReportsPage";
@@ -15,6 +16,10 @@ function renderPage(page: PageId) {
 
   if (page === "experimental-design") {
     return <ExperimentalDesignPage />;
+  }
+
+  if (page === "api-safety") {
+    return <ApiSafetyPage />;
   }
 
   if (page === "scientific-validation") {

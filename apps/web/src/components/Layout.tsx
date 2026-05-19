@@ -22,6 +22,10 @@ const navItems: Array<{ id: PageId; label: string }> = [
     label: "Experimental design",
   },
   {
+    id: "api-safety",
+    label: "API safety",
+  },
+  {
     id: "scientific-validation",
     label: "Scientific validation",
   },
@@ -40,8 +44,8 @@ export function Layout({ activePage, onNavigate, children }: LayoutProps) {
           <h1>Research platform</h1>
           <p className="sidebar-copy">
             Read-only local interface for inspecting platform status, generated
-            artifacts, research framing, experimental design, and scientific
-            validation risks.
+            artifacts, research framing, experimental design, API safety, and
+            scientific validation risks.
           </p>
 
           <nav className="nav-list" aria-label="FieldOps Lab pages">
