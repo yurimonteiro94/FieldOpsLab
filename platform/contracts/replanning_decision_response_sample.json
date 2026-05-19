@@ -1,0 +1,115 @@
+{
+  "schema": "fieldops_lab.replanning_decision_response_sample",
+  "version": "0.1.0",
+  "read_only": true,
+  "available": true,
+  "execution_enabled": false,
+  "write_operations_supported": false,
+  "browser_triggered_execution_enabled": false,
+  "contract_reference": "platform/contracts/replanning_decision_response_contract.json",
+  "sample_id": "demo_replanning_decision_response_001",
+  "sample_status": "planned_not_executed",
+  "scope": {
+    "primary_dissertation_scope": "delay_propagation",
+    "primary_perturbation_type": "service_delay",
+    "secondary_supported_future_perturbations": [
+      "travel_delay",
+      "new_request",
+      "cancellation",
+      "priority_change"
+    ],
+    "scope_note": "This sample keeps the dissertation scope centered on delays, especially delay propagation, while preserving an extensible response shape for future perturbation types."
+  },
+  "input_references": {
+    "simulation_state_sample_id": "demo_delay_propagation_001",
+    "delay_injection_request_contract": "platform/contracts/delay_injection_request_contract.json",
+    "delay_injection_request_id": "planned_delay_request_demo_001",
+    "replanning_policy_id": "threshold_delay_replanning_policy",
+    "baseline_policy_id": "no_replanning_policy",
+    "baseline_solution_id": "baseline_no_replanning_solution_demo_001",
+    "candidate_solution_id": "candidate_threshold_delay_solution_demo_001"
+  },
+  "decision_summary": {
+    "decision_id": "planned_decision_demo_001",
+    "decision_status": "not_executed_by_this_sample",
+    "selected_policy_id": "threshold_delay_replanning_policy",
+    "selected_policy_label": "Threshold delay re-planning policy",
+    "decision_type": "illustrative_contract_sample",
+    "decision_enabled": false,
+    "execution_status": "disabled",
+    "recommendation": "manual_review_required_before_any_operational_use",
+    "reason": "The sample illustrates how a future validated backend response may compare no re-planning against a threshold-based delay re-planning policy. It does not execute solvers, mutate schedules, or claim operational validity."
+  },
+  "feasibility": {
+    "baseline_is_feasible": true,
+    "candidate_is_feasible": true,
+    "violated_constraints": [],
+    "infeasibility_reason": null,
+    "feasibility_note": "Both baseline and candidate are marked feasible only for this static sample."
+  },
+  "performance_delta": {
+    "objective_delta": -18.5,
+    "total_delay_delta_minutes": -35.0,
+    "lateness_delta_minutes": -22.0,
+    "missed_task_delta": 0,
+    "overtime_delta_minutes": -12.0,
+    "interpretation": "Negative deltas mean the candidate illustrative response improves the metric relative to the baseline sample."
+  },
+  "stability_delta": {
+    "changed_assignments_count": 1,
+    "changed_sequence_count": 2,
+    "affected_technicians_count": 2,
+    "stability_score": 0.78,
+    "interpretation": "The sample shows a moderate schedule change. This is useful later because a better objective value may still be undesirable if it creates excessive operational instability."
+  },
+  "computational_cost": {
+    "solver_time_ms": 0,
+    "wall_time_ms": 0,
+    "iteration_count": 0,
+    "execution_engine": "none",
+    "cost_status": "not_measured",
+    "interpretation": "No computation was executed. These fields exist only to reserve the future response shape."
+  },
+  "delay_propagation": {
+    "injected_delay_minutes": 25.0,
+    "propagated_delay_minutes_baseline": 48.0,
+    "propagated_delay_minutes_candidate": 13.0,
+    "recovered_delay_minutes": 35.0,
+    "affected_tasks_count_baseline": 4,
+    "affected_tasks_count_candidate": 2,
+    "critical_downstream_tasks": [
+      "task_customer_3",
+      "task_customer_4"
+    ],
+    "interpretation": "The sample illustrates the central research concern: how a local delay propagates through the remaining route and how a future re-planning policy may reduce that propagation."
+  },
+  "tradeoff_summary": {
+    "dominant_benefit": "lower_delay_propagation",
+    "dominant_risk": "schedule_instability",
+    "policy_comparison_ready": true,
+    "statistical_claim_ready": false,
+    "decision_rule_ready": false,
+    "summary": "The illustrative candidate reduces propagated delay, but it changes assignments and sequences. A real recommendation would require validated backend execution and repeated experimental comparison."
+  },
+  "explanation": {
+    "selected_policy_reason": "The threshold policy is selected in the sample because the injected delay exceeds the planned trigger threshold.",
+    "why_not_no_replanning": "No re-planning is shown as worse in propagated delay for this illustrative sample.",
+    "why_not_operationally_valid_yet": "The sample is static, read-only, and not produced by a validated backend execution pipeline.",
+    "conservative_warning": "Do not use this sample as an operational recommendation. It is only a UI and contract integration artifact."
+  },
+  "safety_requirements": {
+    "no_browser_solver_execution": true,
+    "no_file_write_from_browser": true,
+    "no_schedule_mutation": true,
+    "no_operational_claim_without_backend_result": true,
+    "no_scientific_claim_from_single_sample": true
+  },
+  "quality_requirements": [
+    "The sample must remain read-only.",
+    "The sample must explicitly state that no solver, optimization engine, simulation engine, or backend job was executed.",
+    "The sample must include feasibility, performance, stability, computational cost, and delay propagation sections.",
+    "The sample must keep delays, especially delay propagation, as the narrow dissertation focus.",
+    "The sample must support later UI rendering without enabling execution."
+  ],
+  "conservative_note": "This file is a static read-only sample of a future re-planning decision response. It does not execute re-planning, does not call a solver, does not mutate schedules, does not write files, and does not provide an operational recommendation."
+}
