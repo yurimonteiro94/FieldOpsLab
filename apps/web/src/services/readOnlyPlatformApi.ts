@@ -6,6 +6,8 @@ import type {
   PlatformRoute,
   PlatformSnapshot,
   PlatformStatus,
+  ReportDetail,
+  ReportResource,
   ResearchMethodSnapshot,
 } from "../domain/platform";
 
@@ -283,9 +285,13 @@ function normalizeReport(item: unknown): PlatformReport {
         "path",
         "report_path",
         "json_path",
-        "markdown_path",
       ],
       "analysis/reports",
+    ),
+    markdownPath: readStringFromKeys(
+      record,
+      ["markdownPath", "markdown_path"],
+      "",
     ),
     qualityPath: readStringFromKeys(
       record,
@@ -303,6 +309,8 @@ function normalizeReport(item: unknown): PlatformReport {
       readBoolean(record, "exists", true),
     ),
     loaded: readBoolean(record, "loaded", true),
+    markdownAvailable: readBoolean(record, "markdown_available", false),
+    qualityAvailable: readBoolean(record, "quality_available", false),
     qualityPassed: readOptionalBoolean(record, [
       "qualityPassed",
       "quality_passed",
@@ -315,6 +323,84 @@ function normalizeReports(payload: JsonRecord): PlatformReport[] {
   const reports = Array.isArray(payload.reports) ? payload.reports : [];
 
   return reports.map(normalizeReport);
+}
+
+function normalizeJsonResource(
+  value: unknown,
+): ReportResource<Record<string, unknown>> {
+  const record = asRecord(value);
+  const data = asRecord(record.data);
+
+  return {
+    path: readString(record, "path", ""),
+    exists: readBoolean(record, "exists", false),
+    loaded: readBoolean(record, "loaded", false),
+    data: Object.keys(data).length > 0 ? data : null,
+    text: "",
+    error: readString(record, "error", ""),
+  };
+}
+
+function normalizeTextResource(value: unknown): ReportResource<never> {
+  const record = asRecord(value);
+
+  return {
+    path: readString(record, "path", ""),
+    exists: readBoolean(record, "exists", false),
+    loaded: readBoolean(record, "loaded", false),
+    data: null,
+    text: readString(record, "text", ""),
+    error: readString(record, "error", ""),
+  };
+}
+
+function normalizeReportDetail(payload: JsonRecord): ReportDetail {
+  const metadata = asRecord(payload.metadata);
+
+  return {
+    report: readString(payload, "report", "report_detail"),
+    id: readString(payload, "id", "unknown_report"),
+    title: readString(payload, "title", "Unknown report"),
+    category: readString(payload, "category", "report"),
+    description: readString(payload, "description", "Report detail."),
+    readOnly: readBoolean(payload, "read_only", true),
+    executionSupported: readBoolean(payload, "execution_supported", false),
+    writeOperationsSupported: readBoolean(
+      payload,
+      "write_operations_supported",
+      false,
+    ),
+    available: readBoolean(payload, "available", false),
+    metadata: {
+      artifactPath: readStringFromKeys(
+        metadata,
+        ["artifact_path", "artifactPath"],
+        "",
+      ),
+      markdownPath: readStringFromKeys(
+        metadata,
+        ["markdown_path", "markdownPath"],
+        "",
+      ),
+      qualityPath: readStringFromKeys(
+        metadata,
+        ["quality_path", "qualityPath"],
+        "",
+      ),
+      qualityPassed: readOptionalBoolean(metadata, [
+        "quality_passed",
+        "qualityPassed",
+      ]),
+    },
+    artifact: normalizeJsonResource(payload.artifact),
+    markdown: normalizeTextResource(payload.markdown),
+    qualityCheck: normalizeJsonResource(payload.quality_check),
+    conservativeNote: readString(
+      payload,
+      "conservative_note",
+      "Report detail is available for inspection only.",
+    ),
+  };
 }
 
 function normalizeDesignFactor(
@@ -551,6 +637,13 @@ export class ReadOnlyPlatformApi {
     const payload = await fetchJson(this.baseUrl, "/api/v1/reports");
 
     return normalizeReports(payload);
+  }
+
+  async getReportDetail(reportId: string): Promise<ReportDetail> {
+    const safeReportId = encodeURIComponent(reportId);
+    const payload = await fetchJson(this.baseUrl, `/api/v1/reports/${safeReportId}`);
+
+    return normalizeReportDetail(payload);
   }
 
   async getExperimentalDesign(): Promise<ExperimentalDesignSummary> {

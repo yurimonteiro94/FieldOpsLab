@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import App from "../App";
@@ -21,6 +21,11 @@ const healthPayload = {
       description: "Return generated report catalog.",
       method: "GET",
       path: "/api/v1/reports",
+    },
+    {
+      description: "Return one known generated report by its safe report id.",
+      method: "GET",
+      path: "/api/v1/reports/{id}",
     },
     {
       description: "Return research method framing.",
@@ -51,12 +56,63 @@ const reportsPayload = {
       category: "engineering",
       description: "Current structural engineering status.",
       artifact_path: "analysis/reports/project_status_report.json",
+      markdown_path: "analysis/reports/project_status_report.md",
       quality_path: "analysis/reports/project_status_quality_check.json",
       available: true,
       loaded: true,
+      markdown_available: true,
+      quality_available: true,
       quality_passed: true,
     },
   ],
+};
+
+const reportDetailPayload = {
+  report: "report_detail",
+  id: "project_status",
+  title: "Project status",
+  category: "engineering",
+  description: "Current structural engineering status.",
+  read_only: true,
+  execution_supported: false,
+  write_operations_supported: false,
+  available: true,
+  metadata: {
+    artifact_path: "analysis/reports/project_status_report.json",
+    markdown_path: "analysis/reports/project_status_report.md",
+    quality_path: "analysis/reports/project_status_quality_check.json",
+    quality_passed: true,
+  },
+  artifact: {
+    path: "analysis/reports/project_status_report.json",
+    exists: true,
+    loaded: true,
+    data: {
+      report: "project_status",
+      summary_metrics: {
+        product_completeness: 46,
+      },
+    },
+    error: null,
+  },
+  markdown: {
+    path: "analysis/reports/project_status_report.md",
+    exists: true,
+    loaded: true,
+    text: "# Project status\n\nGenerated report.",
+    error: null,
+  },
+  quality_check: {
+    path: "analysis/reports/project_status_quality_check.json",
+    exists: true,
+    loaded: true,
+    data: {
+      passed: true,
+    },
+    error: null,
+  },
+  conservative_note:
+    "This endpoint exposes generated report artifacts for inspection only. It does not execute experiments, solvers, scripts, or commands.",
 };
 
 const experimentalDesignPayload = {
@@ -175,6 +231,10 @@ function installSuccessfulFetchMock() {
         return Promise.resolve(jsonResponse(reportsPayload));
       }
 
+      if (url.endsWith("/api/v1/reports/project_status")) {
+        return Promise.resolve(jsonResponse(reportDetailPayload));
+      }
+
       if (url.endsWith("/api/v1/experimental-design-matrix")) {
         return Promise.resolve(jsonResponse(experimentalDesignPayload));
       }
@@ -214,7 +274,7 @@ describe("App dashboard", () => {
     expect(screen.getByText("disabled")).not.toBeNull();
   });
 
-  it("navigates to report catalog and scientific validation pages", async () => {
+  it("navigates to report catalog and loads report details", async () => {
     render(<App />);
 
     expect(
@@ -225,6 +285,27 @@ describe("App dashboard", () => {
 
     expect(await screen.findByText("Report catalog")).not.toBeNull();
     expect(screen.getByText("1 reports exposed")).not.toBeNull();
+
+    await waitFor(() => {
+      expect(screen.getByText(/Generated report\./)).not.toBeNull();
+    });
+
+    expect(screen.queryByText("Selected report unavailable")).toBeNull();
+    expect(
+      screen.getByText(
+        "This endpoint exposes generated report artifacts for inspection only. It does not execute experiments, solvers, scripts, or commands.",
+      ),
+    ).not.toBeNull();
+    expect(screen.getByText("Top-level artifact fields")).not.toBeNull();
+    expect(screen.getByText("report, summary_metrics")).not.toBeNull();
+  });
+
+  it("navigates to scientific validation page", async () => {
+    render(<App />);
+
+    expect(
+      await screen.findByText("Experimental platform dashboard"),
+    ).not.toBeNull();
 
     fireEvent.click(
       screen.getByRole("button", { name: "Scientific validation" }),
@@ -268,6 +349,7 @@ describe("App dashboard", () => {
     expect(await screen.findByText("Read-only API boundary")).not.toBeNull();
     expect(screen.getByText("Execution is intentionally unavailable")).not.toBeNull();
     expect(screen.getByText("/api/v1/health")).not.toBeNull();
+    expect(screen.getByText("/api/v1/reports/{id}")).not.toBeNull();
     expect(screen.getByText("/api/v1/research-method")).not.toBeNull();
     expect(screen.getByText("GET-only")).not.toBeNull();
     expect(screen.getByText("No POST execution panel")).not.toBeNull();

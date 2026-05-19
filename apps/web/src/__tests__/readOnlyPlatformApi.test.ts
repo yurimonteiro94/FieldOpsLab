@@ -16,6 +16,11 @@ const healthPayload = {
       method: "GET",
       path: "/api/v1/health",
     },
+    {
+      description: "Return one known generated report by its safe report id.",
+      method: "GET",
+      path: "/api/v1/reports/{id}",
+    },
   ],
   service: "fieldops_lab_api",
   status: "ok",
@@ -41,12 +46,63 @@ const reportsPayload = {
       category: "engineering",
       description: "Current structural engineering status.",
       artifact_path: "analysis/reports/project_status_report.json",
+      markdown_path: "analysis/reports/project_status_report.md",
       quality_path: "analysis/reports/project_status_quality_check.json",
       available: true,
       loaded: true,
+      markdown_available: true,
+      quality_available: true,
       quality_passed: true,
     },
   ],
+};
+
+const reportDetailPayload = {
+  report: "report_detail",
+  id: "project_status",
+  title: "Project status",
+  category: "engineering",
+  description: "Current structural engineering status.",
+  read_only: true,
+  execution_supported: false,
+  write_operations_supported: false,
+  available: true,
+  metadata: {
+    artifact_path: "analysis/reports/project_status_report.json",
+    markdown_path: "analysis/reports/project_status_report.md",
+    quality_path: "analysis/reports/project_status_quality_check.json",
+    quality_passed: true,
+  },
+  artifact: {
+    path: "analysis/reports/project_status_report.json",
+    exists: true,
+    loaded: true,
+    data: {
+      report: "project_status",
+      summary_metrics: {
+        product_completeness: 46,
+      },
+    },
+    error: null,
+  },
+  markdown: {
+    path: "analysis/reports/project_status_report.md",
+    exists: true,
+    loaded: true,
+    text: "# Project status\n\nGenerated report.",
+    error: null,
+  },
+  quality_check: {
+    path: "analysis/reports/project_status_quality_check.json",
+    exists: true,
+    loaded: true,
+    data: {
+      passed: true,
+    },
+    error: null,
+  },
+  conservative_note:
+    "This endpoint exposes generated report artifacts for inspection only. It does not execute experiments, solvers, scripts, or commands.",
 };
 
 const experimentalDesignPayload = {
@@ -165,6 +221,10 @@ function installSuccessfulFetchMock() {
         return Promise.resolve(jsonResponse(reportsPayload));
       }
 
+      if (url.endsWith("/api/v1/reports/project_status")) {
+        return Promise.resolve(jsonResponse(reportDetailPayload));
+      }
+
       if (url.endsWith("/api/v1/experimental-design-matrix")) {
         return Promise.resolve(jsonResponse(experimentalDesignPayload));
       }
@@ -203,6 +263,9 @@ describe("ReadOnlyPlatformApi", () => {
     expect(snapshot.status.executionStatus).toBe("disabled");
     expect(snapshot.reports).toHaveLength(1);
     expect(snapshot.reports[0]?.title).toBe("Project status");
+    expect(snapshot.reports[0]?.markdownPath).toBe(
+      "analysis/reports/project_status_report.md",
+    );
     expect(snapshot.experimentalDesign.experimentCount).toBe(648);
     expect(snapshot.experimentalDesign.scenarioCount).toBe(12);
     expect(snapshot.experimentalDesign.factors[0]?.label).toBe("Delay intensity");
@@ -216,6 +279,42 @@ describe("ReadOnlyPlatformApi", () => {
       "does not prove scientific validity",
     );
     expect(snapshot.warnings.join(" ")).toContain("practical equivalence");
+  });
+
+  it("loads one report detail endpoint conservatively", async () => {
+    const api = new ReadOnlyPlatformApi("http://127.0.0.1:8080");
+
+    const detail = await api.getReportDetail("project_status");
+
+    expect(detail.id).toBe("project_status");
+    expect(detail.title).toBe("Project status");
+    expect(detail.readOnly).toBe(true);
+    expect(detail.executionSupported).toBe(false);
+    expect(detail.writeOperationsSupported).toBe(false);
+    expect(detail.artifact.loaded).toBe(true);
+    expect(detail.markdown.text).toContain("Project status");
+    expect(detail.qualityCheck.data?.passed).toBe(true);
+    expect(detail.conservativeNote).toContain("does not execute");
+  });
+
+  it("encodes the report id when requesting details", async () => {
+    const api = new ReadOnlyPlatformApi("http://127.0.0.1:8080");
+
+    await expect(api.getReportDetail("bad/report")).rejects.toThrow(
+      "API request failed",
+    );
+
+    const fetchMock = globalThis.fetch as unknown as {
+      mock: {
+        calls: Array<[RequestInfo | URL, RequestInit | undefined]>;
+      };
+    };
+
+    const requestedUrls = fetchMock.mock.calls.map((call) => String(call[0]));
+
+    expect(requestedUrls).toContain(
+      "http://127.0.0.1:8080/api/v1/reports/bad%2Freport",
+    );
   });
 
   it("loads the experimental design endpoint with factor details", async () => {
@@ -263,6 +362,7 @@ describe("ReadOnlyPlatformApi", () => {
     const api = new ReadOnlyPlatformApi("http://127.0.0.1:8080");
 
     await api.getSnapshot();
+    await api.getReportDetail("project_status");
 
     const fetchMock = globalThis.fetch as unknown as {
       mock: {
@@ -278,6 +378,9 @@ describe("ReadOnlyPlatformApi", () => {
       "http://127.0.0.1:8080/api/v1/project-status",
     );
     expect(requestedUrls).toContain("http://127.0.0.1:8080/api/v1/reports");
+    expect(requestedUrls).toContain(
+      "http://127.0.0.1:8080/api/v1/reports/project_status",
+    );
     expect(requestedUrls).toContain(
       "http://127.0.0.1:8080/api/v1/experimental-design-matrix",
     );

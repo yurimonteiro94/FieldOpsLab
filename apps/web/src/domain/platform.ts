@@ -38,10 +38,46 @@ export interface PlatformReport {
   category: string;
   description: string;
   artifactPath: string;
+  markdownPath: string;
   qualityPath: string;
   available: boolean;
   loaded: boolean;
+  markdownAvailable: boolean;
+  qualityAvailable: boolean;
   qualityPassed: boolean | null;
+}
+
+export interface ReportResource<T> {
+  path: string;
+  exists: boolean;
+  loaded: boolean;
+  data: T | null;
+  text: string;
+  error: string | null;
+}
+
+export interface ReportDetailMetadata {
+  artifactPath: string;
+  markdownPath: string;
+  qualityPath: string;
+  qualityPassed: boolean | null;
+}
+
+export interface ReportDetail {
+  report: string;
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  readOnly: boolean;
+  executionSupported: boolean;
+  writeOperationsSupported: boolean;
+  available: boolean;
+  metadata: ReportDetailMetadata;
+  artifact: ReportResource<Record<string, unknown>>;
+  markdown: ReportResource<never>;
+  qualityCheck: ReportResource<Record<string, unknown>>;
+  conservativeNote: string;
 }
 
 export interface ExperimentalDesignFactor {
