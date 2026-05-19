@@ -18,16 +18,26 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 PROJECT_STATUS_PATH = (
     REPOSITORY_ROOT / "analysis" / "reports" / "project_status_report.json"
 )
+REPORTS_ROOT = REPOSITORY_ROOT / "analysis" / "reports"
+
 EXPERIMENTAL_DESIGN_PATH = (
     REPOSITORY_ROOT / "analysis" / "reports" / "experimental_design_matrix.json"
 )
+
 PLATFORM_CONTRACT_PATH = (
     REPOSITORY_ROOT / "platform" / "contracts" / "fieldops_platform_contract.json"
 )
+
 RESEARCH_METHOD_CONTRACT_PATH = (
     REPOSITORY_ROOT / "platform" / "contracts" / "research_method_contract.json"
 )
+
+SIMULATION_STATE_CONTRACT_PATH = (
+    REPOSITORY_ROOT / "platform" / "contracts" / "simulation_state_contract.json"
+)
+
 RESEARCH_FRAMING_PATH = REPOSITORY_ROOT / "platform" / "research_framing.md"
+
 
 REPORT_DEFINITIONS: list[dict[str, str]] = [
     {
@@ -344,6 +354,11 @@ def routes() -> list[dict[str, str]]:
             "path": "/api/v1/research-method",
             "description": "Return the conservative research method framing and contract.",
         },
+        {
+            "method": "GET",
+            "path": "/api/v1/simulation-state-contract",
+            "description": "Return the conservative simulation state contract without enabling execution.",
+        },
     ]
 
 
@@ -361,6 +376,10 @@ def health_payload() -> dict[str, Any]:
         "research_method_contract": {
             "available": path_exists_as_bool(RESEARCH_METHOD_CONTRACT_PATH),
             "path": "platform/contracts/research_method_contract.json",
+        },
+        "simulation_state_contract": {
+            "available": path_exists_as_bool(SIMULATION_STATE_CONTRACT_PATH),
+            "path": "platform/contracts/simulation_state_contract.json",
         },
         "routes": routes(),
     }
@@ -391,7 +410,7 @@ def project_status_payload() -> dict[str, Any]:
         "available": False,
         "read_only": True,
         "summary_metrics": {
-            "product_completeness": 53,
+            "product_completeness": 57,
             "engineering_status": "report_unavailable",
             "scientific_status": "diagnostic_only_with_methodological_warnings",
         },
@@ -444,6 +463,10 @@ def report_detail_payload(report_id: str) -> tuple[int, dict[str, Any]]:
     markdown = read_text_resource(report_definition["markdown_path"])
     quality_check = read_json_resource(report_definition["quality_path"])
 
+    quality_payload = (
+        quality_check["data"] if isinstance(quality_check["data"], dict) else {}
+    )
+
     return HTTPStatus.OK, {
         "report": "report_detail",
         "id": report_definition["id"],
@@ -456,11 +479,7 @@ def report_detail_payload(report_id: str) -> tuple[int, dict[str, Any]]:
         "available": artifact["loaded"],
         "metadata": {
             **report_definition,
-            "quality_passed": quality_passed_from_payload(
-                quality_check["data"]
-                if isinstance(quality_check["data"], dict)
-                else {}
-            ),
+            "quality_passed": quality_passed_from_payload(quality_payload),
         },
         "artifact": artifact,
         "markdown": markdown,
@@ -489,6 +508,42 @@ def research_method_payload() -> dict[str, Any]:
             "practical_equivalence_must_be_handled": True,
             "real_company_data_requires_validation_before_decision_support": True,
         },
+    }
+
+
+def simulation_state_contract_payload() -> dict[str, Any]:
+    contract = read_json_file(SIMULATION_STATE_CONTRACT_PATH)
+    conservative = contract.get("conservative_interpretation", {})
+
+    return {
+        "read_only": True,
+        "available": bool(contract),
+        "contract_path": "platform/contracts/simulation_state_contract.json",
+        "contract": contract,
+        "conservative_interpretation": {
+            "is_visual_simulation_implemented": bool(
+                conservative.get("is_visual_simulation_implemented", False)
+            ),
+            "is_real_time_map_implemented": bool(
+                conservative.get("is_real_time_map_implemented", False)
+            ),
+            "allows_browser_triggered_execution": bool(
+                conservative.get("allows_browser_triggered_execution", False)
+            ),
+            "allows_arbitrary_command_execution": bool(
+                conservative.get("allows_arbitrary_command_execution", False)
+            ),
+            "supports_user_delay_injection_in_ui_now": bool(
+                conservative.get("supports_user_delay_injection_in_ui_now", False)
+            ),
+            "defines_future_safe_contract_only": bool(
+                conservative.get("defines_future_safe_contract_only", False)
+            ),
+        },
+        "conservative_note": (
+            "This endpoint exposes the planned simulation state contract for inspection only. "
+            "It does not start simulations, submit jobs, execute solvers, or inject user events."
+        ),
     }
 
 
@@ -526,6 +581,9 @@ def route_payload(path: str) -> tuple[int, dict[str, Any]]:
     if normalized_path == "/api/v1/research-method":
         return HTTPStatus.OK, research_method_payload()
 
+    if normalized_path == "/api/v1/simulation-state-contract":
+        return HTTPStatus.OK, simulation_state_contract_payload()
+
     return HTTPStatus.NOT_FOUND, {
         "error": "not_found",
         "read_only": True,
@@ -541,6 +599,7 @@ class FieldOpsRequestHandler(BaseHTTPRequestHandler):
 
     def send_json(self, status_code: int, payload: dict[str, Any]) -> None:
         body = json.dumps(payload, indent=2, sort_keys=True).encode("utf-8")
+
         self.send_response(status_code)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
@@ -631,6 +690,7 @@ def run_self_test() -> int:
 
     try:
         base_url = f"http://{host}:{port}"
+
         expected_paths = [
             "/api/v1/health",
             "/api/v1/project-status",
@@ -639,6 +699,7 @@ def run_self_test() -> int:
             "/api/v1/reports/campaign_final_diagnostic_report",
             "/api/v1/experimental-design-matrix",
             "/api/v1/research-method",
+            "/api/v1/simulation-state-contract",
         ]
 
         for path in expected_paths:
@@ -702,20 +763,42 @@ def run_self_test() -> int:
         if post_status != HTTPStatus.METHOD_NOT_ALLOWED:
             raise RuntimeError("POST request should be rejected with 405")
 
-        research_status, research_payload = read_url_json(
+        research_status, research_payload_data = read_url_json(
             base_url + "/api/v1/research-method"
         )
 
         if research_status != HTTPStatus.OK:
             raise RuntimeError("Research method endpoint is unavailable")
 
-        conservative = research_payload.get("conservative_interpretation", {})
+        research_conservative = research_payload_data.get(
+            "conservative_interpretation", {}
+        )
 
-        if conservative.get("fuzzy_logic_is_optional") is not True:
+        if research_conservative.get("fuzzy_logic_is_optional") is not True:
             raise RuntimeError("Research method endpoint must keep fuzzy logic optional")
 
-        if conservative.get("practical_equivalence_must_be_handled") is not True:
+        if research_conservative.get("practical_equivalence_must_be_handled") is not True:
             raise RuntimeError("Research method endpoint must handle practical equivalence")
+
+        simulation_status, simulation_payload_data = read_url_json(
+            base_url + "/api/v1/simulation-state-contract"
+        )
+
+        if simulation_status != HTTPStatus.OK:
+            raise RuntimeError("Simulation state contract endpoint is unavailable")
+
+        simulation_conservative = simulation_payload_data.get(
+            "conservative_interpretation", {}
+        )
+
+        if simulation_conservative.get("allows_browser_triggered_execution") is not False:
+            raise RuntimeError("Simulation endpoint must not allow browser execution")
+
+        if simulation_conservative.get("allows_arbitrary_command_execution") is not False:
+            raise RuntimeError("Simulation endpoint must not allow arbitrary commands")
+
+        if simulation_conservative.get("defines_future_safe_contract_only") is not True:
+            raise RuntimeError("Simulation endpoint must expose contract-only status")
 
         print("FieldOps Lab read-only API self-test passed.")
         return 0
@@ -736,6 +819,7 @@ def main() -> None:
         raise SystemExit(run_self_test())
 
     server = create_server(args.host, args.port)
+
     print(f"FieldOps Lab read-only API listening on http://{args.host}:{args.port}")
     print("Allowed methods: GET, HEAD, OPTIONS")
     print("Execution endpoints are intentionally disabled.")
