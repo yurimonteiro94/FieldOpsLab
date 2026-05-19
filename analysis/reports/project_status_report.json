@@ -1,6 +1,6 @@
 {
   "report_type": "fieldops_lab_project_status_report",
-  "generated_at_local": "2026-05-19T17:34:57",
+  "generated_at_local": "2026-05-19T17:48:37",
   "summary_metrics": {
     "engineering_status": "passed_current_structural_quality_gate",
     "scientific_status": "diagnostic_only_with_methodological_warnings",

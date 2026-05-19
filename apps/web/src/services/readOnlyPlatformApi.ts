@@ -1,5 +1,6 @@
 import type {
   ApiHealth,
+  ExperimentalDesignFactor,
   ExperimentalDesignSummary,
   PlatformReport,
   PlatformRoute,
@@ -116,6 +117,43 @@ function readStringArray(
   }
 
   return value.filter((item): item is string => typeof item === "string");
+}
+
+function readStringArrayFromKeys(
+  record: JsonRecord,
+  keys: string[],
+  fallback: string[] = [],
+): string[] {
+  for (const key of keys) {
+    const value = record[key];
+
+    if (Array.isArray(value)) {
+      const strings = value.filter(
+        (item): item is string => typeof item === "string",
+      );
+
+      if (strings.length > 0) {
+        return strings;
+      }
+    }
+  }
+
+  return fallback;
+}
+
+function readRecordArrayFromKeys(
+  record: JsonRecord,
+  keys: string[],
+): JsonRecord[] {
+  for (const key of keys) {
+    const value = record[key];
+
+    if (Array.isArray(value)) {
+      return value.map(asRecord).filter((item) => Object.keys(item).length > 0);
+    }
+  }
+
+  return [];
 }
 
 function titleFromId(id: string): string {
@@ -259,7 +297,11 @@ function normalizeReport(item: unknown): PlatformReport {
       ],
       "",
     ),
-    available: readBoolean(record, "available", readBoolean(record, "exists", true)),
+    available: readBoolean(
+      record,
+      "available",
+      readBoolean(record, "exists", true),
+    ),
     loaded: readBoolean(record, "loaded", true),
     qualityPassed: readOptionalBoolean(record, [
       "qualityPassed",
@@ -275,12 +317,62 @@ function normalizeReports(payload: JsonRecord): PlatformReport[] {
   return reports.map(normalizeReport);
 }
 
+function normalizeDesignFactor(
+  item: JsonRecord,
+  index: number,
+): ExperimentalDesignFactor {
+  const id = readStringFromKeys(
+    item,
+    ["id", "name", "factor", "key"],
+    `factor_${index + 1}`,
+  );
+
+  return {
+    id,
+    label: readStringFromKeys(item, ["label", "title", "name"], titleFromId(id)),
+    description: readStringFromKeys(
+      item,
+      ["description", "rationale", "note"],
+      "Experimental factor exposed by the current design matrix.",
+    ),
+    levels: readStringArrayFromKeys(
+      item,
+      ["levels", "values", "allowed_values", "classes"],
+      [],
+    ),
+  };
+}
+
 function normalizeExperimentalDesign(
   payload: JsonRecord,
 ): ExperimentalDesignSummary {
   const summary = asRecord(payload.summary);
+  const factorRecords =
+    readRecordArrayFromKeys(payload, [
+      "factors",
+      "experimental_factors",
+      "factor_matrix",
+      "design_factors",
+    ]).length > 0
+      ? readRecordArrayFromKeys(payload, [
+          "factors",
+          "experimental_factors",
+          "factor_matrix",
+          "design_factors",
+        ])
+      : readRecordArrayFromKeys(summary, [
+          "factors",
+          "experimental_factors",
+          "factor_matrix",
+          "design_factors",
+        ]);
+
+  const factors = factorRecords.map(normalizeDesignFactor);
 
   return {
+    report: readString(payload, "report", "experimental_design_matrix"),
+    available: readBoolean(payload, "available", true),
+    readOnly: readBoolean(payload, "read_only", true),
     experimentCount: readNumberFromKeys(
       summary,
       ["experiment_count", "experimentCount"],
@@ -296,10 +388,31 @@ function normalizeExperimentalDesign(
       ["replication_count", "replicationCount"],
       0,
     ),
+    factorCount: readNumberFromKeys(
+      summary,
+      ["factor_count", "factorCount"],
+      factors.length,
+    ),
     reproducibleFromExplicitFactors: readBoolean(
       summary,
       "reproducible_from_explicit_factors",
       false,
+    ),
+    factors,
+    limitations: readStringArrayFromKeys(
+      payload,
+      [
+        "limitations",
+        "methodological_limitations",
+        "warnings",
+        "conservative_warnings",
+      ],
+      readStringArrayFromKeys(summary, ["limitations", "warnings"], []),
+    ),
+    qualityNotes: readStringArrayFromKeys(
+      payload,
+      ["quality_notes", "qualityNotes", "validation_notes"],
+      readStringArrayFromKeys(summary, ["quality_notes", "qualityNotes"], []),
     ),
   };
 }

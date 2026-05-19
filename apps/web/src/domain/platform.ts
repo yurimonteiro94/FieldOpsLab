@@ -1,6 +1,7 @@
 export type PageId =
   | "dashboard"
   | "reports"
+  | "experimental-design"
   | "scientific-validation"
   | "research-method";
 
@@ -42,11 +43,25 @@ export interface PlatformReport {
   qualityPassed: boolean | null;
 }
 
+export interface ExperimentalDesignFactor {
+  id: string;
+  label: string;
+  description: string;
+  levels: string[];
+}
+
 export interface ExperimentalDesignSummary {
+  report: string;
+  available: boolean;
+  readOnly: boolean;
   experimentCount: number;
   scenarioCount: number;
   replicationCount: number;
+  factorCount: number;
   reproducibleFromExplicitFactors: boolean;
+  factors: ExperimentalDesignFactor[];
+  limitations: string[];
+  qualityNotes: string[];
 }
 
 export interface ResearchMethodInterpretation {

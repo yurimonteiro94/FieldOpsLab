@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Layout } from "./components/Layout";
 import type { PageId } from "./domain/platform";
 import { DashboardPage } from "./pages/DashboardPage";
+import { ExperimentalDesignPage } from "./pages/ExperimentalDesignPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { ResearchMethodPage } from "./pages/ResearchMethodPage";
 import { ScientificValidationPage } from "./pages/ScientificValidationPage";
@@ -10,6 +11,10 @@ import { ScientificValidationPage } from "./pages/ScientificValidationPage";
 function renderPage(page: PageId) {
   if (page === "reports") {
     return <ReportsPage />;
+  }
+
+  if (page === "experimental-design") {
+    return <ExperimentalDesignPage />;
   }
 
   if (page === "scientific-validation") {

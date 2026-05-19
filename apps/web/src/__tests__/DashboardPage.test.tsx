@@ -50,12 +50,36 @@ const reportsPayload = {
 };
 
 const experimentalDesignPayload = {
+  report: "experimental_design_matrix",
+  available: true,
+  read_only: true,
   summary: {
     experiment_count: 648,
     scenario_count: 12,
     replication_count: 3,
+    factor_count: 4,
     reproducible_from_explicit_factors: true,
   },
+  factors: [
+    {
+      id: "delay_intensity",
+      label: "Delay intensity",
+      description: "Delay severity level used in controlled scenarios.",
+      levels: ["low", "medium", "high"],
+    },
+    {
+      id: "instance_size",
+      label: "Instance size",
+      description: "Scale of the field operation instance.",
+      levels: ["small", "medium", "large"],
+    },
+  ],
+  limitations: [
+    "The matrix is a planning artifact, not final scientific validation.",
+  ],
+  quality_notes: [
+    "The design is reproducible from explicit factors and replications.",
+  ],
 };
 
 const researchMethodPayload = {
@@ -202,6 +226,22 @@ describe("App dashboard", () => {
         "Generated artifacts are engineering and diagnostic evidence, not final scientific validation.",
       ),
     ).not.toBeNull();
+  });
+
+  it("navigates to the experimental design page", async () => {
+    render(<App />);
+
+    expect(
+      await screen.findByText("Experimental platform dashboard"),
+    ).not.toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Experimental design" }));
+
+    expect(await screen.findByText("Experimental design matrix")).not.toBeNull();
+    expect(screen.getByText("Current experiment structure")).not.toBeNull();
+    expect(screen.getByText("Delay intensity")).not.toBeNull();
+    expect(screen.getByText("Delay severity level used in controlled scenarios.")).not.toBeNull();
+    expect(screen.getByText("Delays")).not.toBeNull();
   });
 
   it("navigates to the research method page", async () => {

@@ -51,12 +51,35 @@ const reportsPayload = {
 
 const experimentalDesignPayload = {
   report: "experimental_design_matrix",
+  available: true,
+  read_only: true,
   summary: {
     experiment_count: 648,
     scenario_count: 12,
     replication_count: 3,
+    factor_count: 4,
     reproducible_from_explicit_factors: true,
   },
+  factors: [
+    {
+      id: "delay_intensity",
+      label: "Delay intensity",
+      description: "Delay severity level used in controlled scenarios.",
+      levels: ["low", "medium", "high"],
+    },
+    {
+      id: "policy_class",
+      label: "Policy class",
+      description: "Candidate replanning policy family.",
+      levels: ["no_replanning", "threshold_delay_replanning"],
+    },
+  ],
+  limitations: [
+    "The matrix is a planning artifact, not final scientific validation.",
+  ],
+  quality_notes: [
+    "The design is reproducible from explicit factors and replications.",
+  ],
 };
 
 const researchMethodPayload = {
@@ -181,6 +204,8 @@ describe("ReadOnlyPlatformApi", () => {
     expect(snapshot.reports).toHaveLength(1);
     expect(snapshot.reports[0]?.title).toBe("Project status");
     expect(snapshot.experimentalDesign.experimentCount).toBe(648);
+    expect(snapshot.experimentalDesign.scenarioCount).toBe(12);
+    expect(snapshot.experimentalDesign.factors[0]?.label).toBe("Delay intensity");
     expect(snapshot.researchMethod.contractSummary.scientificMaturity).toBe(
       "diagnostic_foundation",
     );
@@ -191,6 +216,23 @@ describe("ReadOnlyPlatformApi", () => {
       "does not prove scientific validity",
     );
     expect(snapshot.warnings.join(" ")).toContain("practical equivalence");
+  });
+
+  it("loads the experimental design endpoint with factor details", async () => {
+    const api = new ReadOnlyPlatformApi("http://127.0.0.1:8080");
+
+    const design = await api.getExperimentalDesign();
+
+    expect(design.report).toBe("experimental_design_matrix");
+    expect(design.readOnly).toBe(true);
+    expect(design.available).toBe(true);
+    expect(design.experimentCount).toBe(648);
+    expect(design.replicationCount).toBe(3);
+    expect(design.reproducibleFromExplicitFactors).toBe(true);
+    expect(design.factors).toHaveLength(2);
+    expect(design.factors[0]?.levels).toContain("medium");
+    expect(design.limitations.join(" ")).toContain("not final scientific validation");
+    expect(design.qualityNotes.join(" ")).toContain("reproducible");
   });
 
   it("loads the research method endpoint conservatively", async () => {
@@ -293,5 +335,30 @@ describe("ReadOnlyPlatformApi", () => {
     expect(reports[0]?.title).toBe("Scientific Validation Plan");
     expect(reports[0]?.available).toBe(true);
     expect(reports[0]?.qualityPassed).toBeNull();
+  });
+
+  it("normalizes a minimal experimental design payload conservatively", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse({
+            summary: {
+              experiment_count: 10,
+            },
+          }),
+        ),
+      ),
+    );
+
+    const api = new ReadOnlyPlatformApi("http://127.0.0.1:8080");
+
+    const design = await api.getExperimentalDesign();
+
+    expect(design.experimentCount).toBe(10);
+    expect(design.scenarioCount).toBe(0);
+    expect(design.replicationCount).toBe(0);
+    expect(design.factors).toHaveLength(0);
+    expect(design.readOnly).toBe(true);
   });
 });
