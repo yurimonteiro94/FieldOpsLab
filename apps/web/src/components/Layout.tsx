@@ -14,6 +14,10 @@ const navItems: Array<{ id: PageId; label: string }> = [
     label: "Dashboard",
   },
   {
+    id: "simulation-workspace",
+    label: "Simulation workspace",
+  },
+  {
     id: "reports",
     label: "Reports",
   },
@@ -48,8 +52,9 @@ export function Layout({ activePage, onNavigate, children }: LayoutProps) {
           <h1>Research platform</h1>
           <p className="sidebar-copy">
             Read-only local interface for inspecting platform status, generated
-            artifacts, research framing, experimental design, API safety,
-            campaign diagnostics, and scientific validation risks.
+            artifacts, simulation workspace, research framing, experimental
+            design, API safety, campaign diagnostics, and scientific validation
+            risks.
           </p>
 
           <nav className="nav-list" aria-label="FieldOps Lab pages">

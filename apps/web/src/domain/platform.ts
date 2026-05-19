@@ -1,5 +1,6 @@
 export type PageId =
   | "dashboard"
+  | "simulation-workspace"
   | "reports"
   | "campaign-diagnostics"
   | "experimental-design"

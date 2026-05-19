@@ -9,8 +9,13 @@ import { ExperimentalDesignPage } from "./pages/ExperimentalDesignPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { ResearchMethodPage } from "./pages/ResearchMethodPage";
 import { ScientificValidationPage } from "./pages/ScientificValidationPage";
+import { SimulationWorkspacePage } from "./pages/SimulationWorkspacePage";
 
 function renderPage(page: PageId) {
+  if (page === "simulation-workspace") {
+    return <SimulationWorkspacePage />;
+  }
+
   if (page === "reports") {
     return <ReportsPage />;
   }
