@@ -64,6 +64,27 @@ class ReportDetailApiEndpointTests(unittest.TestCase):
         self.assertIn("/api/v1/reports", route_paths)
         self.assertIn("/api/v1/reports/{id}", route_paths)
 
+    def test_reports_catalog_exposes_campaign_outputs(self) -> None:
+        status, payload = self.get_json("/api/v1/reports")
+
+        self.assertEqual(status, 200)
+        self.assertTrue(payload["read_only"])
+        self.assertFalse(payload["execution_supported"])
+        self.assertFalse(payload["write_operations_supported"])
+
+        report_ids = {report["id"] for report in payload["reports"]}
+
+        self.assertIn("experiment_campaign_plan", report_ids)
+        self.assertIn("campaign_index", report_ids)
+        self.assertIn("campaign_decision_matrix", report_ids)
+        self.assertIn("campaign_perturbation_plan_index", report_ids)
+        self.assertIn("campaign_execution_index", report_ids)
+        self.assertIn("campaign_result_summary", report_ids)
+        self.assertIn("campaign_ranking_profile_sensitivity", report_ids)
+        self.assertIn("campaign_final_diagnostic_report", report_ids)
+        self.assertIn("full_campaign_pipeline", report_ids)
+        self.assertIn("policy_trigger_behavior_audit", report_ids)
+
     def test_report_detail_route_returns_known_project_status_report(self) -> None:
         status, payload = self.get_json("/api/v1/reports/project_status")
 
@@ -85,6 +106,64 @@ class ReportDetailApiEndpointTests(unittest.TestCase):
         self.assertTrue(artifact["exists"])
         self.assertTrue(artifact["loaded"])
         self.assertIsInstance(artifact["data"], dict)
+
+    def test_report_detail_route_returns_campaign_final_diagnostic_report(self) -> None:
+        status, payload = self.get_json(
+            "/api/v1/reports/campaign_final_diagnostic_report"
+        )
+
+        self.assertEqual(status, 200)
+        self.assertEqual(payload["report"], "report_detail")
+        self.assertEqual(payload["id"], "campaign_final_diagnostic_report")
+        self.assertEqual(payload["title"], "Campaign final diagnostic report")
+        self.assertEqual(payload["category"], "campaign_analysis")
+        self.assertTrue(payload["read_only"])
+        self.assertFalse(payload["execution_supported"])
+        self.assertFalse(payload["write_operations_supported"])
+
+        self.assertEqual(
+            payload["artifact"]["path"],
+            "analysis/reports/campaign_final_diagnostic_report.json",
+        )
+        self.assertTrue(payload["artifact"]["exists"])
+        self.assertTrue(payload["artifact"]["loaded"])
+
+        self.assertEqual(
+            payload["markdown"]["path"],
+            "analysis/reports/campaign_final_diagnostic_report.md",
+        )
+        self.assertTrue(payload["markdown"]["exists"])
+        self.assertTrue(payload["markdown"]["loaded"])
+
+        self.assertEqual(
+            payload["quality_check"]["path"],
+            "analysis/reports/campaign_final_diagnostic_report_quality_check.json",
+        )
+        self.assertTrue(payload["quality_check"]["exists"])
+        self.assertTrue(payload["quality_check"]["loaded"])
+
+    def test_report_detail_route_returns_full_pipeline_manifest(self) -> None:
+        status, payload = self.get_json("/api/v1/reports/full_campaign_pipeline")
+
+        self.assertEqual(status, 200)
+        self.assertEqual(payload["id"], "full_campaign_pipeline")
+        self.assertEqual(payload["category"], "pipeline")
+        self.assertTrue(payload["read_only"])
+        self.assertFalse(payload["execution_supported"])
+
+        self.assertEqual(
+            payload["artifact"]["path"],
+            "analysis/reports/full_campaign_pipeline_manifest.json",
+        )
+        self.assertTrue(payload["artifact"]["exists"])
+        self.assertTrue(payload["artifact"]["loaded"])
+
+        self.assertEqual(
+            payload["markdown"]["path"],
+            "analysis/reports/full_campaign_pipeline_report.md",
+        )
+        self.assertTrue(payload["markdown"]["exists"])
+        self.assertTrue(payload["markdown"]["loaded"])
 
     def test_report_detail_route_exposes_markdown_and_quality_check(self) -> None:
         _status, payload = self.get_json("/api/v1/reports/project_status")
@@ -121,6 +200,7 @@ class ReportDetailApiEndpointTests(unittest.TestCase):
         self.assertTrue(payload["read_only"])
         self.assertFalse(payload["available"])
         self.assertIn("project_status", payload["known_report_ids"])
+        self.assertIn("campaign_final_diagnostic_report", payload["known_report_ids"])
 
     def test_nested_report_path_is_rejected(self) -> None:
         status, payload = self.request_json_with_error(
@@ -140,6 +220,7 @@ class ReportDetailApiEndpointTests(unittest.TestCase):
         source = SERVER_SOURCE_PATH.read_text(encoding="utf-8").lower()
 
         self.assertIn("/api/v1/reports/{id}", source)
+        self.assertIn("campaign_final_diagnostic_report", source)
         self.assertNotIn("/api/v1/execute", source)
         self.assertNotIn("shell=true", source)
         self.assertNotIn("os.system", source)

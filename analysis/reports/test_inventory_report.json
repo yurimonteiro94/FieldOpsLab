@@ -1,6 +1,6 @@
 {
     "report_type": "fieldops_lab_test_inventory_report",
-    "generated_at_local": "2026-05-19T18:15:12",
+    "generated_at_local": "2026-05-19T18:20:37",
     "project_root": "C:\\Users\\yuri\\Documents\\FieldOpsLab",
     "all_required_checks_passed": true,
     "problem_count": 0,
@@ -39,7 +39,7 @@
             "script_stem": "audit_policy_trigger_behavior",
             "is_patch_script": false,
             "direct_python_test_count": 3,
-            "related_python_test_count": 6,
+            "related_python_test_count": 7,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -53,7 +53,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_campaign_decision_matrix_regression.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -137,7 +138,7 @@
             "script_stem": "generate_campaign_decision_matrix",
             "is_patch_script": false,
             "direct_python_test_count": 4,
-            "related_python_test_count": 8,
+            "related_python_test_count": 9,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -154,7 +155,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_campaign_decision_matrix_regression.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_decision_matrix_mutation_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -163,7 +165,7 @@
             "script_stem": "generate_campaign_final_diagnostic_report",
             "is_patch_script": false,
             "direct_python_test_count": 3,
-            "related_python_test_count": 7,
+            "related_python_test_count": 8,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -178,7 +180,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_current_pipeline_report_integrity.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -187,14 +190,15 @@
             "script_stem": "generate_campaign_index",
             "is_patch_script": false,
             "direct_python_test_count": 1,
-            "related_python_test_count": 1,
+            "related_python_test_count": 2,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
             ],
             "related_python_tests": [
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -223,7 +227,7 @@
             "script_stem": "generate_campaign_ranking_profile_sensitivity",
             "is_patch_script": false,
             "direct_python_test_count": 4,
-            "related_python_test_count": 8,
+            "related_python_test_count": 9,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -240,7 +244,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_current_pipeline_report_integrity.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -249,7 +254,7 @@
             "script_stem": "generate_campaign_result_summary",
             "is_patch_script": false,
             "direct_python_test_count": 3,
-            "related_python_test_count": 6,
+            "related_python_test_count": 7,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -263,7 +268,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_campaign_decision_matrix_regression.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -292,7 +298,7 @@
             "script_stem": "generate_experiment_campaign_plan",
             "is_patch_script": false,
             "direct_python_test_count": 3,
-            "related_python_test_count": 4,
+            "related_python_test_count": 5,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -304,7 +310,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_quality_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_all_analysis_scripts_compile.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -586,7 +593,7 @@
             "script_stem": "run_full_campaign_pipeline",
             "is_patch_script": false,
             "direct_python_test_count": 5,
-            "related_python_test_count": 10,
+            "related_python_test_count": 11,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -606,7 +613,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -739,7 +747,7 @@
             "script_stem": "verify_campaign_decision_matrix",
             "is_patch_script": false,
             "direct_python_test_count": 6,
-            "related_python_test_count": 8,
+            "related_python_test_count": 9,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -758,7 +766,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_campaign_decision_matrix_regression.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_decision_matrix_mutation_contract.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -767,7 +776,7 @@
             "script_stem": "verify_campaign_execution_index",
             "is_patch_script": false,
             "direct_python_test_count": 4,
-            "related_python_test_count": 4,
+            "related_python_test_count": 5,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -780,7 +789,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_all_analysis_scripts_compile.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -789,7 +799,7 @@
             "script_stem": "verify_campaign_final_diagnostic_report",
             "is_patch_script": false,
             "direct_python_test_count": 4,
-            "related_python_test_count": 7,
+            "related_python_test_count": 8,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -805,7 +815,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_current_pipeline_report_integrity.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -814,14 +825,15 @@
             "script_stem": "verify_campaign_index",
             "is_patch_script": false,
             "direct_python_test_count": 1,
-            "related_python_test_count": 1,
+            "related_python_test_count": 2,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
             ],
             "related_python_tests": [
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_auxiliary_analysis_script_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -850,7 +862,7 @@
             "script_stem": "verify_campaign_ranking_profile_sensitivity",
             "is_patch_script": false,
             "direct_python_test_count": 5,
-            "related_python_test_count": 8,
+            "related_python_test_count": 9,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -868,7 +880,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_current_pipeline_report_integrity.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -877,7 +890,7 @@
             "script_stem": "verify_campaign_result_summary",
             "is_patch_script": false,
             "direct_python_test_count": 4,
-            "related_python_test_count": 6,
+            "related_python_test_count": 7,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -892,7 +905,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_campaign_decision_matrix_regression.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -937,7 +951,7 @@
             "script_stem": "verify_experiment_campaign_plan",
             "is_patch_script": false,
             "direct_python_test_count": 3,
-            "related_python_test_count": 4,
+            "related_python_test_count": 5,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -949,7 +963,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\reports\\test_quality_report_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_all_analysis_scripts_compile.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -1002,7 +1017,7 @@
             "script_stem": "verify_full_campaign_pipeline",
             "is_patch_script": false,
             "direct_python_test_count": 7,
-            "related_python_test_count": 10,
+            "related_python_test_count": 11,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -1024,7 +1039,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_project_status_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitive_scenario_integration.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_ranking_sensitivity_explanation_integration.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_quality_gate_scientific_validation_integration.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
@@ -1033,7 +1049,7 @@
             "script_stem": "verify_policy_trigger_behavior_audit",
             "is_patch_script": false,
             "direct_python_test_count": 4,
-            "related_python_test_count": 6,
+            "related_python_test_count": 7,
             "generic_python_test_count": 4,
             "status": "direct_test_found",
             "direct_python_tests": [
@@ -1048,7 +1064,8 @@
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_analysis_script_usage_contracts.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_campaign_decision_matrix_regression.py",
                 "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_full_campaign_pipeline_manifest_regression.py",
-                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py"
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\analysis\\scripts\\test_verifier_negative_contracts.py",
+                "C:\\Users\\yuri\\Documents\\FieldOpsLab\\tests\\python\\platform\\test_report_detail_api_endpoint.py"
             ]
         },
         {
