@@ -1,0 +1,246 @@
+{
+  "schema": "fieldops_lab.simulation_state_sample",
+  "version": "0.1.0",
+  "read_only": true,
+  "execution_enabled": false,
+  "write_operations_supported": false,
+  "browser_triggered_execution_enabled": false,
+  "arbitrary_command_execution_allowed": false,
+  "purpose": "Provide a conservative sample simulation state for future read-only map and timeline rendering.",
+  "mode": {
+    "current": "simulation_mode",
+    "available_modes": [
+      {
+        "id": "optimization_mode",
+        "label": "Optimization mode",
+        "purpose": "Run batch optimization or experimental campaigns from validated backend jobs.",
+        "currently_enabled_from_browser": false
+      },
+      {
+        "id": "simulation_mode",
+        "label": "Simulation mode",
+        "purpose": "Inspect a visual operational state with technicians, tasks, routes, delays, and timeline events.",
+        "currently_enabled_from_browser": false
+      }
+    ]
+  },
+  "clock": {
+    "simulation_id": "demo_delay_propagation_001",
+    "status": "paused",
+    "time_unit": "minutes",
+    "start_time": 0,
+    "current_time": 135,
+    "end_time": 480,
+    "speed_multiplier": 1,
+    "can_user_advance_time": false,
+    "can_user_inject_delay": false
+  },
+  "map": {
+    "coordinate_system": "normalized_demo_coordinates",
+    "bounds": {
+      "min_x": 0,
+      "max_x": 100,
+      "min_y": 0,
+      "max_y": 100
+    },
+    "depots": [
+      {
+        "id": "depot_001",
+        "label": "Main depot",
+        "x": 10,
+        "y": 10
+      }
+    ],
+    "technicians": [
+      {
+        "id": "tech_001",
+        "label": "Technician 1",
+        "status": "traveling",
+        "x": 47,
+        "y": 52,
+        "current_task_id": "task_003",
+        "route_id": "route_001",
+        "delay_minutes": 18
+      },
+      {
+        "id": "tech_002",
+        "label": "Technician 2",
+        "status": "servicing",
+        "x": 72,
+        "y": 31,
+        "current_task_id": "task_005",
+        "route_id": "route_002",
+        "delay_minutes": 0
+      }
+    ],
+    "tasks": [
+      {
+        "id": "task_001",
+        "label": "Customer 1",
+        "status": "completed",
+        "x": 22,
+        "y": 20,
+        "planned_start": 40,
+        "planned_end": 70,
+        "actual_start": 42,
+        "actual_end": 72,
+        "priority": "normal"
+      },
+      {
+        "id": "task_002",
+        "label": "Customer 2",
+        "status": "completed",
+        "x": 38,
+        "y": 44,
+        "planned_start": 85,
+        "planned_end": 115,
+        "actual_start": 91,
+        "actual_end": 123,
+        "priority": "normal"
+      },
+      {
+        "id": "task_003",
+        "label": "Customer 3",
+        "status": "at_risk",
+        "x": 58,
+        "y": 68,
+        "planned_start": 145,
+        "planned_end": 180,
+        "actual_start": null,
+        "actual_end": null,
+        "priority": "high"
+      },
+      {
+        "id": "task_004",
+        "label": "Customer 4",
+        "status": "pending",
+        "x": 84,
+        "y": 74,
+        "planned_start": 205,
+        "planned_end": 240,
+        "actual_start": null,
+        "actual_end": null,
+        "priority": "normal"
+      },
+      {
+        "id": "task_005",
+        "label": "Customer 5",
+        "status": "in_service",
+        "x": 72,
+        "y": 31,
+        "planned_start": 120,
+        "planned_end": 160,
+        "actual_start": 121,
+        "actual_end": null,
+        "priority": "normal"
+      }
+    ],
+    "routes": [
+      {
+        "id": "route_001",
+        "technician_id": "tech_001",
+        "task_sequence": [
+          "task_001",
+          "task_002",
+          "task_003",
+          "task_004"
+        ],
+        "status": "delayed",
+        "total_delay_minutes": 18
+      },
+      {
+        "id": "route_002",
+        "technician_id": "tech_002",
+        "task_sequence": [
+          "task_005"
+        ],
+        "status": "on_schedule",
+        "total_delay_minutes": 0
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "time": 0,
+      "type": "simulation_started",
+      "label": "Simulation initialized",
+      "affected_entity_id": "demo_delay_propagation_001",
+      "delay_minutes": 0
+    },
+    {
+      "time": 72,
+      "type": "service_completed",
+      "label": "Task 1 completed",
+      "affected_entity_id": "task_001",
+      "delay_minutes": 2
+    },
+    {
+      "time": 123,
+      "type": "service_completed",
+      "label": "Task 2 completed with propagated delay",
+      "affected_entity_id": "task_002",
+      "delay_minutes": 8
+    },
+    {
+      "time": 135,
+      "type": "travel_delay_detected",
+      "label": "Travel delay detected before Task 3",
+      "affected_entity_id": "tech_001",
+      "delay_minutes": 18
+    },
+    {
+      "time": 135,
+      "type": "replanning_evaluation_required",
+      "label": "Delay threshold reached for replanning evaluation",
+      "affected_entity_id": "route_001",
+      "delay_minutes": 18
+    }
+  ],
+  "replanning_decision": {
+    "status": "evaluation_required",
+    "trigger": "travel_delay_threshold",
+    "trigger_time": 135,
+    "affected_route_id": "route_001",
+    "affected_technician_id": "tech_001",
+    "primary_delay_type": "travel_delay",
+    "delay_propagation_detected": true,
+    "candidate_policies": [
+      {
+        "id": "no_replanning",
+        "label": "No replanning",
+        "execution_enabled": false
+      },
+      {
+        "id": "threshold_delay_replanning",
+        "label": "Threshold delay replanning",
+        "execution_enabled": false
+      }
+    ],
+    "decision_fields": [
+      "policy_id",
+      "trigger_reason",
+      "delay_minutes",
+      "projected_lateness",
+      "route_stability",
+      "computational_cost",
+      "practical_equivalence_status"
+    ]
+  },
+  "research_scope": {
+    "primary_dissertation_scope": [
+      "delay_propagation",
+      "travel_delay",
+      "service_delay"
+    ],
+    "future_platform_perturbations": [
+      "new_requests",
+      "cancellations",
+      "priority_changes"
+    ]
+  },
+  "safety_notes": [
+    "This sample is static and read-only.",
+    "It must not trigger optimization, simulation execution, shell commands, solver calls, file writes, or backend jobs.",
+    "Future interactive delay injection must be introduced behind explicit API contracts, validation, and tests."
+  ]
+}
