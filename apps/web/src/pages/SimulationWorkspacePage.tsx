@@ -10,6 +10,169 @@ import type {
 import { createReadOnlyPlatformApi } from "../services/readOnlyPlatformApi";
 import { useDashboardViewModel } from "../viewModels/useDashboardViewModel";
 
+interface ReplanningDecisionResponseSampleView {
+  sampleId: string;
+  decisionStatus: string;
+  recommendation: string;
+  reason: string;
+  injectedDelayMinutes: number;
+  baselinePropagatedDelayMinutes: number;
+  candidatePropagatedDelayMinutes: number;
+  recoveredDelayMinutes: number;
+  dominantBenefit: string;
+  dominantRisk: string;
+  statisticalClaimReady: boolean;
+  decisionRuleReady: boolean;
+  conservativeNote: string;
+  safetyNote: string;
+}
+
+function asViewRecord(value: unknown): Record<string, unknown> {
+  if (value !== null && typeof value === "object" && !Array.isArray(value)) {
+    return value as Record<string, unknown>;
+  }
+
+  return {};
+}
+
+function readViewString(
+  record: Record<string, unknown>,
+  key: string,
+  fallback: string,
+): string {
+  const value = record[key];
+
+  if (typeof value === "string" && value.trim().length > 0) {
+    return value;
+  }
+
+  return fallback;
+}
+
+function readViewNumber(
+  record: Record<string, unknown>,
+  key: string,
+  fallback: number,
+): number {
+  const value = record[key];
+
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  return fallback;
+}
+
+function readViewBoolean(
+  record: Record<string, unknown>,
+  key: string,
+  fallback: boolean,
+): boolean {
+  const value = record[key];
+
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  return fallback;
+}
+
+async function loadReplanningDecisionResponseSample(): Promise<ReplanningDecisionResponseSampleView> {
+  const baseUrl =
+    import.meta.env.VITE_FIELDOPS_API_BASE_URL ?? "http://127.0.0.1:8080";
+
+  const response = await fetch(
+    `${baseUrl}/api/v1/replanning-decision-response-sample`,
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Could not load re-planning decision response sample. HTTP ${response.status}`,
+    );
+  }
+
+  const endpointPayload = asViewRecord(await response.json());
+  const sample = asViewRecord(
+    endpointPayload.replanning_decision_response_sample,
+  );
+  const decisionSummary = asViewRecord(sample.decision_summary);
+  const delayPropagation = asViewRecord(sample.delay_propagation);
+  const tradeoffSummary = asViewRecord(sample.tradeoff_summary);
+
+  return {
+    sampleId: readViewString(
+      sample,
+      "sample_id",
+      readViewString(endpointPayload, "sample_id", "unknown_sample"),
+    ),
+    decisionStatus: readViewString(
+      decisionSummary,
+      "decision_status",
+      "not_executed_by_this_sample",
+    ),
+    recommendation: readViewString(
+      decisionSummary,
+      "recommendation",
+      "manual_review_required",
+    ),
+    reason: readViewString(
+      decisionSummary,
+      "reason",
+      "Sample is read-only and does not execute re-planning.",
+    ),
+    injectedDelayMinutes: readViewNumber(
+      delayPropagation,
+      "injected_delay_minutes",
+      0,
+    ),
+    baselinePropagatedDelayMinutes: readViewNumber(
+      delayPropagation,
+      "propagated_delay_minutes_baseline",
+      0,
+    ),
+    candidatePropagatedDelayMinutes: readViewNumber(
+      delayPropagation,
+      "propagated_delay_minutes_candidate",
+      0,
+    ),
+    recoveredDelayMinutes: readViewNumber(
+      delayPropagation,
+      "recovered_delay_minutes",
+      0,
+    ),
+    dominantBenefit: readViewString(
+      tradeoffSummary,
+      "dominant_benefit",
+      "not_available",
+    ),
+    dominantRisk: readViewString(
+      tradeoffSummary,
+      "dominant_risk",
+      "not_available",
+    ),
+    statisticalClaimReady: readViewBoolean(
+      tradeoffSummary,
+      "statistical_claim_ready",
+      false,
+    ),
+    decisionRuleReady: readViewBoolean(
+      tradeoffSummary,
+      "decision_rule_ready",
+      false,
+    ),
+    conservativeNote: readViewString(
+      sample,
+      "conservative_note",
+      "This sample is read-only and does not execute operational decisions.",
+    ),
+    safetyNote: readViewString(
+      endpointPayload,
+      "safety_note",
+      "This endpoint is read-only and does not trigger backend jobs.",
+    ),
+  };
+}
+
 interface WorkspaceDataState {
   loading: boolean;
   error: string | null;
@@ -17,6 +180,7 @@ interface WorkspaceDataState {
   sample: SimulationStateSampleSnapshot | null;
   delayInjectionContract: DelayInjectionRequestContractSnapshot | null;
   replanningDecisionResponseContract: ReplanningDecisionResponseContractSnapshot | null;
+  replanningDecisionResponseSample: ReplanningDecisionResponseSampleView | null;
 }
 
 function LoadingState() {
@@ -538,6 +702,71 @@ function ReplanningDecisionResponseContractPanel({
   );
 }
 
+function ReplanningDecisionResponseSamplePanel({
+  sample,
+}: {
+  sample: ReplanningDecisionResponseSampleView;
+}) {
+  return (
+    <section className="section-card">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Re-planning decision sample</p>
+          <h2>Re-planning decision response sample</h2>
+        </div>
+        <span className="source-pill">read-only sample</span>
+      </div>
+
+      <div className="status-grid">
+        <article className="metric-card">
+          <span>sample id</span>
+          <h3>{sample.sampleId}</h3>
+          <p>{formatToken(sample.decisionStatus)}</p>
+          <strong>{formatToken(sample.recommendation)}</strong>
+        </article>
+
+        <article className="metric-card">
+          <span>delay propagation</span>
+          <h3>{sample.recoveredDelayMinutes} min recovered delay</h3>
+          <p>{sample.injectedDelayMinutes} min injected delay</p>
+          <strong>
+            {sample.baselinePropagatedDelayMinutes} min baseline propagation
+          </strong>
+        </article>
+
+        <article className="metric-card">
+          <span>candidate impact</span>
+          <h3>{sample.candidatePropagatedDelayMinutes} min candidate propagation</h3>
+          <p>{formatToken(sample.dominantBenefit)}</p>
+          <strong>{formatToken(sample.dominantRisk)}</strong>
+        </article>
+      </div>
+
+      <div className="status-grid">
+        <BooleanStatusCard
+          label="statistical claim ready"
+          value={sample.statisticalClaimReady}
+          safeWhenFalse={true}
+        />
+        <BooleanStatusCard
+          label="decision rule ready"
+          value={sample.decisionRuleReady}
+          safeWhenFalse={true}
+        />
+      </div>
+
+      <div className="code-preview">
+        <strong>Decision reason</strong>
+        <p>{sample.reason}</p>
+        <strong>Conservative note</strong>
+        <p>{sample.conservativeNote}</p>
+        <strong>Endpoint safety note</strong>
+        <p>{sample.safetyNote}</p>
+      </div>
+    </section>
+  );
+}
+
 export function SimulationWorkspacePage() {
   const viewModel = useDashboardViewModel();
   const [workspaceState, setWorkspaceState] = useState<WorkspaceDataState>({
@@ -547,6 +776,7 @@ export function SimulationWorkspacePage() {
     sample: null,
     delayInjectionContract: null,
     replanningDecisionResponseContract: null,
+      replanningDecisionResponseSample: null,
   });
 
   useEffect(() => {
@@ -560,6 +790,7 @@ export function SimulationWorkspacePage() {
       sample: null,
       delayInjectionContract: null,
     replanningDecisionResponseContract: null,
+      replanningDecisionResponseSample: null,
     });
 
     void Promise.all([
@@ -567,8 +798,15 @@ export function SimulationWorkspacePage() {
       api.getSimulationStateSample(),
       api.getDelayInjectionRequestContract(),
         api.getReplanningDecisionResponseContract(),
+      loadReplanningDecisionResponseSample(),
     ])
-      .then(([contract, sample, delayInjectionContract, replanningDecisionResponseContract]) => {
+      .then(([
+        contract,
+        sample,
+        delayInjectionContract,
+        replanningDecisionResponseContract,
+        replanningDecisionResponseSample,
+      ]) => {
         if (!cancelled) {
           setWorkspaceState({
             loading: false,
@@ -577,6 +815,7 @@ export function SimulationWorkspacePage() {
             sample,
             delayInjectionContract,
         replanningDecisionResponseContract,
+          replanningDecisionResponseSample,
           });
         }
       })
@@ -592,6 +831,7 @@ export function SimulationWorkspacePage() {
             sample: null,
             delayInjectionContract: null,
     replanningDecisionResponseContract: null,
+      replanningDecisionResponseSample: null,
           });
         }
       });
@@ -605,6 +845,7 @@ export function SimulationWorkspacePage() {
   const sample = workspaceState.sample;
   const delayInjectionContract = workspaceState.delayInjectionContract;
   const replanningDecisionResponseContract = workspaceState.replanningDecisionResponseContract;
+  const replanningDecisionResponseSample = workspaceState.replanningDecisionResponseSample;
 
   const activeSafetyNotes = useMemo(() => sample?.safetyNotes ?? [], [sample]);
 
@@ -732,7 +973,13 @@ export function SimulationWorkspacePage() {
       <section className="section-card">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">Scope control</p>
+          {replanningDecisionResponseSample && (
+        <ReplanningDecisionResponseSamplePanel
+          sample={replanningDecisionResponseSample}
+        />
+      )}
+
+        <p className="eyebrow">Scope control</p>
             <h2>Delays first, platform extensible later</h2>
           </div>
           <span className="source-pill">research-aligned</span>

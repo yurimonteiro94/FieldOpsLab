@@ -609,6 +609,49 @@ const replanningDecisionResponseContractPayload = {
   },
 };
 
+const replanningDecisionResponseSamplePayload = {
+  schema: "fieldops_lab.replanning_decision_response_sample_endpoint",
+  version: "0.1.0",
+  read_only: true,
+  execution_enabled: false,
+  write_operations_supported: false,
+  browser_triggered_execution_enabled: false,
+  artifact_path: "platform/contracts/replanning_decision_response_sample.json",
+  safety_note:
+    "This endpoint exposes a static read-only sample of a future re-planning decision response. It does not execute re-planning, run solvers, start optimization, start simulations, mutate schedules, write files, or trigger backend jobs.",
+  replanning_decision_response_sample: {
+    schema: "fieldops_lab.replanning_decision_response_sample",
+    version: "0.1.0",
+    sample_id: "demo_replanning_decision_response_001",
+    sample_status: "planned_not_executed",
+    read_only: true,
+    execution_enabled: false,
+    decision_summary: {
+      decision_status: "not_executed_by_this_sample",
+      decision_enabled: false,
+      execution_status: "disabled",
+      recommendation: "manual_review_required",
+      reason:
+        "The sample shows how a future response could compare a baseline and a threshold-delay re-planning candidate without executing a solver.",
+    },
+    delay_propagation: {
+      injected_delay_minutes: 18,
+      propagated_delay_minutes_baseline: 42,
+      propagated_delay_minutes_candidate: 16,
+      recovered_delay_minutes: 26,
+    },
+    tradeoff_summary: {
+      dominant_benefit: "lower_delay_propagation",
+      dominant_risk: "schedule_instability",
+      policy_comparison_ready: true,
+      statistical_claim_ready: false,
+      decision_rule_ready: false,
+    },
+    conservative_note:
+      "Sample only. No operational decision is executed, no solver is called, and no schedule is mutated.",
+  },
+};
+
 function jsonResponse(payload: unknown): Response {
   return new Response(JSON.stringify(payload), {
     status: 200,
@@ -656,6 +699,9 @@ function installSuccessfulFetchMock() {
       if (url.endsWith("/api/v1/replanning-decision-response-contract")) {
         return Promise.resolve(jsonResponse(replanningDecisionResponseContractPayload));
       }
+    if (url.endsWith("/api/v1/replanning-decision-response-sample")) {
+      return Promise.resolve(jsonResponse(replanningDecisionResponseSamplePayload));
+    }
 
       if (url.endsWith("/api/v1/delay-injection-request-contract")) {
         return Promise.resolve(jsonResponse(delayInjectionContractPayload));
@@ -679,7 +725,7 @@ describe("Simulation workspace page", () => {
     vi.unstubAllGlobals();
   });
 
-  it("loads the simulation state sample, delay injection contract, and decision response contract without enabling browser execution", async () => {
+  it("loads the simulation state sample, delay injection contract, decision response contract, and decision response sample without enabling browser execution", async () => {
     render(<App />);
 
     expect(await screen.findByText("Experimental platform dashboard")).not.toBeNull();
