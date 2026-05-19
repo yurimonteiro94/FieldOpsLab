@@ -4,6 +4,10 @@ import type {
   DelayInjectionRequestContractSnapshot,
   DelayInjectionRequestField,
   DelayInjectionSafetyRequirement,
+  ReplanningDecisionMetricSection,
+  ReplanningDecisionResponseContractSnapshot,
+  ReplanningDecisionResponseEndpoint,
+  ReplanningDecisionStatusValue,
   ExperimentalDesignFactor,
   ExperimentalDesignSummary,
   JsonObject,
@@ -1192,6 +1196,147 @@ function normalizeDelayInjectionRequestContract(
   };
 }
 
+
+function normalizeReplanningDecisionEndpoint(
+  record: JsonRecord,
+): ReplanningDecisionResponseEndpoint {
+  return {
+    method: readString(record, "method", "POST"),
+    path: readString(record, "path", "/api/v1/replanning-decisions"),
+    status: readStringFromKeys(
+      record,
+      ["status", "state", "availability"],
+      "planned_not_enabled",
+    ),
+    executionEnabled: readBooleanFromKeys(
+      record,
+      ["execution_enabled", "currently_enabled", "enabled"],
+      false,
+    ),
+  };
+}
+
+function normalizeReplanningDecisionMetricSection(
+  id: string,
+  value: unknown,
+): ReplanningDecisionMetricSection {
+  const record = asRecord(value);
+
+  return {
+    id,
+    label: readStringFromKeys(record, ["label", "title", "name"], titleFromId(id)),
+    fields: readStringArrayFromKeys(
+      record,
+      ["fields", "required_fields", "tracked_fields"],
+      [],
+    ),
+  };
+}
+
+function normalizeReplanningDecisionStatusValue(
+  value: unknown,
+): ReplanningDecisionStatusValue {
+  const record = asRecord(value);
+  const statusValue = readStringFromKeys(
+    record,
+    ["value", "id", "status", "name"],
+    "not_executed",
+  );
+
+  return {
+    value: statusValue,
+    description: readStringFromKeys(
+      record,
+      ["description", "meaning", "note"],
+      "Status value exposed by the future re-planning decision response contract.",
+    ),
+  };
+}
+
+function normalizeReplanningDecisionResponseContract(
+  payload: JsonRecord,
+): ReplanningDecisionResponseContractSnapshot {
+  const wrappedContract = asRecord(payload.replanning_decision_response_contract);
+  const contract =
+    Object.keys(wrappedContract).length > 0 ? wrappedContract : asRecord(payload.contract);
+  const futureEndpoint = asRecord(
+    payload.future_endpoint ??
+      payload.planned_endpoint ??
+      contract.future_endpoint ??
+      contract.planned_endpoint,
+  );
+  const responseShape = asRecord(contract.response_shape);
+  const inputReferenceRecord = asRecord(contract.input_references);
+  const safetyRequirementRecord = asRecord(contract.safety_requirements);
+
+  const responseSections = Object.entries(responseShape).map(([id, value]) =>
+    normalizeReplanningDecisionMetricSection(id, value),
+  );
+
+  return {
+    readOnly: readBoolean(payload, "read_only", readBoolean(contract, "read_only", true)),
+    available: readBoolean(payload, "available", Object.keys(contract).length > 0),
+    artifactPath: readString(
+      payload,
+      "artifact_path",
+      "platform/contracts/replanning_decision_response_contract.json",
+    ),
+    contractName: readStringFromKeys(
+      contract,
+      ["contract_name", "contract", "name"],
+      "replanning_decision_response_contract",
+    ),
+    version: readString(contract, "version", "0.1.0"),
+    status: readString(contract, "status", "planned_read_only_contract"),
+    enabled: readBoolean(contract, "enabled", false),
+    executionEnabled: readBoolean(
+      payload,
+      "execution_enabled",
+      readBoolean(contract, "execution_enabled", false),
+    ),
+    currentEndpointEnabled: readBooleanFromKeys(
+      contract,
+      ["current_endpoint_enabled", "endpoint_enabled"],
+      false,
+    ),
+    futureEndpoint: normalizeReplanningDecisionEndpoint(futureEndpoint),
+    inputReferences: readStringArrayFromKeys(
+      contract,
+      ["input_references", "required_input_references"],
+      Object.keys(inputReferenceRecord),
+    ),
+    responseSections,
+    statusValues: readRecordArrayFromKeys(
+      contract,
+      ["status_values", "allowed_status_values"],
+    ).map(normalizeReplanningDecisionStatusValue),
+    relatedContracts: readStringArrayFromKeys(
+      contract,
+      ["related_contracts", "contract_dependencies"],
+      [],
+    ),
+    safetyRequirements: readStringArrayFromKeys(
+      contract,
+      ["safety_requirements", "safety_rules"],
+      Object.keys(safetyRequirementRecord),
+    ),
+    qualityRequirements: readStringArrayFromKeys(
+      contract,
+      ["quality_requirements", "quality_rules"],
+      [],
+    ),
+    conservativeNote: readStringFromKeys(
+      contract,
+      ["conservative_note", "safety_note", "note"],
+      readStringFromKeys(
+        payload,
+        ["safety_note", "conservative_note"],
+        "This contract is read-only and does not execute re-planning.",
+      ),
+    ),
+  };
+}
+
 async function fetchJson(baseUrl: string, path: string): Promise<JsonRecord> {
   const url = new URL(path, baseUrl).toString();
 
@@ -1273,6 +1418,16 @@ export class ReadOnlyPlatformApi {
     );
 
     return normalizeDelayInjectionRequestContract(payload);
+  }
+
+
+  async getReplanningDecisionResponseContract(): Promise<ReplanningDecisionResponseContractSnapshot> {
+    const payload = await fetchJson(
+      this.baseUrl,
+      "/api/v1/replanning-decision-response-contract",
+    );
+
+    return normalizeReplanningDecisionResponseContract(payload);
   }
 
   async getSnapshot(): Promise<PlatformSnapshot> {

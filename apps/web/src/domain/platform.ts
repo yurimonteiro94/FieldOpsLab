@@ -319,6 +319,45 @@ export interface DelayInjectionRequestContractSnapshot {
   conservativeNote: string;
 }
 
+
+export interface ReplanningDecisionResponseEndpoint {
+  method: string;
+  path: string;
+  status: string;
+  executionEnabled: boolean;
+}
+
+export interface ReplanningDecisionMetricSection {
+  id: string;
+  label: string;
+  fields: string[];
+}
+
+export interface ReplanningDecisionStatusValue {
+  value: string;
+  description: string;
+}
+
+export interface ReplanningDecisionResponseContractSnapshot {
+  readOnly: boolean;
+  available: boolean;
+  artifactPath: string;
+  contractName: string;
+  version: string;
+  status: string;
+  enabled: boolean;
+  executionEnabled: boolean;
+  currentEndpointEnabled: boolean;
+  futureEndpoint: ReplanningDecisionResponseEndpoint;
+  inputReferences: string[];
+  responseSections: ReplanningDecisionMetricSection[];
+  statusValues: ReplanningDecisionStatusValue[];
+  relatedContracts: string[];
+  safetyRequirements: string[];
+  qualityRequirements: string[];
+  conservativeNote: string;
+}
+
 export interface PlatformSnapshot {
   health: ApiHealth;
   status: PlatformStatus;

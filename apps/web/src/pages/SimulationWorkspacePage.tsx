@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { formatPercent, formatToken } from "../domain/platform";
 import type {
   DelayInjectionRequestContractSnapshot,
+  ReplanningDecisionResponseContractSnapshot,
   SimulationStateContractSnapshot,
   SimulationStateSampleSnapshot,
   SimulationTask,
@@ -15,6 +16,7 @@ interface WorkspaceDataState {
   contract: SimulationStateContractSnapshot | null;
   sample: SimulationStateSampleSnapshot | null;
   delayInjectionContract: DelayInjectionRequestContractSnapshot | null;
+  replanningDecisionResponseContract: ReplanningDecisionResponseContractSnapshot | null;
 }
 
 function LoadingState() {
@@ -446,6 +448,96 @@ function DelayInjectionContractPanel({
   );
 }
 
+
+function ReplanningDecisionResponseContractPanel({
+  contract,
+}: {
+  contract: ReplanningDecisionResponseContractSnapshot;
+}) {
+  const visibleSections = contract.responseSections.slice(0, 6);
+
+  return (
+    <section className="section-card">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Re-planning response planning</p>
+          <h2>Re-planning decision response contract</h2>
+          <p>{contract.conservativeNote}</p>
+        </div>
+        <span className="source-pill">{formatToken(contract.status)}</span>
+      </div>
+
+      <div className="status-grid">
+        <WorkspaceCard
+          title={contract.futureEndpoint.path}
+          label={`${contract.futureEndpoint.method} future endpoint`}
+          description="Future endpoint shape for returning policy decision, feasibility, performance, stability, cost, and delay propagation metrics."
+          status={
+            contract.futureEndpoint.executionEnabled
+              ? "execution requires review"
+              : "execution disabled"
+          }
+        />
+
+        <WorkspaceCard
+          title={contract.artifactPath}
+          label="Contract artifact"
+          description="Static contract inspected by the browser before any execution endpoint exists."
+          status={contract.readOnly ? "read-only" : "requires review"}
+        />
+
+        <WorkspaceCard
+          title={contract.relatedContracts.map(formatToken).join(", ")}
+          label="Related contracts"
+          description="The response contract links simulation state, delay injection, and future policy decisions."
+          status="contract bridge"
+        />
+      </div>
+
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Future response shape</p>
+          <h2>Decision sections to compare policies later</h2>
+        </div>
+        <span className="source-pill">{visibleSections.length} sections shown</span>
+      </div>
+
+      <div className="report-grid">
+        {visibleSections.map((section) => (
+          <article className="report-card" key={section.id}>
+            <span className="report-category">{section.label}</span>
+            <h3>{section.id}</h3>
+            <p>Future fields:</p>
+            <strong>{section.fields.map(formatToken).join(", ")}</strong>
+          </article>
+        ))}
+      </div>
+
+      {contract.statusValues.length > 0 && (
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Decision status vocabulary</p>
+            <h2>Response status values remain descriptive only</h2>
+          </div>
+          <span className="source-pill">no execution</span>
+        </div>
+      )}
+
+      {contract.statusValues.length > 0 && (
+        <div className="report-grid">
+          {contract.statusValues.map((statusValue) => (
+            <article className="report-card" key={statusValue.value}>
+              <span className="report-category">status</span>
+              <h3>{statusValue.value}</h3>
+              <p>{statusValue.description}</p>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 export function SimulationWorkspacePage() {
   const viewModel = useDashboardViewModel();
   const [workspaceState, setWorkspaceState] = useState<WorkspaceDataState>({
@@ -454,6 +546,7 @@ export function SimulationWorkspacePage() {
     contract: null,
     sample: null,
     delayInjectionContract: null,
+    replanningDecisionResponseContract: null,
   });
 
   useEffect(() => {
@@ -466,14 +559,16 @@ export function SimulationWorkspacePage() {
       contract: null,
       sample: null,
       delayInjectionContract: null,
+    replanningDecisionResponseContract: null,
     });
 
     void Promise.all([
       api.getSimulationStateContract(),
       api.getSimulationStateSample(),
       api.getDelayInjectionRequestContract(),
+        api.getReplanningDecisionResponseContract(),
     ])
-      .then(([contract, sample, delayInjectionContract]) => {
+      .then(([contract, sample, delayInjectionContract, replanningDecisionResponseContract]) => {
         if (!cancelled) {
           setWorkspaceState({
             loading: false,
@@ -481,6 +576,7 @@ export function SimulationWorkspacePage() {
             contract,
             sample,
             delayInjectionContract,
+        replanningDecisionResponseContract,
           });
         }
       })
@@ -495,6 +591,7 @@ export function SimulationWorkspacePage() {
             contract: null,
             sample: null,
             delayInjectionContract: null,
+    replanningDecisionResponseContract: null,
           });
         }
       });
@@ -507,6 +604,7 @@ export function SimulationWorkspacePage() {
   const contract = workspaceState.contract;
   const sample = workspaceState.sample;
   const delayInjectionContract = workspaceState.delayInjectionContract;
+  const replanningDecisionResponseContract = workspaceState.replanningDecisionResponseContract;
 
   const activeSafetyNotes = useMemo(() => sample?.safetyNotes ?? [], [sample]);
 
@@ -625,6 +723,10 @@ export function SimulationWorkspacePage() {
 
       {delayInjectionContract && (
         <DelayInjectionContractPanel contract={delayInjectionContract} />
+      )}
+
+      {replanningDecisionResponseContract && (
+        <ReplanningDecisionResponseContractPanel contract={replanningDecisionResponseContract} />
       )}
 
       <section className="section-card">

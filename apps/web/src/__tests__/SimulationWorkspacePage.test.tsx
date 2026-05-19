@@ -520,6 +520,95 @@ const delayInjectionContractPayload = {
   },
 };
 
+
+const replanningDecisionResponseContractPayload = {
+  schema: "fieldops_lab.replanning_decision_response_contract_endpoint",
+  version: "0.1.0",
+  read_only: true,
+  execution_enabled: false,
+  write_operations_supported: false,
+  browser_triggered_execution_enabled: false,
+  artifact_path: "platform/contracts/replanning_decision_response_contract.json",
+  future_endpoint: {
+    method: "POST",
+    path: "/api/v1/replanning-decisions",
+    status: "planned_not_enabled",
+    execution_enabled: false,
+  },
+  replanning_decision_response_contract: {
+    contract_name: "replanning_decision_response_contract",
+    version: "0.1.0",
+    status: "planned_read_only_contract",
+    enabled: false,
+    execution_enabled: false,
+    current_endpoint_enabled: false,
+    future_endpoint: {
+      method: "POST",
+      path: "/api/v1/replanning-decisions",
+      status: "planned_not_enabled",
+      execution_enabled: false,
+    },
+    input_references: {
+      simulation_id: "Current simulation state identifier.",
+      delay_injection_request_id: "Future delay injection request identifier.",
+      policy_id: "Candidate policy evaluated by the future engine.",
+      baseline_solution_id: "Baseline solution used for comparison.",
+    },
+    response_shape: {
+      feasibility: {
+        label: "Feasibility",
+        fields: ["is_feasible", "violated_constraints", "infeasibility_reason"],
+      },
+      performance_delta: {
+        label: "Performance delta",
+        fields: ["objective_delta", "total_delay_delta", "lateness_delta"],
+      },
+      stability_delta: {
+        label: "Stability delta",
+        fields: ["changed_assignments_count", "changed_sequence_count", "stability_score"],
+      },
+      computational_cost: {
+        label: "Computational cost",
+        fields: ["solver_time_ms", "wall_time_ms", "iteration_count"],
+      },
+      delay_propagation: {
+        label: "Delay propagation",
+        fields: ["affected_tasks_count", "propagated_delay_minutes", "recovered_delay_minutes"],
+      },
+      explanation: {
+        label: "Explanation",
+        fields: ["selected_policy_reason", "tradeoff_summary", "conservative_warning"],
+      },
+    },
+    status_values: [
+      {
+        value: "planned_not_executed",
+        description: "Contract shape is visible, but no re-planning is executed.",
+      },
+      {
+        value: "future_decision_ready",
+        description: "Reserved for a future validated backend decision.",
+      },
+    ],
+    related_contracts: [
+      "simulation_state_contract",
+      "simulation_state_sample",
+      "delay_injection_request_contract",
+    ],
+    safety_requirements: {
+      no_browser_solver_execution: true,
+      no_file_write_from_browser: true,
+      no_operational_claim_without_backend_result: true,
+    },
+    quality_requirements: [
+      "The response must preserve feasibility, performance, stability, computational cost, and delay propagation metrics.",
+      "The response must support later policy comparison without claiming final scientific validity.",
+    ],
+    conservative_note:
+      "This contract only defines the future response shape. It does not execute re-planning, solvers, optimization, simulation, write operations, or backend jobs.",
+  },
+};
+
 function jsonResponse(payload: unknown): Response {
   return new Response(JSON.stringify(payload), {
     status: 200,
@@ -563,6 +652,11 @@ function installSuccessfulFetchMock() {
         return Promise.resolve(jsonResponse(simulationSamplePayload));
       }
 
+
+      if (url.endsWith("/api/v1/replanning-decision-response-contract")) {
+        return Promise.resolve(jsonResponse(replanningDecisionResponseContractPayload));
+      }
+
       if (url.endsWith("/api/v1/delay-injection-request-contract")) {
         return Promise.resolve(jsonResponse(delayInjectionContractPayload));
       }
@@ -585,7 +679,7 @@ describe("Simulation workspace page", () => {
     vi.unstubAllGlobals();
   });
 
-  it("loads the simulation state sample and delay injection contract without enabling browser execution", async () => {
+  it("loads the simulation state sample, delay injection contract, and decision response contract without enabling browser execution", async () => {
     render(<App />);
 
     expect(await screen.findByText("Experimental platform dashboard")).not.toBeNull();
@@ -622,6 +716,19 @@ describe("Simulation workspace page", () => {
     expect(screen.getByText("user injected, scripted scenario, imported scenario")).not.toBeNull();
     expect(screen.getByText("not_executed_by_this_contract")).not.toBeNull();
 
+    expect(screen.getByText("Re-planning decision response contract")).not.toBeNull();
+    expect(screen.getByText("/api/v1/replanning-decisions")).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "performance_delta" })).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "stability_delta" })).not.toBeNull();
+    expect(
+      screen.getByText("objective delta, total delay delta, lateness delta"),
+    ).not.toBeNull();
+    expect(
+      screen.getByText("simulation state contract, simulation state sample, delay injection request contract"),
+    ).not.toBeNull();
+
+
+
     expect(screen.getAllByText("execution disabled").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Current state is conservative.").length).toBeGreaterThan(0);
     expect(
@@ -648,6 +755,12 @@ describe("Simulation workspace page", () => {
     expect(requestedUrls).toContain(
       "http://127.0.0.1:8080/api/v1/delay-injection-request-contract",
     );
+
+    expect(requestedUrls).toContain(
+      "http://127.0.0.1:8080/api/v1/replanning-decision-response-contract",
+    );
+
+
     expect(
       requestedUrls.some((url) => url.includes("/api/v1/simulation-runs")),
     ).toBe(false);
