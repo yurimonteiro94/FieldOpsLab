@@ -60,10 +60,7 @@ REPORT_DEFINITIONS: tuple[ReportDefinition, ...] = (
     ),
 )
 
-REPORT_DEFINITION_BY_ID = {
-    report.report_id: report
-    for report in REPORT_DEFINITIONS
-}
+REPORT_DEFINITION_BY_ID = {report.report_id: report for report in REPORT_DEFINITIONS}
 
 
 def _relative_path(path: Path) -> str:
@@ -151,7 +148,6 @@ def _report_detail(report: ReportDefinition) -> dict[str, Any]:
     artifact_payload = _read_json_file(report.artifact_path)
     quality_payload = _read_json_file(report.quality_check_path)
     markdown_preview = _read_text_file(report.markdown_path)
-
     quality_passed = _quality_check_passed(quality_payload)
 
     return {
@@ -210,9 +206,7 @@ def _reports_catalog_payload() -> dict[str, Any]:
         "categories": categories,
         "total_reports": len(reports),
         "campaign_report_count": sum(
-            1
-            for report in reports
-            if str(report["category"]).lower() == "campaign analysis"
+            1 for report in reports if str(report["category"]).lower() == "campaign analysis"
         ),
     }
 
@@ -301,6 +295,27 @@ def _simulation_state_sample_payload() -> dict[str, Any]:
     }
 
 
+def _delay_injection_request_contract_payload() -> dict[str, Any]:
+    payload = _read_json_file(CONTRACTS_ROOT / "delay_injection_request_contract.json")
+
+    return {
+        "schema": "fieldops_lab.delay_injection_request_contract_endpoint",
+        "version": "0.1.0",
+        "read_only": True,
+        "execution_enabled": False,
+        "write_operations_supported": False,
+        "browser_triggered_execution_enabled": False,
+        "delay_injection_request_contract": payload,
+        "artifact_path": "platform/contracts/delay_injection_request_contract.json",
+        "planned_endpoint": payload.get("planned_endpoint", {}),
+        "safety_note": (
+            "This endpoint exposes only the planned delay injection request contract. "
+            "It does not inject delays, mutate simulation state, run solvers, or start "
+            "backend jobs."
+        ),
+    }
+
+
 def _health_payload() -> dict[str, Any]:
     return {
         "schema": "fieldops_lab.read_only_api_health",
@@ -319,6 +334,7 @@ def _health_payload() -> dict[str, Any]:
             "/api/v1/research-method",
             "/api/v1/simulation-state-contract",
             "/api/v1/simulation-state-sample",
+            "/api/v1/delay-injection-request-contract",
         ],
     }
 
@@ -420,6 +436,10 @@ class FieldOpsReadOnlyRequestHandler(BaseHTTPRequestHandler):
             self._send_json(HTTPStatus.OK, _simulation_state_sample_payload())
             return
 
+        if path == "/api/v1/delay-injection-request-contract":
+            self._send_json(HTTPStatus.OK, _delay_injection_request_contract_payload())
+            return
+
         self._send_error_payload(HTTPStatus.NOT_FOUND, "Endpoint not found.")
 
     def _handle_report_detail(self, path: str) -> None:
@@ -454,6 +474,7 @@ def _read_url_json(url: str, method: str = "GET") -> tuple[int, dict[str, Any]]:
             payload = json.loads(error.read().decode("utf-8"))
         finally:
             error.close()
+
         return error.code, payload
 
 
@@ -461,7 +482,6 @@ def run_self_test() -> int:
     server = _create_server("127.0.0.1", 0)
     host, port = server.server_address
     base_url = f"http://{host}:{port}"
-
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
 
@@ -475,22 +495,26 @@ def run_self_test() -> int:
         ("/api/v1/research-method", HTTPStatus.OK),
         ("/api/v1/simulation-state-contract", HTTPStatus.OK),
         ("/api/v1/simulation-state-sample", HTTPStatus.OK),
+        ("/api/v1/delay-injection-request-contract", HTTPStatus.OK),
     ]
 
     try:
         for endpoint, expected_status in checks:
             status, _payload = _read_url_json(base_url + endpoint)
             print(f"{endpoint} {status}")
+
             if status != expected_status.value:
                 return 1
 
         status, _payload = _read_url_json(base_url + "/api/v1/reports/unknown_report")
         print(f"GET /api/v1/reports/unknown_report {status}")
+
         if status != HTTPStatus.NOT_FOUND.value:
             return 1
 
         status, _payload = _read_url_json(base_url + "/api/v1/health", method="POST")
         print(f"POST /api/v1/health {status}")
+
         if status != HTTPStatus.METHOD_NOT_ALLOWED.value:
             return 1
 
