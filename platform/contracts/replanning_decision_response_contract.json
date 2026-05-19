@@ -1,0 +1,182 @@
+{
+  "contract_name": "replanning_decision_response_contract",
+  "version": 1,
+  "status": "planned_read_only_contract",
+  "enabled": false,
+  "execution_enabled": false,
+  "current_endpoint_enabled": false,
+  "purpose": "Defines the future response shape for a re-planning decision after a delay injection request. This contract is read-only and does not execute optimization, simulation, solver calls, scripts, commands, or backend jobs.",
+  "future_endpoint": {
+    "method": "POST",
+    "path": "/api/v1/replanning-decisions",
+    "enabled": false,
+    "reason": "The endpoint is intentionally disabled until validation, persistence, job isolation, solver execution boundaries, rollback strategy, and audit logging are implemented."
+  },
+  "related_contracts": [
+    "simulation_state_contract",
+    "simulation_state_sample",
+    "delay_injection_request_contract"
+  ],
+  "scope": {
+    "primary_dissertation_scope": [
+      "delay propagation",
+      "travel delay",
+      "service delay",
+      "schedule disruption after delay"
+    ],
+    "future_extensible_perturbations": [
+      "new demand",
+      "cancellation",
+      "priority change",
+      "technician unavailability",
+      "resource constraint change"
+    ],
+    "dissertation_boundary": "The platform can remain extensible, but the dissertation analysis should stay centered on delays and delay propagation."
+  },
+  "input_references": {
+    "simulation_id": {
+      "type": "string",
+      "required": true,
+      "description": "Identifier of the simulation state used as the baseline for the re-planning decision."
+    },
+    "delay_injection_request_id": {
+      "type": "string",
+      "required": true,
+      "description": "Identifier of the delay injection request that triggered the future re-planning analysis."
+    },
+    "policy_id": {
+      "type": "string",
+      "required": true,
+      "description": "Identifier of the re-planning policy evaluated for the disturbed state."
+    },
+    "baseline_solution_id": {
+      "type": "string",
+      "required": true,
+      "description": "Identifier of the original plan before the delay was injected."
+    },
+    "candidate_solution_id": {
+      "type": "string",
+      "required": false,
+      "description": "Identifier of the candidate plan produced by the future re-planning process. It remains optional while execution is disabled."
+    }
+  },
+  "response_shape": {
+    "decision_id": {
+      "type": "string",
+      "required": true,
+      "example": "decision_demo_delay_001"
+    },
+    "status": {
+      "type": "string",
+      "required": true,
+      "allowed_values": [
+        "not_executed_read_only",
+        "rejected_by_validation",
+        "accepted_for_future_evaluation"
+      ]
+    },
+    "selected_policy": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "policy_id": "string",
+        "policy_name": "string",
+        "policy_family": "string",
+        "trigger_rule": "string",
+        "triggered": "boolean"
+      }
+    },
+    "feasibility": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "baseline_feasible": "boolean",
+        "candidate_feasible": "boolean",
+        "hard_constraint_violations": "integer",
+        "soft_constraint_violations": "integer",
+        "infeasibility_reason": "string_or_null"
+      }
+    },
+    "performance_delta": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "objective_delta": "number",
+        "total_delay_minutes_delta": "number",
+        "total_lateness_minutes_delta": "number",
+        "route_duration_minutes_delta": "number",
+        "completed_tasks_delta": "integer"
+      }
+    },
+    "stability_delta": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "changed_assignments_count": "integer",
+        "changed_sequence_positions_count": "integer",
+        "rescheduled_tasks_count": "integer",
+        "unchanged_tasks_count": "integer",
+        "stability_score": "number"
+      }
+    },
+    "computational_cost": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "solver_time_ms": "integer",
+        "evaluation_time_ms": "integer",
+        "iterations": "integer",
+        "timeout_reached": "boolean",
+        "execution_backend": "string"
+      }
+    },
+    "delay_propagation": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "source_delay_minutes": "number",
+        "affected_technicians_count": "integer",
+        "affected_tasks_count": "integer",
+        "propagation_depth": "integer",
+        "latest_affected_task_id": "string_or_null"
+      }
+    },
+    "explanation": {
+      "type": "object",
+      "required": true,
+      "fields": {
+        "summary": "string",
+        "decision_reason": "string",
+        "tradeoff_notes": "array_of_strings",
+        "warnings": "array_of_strings"
+      }
+    }
+  },
+  "validation_rules": [
+    "The response must reference an existing simulation_id.",
+    "The response must reference an existing delay_injection_request_id.",
+    "The selected policy must be explicitly identified.",
+    "Feasibility, performance, stability, computational cost, and delay propagation fields must be present together.",
+    "No response may claim that a solver, optimizer, script, or backend job was executed while execution_enabled is false.",
+    "The response must distinguish a planned response contract from an actual executed re-planning result."
+  ],
+  "quality_requirements": [
+    "The contract must be deterministic and machine-readable.",
+    "The contract must preserve enough information for statistical comparison across policies.",
+    "The contract must expose stability impact separately from performance impact.",
+    "The contract must expose computational cost separately from route quality.",
+    "The contract must support future auditability of why a policy was selected or rejected.",
+    "The contract must support dissertation-focused analysis of delay propagation."
+  ],
+  "safety_requirements": [
+    "This contract is read-only.",
+    "This contract must not execute solvers.",
+    "This contract must not execute optimization.",
+    "This contract must not execute simulation steps.",
+    "This contract must not write files.",
+    "This contract must not mutate project state.",
+    "This contract must not expose a live POST endpoint while current_endpoint_enabled is false.",
+    "This contract must not be presented as a production decision engine."
+  ],
+  "conservative_note": "This file only defines the future response shape for re-planning decisions. It does not execute experiments, solvers, scripts, commands, optimization, simulation, persistence, or operational changes."
+}
