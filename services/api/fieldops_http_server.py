@@ -60,7 +60,10 @@ REPORT_DEFINITIONS: tuple[ReportDefinition, ...] = (
     ),
 )
 
-REPORT_DEFINITION_BY_ID = {report.report_id: report for report in REPORT_DEFINITIONS}
+REPORT_DEFINITION_BY_ID = {
+    report.report_id: report
+    for report in REPORT_DEFINITIONS
+}
 
 
 def _relative_path(path: Path) -> str:
@@ -206,7 +209,9 @@ def _reports_catalog_payload() -> dict[str, Any]:
         "categories": categories,
         "total_reports": len(reports),
         "campaign_report_count": sum(
-            1 for report in reports if str(report["category"]).lower() == "campaign analysis"
+            1
+            for report in reports
+            if str(report["category"]).lower() == "campaign analysis"
         ),
     }
 
@@ -297,6 +302,7 @@ def _simulation_state_sample_payload() -> dict[str, Any]:
 
 def _delay_injection_request_contract_payload() -> dict[str, Any]:
     payload = _read_json_file(CONTRACTS_ROOT / "delay_injection_request_contract.json")
+    planned_endpoint = payload.get("planned_endpoint", {})
 
     return {
         "schema": "fieldops_lab.delay_injection_request_contract_endpoint",
@@ -306,12 +312,37 @@ def _delay_injection_request_contract_payload() -> dict[str, Any]:
         "write_operations_supported": False,
         "browser_triggered_execution_enabled": False,
         "delay_injection_request_contract": payload,
+        "planned_endpoint": planned_endpoint,
         "artifact_path": "platform/contracts/delay_injection_request_contract.json",
-        "planned_endpoint": payload.get("planned_endpoint", {}),
         "safety_note": (
-            "This endpoint exposes only the planned delay injection request contract. "
-            "It does not inject delays, mutate simulation state, run solvers, or start "
-            "backend jobs."
+            "This endpoint exposes the delay injection request contract for inspection. "
+            "It does not inject delays, run solvers, start simulations, write files, "
+            "or trigger backend jobs."
+        ),
+    }
+
+
+def _replanning_decision_response_contract_payload() -> dict[str, Any]:
+    payload = _read_json_file(
+        CONTRACTS_ROOT / "replanning_decision_response_contract.json"
+    )
+    future_endpoint = payload.get("future_endpoint", {})
+
+    return {
+        "schema": "fieldops_lab.replanning_decision_response_contract_endpoint",
+        "version": "0.1.0",
+        "read_only": True,
+        "execution_enabled": False,
+        "write_operations_supported": False,
+        "browser_triggered_execution_enabled": False,
+        "replanning_decision_response_contract": payload,
+        "future_endpoint": future_endpoint,
+        "planned_endpoint": future_endpoint,
+        "artifact_path": "platform/contracts/replanning_decision_response_contract.json",
+        "safety_note": (
+            "This endpoint exposes the future re-planning decision response contract "
+            "for inspection. It does not execute re-planning decisions, run solvers, "
+            "start optimization, start simulation jobs, write files, or trigger backend jobs."
         ),
     }
 
@@ -335,6 +366,7 @@ def _health_payload() -> dict[str, Any]:
             "/api/v1/simulation-state-contract",
             "/api/v1/simulation-state-sample",
             "/api/v1/delay-injection-request-contract",
+            "/api/v1/replanning-decision-response-contract",
         ],
     }
 
@@ -440,6 +472,13 @@ class FieldOpsReadOnlyRequestHandler(BaseHTTPRequestHandler):
             self._send_json(HTTPStatus.OK, _delay_injection_request_contract_payload())
             return
 
+        if path == "/api/v1/replanning-decision-response-contract":
+            self._send_json(
+                HTTPStatus.OK,
+                _replanning_decision_response_contract_payload(),
+            )
+            return
+
         self._send_error_payload(HTTPStatus.NOT_FOUND, "Endpoint not found.")
 
     def _handle_report_detail(self, path: str) -> None:
@@ -482,6 +521,7 @@ def run_self_test() -> int:
     server = _create_server("127.0.0.1", 0)
     host, port = server.server_address
     base_url = f"http://{host}:{port}"
+
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
 
@@ -496,6 +536,7 @@ def run_self_test() -> int:
         ("/api/v1/simulation-state-contract", HTTPStatus.OK),
         ("/api/v1/simulation-state-sample", HTTPStatus.OK),
         ("/api/v1/delay-injection-request-contract", HTTPStatus.OK),
+        ("/api/v1/replanning-decision-response-contract", HTTPStatus.OK),
     ]
 
     try:
