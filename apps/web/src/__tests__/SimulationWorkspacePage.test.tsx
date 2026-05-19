@@ -652,6 +652,129 @@ const replanningDecisionResponseSamplePayload = {
   },
 };
 
+
+const simulationPlaybackControlContractPayload = {
+  schema: "fieldops_lab.simulation_playback_control_contract_endpoint",
+  version: "0.1.0",
+  read_only: true,
+  execution_enabled: false,
+  write_operations_supported: false,
+  browser_triggered_execution_enabled: false,
+  artifact_path: "platform/contracts/simulation_playback_control_contract.json",
+  safety_note:
+    "This endpoint exposes only a read-only playback contract and does not trigger backend jobs.",
+  simulation_playback_control_contract: {
+    contract_id: "simulation_playback_control_contract",
+    name: "Simulation playback control contract",
+    version: "0.1.0",
+    status: "read_only_contract",
+    read_only: true,
+    enabled: false,
+    execution_exposed: false,
+    purpose:
+      "Define the future browser-visible playback controls for visual simulation without enabling simulation execution.",
+    future_endpoint: {
+      planned_path: "/api/v1/simulation-playback-control-contract",
+      method: "GET",
+      enabled: false,
+      status: "planned_not_enabled",
+      post_allowed: false,
+      put_allowed: false,
+      delete_allowed: false,
+    },
+    research_scope: {
+      dissertation_focus: "delay_propagation",
+      primary_perturbations: ["travel_delay", "service_delay"],
+      platform_extension_targets: [
+        "new_demand",
+        "cancellation",
+        "priority_change",
+        "resource_unavailability",
+      ],
+      scope_note:
+        "The playback controls are designed for delay propagation visualization first.",
+    },
+    control_model: {
+      mode: "visual_simulation_playback",
+      state: "disabled",
+      blocked_client_actions: [
+        "start_simulation_execution",
+        "pause_live_backend_execution",
+        "resume_live_backend_execution",
+        "inject_delay",
+        "trigger_replanning",
+        "dispatch_routes",
+        "persist_operational_change",
+      ],
+    },
+    playback_controls: {
+      play: {
+        visible: true,
+        enabled: false,
+        label: "Play preview",
+        disabled_reason:
+          "The current platform exposes only read-only simulation artifacts.",
+      },
+      pause: {
+        visible: true,
+        enabled: false,
+        label: "Pause preview",
+        disabled_reason:
+          "There is no browser-triggered simulation execution yet.",
+      },
+      step_forward: {
+        visible: true,
+        enabled: false,
+        label: "Step forward",
+        disabled_reason:
+          "Timeline stepping is a planned UI behavior and must not trigger backend execution.",
+      },
+      step_backward: {
+        visible: true,
+        enabled: false,
+        label: "Step backward",
+        disabled_reason:
+          "Timeline stepping is a planned UI behavior and must not mutate simulation state.",
+      },
+      reset: {
+        visible: true,
+        enabled: false,
+        label: "Reset view",
+        disabled_reason:
+          "Reset is visual-only in the planned workspace and is not implemented in this contract.",
+      },
+    },
+    speed_controls: {
+      visible: true,
+      enabled: false,
+      selected_speed: 1.0,
+      available_speeds: [0.25, 0.5, 1.0, 2.0, 5.0, 10.0],
+      unit: "simulation_minutes_per_real_second",
+      can_change_backend_execution_speed: false,
+    },
+    timeline_scrubber: {
+      visible: true,
+      enabled: false,
+      supported_future_views: [
+        "technician_position_over_time",
+        "task_execution_window",
+        "delay_propagation_chain",
+        "replanning_decision_marker",
+        "route_stability_marker",
+      ],
+      can_mutate_timeline: false,
+      can_create_events: false,
+      can_delete_events: false,
+    },
+    delay_visualization_bindings: {
+      dissertation_alignment:
+        "The controls support delay propagation visual inspection by showing how travel and service delays propagate through technicians, tasks, time windows, route stability, feasibility, and re-planning decisions.",
+    },
+    conservative_note:
+      "This artifact is a read-only UI and API contract. It does not execute simulation, does not execute optimization, does not inject delays, does not trigger re-planning, does not dispatch routes, and does not mutate operational or experimental data.",
+  },
+};
+
 function jsonResponse(payload: unknown): Response {
   return new Response(JSON.stringify(payload), {
     status: 200,
@@ -703,6 +826,10 @@ function installSuccessfulFetchMock() {
       return Promise.resolve(jsonResponse(replanningDecisionResponseSamplePayload));
     }
 
+    if (url.endsWith("/api/v1/simulation-playback-control-contract")) {
+      return Promise.resolve(jsonResponse(simulationPlaybackControlContractPayload));
+    }
+
       if (url.endsWith("/api/v1/delay-injection-request-contract")) {
         return Promise.resolve(jsonResponse(delayInjectionContractPayload));
       }
@@ -725,7 +852,7 @@ describe("Simulation workspace page", () => {
     vi.unstubAllGlobals();
   });
 
-  it("loads the simulation state sample, delay injection contract, decision response contract, and decision response sample without enabling browser execution", async () => {
+  it("loads the simulation state sample, delay injection contract, decision response contract, decision response sample, and playback control contract without enabling browser execution", async () => {
     render(<App />);
 
     expect(await screen.findByText("Experimental platform dashboard")).not.toBeNull();
@@ -763,6 +890,14 @@ describe("Simulation workspace page", () => {
     expect(screen.getByText("not_executed_by_this_contract")).not.toBeNull();
 
     expect(screen.getByText("Re-planning decision response contract")).not.toBeNull();
+    expect(screen.getByText("Simulation playback control contract")).not.toBeNull();
+    expect(screen.getByText("/api/v1/simulation-playback-control-contract")).not.toBeNull();
+    expect(screen.getByText("Playback buttons are visible but inactive")).not.toBeNull();
+    expect(screen.getByRole("button", { name: "Play preview" })).not.toBeNull();
+    expect(screen.getByRole("button", { name: "Step forward" })).not.toBeNull();
+    expect(screen.getByRole("button", { name: "Reset view" })).not.toBeNull();
+    expect(screen.getByText("Timeline scrubber and speed controls remain read-only")).not.toBeNull();
+    expect(screen.getByText(/delay propagation visual inspection/)).not.toBeNull();
     expect(screen.getByText("/api/v1/replanning-decisions")).not.toBeNull();
     expect(screen.getByRole("heading", { name: "performance_delta" })).not.toBeNull();
     expect(screen.getByRole("heading", { name: "stability_delta" })).not.toBeNull();
@@ -804,6 +939,9 @@ describe("Simulation workspace page", () => {
 
     expect(requestedUrls).toContain(
       "http://127.0.0.1:8080/api/v1/replanning-decision-response-contract",
+    );
+    expect(requestedUrls).toContain(
+      "http://127.0.0.1:8080/api/v1/simulation-playback-control-contract",
     );
 
 

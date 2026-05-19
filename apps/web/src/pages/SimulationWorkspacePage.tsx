@@ -173,6 +173,159 @@ async function loadReplanningDecisionResponseSample(): Promise<ReplanningDecisio
   };
 }
 
+
+interface SimulationPlaybackControlItemView {
+  id: string;
+  label: string;
+  enabled: boolean;
+  disabledReason: string;
+}
+
+interface SimulationPlaybackControlContractView {
+  status: string;
+  artifactPath: string;
+  futureEndpointPath: string;
+  futureEndpointStatus: string;
+  readOnly: boolean;
+  executionEnabled: boolean;
+  browserExecutionEnabled: boolean;
+  speedControlsEnabled: boolean;
+  timelineScrubberEnabled: boolean;
+  controlCount: number;
+  disabledControlCount: number;
+  dissertationFocus: string;
+  delayVisualizationAlignment: string;
+  speedOptions: string;
+  supportedTimelineViews: string[];
+  blockedActions: string[];
+  controls: SimulationPlaybackControlItemView[];
+  conservativeNote: string;
+  safetyNote: string;
+}
+
+function readViewStringArray(record: Record<string, unknown>, key: string): string[] {
+  const value = record[key];
+
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter((item): item is string => typeof item === "string");
+}
+
+function readViewNumberArray(record: Record<string, unknown>, key: string): number[] {
+  const value = record[key];
+
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter((item): item is number => typeof item === "number" && Number.isFinite(item));
+}
+
+async function loadSimulationPlaybackControlContract(): Promise<SimulationPlaybackControlContractView> {
+  const baseUrl =
+    import.meta.env.VITE_FIELDOPS_API_BASE_URL ?? "http://127.0.0.1:8080";
+
+  const response = await fetch(
+    `${baseUrl}/api/v1/simulation-playback-control-contract`,
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Could not load simulation playback control contract. HTTP ${response.status}`,
+    );
+  }
+
+  const endpointPayload = asViewRecord(await response.json());
+  const contract = asViewRecord(
+    endpointPayload.simulation_playback_control_contract,
+  );
+  const futureEndpoint = asViewRecord(contract.future_endpoint);
+  const researchScope = asViewRecord(contract.research_scope);
+  const playbackControls = asViewRecord(contract.playback_controls);
+  const speedControls = asViewRecord(contract.speed_controls);
+  const timelineScrubber = asViewRecord(contract.timeline_scrubber);
+  const controlModel = asViewRecord(contract.control_model);
+  const delayVisualizationBindings = asViewRecord(
+    contract.delay_visualization_bindings,
+  );
+
+  const controls = Object.entries(playbackControls).map(([id, value]) => {
+    const control = asViewRecord(value);
+
+    return {
+      id,
+      label: readViewString(control, "label", formatToken(id)),
+      enabled: readViewBoolean(control, "enabled", false),
+      disabledReason: readViewString(
+        control,
+        "disabled_reason",
+        "Control is visible but disabled in the read-only workspace.",
+      ),
+    };
+  });
+
+  const speedOptions = readViewNumberArray(speedControls, "available_speeds")
+    .map((speed) => `${speed}x`)
+    .join(", ");
+
+  return {
+    status: readViewString(contract, "status", "read_only_contract"),
+    artifactPath: readViewString(
+      endpointPayload,
+      "artifact_path",
+      "platform/contracts/simulation_playback_control_contract.json",
+    ),
+    futureEndpointPath: readViewString(
+      futureEndpoint,
+      "planned_path",
+      "/api/v1/simulation-playback-control-contract",
+    ),
+    futureEndpointStatus: readViewString(
+      futureEndpoint,
+      "status",
+      "planned_not_enabled",
+    ),
+    readOnly: readViewBoolean(contract, "read_only", true),
+    executionEnabled:
+      readViewBoolean(contract, "execution_exposed", false) ||
+      readViewBoolean(contract, "enabled", false),
+    browserExecutionEnabled: false,
+    speedControlsEnabled: readViewBoolean(speedControls, "enabled", false),
+    timelineScrubberEnabled: readViewBoolean(timelineScrubber, "enabled", false),
+    controlCount: controls.length,
+    disabledControlCount: controls.filter((control) => !control.enabled).length,
+    dissertationFocus: readViewString(
+      researchScope,
+      "dissertation_focus",
+      "delay_propagation",
+    ),
+    delayVisualizationAlignment: readViewString(
+      delayVisualizationBindings,
+      "dissertation_alignment",
+      "The playback controls support delay propagation visual inspection.",
+    ),
+    speedOptions: speedOptions.length > 0 ? speedOptions : "not configured",
+    supportedTimelineViews: readViewStringArray(
+      timelineScrubber,
+      "supported_future_views",
+    ),
+    blockedActions: readViewStringArray(controlModel, "blocked_client_actions"),
+    controls,
+    conservativeNote: readViewString(
+      contract,
+      "conservative_note",
+      "This artifact is read-only and does not execute simulation playback.",
+    ),
+    safetyNote: readViewString(
+      endpointPayload,
+      "safety_note",
+      "This endpoint is read-only and does not trigger backend jobs.",
+    ),
+  };
+}
+
 interface WorkspaceDataState {
   loading: boolean;
   error: string | null;
@@ -181,6 +334,7 @@ interface WorkspaceDataState {
   delayInjectionContract: DelayInjectionRequestContractSnapshot | null;
   replanningDecisionResponseContract: ReplanningDecisionResponseContractSnapshot | null;
   replanningDecisionResponseSample: ReplanningDecisionResponseSampleView | null;
+  simulationPlaybackControlContract: SimulationPlaybackControlContractView | null;
 }
 
 function LoadingState() {
@@ -767,6 +921,126 @@ function ReplanningDecisionResponseSamplePanel({
   );
 }
 
+
+function SimulationPlaybackControlContractPanel({
+  contract,
+}: {
+  contract: SimulationPlaybackControlContractView;
+}) {
+  return (
+    <section className="section-card">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Simulation playback controls</p>
+          <h2>Simulation playback control contract</h2>
+          <p>{contract.delayVisualizationAlignment}</p>
+        </div>
+        <span className="source-pill">{formatToken(contract.status)}</span>
+      </div>
+
+      <div className="status-grid">
+        <WorkspaceCard
+          title={contract.futureEndpointPath}
+          label="Playback endpoint"
+          description="The endpoint is visible so the web workspace can be designed before playback execution exists."
+          status={formatToken(contract.futureEndpointStatus)}
+        />
+        <WorkspaceCard
+          title={`${contract.disabledControlCount}/${contract.controlCount}`}
+          label="Disabled playback controls"
+          description="Playback controls are rendered as future UI affordances, but they do not mutate simulation time."
+          status={contract.executionEnabled ? "execution requires review" : "execution disabled"}
+        />
+        <WorkspaceCard
+          title={formatToken(contract.dissertationFocus)}
+          label="Research focus"
+          description="Playback is aligned with delay propagation visualization before broader perturbation classes."
+          status="delay-first"
+        />
+      </div>
+
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Disabled controls</p>
+          <h2>Playback buttons are visible but inactive</h2>
+        </div>
+        <span className="source-pill">read-only UI</span>
+      </div>
+
+      <div className="report-grid">
+        {contract.controls.map((control) => (
+          <article className="report-card" key={control.id}>
+            <span className="report-category">
+              {control.enabled ? "enabled" : "disabled"}
+            </span>
+            <h3>{control.label}</h3>
+            <p>{control.disabledReason}</p>
+            <button className="nav-item" disabled type="button">
+              {control.label}
+            </button>
+          </article>
+        ))}
+      </div>
+
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Timeline and speed</p>
+          <h2>Timeline scrubber and speed controls remain read-only</h2>
+        </div>
+        <span className="source-pill">no backend mutation</span>
+      </div>
+
+      <div className="status-grid">
+        <BooleanStatusCard
+          label="Speed control execution"
+          value={contract.speedControlsEnabled}
+          safeWhenFalse
+        />
+        <BooleanStatusCard
+          label="Timeline scrubber mutation"
+          value={contract.timelineScrubberEnabled}
+          safeWhenFalse
+        />
+        <BooleanStatusCard
+          label="Browser playback execution"
+          value={contract.browserExecutionEnabled}
+          safeWhenFalse
+        />
+      </div>
+
+      <div className="status-grid">
+        <article className="metric-card">
+          <span>speed options</span>
+          <h3>{contract.speedOptions}</h3>
+          <p>Options are shown only as a future UI contract.</p>
+        </article>
+        <article className="metric-card">
+          <span>future timeline views</span>
+          <h3>{contract.supportedTimelineViews.length} planned views</h3>
+          <TokenList
+            items={contract.supportedTimelineViews.slice(0, 5)}
+            fallback="No timeline views are configured yet."
+          />
+        </article>
+        <article className="metric-card">
+          <span>blocked actions</span>
+          <h3>{contract.blockedActions.length} blocked actions</h3>
+          <TokenList
+            items={contract.blockedActions.slice(0, 5)}
+            fallback="No blocked actions are listed."
+          />
+        </article>
+      </div>
+
+      <div className="notice-card">
+        <p className="eyebrow">Playback safety note</p>
+        <p>{contract.conservativeNote}</p>
+        <p>{contract.safetyNote}</p>
+      </div>
+    </section>
+  );
+}
+
 export function SimulationWorkspacePage() {
   const viewModel = useDashboardViewModel();
   const [workspaceState, setWorkspaceState] = useState<WorkspaceDataState>({
@@ -777,6 +1051,7 @@ export function SimulationWorkspacePage() {
     delayInjectionContract: null,
     replanningDecisionResponseContract: null,
       replanningDecisionResponseSample: null,
+      simulationPlaybackControlContract: null,
   });
 
   useEffect(() => {
@@ -791,6 +1066,7 @@ export function SimulationWorkspacePage() {
       delayInjectionContract: null,
     replanningDecisionResponseContract: null,
       replanningDecisionResponseSample: null,
+      simulationPlaybackControlContract: null,
     });
 
     void Promise.all([
@@ -799,6 +1075,7 @@ export function SimulationWorkspacePage() {
       api.getDelayInjectionRequestContract(),
         api.getReplanningDecisionResponseContract(),
       loadReplanningDecisionResponseSample(),
+      loadSimulationPlaybackControlContract(),
     ])
       .then(([
         contract,
@@ -806,6 +1083,7 @@ export function SimulationWorkspacePage() {
         delayInjectionContract,
         replanningDecisionResponseContract,
         replanningDecisionResponseSample,
+        simulationPlaybackControlContract,
       ]) => {
         if (!cancelled) {
           setWorkspaceState({
@@ -816,6 +1094,7 @@ export function SimulationWorkspacePage() {
             delayInjectionContract,
         replanningDecisionResponseContract,
           replanningDecisionResponseSample,
+            simulationPlaybackControlContract,
           });
         }
       })
@@ -832,6 +1111,7 @@ export function SimulationWorkspacePage() {
             delayInjectionContract: null,
     replanningDecisionResponseContract: null,
       replanningDecisionResponseSample: null,
+            simulationPlaybackControlContract: null,
           });
         }
       });
@@ -846,6 +1126,7 @@ export function SimulationWorkspacePage() {
   const delayInjectionContract = workspaceState.delayInjectionContract;
   const replanningDecisionResponseContract = workspaceState.replanningDecisionResponseContract;
   const replanningDecisionResponseSample = workspaceState.replanningDecisionResponseSample;
+  const simulationPlaybackControlContract = workspaceState.simulationPlaybackControlContract;
 
   const activeSafetyNotes = useMemo(() => sample?.safetyNotes ?? [], [sample]);
 
@@ -1070,6 +1351,10 @@ export function SimulationWorkspacePage() {
           <p className="eyebrow">Safety notes</p>
           <p>{activeSafetyNotes.join(" ")}</p>
         </section>
+      )}
+
+      {simulationPlaybackControlContract && (
+        <SimulationPlaybackControlContractPanel contract={simulationPlaybackControlContract} />
       )}
 
       <section className="notice-card">
