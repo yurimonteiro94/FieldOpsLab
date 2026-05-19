@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ReportCard } from "../components/ReportCard";
 import type { PlatformReport, ReportDetail } from "../domain/platform";
-import { formatPercent } from "../domain/platform";
+import { formatPercent, formatToken } from "../domain/platform";
 import { createReadOnlyPlatformApi } from "../services/readOnlyPlatformApi";
 import { useDashboardViewModel } from "../viewModels/useDashboardViewModel";
+
+type ReportCategoryFilter = "all" | string;
 
 function LoadingState() {
   return (
@@ -34,6 +36,20 @@ function ErrorState({
       </button>
     </section>
   );
+}
+
+function categoryLabel(category: string): string {
+  return formatToken(category);
+}
+
+function buildCategoryCounts(reports: PlatformReport[]): Map<string, number> {
+  const counts = new Map<string, number>();
+
+  for (const report of reports) {
+    counts.set(report.category, (counts.get(report.category) ?? 0) + 1);
+  }
+
+  return counts;
 }
 
 function ReportPreview({
@@ -103,7 +119,7 @@ function ReportPreview({
             <p className="eyebrow">Report detail</p>
             <h2>{detail.title}</h2>
           </div>
-          <span className="source-pill">{detail.category}</span>
+          <span className="source-pill">{categoryLabel(detail.category)}</span>
         </div>
 
         <p>{detail.description}</p>
@@ -201,6 +217,54 @@ function ReportPreview({
   );
 }
 
+function ReportCategoryFilters({
+  reports,
+  selectedCategory,
+  onSelectCategory,
+}: {
+  reports: PlatformReport[];
+  selectedCategory: ReportCategoryFilter;
+  onSelectCategory: (category: ReportCategoryFilter) => void;
+}) {
+  const categoryCounts = buildCategoryCounts(reports);
+  const categories = Array.from(categoryCounts.keys()).sort();
+
+  return (
+    <section className="section-card">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Report filters</p>
+          <h2>Browse by category</h2>
+        </div>
+        <span className="source-pill">{categories.length} categories</span>
+      </div>
+
+      <div className="nav-list" aria-label="Report category filters">
+        <button
+          className={`nav-item ${selectedCategory === "all" ? "active" : ""}`}
+          onClick={() => onSelectCategory("all")}
+          type="button"
+        >
+          all reports ({reports.length})
+        </button>
+
+        {categories.map((category) => (
+          <button
+            className={`nav-item ${
+              selectedCategory === category ? "active" : ""
+            }`}
+            key={category}
+            onClick={() => onSelectCategory(category)}
+            type="button"
+          >
+            {categoryLabel(category)} ({categoryCounts.get(category)})
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ReportSelector({
   reports,
   selectedReportId,
@@ -210,6 +274,19 @@ function ReportSelector({
   selectedReportId: string | null;
   onSelect: (reportId: string) => void;
 }) {
+  if (reports.length === 0) {
+    return (
+      <section className="notice-card">
+        <p className="eyebrow">Available artifacts</p>
+        <h2>No reports match this filter</h2>
+        <p>
+          Change the category filter to inspect another group of generated
+          artifacts.
+        </p>
+      </section>
+    );
+  }
+
   return (
     <div className="report-grid">
       {reports.map((report) => (
@@ -221,7 +298,7 @@ function ReportSelector({
           onClick={() => onSelect(report.id)}
           type="button"
         >
-          <span className="report-category">{report.category}</span>
+          <span className="report-category">{categoryLabel(report.category)}</span>
           <h3>{report.title}</h3>
           <p>{report.description}</p>
           <p>{report.artifactPath}</p>
@@ -240,6 +317,8 @@ function ReportSelector({
 
 export function ReportsPage() {
   const viewModel = useDashboardViewModel();
+  const [selectedCategory, setSelectedCategory] =
+    useState<ReportCategoryFilter>("all");
   const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
   const [reportDetail, setReportDetail] = useState<ReportDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
@@ -249,19 +328,39 @@ export function ReportsPage() {
     return createReadOnlyPlatformApi(viewModel.snapshot?.apiBaseUrl);
   }, [viewModel.snapshot?.apiBaseUrl]);
 
+  const filteredReports = useMemo(() => {
+    if (!viewModel.snapshot) {
+      return [];
+    }
+
+    if (selectedCategory === "all") {
+      return viewModel.snapshot.reports;
+    }
+
+    return viewModel.snapshot.reports.filter(
+      (report) => report.category === selectedCategory,
+    );
+  }, [selectedCategory, viewModel.snapshot]);
+
   useEffect(() => {
-    if (!viewModel.snapshot || selectedReportId !== null) {
+    if (!viewModel.snapshot) {
       return;
     }
 
-    const firstAvailableReport = viewModel.snapshot.reports.find(
+    const selectedReportStillVisible = filteredReports.some(
+      (report) => report.id === selectedReportId,
+    );
+
+    if (selectedReportStillVisible) {
+      return;
+    }
+
+    const firstAvailableReport = filteredReports.find(
       (report) => report.available,
     );
 
-    if (firstAvailableReport) {
-      setSelectedReportId(firstAvailableReport.id);
-    }
-  }, [selectedReportId, viewModel.snapshot]);
+    setSelectedReportId(firstAvailableReport?.id ?? null);
+  }, [filteredReports, selectedReportId, viewModel.snapshot]);
 
   useEffect(() => {
     if (!selectedReportId) {
@@ -319,6 +418,9 @@ export function ReportsPage() {
   }
 
   const { snapshot } = viewModel;
+  const campaignReportCount = snapshot.reports.filter((report) =>
+    report.category.startsWith("campaign"),
+  ).length;
 
   return (
     <>
@@ -343,15 +445,55 @@ export function ReportsPage() {
       <section className="section-card">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">Available artifacts</p>
+            <p className="eyebrow">Catalog summary</p>
             <h2>{snapshot.reports.length} reports exposed</h2>
           </div>
           <span className="source-pill">read-only</span>
         </div>
 
+        <div className="status-grid">
+          <article className="metric-card">
+            <span>Total reports</span>
+            <strong>{snapshot.reports.length}</strong>
+            <p>Generated artifacts exposed by the local API catalog.</p>
+          </article>
+
+          <article className="metric-card">
+            <span>Campaign reports</span>
+            <strong>{campaignReportCount}</strong>
+            <p>Reports related to planning, execution, and campaign analysis.</p>
+          </article>
+
+          <article className="metric-card">
+            <span>Current filter</span>
+            <strong>{categoryLabel(selectedCategory)}</strong>
+            <p>{filteredReports.length} reports visible after filtering.</p>
+          </article>
+        </div>
+      </section>
+
+      <ReportCategoryFilters
+        onSelectCategory={setSelectedCategory}
+        reports={snapshot.reports}
+        selectedCategory={selectedCategory}
+      />
+
+      <section className="section-card">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Available artifacts</p>
+            <h2>{filteredReports.length} visible reports</h2>
+          </div>
+          <span className="source-pill">
+            {selectedCategory === "all"
+              ? "all categories"
+              : categoryLabel(selectedCategory)}
+          </span>
+        </div>
+
         <ReportSelector
           onSelect={setSelectedReportId}
-          reports={snapshot.reports}
+          reports={filteredReports}
           selectedReportId={selectedReportId}
         />
       </section>
@@ -372,7 +514,7 @@ export function ReportsPage() {
         </div>
 
         <div className="report-grid">
-          {snapshot.reports.map((report) => (
+          {filteredReports.map((report) => (
             <ReportCard key={report.id} report={report} />
           ))}
         </div>
