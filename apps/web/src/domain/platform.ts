@@ -1,6 +1,7 @@
 export type PageId =
   | "dashboard"
   | "reports"
+  | "campaign-diagnostics"
   | "experimental-design"
   | "api-safety"
   | "scientific-validation"
@@ -47,20 +48,13 @@ export interface PlatformReport {
   qualityPassed: boolean | null;
 }
 
-export interface ReportResource<T> {
+export interface ReportResource<TData = Record<string, unknown>> {
   path: string;
   exists: boolean;
   loaded: boolean;
-  data: T | null;
+  data: TData | null;
   text: string;
-  error: string | null;
-}
-
-export interface ReportDetailMetadata {
-  artifactPath: string;
-  markdownPath: string;
-  qualityPath: string;
-  qualityPassed: boolean | null;
+  error: string;
 }
 
 export interface ReportDetail {
@@ -73,9 +67,14 @@ export interface ReportDetail {
   executionSupported: boolean;
   writeOperationsSupported: boolean;
   available: boolean;
-  metadata: ReportDetailMetadata;
+  metadata: {
+    artifactPath: string;
+    markdownPath: string;
+    qualityPath: string;
+    qualityPassed: boolean | null;
+  };
   artifact: ReportResource<Record<string, unknown>>;
-  markdown: ReportResource<never>;
+  markdown: ReportResource;
   qualityCheck: ReportResource<Record<string, unknown>>;
   conservativeNote: string;
 }
