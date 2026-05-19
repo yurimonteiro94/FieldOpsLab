@@ -1,0 +1,162 @@
+{
+  "contract": "delay_injection_request_contract",
+  "version": "0.1.0",
+  "status": "planned_disabled",
+  "read_only": true,
+  "execution_enabled": false,
+  "write_operations_supported": false,
+  "browser_execution_enabled": false,
+  "primary_purpose": "Define the future request shape for injecting delays during visual simulation without enabling execution yet.",
+  "research_alignment": {
+    "primary_dissertation_scope": [
+      "delay_propagation",
+      "travel_delay",
+      "service_delay"
+    ],
+    "future_platform_extensions": [
+      "new_requests",
+      "cancellations",
+      "priority_changes",
+      "resource_unavailability",
+      "task_duration_changes"
+    ],
+    "scope_policy": "The dissertation should stay focused on delays and delay propagation. Other perturbations are platform extension points, not the current academic claim."
+  },
+  "planned_endpoint": {
+    "method": "POST",
+    "path": "/api/v1/simulation-runs/{simulation_run_id}/delay-events",
+    "status": "planned_not_enabled",
+    "current_behavior": "No write endpoint is currently exposed by the read-only API.",
+    "execution_enabled": false,
+    "requires_future_authentication": true,
+    "requires_future_server_side_validation": true,
+    "requires_future_audit_log": true
+  },
+  "request_shape": {
+    "simulation_run_id": {
+      "type": "string",
+      "required": true,
+      "description": "Identifier of the future simulation run receiving the delay event."
+    },
+    "event_id": {
+      "type": "string",
+      "required": true,
+      "description": "Client-generated or server-generated identifier for the injected delay event."
+    },
+    "event_type": {
+      "type": "string",
+      "required": true,
+      "allowed_values": [
+        "travel_delay",
+        "service_delay"
+      ],
+      "description": "Primary delay type. Current dissertation scope should only rely on travel and service delays."
+    },
+    "target_type": {
+      "type": "string",
+      "required": true,
+      "allowed_values": [
+        "technician",
+        "task",
+        "route_leg"
+      ],
+      "description": "Operational object affected by the injected delay."
+    },
+    "target_id": {
+      "type": "string",
+      "required": true,
+      "description": "Identifier of the affected technician, task, or route leg."
+    },
+    "injected_at_simulation_time_minutes": {
+      "type": "number",
+      "required": true,
+      "minimum": 0,
+      "description": "Simulation clock time when the user injects the delay."
+    },
+    "delay_minutes": {
+      "type": "number",
+      "required": true,
+      "minimum": 0,
+      "description": "Non-negative delay duration added to the affected object."
+    },
+    "reason": {
+      "type": "string",
+      "required": false,
+      "description": "Human-readable reason such as traffic, longer service, blocked access, or customer issue."
+    },
+    "source": {
+      "type": "string",
+      "required": true,
+      "allowed_values": [
+        "user_injected",
+        "scripted_scenario",
+        "imported_scenario"
+      ],
+      "description": "Origin of the delay event."
+    },
+    "replanning_policy_hint": {
+      "type": "string",
+      "required": false,
+      "allowed_values": [
+        "no_replanning",
+        "threshold_delay_replanning",
+        "periodic_replanning",
+        "event_based_replanning",
+        "not_specified"
+      ],
+      "description": "Optional future hint for selecting or comparing re-planning policies."
+    }
+  },
+  "validation_rules": [
+    "event_type must be travel_delay or service_delay for the current dissertation-oriented experiments.",
+    "target_type must be technician, task, or route_leg.",
+    "injected_at_simulation_time_minutes must be greater than or equal to zero.",
+    "delay_minutes must be greater than or equal to zero.",
+    "delay injection must not mutate production data.",
+    "delay injection must not execute solvers directly from the browser.",
+    "future execution must happen only through a controlled backend job API with validation, audit logging, and explicit run boundaries."
+  ],
+  "expected_future_effects": [
+    "Update the simulation timeline.",
+    "Mark the affected technician, task, or route leg as delayed.",
+    "Recompute affected arrival and service start estimates.",
+    "Track propagated delay across subsequent tasks.",
+    "Optionally trigger a re-planning decision depending on the selected policy.",
+    "Record stability, cost, and feasibility impacts for later comparison."
+  ],
+  "replanning_decision_output": {
+    "required_future_fields": [
+      "decision_id",
+      "policy_id",
+      "triggered",
+      "trigger_reason",
+      "affected_entities",
+      "previous_plan_cost",
+      "candidate_plan_cost",
+      "stability_delta",
+      "feasibility_status",
+      "computational_time_ms",
+      "accepted"
+    ],
+    "current_status": "not_executed_by_this_contract"
+  },
+  "safety_requirements": {
+    "read_only_contract_only": true,
+    "no_browser_solver_execution": true,
+    "no_arbitrary_command_execution": true,
+    "no_file_system_mutation_from_web": true,
+    "no_production_data_mutation": true,
+    "future_endpoint_requires_authentication": true,
+    "future_endpoint_requires_server_side_validation": true,
+    "future_endpoint_requires_audit_log": true
+  },
+  "quality_requirements": [
+    "The contract must distinguish travel delay from service delay.",
+    "The contract must preserve delay propagation as the narrow dissertation scope.",
+    "The contract must keep future platform extensions visible but secondary.",
+    "The contract must explicitly mark current execution as disabled.",
+    "The contract must include non-negative time and delay requirements.",
+    "The contract must define how future re-planning decisions will be audited."
+  ],
+  "conservative_note": "This file is only a read-only planning contract. It does not enable delay injection, simulation execution, solver execution, optimization jobs, or write operations."
+}
