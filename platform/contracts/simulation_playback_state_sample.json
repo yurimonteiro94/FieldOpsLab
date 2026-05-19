@@ -1,0 +1,173 @@
+{
+  "schema": "fieldops_lab.simulation_playback_state_sample",
+  "version": "0.1.0",
+  "artifact_type": "static_ui_sample",
+  "status": "sample_only",
+  "read_only": true,
+  "execution_enabled": false,
+  "write_operations_supported": false,
+  "browser_triggered_execution_enabled": false,
+  "primary_purpose": "Provide a static read-only sample of the future simulation playback state so the web interface can render clock, speed, scrubber, delay propagation, and decision-preview controls without triggering simulation or optimization execution.",
+  "dissertation_scope": {
+    "primary_focus": "delay propagation",
+    "included_delay_types": [
+      "travel_delay",
+      "service_delay"
+    ],
+    "excluded_from_current_scope": [
+      "new_requests",
+      "cancellations",
+      "priority_changes",
+      "live_dispatch_execution",
+      "browser_triggered_solver_execution"
+    ],
+    "scope_note": "The sample keeps the dissertation centered on delay propagation while preserving an extensible platform structure for future perturbation types."
+  },
+  "sample_identity": {
+    "sample_id": "playback_state_demo_delay_propagation_001",
+    "simulation_id": "demo_delay_propagation_001",
+    "source_simulation_state_sample": "platform/contracts/simulation_state_sample.json",
+    "source_playback_control_contract": "platform/contracts/simulation_playback_control_contract.json",
+    "source_decision_response_sample": "platform/contracts/replanning_decision_response_sample.json"
+  },
+  "clock_state": {
+    "status": "paused",
+    "start_time": 480,
+    "current_time": 615,
+    "end_time": 1020,
+    "time_unit": "minutes_from_day_start",
+    "display_time": "10:15",
+    "elapsed_minutes": 135,
+    "remaining_minutes": 405,
+    "progress_ratio": 0.25,
+    "mutation_allowed": false
+  },
+  "playback_controls": {
+    "play": {
+      "visible": true,
+      "enabled": false,
+      "disabled_reason": "Read-only UI sample. No simulation clock execution is available from the browser."
+    },
+    "pause": {
+      "visible": true,
+      "enabled": false,
+      "disabled_reason": "The displayed state is already static and paused."
+    },
+    "step_forward": {
+      "visible": true,
+      "enabled": false,
+      "step_minutes": 5,
+      "disabled_reason": "Future control only. It must not mutate the static sample."
+    },
+    "step_backward": {
+      "visible": true,
+      "enabled": false,
+      "step_minutes": 5,
+      "disabled_reason": "Future control only. It must not mutate the static sample."
+    },
+    "reset": {
+      "visible": true,
+      "enabled": false,
+      "disabled_reason": "Reset is not available because no executable playback session exists."
+    }
+  },
+  "speed_control": {
+    "visible": true,
+    "enabled": false,
+    "selected_multiplier": 1.0,
+    "available_multipliers": [
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      4.0,
+      8.0
+    ],
+    "disabled_reason": "Speed selection is a preview-only contract field until a safe execution backend exists."
+  },
+  "timeline_scrubber": {
+    "visible": true,
+    "enabled": false,
+    "current_value": 615,
+    "minimum_value": 480,
+    "maximum_value": 1020,
+    "step_minutes": 5,
+    "normalized_position": 0.25,
+    "disabled_reason": "The scrubber can be rendered but must not alter the sample state."
+  },
+  "visible_window": {
+    "window_start_time": 570,
+    "window_end_time": 690,
+    "window_label": "09:30-11:30",
+    "selected_event_id": "event_service_delay_task_002",
+    "highlighted_entities": [
+      "technician_001",
+      "task_002",
+      "task_003"
+    ]
+  },
+  "delay_propagation_view": {
+    "visible": true,
+    "primary_delay_event_id": "event_service_delay_task_002",
+    "primary_delay_type": "service_delay",
+    "delay_minutes": 35,
+    "affected_task_ids": [
+      "task_002",
+      "task_003"
+    ],
+    "affected_technician_ids": [
+      "technician_001"
+    ],
+    "downstream_effects": [
+      {
+        "effect_id": "effect_shift_task_003_start",
+        "entity_id": "task_003",
+        "effect_type": "start_time_shift",
+        "delta_minutes": 25,
+        "status": "preview_only"
+      },
+      {
+        "effect_id": "effect_route_stability_loss",
+        "entity_id": "route_001",
+        "effect_type": "route_stability_change",
+        "delta_minutes": 0,
+        "status": "preview_only"
+      }
+    ],
+    "dissertation_alignment": "This view is centered on delay propagation and exposes how a local service delay can affect downstream tasks, route stability, feasibility, and future re-planning decisions."
+  },
+  "decision_preview_binding": {
+    "visible": true,
+    "enabled": false,
+    "decision_sample_id": "decision_response_demo_delay_propagation_001",
+    "decision_status": "not_executed",
+    "recommended_policy_id": "threshold_delay_replanning_policy",
+    "tradeoff_summary": "The preview connects delay propagation to feasibility, performance, stability, and computational cost, but it does not execute or apply any decision.",
+    "mutation_allowed": false
+  },
+  "ui_quality_requirements": [
+    "The UI must clearly show that playback controls are disabled.",
+    "The UI must not imply that a simulation, solver, optimizer, or backend job has been executed.",
+    "The UI must preserve the delay propagation focus of the dissertation.",
+    "The UI must keep sample data deterministic so tests remain reproducible.",
+    "The UI must display playback state as inspection-only until a validated backend execution layer exists."
+  ],
+  "safety_requirements": [
+    "Do not expose POST, PUT, PATCH, or DELETE behavior for this sample.",
+    "Do not trigger simulation execution from the browser.",
+    "Do not mutate files from the playback controls.",
+    "Do not claim that the selected policy has been operationally applied.",
+    "Do not use this sample as production dispatch output."
+  ],
+  "validation_rules": [
+    "read_only must be true.",
+    "execution_enabled must be false.",
+    "browser_triggered_execution_enabled must be false.",
+    "playback controls must be visible but disabled.",
+    "speed control must be visible but disabled.",
+    "timeline scrubber must be visible but disabled.",
+    "decision preview must be visible but disabled.",
+    "delay propagation must remain the primary dissertation focus."
+  ],
+  "conservative_note": "This is a static read-only playback state sample. It is safe for UI rendering and testing only. It does not start, pause, advance, reset, or execute a simulation, and it does not apply any re-planning decision."
+}
