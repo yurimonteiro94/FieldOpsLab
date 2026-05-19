@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { formatPercent, formatToken } from "../domain/platform";
 import type {
+  DelayInjectionRequestContractSnapshot,
   SimulationStateContractSnapshot,
   SimulationStateSampleSnapshot,
   SimulationTask,
@@ -13,13 +14,16 @@ interface WorkspaceDataState {
   error: string | null;
   contract: SimulationStateContractSnapshot | null;
   sample: SimulationStateSampleSnapshot | null;
+  delayInjectionContract: DelayInjectionRequestContractSnapshot | null;
 }
 
 function LoadingState() {
   return (
     <section className="hero-card compact">
-      <p className="eyebrow">Simulation workspace</p>
-      <h2>Loading simulation workspace...</h2>
+      <div>
+        <p className="eyebrow">Simulation workspace</p>
+        <h2>Loading simulation workspace...</h2>
+      </div>
     </section>
   );
 }
@@ -33,12 +37,14 @@ function ErrorState({
 }) {
   return (
     <section className="hero-card compact">
-      <p className="eyebrow">Simulation workspace</p>
-      <h2>Simulation workspace unavailable</h2>
-      <p className="hero-copy">{message}</p>
-      <button className="primary-action" type="button" onClick={onRetry}>
-        Retry
-      </button>
+      <div>
+        <p className="eyebrow">Simulation workspace</p>
+        <h2>Simulation workspace unavailable</h2>
+        <p className="hero-copy">{message}</p>
+        <button className="nav-item active" type="button" onClick={onRetry}>
+          Retry
+        </button>
+      </div>
     </section>
   );
 }
@@ -124,42 +130,31 @@ function OperationMap({ sample }: { sample: SimulationStateSampleSnapshot }) {
         <div>
           <p className="eyebrow">Read-only visual sample</p>
           <h2>Normalized operation map</h2>
+          <p>{sample.map.coordinateSystem}</p>
         </div>
-        <span className="source-pill">{sample.map.coordinateSystem}</span>
+        <span className="source-pill">static sample</span>
       </div>
 
       <svg
         aria-label="Read-only normalized operation map"
-        role="img"
         viewBox="0 0 100 100"
-        width="100%"
-        height="320"
+        role="img"
+        className="code-preview"
       >
-        <title>Read-only normalized operation map</title>
-
         {routeLines.map((route) => (
           <polyline
             key={route.id}
             points={route.points}
             fill="none"
             stroke="currentColor"
-            strokeDasharray="3 3"
-            strokeWidth="0.8"
+            strokeWidth="0.6"
           />
         ))}
 
         {sample.map.depots.map((depot) => (
           <g key={depot.id}>
-            <rect
-              x={depot.x - 2}
-              y={depot.y - 2}
-              width="4"
-              height="4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1"
-            />
-            <text x={depot.x + 2} y={depot.y - 2} fontSize="3">
+            <rect x={depot.x - 2} y={depot.y - 2} width="4" height="4" />
+            <text x={depot.x + 3} y={depot.y} fontSize="3">
               {depot.label}
             </text>
           </g>
@@ -167,8 +162,8 @@ function OperationMap({ sample }: { sample: SimulationStateSampleSnapshot }) {
 
         {sample.map.tasks.map((task) => (
           <g key={task.id}>
-            <circle cx={task.x} cy={task.y} r="2" fill="none" stroke="currentColor" />
-            <text x={task.x + 2.5} y={task.y + 1} fontSize="3">
+            <circle cx={task.x} cy={task.y} r="1.8" />
+            <text x={task.x + 3} y={task.y} fontSize="3">
               {task.label}
             </text>
           </g>
@@ -176,14 +171,7 @@ function OperationMap({ sample }: { sample: SimulationStateSampleSnapshot }) {
 
         {sample.map.technicians.map((technician) => (
           <g key={technician.id}>
-            <rect
-              x={technician.x - 2.5}
-              y={technician.y - 2.5}
-              width="5"
-              height="5"
-              stroke="currentColor"
-              strokeWidth="1.2"
-            />
+            <circle cx={technician.x} cy={technician.y} r="2.4" />
             <text x={technician.x + 3} y={technician.y + 1} fontSize="3">
               {technician.label}
             </text>
@@ -214,9 +202,9 @@ function ClockPanel({ sample }: { sample: SimulationStateSampleSnapshot }) {
 
       <div className="status-grid">
         <WorkspaceCard
-          label="Current time"
           title={`${sample.clock.currentTime} ${sample.clock.timeUnit}`}
-          description={`Window from ${sample.clock.startTime} to ${sample.clock.endTime} ${sample.clock.timeUnit}.`}
+          label="Current time"
+          description={`Window from ${sample.clock.startTime} to ${sample.clock.endTime}.`}
           status={`${Math.round(progress)}% elapsed`}
         />
         <BooleanStatusCard
@@ -245,10 +233,10 @@ function TechnicianCards({ sample }: { sample: SimulationStateSampleSnapshot }) 
         <span className="source-pill">{sample.map.technicians.length} technicians</span>
       </div>
 
-      <div className="report-grid">
+      <div className="status-grid">
         {sample.map.technicians.map((technician) => (
-          <article className="report-card" key={technician.id}>
-            <span className="report-category">{formatToken(technician.status)}</span>
+          <article className="metric-card" key={technician.id}>
+            <span>{formatToken(technician.status)}</span>
             <h3>{technician.label}</h3>
             <p>Current task: {technician.currentTaskId}</p>
             <p>Route: {technician.routeId}</p>
@@ -271,10 +259,10 @@ function TaskCards({ sample }: { sample: SimulationStateSampleSnapshot }) {
         <span className="source-pill">{sample.map.tasks.length} tasks</span>
       </div>
 
-      <div className="report-grid">
+      <div className="status-grid">
         {sample.map.tasks.map((task) => (
-          <article className="report-card" key={task.id}>
-            <span className="report-category">{formatToken(task.status)}</span>
+          <article className="metric-card" key={task.id}>
+            <span>{formatToken(task.status)}</span>
             <h3>{task.label}</h3>
             <p>
               Planned: {task.plannedStart} to {task.plannedEnd}
@@ -327,25 +315,6 @@ function ReplanningPanel({ sample }: { sample: SimulationStateSampleSnapshot }) 
         </span>
       </div>
 
-      <div className="status-grid">
-        <WorkspaceCard
-          label="Trigger"
-          title={formatToken(sample.replanningDecision.trigger)}
-          description={`Route ${sample.replanningDecision.affectedRouteId}, technician ${sample.replanningDecision.affectedTechnicianId}.`}
-          status={`time ${sample.replanningDecision.triggerTime}`}
-        />
-        <BooleanStatusCard
-          label="Delay propagation detected"
-          value={sample.replanningDecision.delayPropagationDetected}
-          safeWhenFalse={false}
-        />
-        <BooleanStatusCard
-          label="Browser execution"
-          value={sample.browserTriggeredExecutionEnabled}
-          safeWhenFalse
-        />
-      </div>
-
       <div className="report-grid">
         {sample.replanningDecision.candidatePolicies.map((policy) => (
           <article className="report-card" key={policy.id}>
@@ -355,13 +324,124 @@ function ReplanningPanel({ sample }: { sample: SimulationStateSampleSnapshot }) 
             <h3>{policy.label}</h3>
             <p>{policy.id}</p>
             <strong>
-              {policy.executionEnabled
-                ? "execution requires review"
-                : "read-only candidate"}
+              {policy.executionEnabled ? "execution requires review" : "read-only candidate"}
             </strong>
           </article>
         ))}
       </div>
+    </section>
+  );
+}
+
+function DelayInjectionContractPanel({
+  contract,
+}: {
+  contract: DelayInjectionRequestContractSnapshot;
+}) {
+  const visibleFields = contract.requestFields.slice(0, 6);
+
+  return (
+    <section className="section-card">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Delay injection planning</p>
+          <h2>Delay injection request contract</h2>
+          <p>{contract.primaryPurpose}</p>
+        </div>
+        <span className="source-pill">{formatToken(contract.status)}</span>
+      </div>
+
+      <div className="status-grid">
+        <WorkspaceCard
+          title={contract.plannedEndpoint.path}
+          label={`${contract.plannedEndpoint.method} endpoint`}
+          description={contract.plannedEndpoint.currentBehavior}
+          status={
+            contract.plannedEndpoint.executionEnabled
+              ? "execution requires review"
+              : "execution disabled"
+          }
+        />
+        <BooleanStatusCard
+          label="Browser delay injection"
+          value={contract.browserExecutionEnabled}
+          safeWhenFalse
+        />
+        <BooleanStatusCard
+          label="Write operations"
+          value={contract.writeOperationsSupported}
+          safeWhenFalse
+        />
+      </div>
+
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Future request shape</p>
+          <h2>Fields that a future delay event must carry</h2>
+        </div>
+        <span className="source-pill">{visibleFields.length} fields shown</span>
+      </div>
+
+      <div className="report-grid">
+        {visibleFields.map((field) => (
+          <article className="report-card" key={field.id}>
+            <span className="report-category">
+              {field.required ? "required" : "optional"}
+            </span>
+            <h3>{field.id}</h3>
+            <p>{field.description}</p>
+            <p>Type: {field.type}</p>
+            {field.allowedValues.length > 0 && (
+              <strong>{field.allowedValues.map(formatToken).join(", ")}</strong>
+            )}
+            {field.minimum !== null && <strong>minimum {field.minimum}</strong>}
+          </article>
+        ))}
+      </div>
+
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Validation and safety</p>
+          <h2>Visible contract, no runtime mutation</h2>
+        </div>
+        <span className="source-pill">planned only</span>
+      </div>
+
+      <div className="status-grid">
+        <WorkspaceCard
+          title={contract.plannedEndpoint.status}
+          label="Endpoint status"
+          description="The endpoint shape is documented so the UI can be designed before execution is enabled."
+          status={
+            contract.plannedEndpoint.executionEnabled
+              ? "execution enabled"
+              : "execution disabled"
+          }
+        />
+        <WorkspaceCard
+          title={contract.replanningDecisionCurrentStatus}
+          label="Re-planning output"
+          description="The contract names future decision fields but does not compute a decision here."
+          status="not executed"
+        />
+        <WorkspaceCard
+          title={contract.artifactPath}
+          label="Contract artifact"
+          description={contract.scopePolicy}
+          status="read-only"
+        />
+      </div>
+
+      <div className="notice-card">
+        <p className="eyebrow">Conservative note</p>
+        <p>{contract.conservativeNote}</p>
+      </div>
+
+      {contract.validationRules.length > 0 && (
+        <pre className="code-preview">
+          {contract.validationRules.slice(0, 5).join("\n")}
+        </pre>
+      )}
     </section>
   );
 }
@@ -373,6 +453,7 @@ export function SimulationWorkspacePage() {
     error: null,
     contract: null,
     sample: null,
+    delayInjectionContract: null,
   });
 
   useEffect(() => {
@@ -384,19 +465,22 @@ export function SimulationWorkspacePage() {
       error: null,
       contract: null,
       sample: null,
+      delayInjectionContract: null,
     });
 
     void Promise.all([
       api.getSimulationStateContract(),
       api.getSimulationStateSample(),
+      api.getDelayInjectionRequestContract(),
     ])
-      .then(([contract, sample]) => {
+      .then(([contract, sample, delayInjectionContract]) => {
         if (!cancelled) {
           setWorkspaceState({
             loading: false,
             error: null,
             contract,
             sample,
+            delayInjectionContract,
           });
         }
       })
@@ -410,6 +494,7 @@ export function SimulationWorkspacePage() {
                 : "Unknown simulation workspace loading error.",
             contract: null,
             sample: null,
+            delayInjectionContract: null,
           });
         }
       });
@@ -421,6 +506,7 @@ export function SimulationWorkspacePage() {
 
   const contract = workspaceState.contract;
   const sample = workspaceState.sample;
+  const delayInjectionContract = workspaceState.delayInjectionContract;
 
   const activeSafetyNotes = useMemo(() => sample?.safetyNotes ?? [], [sample]);
 
@@ -431,7 +517,7 @@ export function SimulationWorkspacePage() {
   if (viewModel.error || !viewModel.snapshot) {
     return (
       <ErrorState
-        message={viewModel.error ?? "Platform snapshot is unavailable."}
+        message={viewModel.error ?? "Dashboard snapshot is unavailable."}
         onRetry={viewModel.reload}
       />
     );
@@ -446,9 +532,9 @@ export function SimulationWorkspacePage() {
           <p className="eyebrow">Simulation workspace</p>
           <h2>Visual operation simulation foundation</h2>
           <p className="hero-copy">
-            Read-only workspace for the future real-time map, operational
-            timeline, technician movement, task execution, delay propagation,
-            delay injection, and re-planning visualization.
+            Read-only workspace for the future real-time map, operational timeline,
+            technician movement, task execution, delay propagation, delay injection,
+            and re-planning visualization.
           </p>
         </div>
         <div className="completion-panel">
@@ -472,8 +558,8 @@ export function SimulationWorkspacePage() {
           {(contract?.modes ?? []).map((mode) => (
             <WorkspaceCard
               key={mode.id}
-              label={mode.id}
               title={mode.label}
+              label={mode.id}
               description={mode.purpose}
               status={mode.executionEnabled ? "enabled" : "disabled"}
             />
@@ -505,22 +591,22 @@ export function SimulationWorkspacePage() {
         {contract && sample && (
           <div className="status-grid">
             <WorkspaceCard
-              label="Contract path"
-              title={contract.contractPath}
-              description="Simulation schema inspection does not trigger execution."
-              status={contract.readOnly ? "read-only" : "review required"}
-            />
-            <WorkspaceCard
-              label="Sample path"
-              title={sample.artifactPath}
+              title={sample.clock.simulationId}
+              label="Sample simulation"
               description={sample.purpose}
-              status={sample.readOnly ? "read-only" : "review required"}
+              status={sample.executionEnabled ? "execution enabled" : "execution disabled"}
             />
             <WorkspaceCard
-              label="Sample schema"
-              title={sample.schema}
-              description={`Version ${sample.version}`}
-              status={sample.executionEnabled ? "execution enabled" : "execution disabled"}
+              title={contract.contractPath}
+              label="Contract path"
+              description="The web workspace is driven by the explicit simulation state contract."
+              status={contract.readOnly ? "read-only" : "requires review"}
+            />
+            <WorkspaceCard
+              title={sample.artifactPath}
+              label="Sample path"
+              description="Static state used to validate map, timeline, delay, and re-planning visualization."
+              status={sample.readOnly ? "read-only" : "requires review"}
             />
           </div>
         )}
@@ -537,6 +623,10 @@ export function SimulationWorkspacePage() {
         </>
       )}
 
+      {delayInjectionContract && (
+        <DelayInjectionContractPanel contract={delayInjectionContract} />
+      )}
+
       <section className="section-card">
         <div className="section-heading">
           <div>
@@ -551,25 +641,16 @@ export function SimulationWorkspacePage() {
             <span>primary focus</span>
             <h3>Dissertation focus</h3>
             <TokenList
-              items={
-                sample?.primaryDissertationScope ??
-                contract?.primaryDissertationScope ??
-                []
-              }
-              fallback="delay propagation"
+              items={contract?.primaryDissertationScope ?? []}
+              fallback="Delay propagation, travel delay, and service delay remain the primary focus."
             />
           </article>
-
           <article className="metric-card">
             <span>secondary focus</span>
             <h3>Future platform extensions</h3>
             <TokenList
-              items={
-                sample?.futurePlatformPerturbations ??
-                contract?.futurePlatformPerturbations ??
-                []
-              }
-              fallback="new requests, cancellations, priority changes"
+              items={contract?.futurePlatformPerturbations ?? []}
+              fallback="Future perturbation types are not loaded yet."
             />
           </article>
         </div>

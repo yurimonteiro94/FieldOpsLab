@@ -26,6 +26,11 @@ const healthPayload = {
       method: "GET",
       path: "/api/v1/simulation-state-sample",
     },
+    {
+      description: "Return delay injection request contract.",
+      method: "GET",
+      path: "/api/v1/delay-injection-request-contract",
+    },
   ],
   service: "fieldops_lab_api",
   status: "ok",
@@ -378,6 +383,143 @@ const simulationSamplePayload = {
   },
 };
 
+const delayInjectionContractPayload = {
+  schema: "fieldops_lab.delay_injection_request_contract_endpoint",
+  version: "0.1.0",
+  read_only: true,
+  execution_enabled: false,
+  write_operations_supported: false,
+  browser_triggered_execution_enabled: false,
+  artifact_path: "platform/contracts/delay_injection_request_contract.json",
+  planned_endpoint: {
+    method: "POST",
+    path: "/api/v1/simulation-runs/{simulation_run_id}/delay-events",
+    status: "planned_not_enabled",
+    current_behavior: "No write endpoint is currently exposed by the read-only API.",
+    execution_enabled: false,
+    requires_future_authentication: true,
+    requires_future_server_side_validation: true,
+    requires_future_audit_log: true,
+  },
+  delay_injection_request_contract: {
+    contract: "delay_injection_request_contract",
+    version: "0.1.0",
+    status: "planned_disabled",
+    read_only: true,
+    execution_enabled: false,
+    write_operations_supported: false,
+    browser_execution_enabled: false,
+    primary_purpose:
+      "Define the future request shape for injecting delays during visual simulation without enabling execution yet.",
+    research_alignment: {
+      primary_dissertation_scope: [
+        "delay_propagation",
+        "travel_delay",
+        "service_delay",
+      ],
+      future_platform_extensions: [
+        "new_requests",
+        "cancellations",
+        "priority_changes",
+      ],
+      scope_policy:
+        "The dissertation should stay focused on delays and delay propagation.",
+    },
+    planned_endpoint: {
+      method: "POST",
+      path: "/api/v1/simulation-runs/{simulation_run_id}/delay-events",
+      status: "planned_not_enabled",
+      current_behavior: "No write endpoint is currently exposed by the read-only API.",
+      execution_enabled: false,
+      requires_future_authentication: true,
+      requires_future_server_side_validation: true,
+      requires_future_audit_log: true,
+    },
+    request_shape: {
+      simulation_run_id: {
+        type: "string",
+        required: true,
+        description:
+          "Identifier of the future simulation run receiving the delay event.",
+      },
+      event_type: {
+        type: "string",
+        required: true,
+        allowed_values: ["travel_delay", "service_delay"],
+        description: "Primary delay type.",
+      },
+      target_type: {
+        type: "string",
+        required: true,
+        allowed_values: ["technician", "task", "route_leg"],
+        description: "Operational object affected by the injected delay.",
+      },
+      delay_minutes: {
+        type: "number",
+        required: true,
+        minimum: 0,
+        description:
+          "Non-negative delay duration added to the affected object.",
+      },
+      source: {
+        type: "string",
+        required: true,
+        allowed_values: [
+          "user_injected",
+          "scripted_scenario",
+          "imported_scenario",
+        ],
+        description: "Origin of the delay event.",
+      },
+      replanning_policy_hint: {
+        type: "string",
+        required: false,
+        allowed_values: [
+          "no_replanning",
+          "threshold_delay_replanning",
+          "periodic_replanning",
+          "event_based_replanning",
+          "not_specified",
+        ],
+        description:
+          "Optional future hint for selecting or comparing re-planning policies.",
+      },
+    },
+    validation_rules: [
+      "event_type must be travel_delay or service_delay for the current dissertation-oriented experiments.",
+      "delay injection must not mutate production data.",
+      "delay injection must not execute solvers directly from the browser.",
+    ],
+    expected_future_effects: [
+      "Update the simulation timeline.",
+      "Track propagated delay across subsequent tasks.",
+    ],
+    replanning_decision_output: {
+      required_future_fields: [
+        "decision_id",
+        "policy_id",
+        "triggered",
+        "trigger_reason",
+        "stability_delta",
+      ],
+      current_status: "not_executed_by_this_contract",
+    },
+    safety_requirements: {
+      read_only_contract_only: true,
+      no_browser_solver_execution: true,
+      no_arbitrary_command_execution: true,
+      no_file_system_mutation_from_web: true,
+      no_production_data_mutation: true,
+    },
+    quality_requirements: [
+      "The contract must distinguish travel delay from service delay.",
+      "The contract must preserve delay propagation as the narrow dissertation scope.",
+    ],
+    conservative_note:
+      "This file is only a read-only planning contract. It does not enable delay injection, simulation execution, solver execution, optimization jobs, or write operations.",
+  },
+};
+
 function jsonResponse(payload: unknown): Response {
   return new Response(JSON.stringify(payload), {
     status: 200,
@@ -421,6 +563,10 @@ function installSuccessfulFetchMock() {
         return Promise.resolve(jsonResponse(simulationSamplePayload));
       }
 
+      if (url.endsWith("/api/v1/delay-injection-request-contract")) {
+        return Promise.resolve(jsonResponse(delayInjectionContractPayload));
+      }
+
       return Promise.resolve(
         new Response(JSON.stringify({ error: "not_found" }), {
           status: 404,
@@ -439,38 +585,50 @@ describe("Simulation workspace page", () => {
     vi.unstubAllGlobals();
   });
 
-  it("loads the simulation state sample without enabling browser execution", async () => {
+  it("loads the simulation state sample and delay injection contract without enabling browser execution", async () => {
     render(<App />);
 
-    expect(
-      await screen.findByText("Experimental platform dashboard"),
-    ).not.toBeNull();
+    expect(await screen.findByText("Experimental platform dashboard")).not.toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Simulation workspace" }));
 
-    expect(
-      await screen.findByText("Visual operation simulation foundation"),
-    ).not.toBeNull();
+    expect(await screen.findByText("Visual operation simulation foundation")).not.toBeNull();
 
     expect(screen.getByText("Read-only contract-backed workspace")).not.toBeNull();
-    expect(screen.getByText("demo_delay_propagation_001")).not.toBeNull();
+    expect(screen.getAllByText("demo_delay_propagation_001").length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText("Normalized operation map")).not.toBeNull();
+
     expect(screen.getByRole("heading", { name: "Technician 1" })).not.toBeNull();
     expect(screen.getByRole("heading", { name: "Technician 2" })).not.toBeNull();
     expect(screen.getByRole("heading", { name: "Customer 3" })).not.toBeNull();
+
     expect(screen.getByText("Delay propagation events")).not.toBeNull();
-    expect(
-      screen.getByText("Travel delay detected before Task 3"),
-    ).not.toBeNull();
+    expect(screen.getByText("Travel delay detected before Task 3")).not.toBeNull();
     expect(
       screen.getByText("Delay threshold reached for replanning evaluation"),
     ).not.toBeNull();
+
     expect(screen.getByText("No replanning")).not.toBeNull();
     expect(screen.getByText("Threshold delay replanning")).not.toBeNull();
+
+    expect(screen.getByText("Delay injection request contract")).not.toBeNull();
+    expect(screen.getByText("planned disabled")).not.toBeNull();
+    expect(
+      screen.getByText("/api/v1/simulation-runs/{simulation_run_id}/delay-events"),
+    ).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "event_type" })).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "delay_minutes" })).not.toBeNull();
+    expect(screen.getByText("travel delay, service delay")).not.toBeNull();
+    expect(screen.getByText("user injected, scripted scenario, imported scenario")).not.toBeNull();
+    expect(screen.getByText("not_executed_by_this_contract")).not.toBeNull();
+
     expect(screen.getAllByText("execution disabled").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Current state is conservative.").length).toBeGreaterThan(0);
     expect(
       screen.getByText(/It must not trigger optimization, simulation execution/),
+    ).not.toBeNull();
+    expect(
+      screen.getByText(/It does not enable delay injection, simulation execution/),
     ).not.toBeNull();
 
     const fetchMock = globalThis.fetch as unknown as {
@@ -487,8 +645,14 @@ describe("Simulation workspace page", () => {
     expect(requestedUrls).toContain(
       "http://127.0.0.1:8080/api/v1/simulation-state-sample",
     );
+    expect(requestedUrls).toContain(
+      "http://127.0.0.1:8080/api/v1/delay-injection-request-contract",
+    );
     expect(
       requestedUrls.some((url) => url.includes("/api/v1/simulation-runs")),
+    ).toBe(false);
+    expect(
+      requestedUrls.some((url) => url.includes("/delay-events")),
     ).toBe(false);
   });
 });

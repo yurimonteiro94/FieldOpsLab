@@ -1,5 +1,9 @@
 import type {
   ApiHealth,
+  DelayInjectionPlannedEndpoint,
+  DelayInjectionRequestContractSnapshot,
+  DelayInjectionRequestField,
+  DelayInjectionSafetyRequirement,
   ExperimentalDesignFactor,
   ExperimentalDesignSummary,
   JsonObject,
@@ -212,20 +216,34 @@ function titleFromId(id: string): string {
     .join(" ");
 }
 
-function normalizeRoutes(value: unknown): PlatformRoute[] {
-  if (!Array.isArray(value)) {
-    return [];
+function normalizeRoutes(payload: JsonRecord): PlatformRoute[] {
+  const routes = payload.routes;
+
+  if (Array.isArray(routes)) {
+    return routes.map((item) => {
+      const record = asRecord(item);
+
+      return {
+        method: readString(record, "method", "GET"),
+        path: readString(record, "path", "/"),
+        description: readString(record, "description", "Read-only route."),
+      };
+    });
   }
 
-  return value.map((item) => {
-    const record = asRecord(item);
+  const endpoints = payload.endpoints;
 
-    return {
-      method: readString(record, "method", "GET"),
-      path: readString(record, "path", "/"),
-      description: readString(record, "description", "Read-only route."),
-    };
-  });
+  if (Array.isArray(endpoints)) {
+    return endpoints
+      .filter((endpoint): endpoint is string => typeof endpoint === "string")
+      .map((path) => ({
+        method: "GET",
+        path,
+        description: "Read-only route.",
+      }));
+  }
+
+  return [];
 }
 
 function normalizeHealth(payload: JsonRecord): ApiHealth {
@@ -241,7 +259,7 @@ function normalizeHealth(payload: JsonRecord): ApiHealth {
       "allows_arbitrary_command_execution",
       false,
     ),
-    routes: normalizeRoutes(payload.routes),
+    routes: normalizeRoutes(payload),
     contractAvailable: readBoolean(contract, "available", false),
     contractPath: readString(
       contract,
@@ -252,7 +270,11 @@ function normalizeHealth(payload: JsonRecord): ApiHealth {
 }
 
 function normalizeProjectStatus(payload: JsonRecord): PlatformStatus {
-  const summaryMetrics = asRecord(payload.summary_metrics ?? payload.summaryMetrics);
+  const source = asRecord(payload.project_status);
+  const effectivePayload = Object.keys(source).length > 0 ? source : payload;
+  const summaryMetrics = asRecord(
+    effectivePayload.summary_metrics ?? effectivePayload.summaryMetrics,
+  );
 
   const productCompleteness = readNumberFromKeys(
     summaryMetrics,
@@ -263,7 +285,7 @@ function normalizeProjectStatus(payload: JsonRecord): PlatformStatus {
       "currentEstimatedProductCompleteness",
     ],
     readNumberFromKeys(
-      payload,
+      effectivePayload,
       [
         "product_completeness",
         "productCompleteness",
@@ -278,7 +300,7 @@ function normalizeProjectStatus(payload: JsonRecord): PlatformStatus {
     summaryMetrics,
     ["engineering_status", "engineeringStatus"],
     readStringFromKeys(
-      payload,
+      effectivePayload,
       ["engineering_status", "engineeringStatus"],
       "passed_current_structural_quality_gate",
     ),
@@ -288,7 +310,7 @@ function normalizeProjectStatus(payload: JsonRecord): PlatformStatus {
     summaryMetrics,
     ["scientific_status", "scientificStatus"],
     readStringFromKeys(
-      payload,
+      effectivePayload,
       ["scientific_status", "scientificStatus"],
       "diagnostic_only_with_methodological_warnings",
     ),
@@ -301,7 +323,7 @@ function normalizeProjectStatus(payload: JsonRecord): PlatformStatus {
     dataSource: "local http api",
     executionStatus: "disabled",
     conservativeNote: readStringFromKeys(
-      payload,
+      effectivePayload,
       ["conservative_note", "conservativeNote"],
       "This dashboard does not prove scientific validity.",
     ),
@@ -350,18 +372,17 @@ function normalizeReport(item: unknown): PlatformReport {
 
 function normalizeReports(payload: JsonRecord): PlatformReport[] {
   const reports = Array.isArray(payload.reports) ? payload.reports : [];
-
   return reports.map(normalizeReport);
 }
 
 function normalizeJsonResource(value: unknown): ReportResource<JsonObject> {
   const record = asRecord(value);
-  const data = asRecord(record.data);
+  const data = asRecord(record.data ?? record.content);
 
   return {
     path: readString(record, "path", ""),
-    exists: readBoolean(record, "exists", false),
-    loaded: readBoolean(record, "loaded", false),
+    exists: readBoolean(record, "exists", readBoolean(record, "available", false)),
+    loaded: readBoolean(record, "loaded", Object.keys(data).length > 0),
     data: Object.keys(data).length > 0 ? data : null,
     text: "",
     error: readString(record, "error", ""),
@@ -373,10 +394,10 @@ function normalizeTextResource(value: unknown): ReportResource {
 
   return {
     path: readString(record, "path", ""),
-    exists: readBoolean(record, "exists", false),
+    exists: readBoolean(record, "exists", readBoolean(record, "available", false)),
     loaded: readBoolean(record, "loaded", false),
     data: null,
-    text: readString(record, "text", ""),
+    text: readStringFromKeys(record, ["text", "preview"], ""),
     error: readString(record, "error", ""),
   };
 }
@@ -397,22 +418,22 @@ function normalizeReportDetail(payload: JsonRecord): ReportDetail {
       "write_operations_supported",
       false,
     ),
-    available: readBoolean(payload, "available", false),
+    available: readBoolean(payload, "available", true),
     metadata: {
       artifactPath: readStringFromKeys(
         metadata,
         ["artifact_path", "artifactPath"],
-        "",
+        readString(payload, "artifact_path", ""),
       ),
       markdownPath: readStringFromKeys(
         metadata,
         ["markdown_path", "markdownPath"],
-        "",
+        readString(payload, "markdown_path", ""),
       ),
       qualityPath: readStringFromKeys(
         metadata,
         ["quality_path", "qualityPath"],
-        "",
+        readString(payload, "quality_check_path", ""),
       ),
       qualityPassed: readOptionalBoolean(metadata, [
         "quality_passed",
@@ -422,9 +443,9 @@ function normalizeReportDetail(payload: JsonRecord): ReportDetail {
     artifact: normalizeJsonResource(payload.artifact),
     markdown: normalizeTextResource(payload.markdown),
     qualityCheck: normalizeJsonResource(payload.quality_check),
-    conservativeNote: readString(
+    conservativeNote: readStringFromKeys(
       payload,
-      "conservative_note",
+      ["conservative_note", "safety_note"],
       "Report detail is available for inspection only.",
     ),
   };
@@ -459,15 +480,16 @@ function normalizeDesignFactor(
 function normalizeExperimentalDesign(
   payload: JsonRecord,
 ): ExperimentalDesignSummary {
-  const summary = asRecord(payload.summary);
+  const wrapped = asRecord(payload.experimental_design_matrix);
+  const source = Object.keys(wrapped).length > 0 ? wrapped : payload;
+  const summary = asRecord(source.summary);
 
-  const payloadFactors = readRecordArrayFromKeys(payload, [
+  const payloadFactors = readRecordArrayFromKeys(source, [
     "factors",
     "experimental_factors",
     "factor_matrix",
     "design_factors",
   ]);
-
   const summaryFactors = readRecordArrayFromKeys(summary, [
     "factors",
     "experimental_factors",
@@ -480,9 +502,9 @@ function normalizeExperimentalDesign(
   );
 
   return {
-    report: readString(payload, "report", "experimental_design_matrix"),
-    available: readBoolean(payload, "available", true),
-    readOnly: readBoolean(payload, "read_only", true),
+    report: readString(source, "report", "experimental_design_matrix"),
+    available: readBoolean(source, "available", true),
+    readOnly: readBoolean(source, "read_only", true),
     experimentCount: readNumberFromKeys(
       summary,
       ["experiment_count", "experimentCount"],
@@ -510,12 +532,12 @@ function normalizeExperimentalDesign(
     ),
     factors,
     limitations: readStringArrayFromKeys(
-      payload,
+      source,
       ["limitations", "methodological_limitations", "warnings", "conservative_warnings"],
       readStringArrayFromKeys(summary, ["limitations", "warnings"], []),
     ),
     qualityNotes: readStringArrayFromKeys(
-      payload,
+      source,
       ["quality_notes", "qualityNotes", "validation_notes"],
       readStringArrayFromKeys(summary, ["quality_notes", "qualityNotes"], []),
     ),
@@ -524,6 +546,7 @@ function normalizeExperimentalDesign(
 
 function normalizeResearchMethod(payload: JsonRecord): ResearchMethodSnapshot {
   const contract = asRecord(payload.contract);
+  const methodSummary = asRecord(payload.method_summary);
   const projectQuestion = asRecord(contract.project_question);
   const researchGap = asRecord(contract.research_gap);
   const contributionClaims = asRecord(contract.contribution_claims);
@@ -532,7 +555,7 @@ function normalizeResearchMethod(payload: JsonRecord): ResearchMethodSnapshot {
 
   return {
     readOnly: readBoolean(payload, "read_only", true),
-    available: readBoolean(payload, "available", false),
+    available: readBoolean(payload, "available", Object.keys(contract).length > 0),
     contractPath: readString(
       payload,
       "contract_path",
@@ -576,7 +599,11 @@ function normalizeResearchMethod(payload: JsonRecord): ResearchMethodSnapshot {
       projectQuestion: readString(
         projectQuestion,
         "summary",
-        "How can a field service operation choose an appropriate replanning policy when operational disruptions occur during execution?",
+        readString(
+          methodSummary,
+          "platform_goal",
+          "How can a field service operation choose an appropriate replanning policy when operational disruptions occur during execution?",
+        ),
       ),
       researchGap: readString(
         researchGap,
@@ -737,7 +764,10 @@ function normalizeSimulationSafetyFlags(
 function normalizeSimulationStateContract(
   payload: JsonRecord,
 ): SimulationStateContractSnapshot {
-  const contract = asRecord(payload.contract);
+  const wrappedContract = asRecord(payload.simulation_state_contract);
+  const contract =
+    Object.keys(wrappedContract).length > 0 ? wrappedContract : asRecord(payload.contract);
+
   const scope = asRecord(contract.scope ?? contract.research_scope);
   const stateSchema = asRecord(
     contract.state_schema ??
@@ -782,7 +812,7 @@ function normalizeSimulationStateContract(
     contractPath: readString(
       payload,
       "contract_path",
-      "platform/contracts/simulation_state_contract.json",
+      readString(payload, "artifact_path", "platform/contracts/simulation_state_contract.json"),
     ),
     primaryDissertationScope,
     futurePlatformPerturbations,
@@ -1018,6 +1048,150 @@ function normalizeSimulationStateSample(
   };
 }
 
+function normalizePlannedEndpoint(record: JsonRecord): DelayInjectionPlannedEndpoint {
+  return {
+    method: readString(record, "method", "POST"),
+    path: readString(
+      record,
+      "path",
+      "/api/v1/simulation-runs/{simulation_run_id}/delay-events",
+    ),
+    status: readString(record, "status", "planned_not_enabled"),
+    currentBehavior: readString(
+      record,
+      "current_behavior",
+      "No write endpoint is currently exposed by the read-only API.",
+    ),
+    executionEnabled: readBoolean(record, "execution_enabled", false),
+    requiresFutureAuthentication: readBoolean(
+      record,
+      "requires_future_authentication",
+      true,
+    ),
+    requiresFutureServerSideValidation: readBoolean(
+      record,
+      "requires_future_server_side_validation",
+      true,
+    ),
+    requiresFutureAuditLog: readBoolean(record, "requires_future_audit_log", true),
+  };
+}
+
+function normalizeRequestField(
+  id: string,
+  record: JsonRecord,
+): DelayInjectionRequestField {
+  return {
+    id,
+    type: readString(record, "type", "string"),
+    required: readBoolean(record, "required", false),
+    description: readString(record, "description", "Delay injection request field."),
+    allowedValues: readStringArray(record, "allowed_values", []),
+    minimum: readNullableNumberFromKeys(record, ["minimum"]),
+  };
+}
+
+function normalizeRequestFields(record: JsonRecord): DelayInjectionRequestField[] {
+  return Object.entries(record)
+    .map(([id, value]) => normalizeRequestField(id, asRecord(value)))
+    .filter((field) => field.id.length > 0);
+}
+
+function normalizeSafetyRequirements(
+  record: JsonRecord,
+): DelayInjectionSafetyRequirement[] {
+  return Object.entries(record).map(([id, value]) => ({
+    id,
+    enabled: typeof value === "boolean" ? value : false,
+  }));
+}
+
+function normalizeDelayInjectionRequestContract(
+  payload: JsonRecord,
+): DelayInjectionRequestContractSnapshot {
+  const wrapped = asRecord(payload.delay_injection_request_contract);
+  const contract = Object.keys(wrapped).length > 0 ? wrapped : payload;
+  const researchAlignment = asRecord(contract.research_alignment);
+  const requestShape = asRecord(contract.request_shape);
+  const replanningDecisionOutput = asRecord(contract.replanning_decision_output);
+  const safetyRequirements = asRecord(contract.safety_requirements);
+
+  return {
+    readOnly: readBoolean(payload, "read_only", readBoolean(contract, "read_only", true)),
+    available: readBoolean(payload, "available", Object.keys(contract).length > 0),
+    artifactPath: readString(
+      payload,
+      "artifact_path",
+      "platform/contracts/delay_injection_request_contract.json",
+    ),
+    contract: readString(contract, "contract", "delay_injection_request_contract"),
+    version: readString(contract, "version", "0.1.0"),
+    status: readString(contract, "status", "planned_disabled"),
+    executionEnabled: readBoolean(
+      payload,
+      "execution_enabled",
+      readBoolean(contract, "execution_enabled", false),
+    ),
+    writeOperationsSupported: readBoolean(
+      payload,
+      "write_operations_supported",
+      readBoolean(contract, "write_operations_supported", false),
+    ),
+    browserExecutionEnabled: readBoolean(
+      payload,
+      "browser_triggered_execution_enabled",
+      readBoolean(contract, "browser_execution_enabled", false),
+    ),
+    primaryPurpose: readString(
+      contract,
+      "primary_purpose",
+      "Define the future request shape for injecting delays during visual simulation without enabling execution yet.",
+    ),
+    primaryDissertationScope: readStringArray(researchAlignment, "primary_dissertation_scope", [
+      "delay_propagation",
+      "travel_delay",
+      "service_delay",
+    ]),
+    futurePlatformExtensions: readStringArray(
+      researchAlignment,
+      "future_platform_extensions",
+      ["new_requests", "cancellations", "priority_changes"],
+    ),
+    scopePolicy: readString(
+      researchAlignment,
+      "scope_policy",
+      "The dissertation should stay focused on delays and delay propagation.",
+    ),
+    plannedEndpoint: normalizePlannedEndpoint(
+      asRecord(payload.planned_endpoint ?? contract.planned_endpoint),
+    ),
+    requestFields: normalizeRequestFields(requestShape),
+    validationRules: readStringArray(contract, "validation_rules", []),
+    expectedFutureEffects: readStringArray(contract, "expected_future_effects", []),
+    replanningDecisionRequiredFutureFields: readStringArray(
+      replanningDecisionOutput,
+      "required_future_fields",
+      [],
+    ),
+    replanningDecisionCurrentStatus: readString(
+      replanningDecisionOutput,
+      "current_status",
+      "not_executed_by_this_contract",
+    ),
+    safetyRequirements: normalizeSafetyRequirements(safetyRequirements),
+    qualityRequirements: readStringArray(contract, "quality_requirements", []),
+    conservativeNote: readString(
+      contract,
+      "conservative_note",
+      readString(
+        payload,
+        "safety_note",
+        "This file is only a read-only planning contract.",
+      ),
+    ),
+  };
+}
+
 async function fetchJson(baseUrl: string, path: string): Promise<JsonRecord> {
   const url = new URL(path, baseUrl).toString();
 
@@ -1087,12 +1261,18 @@ export class ReadOnlyPlatformApi {
   }
 
   async getSimulationStateSample(): Promise<SimulationStateSampleSnapshot> {
-    const payload = await fetchJson(
-      this.baseUrl,
-      "/api/v1/simulation-state-sample",
-    );
+    const payload = await fetchJson(this.baseUrl, "/api/v1/simulation-state-sample");
 
     return normalizeSimulationStateSample(payload);
+  }
+
+  async getDelayInjectionRequestContract(): Promise<DelayInjectionRequestContractSnapshot> {
+    const payload = await fetchJson(
+      this.baseUrl,
+      "/api/v1/delay-injection-request-contract",
+    );
+
+    return normalizeDelayInjectionRequestContract(payload);
   }
 
   async getSnapshot(): Promise<PlatformSnapshot> {

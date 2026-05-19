@@ -1,3 +1,5 @@
+export type JsonObject = Record<string, unknown>;
+
 export type PageId =
   | "dashboard"
   | "reports"
@@ -7,8 +9,6 @@ export type PageId =
   | "research-method"
   | "campaign-diagnostics"
   | "simulation-workspace";
-
-export type JsonObject = Record<string, unknown>;
 
 export interface PlatformRoute {
   method: string;
@@ -78,9 +78,9 @@ export interface ReportDetail {
   writeOperationsSupported: boolean;
   available: boolean;
   metadata: ReportDetailMetadata;
-  artifact: ReportResource;
+  artifact: ReportResource<JsonObject>;
   markdown: ReportResource;
-  qualityCheck: ReportResource;
+  qualityCheck: ReportResource<JsonObject>;
   conservativeNote: string;
 }
 
@@ -172,18 +172,6 @@ export interface SimulationStateContractSnapshot {
   conservativeNote: string;
 }
 
-export interface SimulationClock {
-  simulationId: string;
-  status: string;
-  timeUnit: string;
-  startTime: number;
-  currentTime: number;
-  endTime: number;
-  speedMultiplier: number;
-  canUserAdvanceTime: boolean;
-  canUserInjectDelay: boolean;
-}
-
 export interface SimulationPoint {
   id: string;
   label: string;
@@ -213,6 +201,18 @@ export interface SimulationRoute {
   taskSequence: string[];
   status: string;
   totalDelayMinutes: number;
+}
+
+export interface SimulationClock {
+  simulationId: string;
+  status: string;
+  timeUnit: string;
+  startTime: number;
+  currentTime: number;
+  endTime: number;
+  speedMultiplier: number;
+  canUserAdvanceTime: boolean;
+  canUserInjectDelay: boolean;
 }
 
 export interface SimulationMapState {
@@ -267,6 +267,56 @@ export interface SimulationStateSampleSnapshot {
   primaryDissertationScope: string[];
   futurePlatformPerturbations: string[];
   safetyNotes: string[];
+}
+
+export interface DelayInjectionRequestField {
+  id: string;
+  type: string;
+  required: boolean;
+  description: string;
+  allowedValues: string[];
+  minimum: number | null;
+}
+
+export interface DelayInjectionPlannedEndpoint {
+  method: string;
+  path: string;
+  status: string;
+  currentBehavior: string;
+  executionEnabled: boolean;
+  requiresFutureAuthentication: boolean;
+  requiresFutureServerSideValidation: boolean;
+  requiresFutureAuditLog: boolean;
+}
+
+export interface DelayInjectionSafetyRequirement {
+  id: string;
+  enabled: boolean;
+}
+
+export interface DelayInjectionRequestContractSnapshot {
+  readOnly: boolean;
+  available: boolean;
+  artifactPath: string;
+  contract: string;
+  version: string;
+  status: string;
+  executionEnabled: boolean;
+  writeOperationsSupported: boolean;
+  browserExecutionEnabled: boolean;
+  primaryPurpose: string;
+  primaryDissertationScope: string[];
+  futurePlatformExtensions: string[];
+  scopePolicy: string;
+  plannedEndpoint: DelayInjectionPlannedEndpoint;
+  requestFields: DelayInjectionRequestField[];
+  validationRules: string[];
+  expectedFutureEffects: string[];
+  replanningDecisionRequiredFutureFields: string[];
+  replanningDecisionCurrentStatus: string;
+  safetyRequirements: DelayInjectionSafetyRequirement[];
+  qualityRequirements: string[];
+  conservativeNote: string;
 }
 
 export interface PlatformSnapshot {
