@@ -1,0 +1,229 @@
+{
+  "contract_id": "simulation_playback_control_contract",
+  "name": "Simulation playback control contract",
+  "version": "0.1.0",
+  "status": "read_only_contract",
+  "read_only": true,
+  "enabled": false,
+  "execution_exposed": false,
+  "created_for": "FieldOps Lab simulation workspace",
+  "purpose": "Define the future browser-visible playback controls for visual simulation without enabling simulation execution, optimization execution, delay injection execution, or operational dispatch.",
+  "future_endpoint": {
+    "planned_path": "/api/v1/simulation-playback-control-contract",
+    "method": "GET",
+    "enabled": false,
+    "status": "planned_not_enabled",
+    "post_allowed": false,
+    "put_allowed": false,
+    "delete_allowed": false
+  },
+  "related_contracts": {
+    "simulation_state_contract": "platform/contracts/simulation_state_contract.json",
+    "simulation_state_sample": "platform/contracts/simulation_state_sample.json",
+    "delay_injection_request_contract": "platform/contracts/delay_injection_request_contract.json",
+    "replanning_decision_response_contract": "platform/contracts/replanning_decision_response_contract.json",
+    "replanning_decision_response_sample": "platform/contracts/replanning_decision_response_sample.json"
+  },
+  "research_scope": {
+    "dissertation_focus": "delay_propagation",
+    "primary_perturbations": [
+      "travel_delay",
+      "service_delay"
+    ],
+    "platform_extension_targets": [
+      "new_demand",
+      "cancellation",
+      "priority_change",
+      "resource_unavailability"
+    ],
+    "scope_note": "The playback controls are designed for delay propagation visualization first. Other perturbation types remain future platform extensions and are not enabled by this contract."
+  },
+  "control_model": {
+    "mode": "visual_simulation_playback",
+    "state": "disabled",
+    "allowed_client_actions": [
+      "inspect_contract",
+      "render_disabled_controls",
+      "display_current_simulation_time",
+      "display_timeline_position",
+      "display_available_speed_options",
+      "display_safety_notes"
+    ],
+    "blocked_client_actions": [
+      "start_simulation_execution",
+      "pause_live_backend_execution",
+      "resume_live_backend_execution",
+      "inject_delay",
+      "trigger_replanning",
+      "dispatch_routes",
+      "persist_operational_change"
+    ]
+  },
+  "clock_controls": {
+    "current_time_field": "clock.current_time",
+    "start_time_field": "clock.start_time",
+    "end_time_field": "clock.end_time",
+    "time_unit_field": "clock.time_unit",
+    "timezone_field": "clock.timezone",
+    "display_format": "HH:mm",
+    "can_display_current_time": true,
+    "can_change_backend_time": false,
+    "can_seek_backend_execution": false
+  },
+  "playback_controls": {
+    "play": {
+      "visible": true,
+      "enabled": false,
+      "label": "Play preview",
+      "disabled_reason": "The current platform exposes only read-only simulation artifacts."
+    },
+    "pause": {
+      "visible": true,
+      "enabled": false,
+      "label": "Pause preview",
+      "disabled_reason": "There is no browser-triggered simulation execution yet."
+    },
+    "step_forward": {
+      "visible": true,
+      "enabled": false,
+      "label": "Step forward",
+      "disabled_reason": "Timeline stepping is a planned UI behavior and must not trigger backend execution."
+    },
+    "step_backward": {
+      "visible": true,
+      "enabled": false,
+      "label": "Step backward",
+      "disabled_reason": "Timeline stepping is a planned UI behavior and must not mutate simulation state."
+    },
+    "reset": {
+      "visible": true,
+      "enabled": false,
+      "label": "Reset view",
+      "disabled_reason": "Reset is visual-only in the planned workspace and is not implemented in this contract."
+    }
+  },
+  "speed_controls": {
+    "visible": true,
+    "enabled": false,
+    "selected_speed": 1.0,
+    "available_speeds": [
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      5.0,
+      10.0,
+      30.0,
+      60.0
+    ],
+    "unit": "simulation_minutes_per_real_second",
+    "can_change_backend_execution_speed": false,
+    "notes": [
+      "Speed options are present only as a future UI contract.",
+      "Changing speed must not start execution, alter results, or rewrite experiment data."
+    ]
+  },
+  "timeline_scrubber": {
+    "visible": true,
+    "enabled": false,
+    "source_fields": {
+      "timeline_events": "timeline.events",
+      "current_event_id": "timeline.current_event_id",
+      "selected_time": "clock.current_time"
+    },
+    "supported_future_views": [
+      "technician_position_over_time",
+      "task_execution_window",
+      "delay_propagation_chain",
+      "replanning_decision_marker",
+      "route_stability_marker"
+    ],
+    "can_mutate_timeline": false,
+    "can_create_events": false,
+    "can_delete_events": false
+  },
+  "delay_visualization_bindings": {
+    "delay_source_fields": [
+      "delays.travel_delay_minutes",
+      "delays.service_delay_minutes",
+      "timeline.delay_events",
+      "propagation.affected_tasks",
+      "propagation.affected_technicians"
+    ],
+    "expected_visual_outputs": [
+      "show_delayed_task",
+      "show_downstream_affected_tasks",
+      "show_impacted_technician_route",
+      "show_replanning_decision_marker",
+      "show_before_after_stability_summary"
+    ],
+    "dissertation_alignment": "The controls support delay propagation visual inspection by showing how travel and service delays propagate through technicians, tasks, time windows, route stability, feasibility, and re-planning decisions."
+  },
+  "decision_response_bindings": {
+    "decision_source": "replanning_decision_response_sample",
+    "display_fields": [
+      "decision_summary.selected_policy_id",
+      "decision_summary.recommendation",
+      "feasibility.status",
+      "performance.total_delay_minutes",
+      "stability.changed_assignments_count",
+      "cost.computational_cost_class",
+      "propagation.affected_task_count"
+    ],
+    "can_trigger_decision": false,
+    "can_apply_decision": false,
+    "can_persist_decision": false
+  },
+  "validation_rules": [
+    {
+      "rule_id": "playback_controls_must_remain_disabled",
+      "description": "All playback controls must remain visible but disabled until a real, validated simulation engine is intentionally connected.",
+      "severity": "blocking"
+    },
+    {
+      "rule_id": "no_browser_triggered_execution",
+      "description": "The browser must not expose a route, button, callback, or API call that starts simulation execution, optimization execution, delay injection execution, or dispatch.",
+      "severity": "blocking"
+    },
+    {
+      "rule_id": "timeline_scrubber_is_read_only",
+      "description": "Timeline scrubbing may inspect planned states in the future, but this contract must not mutate timeline events or backend state.",
+      "severity": "blocking"
+    },
+    {
+      "rule_id": "delay_scope_first",
+      "description": "Playback visualization must prioritize travel delay, service delay, and delay propagation before broader perturbation classes.",
+      "severity": "high"
+    },
+    {
+      "rule_id": "decision_response_is_preview_only",
+      "description": "Decision response information may be displayed as a sample or contract artifact, but it must not be applied to operations.",
+      "severity": "blocking"
+    }
+  ],
+  "quality_requirements": [
+    "The contract must be valid JSON.",
+    "The contract must state that it is read-only.",
+    "The contract must keep playback controls disabled.",
+    "The contract must block browser-triggered execution.",
+    "The contract must connect playback controls to the simulation state, delay injection contract, and re-planning decision response contract.",
+    "The contract must preserve the dissertation focus on delay propagation.",
+    "The contract must be testable without requiring a live API server, optimizer, simulator, database, or external service."
+  ],
+  "safety_requirements": {
+    "conservative_default": true,
+    "requires_explicit_future_enablement": true,
+    "requires_backend_validation_before_execution": true,
+    "requires_experiment_traceability_before_use": true,
+    "requires_read_only_ui_until_validated": true,
+    "blocked_until_validated": [
+      "simulation_execution",
+      "optimization_execution",
+      "delay_injection_execution",
+      "replanning_execution",
+      "route_dispatch",
+      "production_data_mutation"
+    ]
+  },
+  "conservative_note": "This artifact is a read-only UI and API contract. It does not execute simulation, does not execute optimization, does not inject delays, does not trigger re-planning, does not dispatch routes, and does not mutate operational or experimental data."
+}
