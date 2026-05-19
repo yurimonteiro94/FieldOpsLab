@@ -42,8 +42,11 @@ class ReportDetailApiEndpointTests(unittest.TestCase):
                 payload = json.loads(response.read().decode("utf-8"))
                 return response.status, payload
         except urllib.error.HTTPError as error:
-            payload = json.loads(error.read().decode("utf-8"))
-            return error.code, payload
+            try:
+                payload = json.loads(error.read().decode("utf-8"))
+                return error.code, payload
+            finally:
+                error.close()
 
     def request_status(self, path: str, method: str) -> int:
         request = urllib.request.Request(self.base_url + path, method=method)
@@ -52,7 +55,10 @@ class ReportDetailApiEndpointTests(unittest.TestCase):
             with urllib.request.urlopen(request, timeout=5) as response:
                 return response.status
         except urllib.error.HTTPError as error:
-            return error.code
+            try:
+                return error.code
+            finally:
+                error.close()
 
     def test_health_route_advertises_report_detail_endpoint(self) -> None:
         status, payload = self.get_json("/api/v1/health")

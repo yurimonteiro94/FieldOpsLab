@@ -18,7 +18,6 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 PROJECT_STATUS_PATH = (
     REPOSITORY_ROOT / "analysis" / "reports" / "project_status_report.json"
 )
-REPORTS_ROOT = REPOSITORY_ROOT / "analysis" / "reports"
 EXPERIMENTAL_DESIGN_PATH = (
     REPOSITORY_ROOT / "analysis" / "reports" / "experimental_design_matrix.json"
 )
@@ -603,8 +602,11 @@ def read_url_json(url: str) -> tuple[int, dict[str, Any]]:
             payload = json.loads(response.read().decode("utf-8"))
             return response.status, payload
     except urllib.error.HTTPError as error:
-        payload = json.loads(error.read().decode("utf-8"))
-        return error.code, payload
+        try:
+            payload = json.loads(error.read().decode("utf-8"))
+            return error.code, payload
+        finally:
+            error.close()
 
 
 def read_url_status_for_method(url: str, method: str) -> int:
@@ -614,7 +616,10 @@ def read_url_status_for_method(url: str, method: str) -> int:
         with urllib.request.urlopen(request, timeout=5) as response:
             return response.status
     except urllib.error.HTTPError as error:
-        return error.code
+        try:
+            return error.code
+        finally:
+            error.close()
 
 
 def run_self_test() -> int:
