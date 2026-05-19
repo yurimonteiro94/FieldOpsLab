@@ -347,6 +347,32 @@ def _replanning_decision_response_contract_payload() -> dict[str, Any]:
     }
 
 
+
+def _replanning_decision_response_sample_payload() -> dict[str, Any]:
+    payload = _read_json_file(
+        CONTRACTS_ROOT / "replanning_decision_response_sample.json"
+    )
+    return {
+        "schema": "fieldops_lab.replanning_decision_response_sample_endpoint",
+        "version": "0.1.0",
+        "read_only": True,
+        "execution_enabled": False,
+        "write_operations_supported": False,
+        "browser_triggered_execution_enabled": False,
+        "replanning_decision_response_sample": payload,
+        "sample_id": payload.get("sample_id"),
+        "decision_summary": payload.get("decision_summary", {}),
+        "delay_propagation": payload.get("delay_propagation", {}),
+        "tradeoff_summary": payload.get("tradeoff_summary", {}),
+        "artifact_path": "platform/contracts/replanning_decision_response_sample.json",
+        "safety_note": (
+            "This endpoint exposes a static read-only sample of a future "
+            "re-planning decision response. It does not execute re-planning, "
+            "run solvers, start optimization, start simulations, mutate schedules, "
+            "write files, or trigger backend jobs."
+        ),
+    }
+
 def _health_payload() -> dict[str, Any]:
     return {
         "schema": "fieldops_lab.read_only_api_health",
@@ -367,6 +393,7 @@ def _health_payload() -> dict[str, Any]:
             "/api/v1/simulation-state-sample",
             "/api/v1/delay-injection-request-contract",
             "/api/v1/replanning-decision-response-contract",
+            "/api/v1/replanning-decision-response-sample",
         ],
     }
 
@@ -478,6 +505,12 @@ class FieldOpsReadOnlyRequestHandler(BaseHTTPRequestHandler):
                 _replanning_decision_response_contract_payload(),
             )
             return
+        if path == "/api/v1/replanning-decision-response-sample":
+            self._send_json(
+                HTTPStatus.OK,
+                _replanning_decision_response_sample_payload(),
+            )
+            return
 
         self._send_error_payload(HTTPStatus.NOT_FOUND, "Endpoint not found.")
 
@@ -537,6 +570,7 @@ def run_self_test() -> int:
         ("/api/v1/simulation-state-sample", HTTPStatus.OK),
         ("/api/v1/delay-injection-request-contract", HTTPStatus.OK),
         ("/api/v1/replanning-decision-response-contract", HTTPStatus.OK),
+        ("/api/v1/replanning-decision-response-sample", HTTPStatus.OK),
     ]
 
     try:
