@@ -1,12 +1,12 @@
 export type PageId =
   | "dashboard"
-  | "simulation-workspace"
   | "reports"
-  | "campaign-diagnostics"
   | "experimental-design"
   | "api-safety"
   | "scientific-validation"
-  | "research-method";
+  | "research-method"
+  | "campaign-diagnostics"
+  | "simulation-workspace";
 
 export interface PlatformRoute {
   method: string;
@@ -49,13 +49,20 @@ export interface PlatformReport {
   qualityPassed: boolean | null;
 }
 
-export interface ReportResource<TData = Record<string, unknown>> {
+export interface ReportResource<T = Record<string, unknown>> {
   path: string;
   exists: boolean;
   loaded: boolean;
-  data: TData | null;
+  data: T | null;
   text: string;
-  error: string;
+  error: string | null;
+}
+
+export interface ReportDetailMetadata {
+  artifactPath: string;
+  markdownPath: string;
+  qualityPath: string;
+  qualityPassed: boolean | null;
 }
 
 export interface ReportDetail {
@@ -68,14 +75,9 @@ export interface ReportDetail {
   executionSupported: boolean;
   writeOperationsSupported: boolean;
   available: boolean;
-  metadata: {
-    artifactPath: string;
-    markdownPath: string;
-    qualityPath: string;
-    qualityPassed: boolean | null;
-  };
+  metadata: ReportDetailMetadata;
   artifact: ReportResource<Record<string, unknown>>;
-  markdown: ReportResource;
+  markdown: ReportResource<string>;
   qualityCheck: ReportResource<Record<string, unknown>>;
   conservativeNote: string;
 }
@@ -130,6 +132,42 @@ export interface ResearchMethodSnapshot {
   framingMarkdown: string;
   interpretation: ResearchMethodInterpretation;
   contractSummary: ResearchMethodContractSummary;
+}
+
+export interface SimulationModeSummary {
+  id: string;
+  label: string;
+  purpose: string;
+  executionEnabled: boolean;
+}
+
+export interface SimulationFutureEndpoint {
+  method: string;
+  path: string;
+  status: string;
+  executionEnabled: boolean;
+}
+
+export interface SimulationSafetyFlags {
+  browserExecutionEnabled: boolean;
+  arbitraryCommandExecutionAllowed: boolean;
+  writeOperationsSupported: boolean;
+  futureJobApiCurrentlyEnabled: boolean;
+}
+
+export interface SimulationStateContractSnapshot {
+  readOnly: boolean;
+  available: boolean;
+  contractPath: string;
+  primaryDissertationScope: string[];
+  futurePlatformPerturbations: string[];
+  modes: SimulationModeSummary[];
+  mapEntities: string[];
+  timelineEvents: string[];
+  replanningDecisionFields: string[];
+  futureEndpoints: SimulationFutureEndpoint[];
+  safetyFlags: SimulationSafetyFlags;
+  conservativeNote: string;
 }
 
 export interface PlatformSnapshot {

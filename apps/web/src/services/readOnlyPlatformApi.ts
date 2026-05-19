@@ -9,6 +9,10 @@ import type {
   ReportDetail,
   ReportResource,
   ResearchMethodSnapshot,
+  SimulationFutureEndpoint,
+  SimulationModeSummary,
+  SimulationSafetyFlags,
+  SimulationStateContractSnapshot,
 } from "../domain/platform";
 
 type JsonRecord = Record<string, unknown>;
@@ -100,6 +104,22 @@ function readStringFromKeys(
     const value = record[key];
 
     if (typeof value === "string" && value.trim().length > 0) {
+      return value;
+    }
+  }
+
+  return fallback;
+}
+
+function readBooleanFromKeys(
+  record: JsonRecord,
+  keys: string[],
+  fallback: boolean,
+): boolean {
+  for (const key of keys) {
+    const value = record[key];
+
+    if (typeof value === "boolean") {
       return value;
     }
   }
@@ -206,9 +226,7 @@ function normalizeHealth(payload: JsonRecord): ApiHealth {
 }
 
 function normalizeProjectStatus(payload: JsonRecord): PlatformStatus {
-  const summaryMetrics = asRecord(
-    payload.summary_metrics ?? payload.summaryMetrics,
-  );
+  const summaryMetrics = asRecord(payload.summary_metrics ?? payload.summaryMetrics);
 
   const productCompleteness = readNumberFromKeys(
     summaryMetrics,
@@ -279,13 +297,7 @@ function normalizeReport(item: unknown): PlatformReport {
     ),
     artifactPath: readStringFromKeys(
       record,
-      [
-        "artifactPath",
-        "artifact_path",
-        "path",
-        "report_path",
-        "json_path",
-      ],
+      ["artifactPath", "artifact_path", "path", "report_path", "json_path"],
       "analysis/reports",
     ),
     markdownPath: readStringFromKeys(
@@ -295,19 +307,10 @@ function normalizeReport(item: unknown): PlatformReport {
     ),
     qualityPath: readStringFromKeys(
       record,
-      [
-        "qualityPath",
-        "quality_path",
-        "qualityCheckPath",
-        "quality_check_path",
-      ],
+      ["qualityPath", "quality_path", "qualityCheckPath", "quality_check_path"],
       "",
     ),
-    available: readBoolean(
-      record,
-      "available",
-      readBoolean(record, "exists", true),
-    ),
+    available: readBoolean(record, "available", readBoolean(record, "exists", true)),
     loaded: readBoolean(record, "loaded", true),
     markdownAvailable: readBoolean(record, "markdown_available", false),
     qualityAvailable: readBoolean(record, "quality_available", false),
@@ -321,7 +324,6 @@ function normalizeReport(item: unknown): PlatformReport {
 
 function normalizeReports(payload: JsonRecord): PlatformReport[] {
   const reports = Array.isArray(payload.reports) ? payload.reports : [];
-
   return reports.map(normalizeReport);
 }
 
@@ -341,7 +343,7 @@ function normalizeJsonResource(
   };
 }
 
-function normalizeTextResource(value: unknown): ReportResource<never> {
+function normalizeTextResource(value: unknown): ReportResource<string> {
   const record = asRecord(value);
 
   return {
@@ -433,27 +435,24 @@ function normalizeExperimentalDesign(
   payload: JsonRecord,
 ): ExperimentalDesignSummary {
   const summary = asRecord(payload.summary);
-  const factorRecords =
-    readRecordArrayFromKeys(payload, [
-      "factors",
-      "experimental_factors",
-      "factor_matrix",
-      "design_factors",
-    ]).length > 0
-      ? readRecordArrayFromKeys(payload, [
-          "factors",
-          "experimental_factors",
-          "factor_matrix",
-          "design_factors",
-        ])
-      : readRecordArrayFromKeys(summary, [
-          "factors",
-          "experimental_factors",
-          "factor_matrix",
-          "design_factors",
-        ]);
 
-  const factors = factorRecords.map(normalizeDesignFactor);
+  const payloadFactors = readRecordArrayFromKeys(payload, [
+    "factors",
+    "experimental_factors",
+    "factor_matrix",
+    "design_factors",
+  ]);
+
+  const summaryFactors = readRecordArrayFromKeys(summary, [
+    "factors",
+    "experimental_factors",
+    "factor_matrix",
+    "design_factors",
+  ]);
+
+  const factors = (payloadFactors.length > 0 ? payloadFactors : summaryFactors).map(
+    normalizeDesignFactor,
+  );
 
   return {
     report: readString(payload, "report", "experimental_design_matrix"),
@@ -487,12 +486,7 @@ function normalizeExperimentalDesign(
     factors,
     limitations: readStringArrayFromKeys(
       payload,
-      [
-        "limitations",
-        "methodological_limitations",
-        "warnings",
-        "conservative_warnings",
-      ],
+      ["limitations", "methodological_limitations", "warnings", "conservative_warnings"],
       readStringArrayFromKeys(summary, ["limitations", "warnings"], []),
     ),
     qualityNotes: readStringArrayFromKeys(
@@ -597,6 +591,208 @@ function normalizeResearchMethod(payload: JsonRecord): ResearchMethodSnapshot {
   };
 }
 
+function normalizeSimulationModes(contract: JsonRecord): SimulationModeSummary[] {
+  const modeRecords = readRecordArrayFromKeys(contract, [
+    "modes",
+    "operating_modes",
+    "target_operating_modes",
+    "execution_modes",
+  ]);
+
+  if (modeRecords.length === 0) {
+    return [
+      {
+        id: "optimization_mode",
+        label: "Optimization mode",
+        purpose:
+          "Batch experiments, policy comparison, metrics, ranking, and statistical analysis.",
+        executionEnabled: false,
+      },
+      {
+        id: "simulation_mode",
+        label: "Simulation mode",
+        purpose:
+          "Visual map and operational timeline for inspecting technicians, tasks, delays, and re-planning decisions.",
+        executionEnabled: false,
+      },
+    ];
+  }
+
+  return modeRecords.map((mode, index) => {
+    const id = readStringFromKeys(
+      mode,
+      ["id", "name", "mode", "key"],
+      `mode_${index + 1}`,
+    );
+
+    return {
+      id,
+      label: readStringFromKeys(mode, ["label", "title", "name"], titleFromId(id)),
+      purpose: readStringFromKeys(
+        mode,
+        ["purpose", "description", "scope"],
+        "Mode defined by the simulation state contract.",
+      ),
+      executionEnabled: readBooleanFromKeys(
+        mode,
+        ["execution_enabled", "currently_enabled", "enabled"],
+        false,
+      ),
+    };
+  });
+}
+
+function normalizeFutureEndpoints(contract: JsonRecord): SimulationFutureEndpoint[] {
+  const endpointRecords = readRecordArrayFromKeys(contract, [
+    "future_api_endpoints",
+    "planned_api_endpoints",
+    "planned_endpoints",
+    "future_endpoints",
+  ]);
+
+  return endpointRecords.map((endpoint) => ({
+    method: readString(endpoint, "method", "GET"),
+    path: readString(endpoint, "path", "/api/v1/future-simulation-endpoint"),
+    status: readStringFromKeys(
+      endpoint,
+      ["status", "state", "availability"],
+      "planned_not_enabled",
+    ),
+    executionEnabled: readBooleanFromKeys(
+      endpoint,
+      ["execution_enabled", "currently_enabled", "enabled"],
+      false,
+    ),
+  }));
+}
+
+function normalizeSimulationSafetyFlags(
+  payload: JsonRecord,
+  contract: JsonRecord,
+): SimulationSafetyFlags {
+  const safety = asRecord(
+    payload.safety_flags ??
+      payload.safety_interpretation ??
+      contract.safety_flags ??
+      contract.safety_requirements,
+  );
+
+  return {
+    browserExecutionEnabled: readBooleanFromKeys(
+      safety,
+      ["browser_execution_enabled", "browserExecutionEnabled"],
+      false,
+    ),
+    arbitraryCommandExecutionAllowed: readBooleanFromKeys(
+      safety,
+      [
+        "arbitrary_command_execution_allowed",
+        "allows_arbitrary_command_execution",
+        "arbitraryCommandExecutionAllowed",
+      ],
+      false,
+    ),
+    writeOperationsSupported: readBooleanFromKeys(
+      safety,
+      ["write_operations_supported", "writeOperationsSupported"],
+      false,
+    ),
+    futureJobApiCurrentlyEnabled: readBooleanFromKeys(
+      safety,
+      [
+        "future_job_api_currently_enabled",
+        "futureJobApiCurrentlyEnabled",
+        "job_api_enabled",
+      ],
+      false,
+    ),
+  };
+}
+
+function normalizeSimulationStateContract(
+  payload: JsonRecord,
+): SimulationStateContractSnapshot {
+  const contract = asRecord(payload.contract);
+  const scope = asRecord(contract.scope ?? contract.research_scope);
+  const stateSchema = asRecord(
+    contract.state_schema ??
+      contract.simulation_state_schema ??
+      contract.simulation_state ??
+      contract.visual_state,
+  );
+  const timeline = asRecord(stateSchema.timeline ?? contract.timeline);
+  const replanning = asRecord(
+    contract.replanning_decision ??
+      contract.replanning_decision_contract ??
+      contract.decision_contract,
+  );
+
+  const primaryDissertationScope = readStringArrayFromKeys(
+    scope,
+    ["primary_dissertation_scope", "primary_dynamic_focus", "primary_scope"],
+    readStringArrayFromKeys(contract, ["primary_dissertation_scope"], [
+      "delay_propagation",
+      "travel_delay",
+      "service_delay",
+    ]),
+  );
+
+  const futurePlatformPerturbations = readStringArrayFromKeys(
+    scope,
+    [
+      "future_platform_perturbations",
+      "secondary_dynamic_focus",
+      "extension_perturbations",
+    ],
+    readStringArrayFromKeys(contract, ["future_platform_perturbations"], [
+      "new_requests",
+      "cancellations",
+      "priority_changes",
+    ]),
+  );
+
+  return {
+    readOnly: readBoolean(payload, "read_only", true),
+    available: readBoolean(payload, "available", Object.keys(contract).length > 0),
+    contractPath: readString(
+      payload,
+      "contract_path",
+      "platform/contracts/simulation_state_contract.json",
+    ),
+    primaryDissertationScope,
+    futurePlatformPerturbations,
+    modes: normalizeSimulationModes(contract),
+    mapEntities: readStringArrayFromKeys(
+      stateSchema,
+      ["map_entities", "entities", "mapEntityTypes"],
+      ["technicians", "tasks", "depots", "routes", "operational_events"],
+    ),
+    timelineEvents: readStringArrayFromKeys(
+      timeline,
+      ["events", "event_types", "timeline_events"],
+      ["planned_start", "arrival", "service_start", "delay", "replanning_decision"],
+    ),
+    replanningDecisionFields: readStringArrayFromKeys(
+      replanning,
+      ["fields", "decision_fields", "tracked_fields"],
+      [
+        "policy_id",
+        "trigger_reason",
+        "computational_cost",
+        "route_stability",
+        "practical_equivalence_status",
+      ],
+    ),
+    futureEndpoints: normalizeFutureEndpoints(contract),
+    safetyFlags: normalizeSimulationSafetyFlags(payload, contract),
+    conservativeNote: readStringFromKeys(
+      payload,
+      ["conservative_note", "note"],
+      "Simulation state contract is read-only and does not enable browser-triggered execution.",
+    ),
+  };
+}
+
 async function fetchJson(baseUrl: string, path: string): Promise<JsonRecord> {
   const url = new URL(path, baseUrl).toString();
 
@@ -623,26 +819,22 @@ export class ReadOnlyPlatformApi {
 
   async getHealth(): Promise<ApiHealth> {
     const payload = await fetchJson(this.baseUrl, "/api/v1/health");
-
     return normalizeHealth(payload);
   }
 
   async getProjectStatus(): Promise<PlatformStatus> {
     const payload = await fetchJson(this.baseUrl, "/api/v1/project-status");
-
     return normalizeProjectStatus(payload);
   }
 
   async getReports(): Promise<PlatformReport[]> {
     const payload = await fetchJson(this.baseUrl, "/api/v1/reports");
-
     return normalizeReports(payload);
   }
 
   async getReportDetail(reportId: string): Promise<ReportDetail> {
     const safeReportId = encodeURIComponent(reportId);
     const payload = await fetchJson(this.baseUrl, `/api/v1/reports/${safeReportId}`);
-
     return normalizeReportDetail(payload);
   }
 
@@ -657,24 +849,27 @@ export class ReadOnlyPlatformApi {
 
   async getResearchMethod(): Promise<ResearchMethodSnapshot> {
     const payload = await fetchJson(this.baseUrl, "/api/v1/research-method");
-
     return normalizeResearchMethod(payload);
   }
 
+  async getSimulationStateContract(): Promise<SimulationStateContractSnapshot> {
+    const payload = await fetchJson(
+      this.baseUrl,
+      "/api/v1/simulation-state-contract",
+    );
+
+    return normalizeSimulationStateContract(payload);
+  }
+
   async getSnapshot(): Promise<PlatformSnapshot> {
-    const [
-      health,
-      status,
-      reports,
-      experimentalDesign,
-      researchMethod,
-    ] = await Promise.all([
-      this.getHealth(),
-      this.getProjectStatus(),
-      this.getReports(),
-      this.getExperimentalDesign(),
-      this.getResearchMethod(),
-    ]);
+    const [health, status, reports, experimentalDesign, researchMethod] =
+      await Promise.all([
+        this.getHealth(),
+        this.getProjectStatus(),
+        this.getReports(),
+        this.getExperimentalDesign(),
+        this.getResearchMethod(),
+      ]);
 
     const warnings = [
       status.conservativeNote,

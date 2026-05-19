@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import App from "../App";
 
 const healthPayload = {
@@ -27,6 +26,11 @@ const healthPayload = {
       method: "GET",
       path: "/api/v1/research-method",
     },
+    {
+      description: "Return simulation state contract.",
+      method: "GET",
+      path: "/api/v1/simulation-state-contract",
+    },
   ],
   service: "fieldops_lab_api",
   status: "ok",
@@ -35,7 +39,7 @@ const healthPayload = {
 const projectStatusPayload = {
   conservative_note: "This dashboard does not prove scientific validity.",
   summary_metrics: {
-    product_completeness: 56,
+    product_completeness: 59,
     engineering_status: "passed_current_structural_quality_gate",
     scientific_status: "diagnostic_only_with_methodological_warnings",
   },
@@ -130,6 +134,85 @@ const researchMethodPayload = {
   },
 };
 
+const simulationStateContractPayload = {
+  read_only: true,
+  available: true,
+  contract_path: "platform/contracts/simulation_state_contract.json",
+  conservative_note:
+    "Simulation state contract is read-only and does not enable browser-triggered execution.",
+  safety_flags: {
+    browser_execution_enabled: false,
+    arbitrary_command_execution_allowed: false,
+    write_operations_supported: false,
+    future_job_api_currently_enabled: false,
+  },
+  contract: {
+    scope: {
+      primary_dissertation_scope: [
+        "delay_propagation",
+        "travel_delay",
+        "service_delay",
+      ],
+      future_platform_perturbations: [
+        "new_requests",
+        "cancellations",
+        "priority_changes",
+      ],
+    },
+    modes: [
+      {
+        id: "optimization_mode",
+        label: "Optimization mode",
+        purpose:
+          "Batch experiments, policy comparison, metrics, ranking, and statistical analysis.",
+        execution_enabled: false,
+      },
+      {
+        id: "simulation_mode",
+        label: "Simulation mode",
+        purpose:
+          "Visual map and operational timeline for inspecting technicians, tasks, delays, and re-planning decisions.",
+        execution_enabled: false,
+      },
+    ],
+    state_schema: {
+      map_entities: [
+        "technicians",
+        "tasks",
+        "depots",
+        "routes",
+        "operational_events",
+      ],
+      timeline: {
+        event_types: [
+          "planned_start",
+          "arrival",
+          "service_start",
+          "delay",
+          "replanning_decision",
+        ],
+      },
+    },
+    replanning_decision: {
+      decision_fields: [
+        "policy_id",
+        "trigger_reason",
+        "computational_cost",
+        "route_stability",
+        "practical_equivalence_status",
+      ],
+    },
+    future_api_endpoints: [
+      {
+        method: "POST",
+        path: "/api/v1/simulation-jobs",
+        status: "planned_not_enabled",
+        execution_enabled: false,
+      },
+    ],
+  },
+};
+
 function jsonResponse(payload: unknown): Response {
   return new Response(JSON.stringify(payload), {
     status: 200,
@@ -165,6 +248,10 @@ function installSuccessfulFetchMock() {
         return Promise.resolve(jsonResponse(researchMethodPayload));
       }
 
+      if (url.endsWith("/api/v1/simulation-state-contract")) {
+        return Promise.resolve(jsonResponse(simulationStateContractPayload));
+      }
+
       return Promise.resolve(
         new Response(JSON.stringify({ error: "not_found" }), {
           status: 404,
@@ -183,12 +270,10 @@ describe("Simulation workspace page", () => {
     vi.unstubAllGlobals();
   });
 
-  it("documents the future visual simulation mode without enabling execution", async () => {
+  it("loads the simulation state contract without enabling browser execution", async () => {
     render(<App />);
 
-    expect(
-      await screen.findByText("Experimental platform dashboard"),
-    ).not.toBeNull();
+    expect(await screen.findByText("Experimental platform dashboard")).not.toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Simulation workspace" }));
 
@@ -197,18 +282,31 @@ describe("Simulation workspace page", () => {
     ).not.toBeNull();
 
     expect(
-      screen.getByText("Optimization mode and simulation mode"),
+      await screen.findByText("Read-only contract-backed workspace"),
     ).not.toBeNull();
-    expect(screen.getByText("Real-time operation map")).not.toBeNull();
-    expect(screen.getByText("Operational timeline")).not.toBeNull();
-    expect(screen.getByText("Technician state cards")).not.toBeNull();
-    expect(screen.getByText("Perturbation injection panel")).not.toBeNull();
+
+    expect(screen.getByText("Optimization mode and simulation mode")).not.toBeNull();
+    expect(screen.getByText("Future real-time map components")).not.toBeNull();
+    expect(screen.getByText("Timeline events and delay propagation")).not.toBeNull();
     expect(screen.getByText("Delays first, platform extensible later")).not.toBeNull();
-    expect(screen.getByText("Simulation state schema")).not.toBeNull();
-    expect(screen.getByText("Controlled simulation runner")).not.toBeNull();
+    expect(screen.getByText("Decision fields to preserve cost and stability evidence")).not.toBeNull();
+    expect(screen.getByText("Browser-triggered execution remains disabled")).not.toBeNull();
+    expect(screen.getByText("Planned endpoints are visible but not enabled")).not.toBeNull();
+
+    expect(screen.getByText("platform/contracts/simulation_state_contract.json")).not.toBeNull();
+    expect(screen.getByText("technicians")).not.toBeNull();
+    expect(screen.getByText("replanning decision")).not.toBeNull();
+    expect(screen.getByText("computational cost")).not.toBeNull();
+    expect(screen.getByText("/api/v1/simulation-jobs")).not.toBeNull();
+
+    expect(screen.getByText("Browser execution")).not.toBeNull();
+    expect(screen.getByText("Arbitrary command execution")).not.toBeNull();
+    expect(screen.getByText("Write operations")).not.toBeNull();
+    expect(screen.getByText("Future job API")).not.toBeNull();
+
     expect(
       screen.getByText(
-        "The current web dashboard remains read-only. No browser-triggered optimization or simulation execution is exposed yet.",
+        "Simulation state contract is read-only and does not enable browser-triggered execution.",
       ),
     ).not.toBeNull();
   });
