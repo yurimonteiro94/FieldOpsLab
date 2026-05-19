@@ -5,6 +5,7 @@ import type {
   PlatformRoute,
   PlatformSnapshot,
   PlatformStatus,
+  ResearchMethodSnapshot,
 } from "../domain/platform";
 
 type JsonRecord = Record<string, unknown>;
@@ -20,7 +21,11 @@ function asRecord(value: unknown): JsonRecord {
   return {};
 }
 
-function readString(record: JsonRecord, key: string, fallback: string): string {
+function readString(
+  record: JsonRecord,
+  key: string,
+  fallback: string,
+): string {
   const value = record[key];
 
   if (typeof value === "string" && value.trim().length > 0) {
@@ -30,7 +35,11 @@ function readString(record: JsonRecord, key: string, fallback: string): string {
   return fallback;
 }
 
-function readBoolean(record: JsonRecord, key: string, fallback: boolean): boolean {
+function readBoolean(
+  record: JsonRecord,
+  key: string,
+  fallback: boolean,
+): boolean {
   const value = record[key];
 
   if (typeof value === "boolean") {
@@ -40,7 +49,10 @@ function readBoolean(record: JsonRecord, key: string, fallback: boolean): boolea
   return fallback;
 }
 
-function readOptionalBoolean(record: JsonRecord, keys: string[]): boolean | null {
+function readOptionalBoolean(
+  record: JsonRecord,
+  keys: string[],
+): boolean | null {
   for (const key of keys) {
     const value = record[key];
 
@@ -90,6 +102,20 @@ function readStringFromKeys(
   }
 
   return fallback;
+}
+
+function readStringArray(
+  record: JsonRecord,
+  key: string,
+  fallback: string[] = [],
+): string[] {
+  const value = record[key];
+
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+
+  return value.filter((item): item is string => typeof item === "string");
 }
 
 function titleFromId(id: string): string {
@@ -278,6 +304,100 @@ function normalizeExperimentalDesign(
   };
 }
 
+function normalizeResearchMethod(payload: JsonRecord): ResearchMethodSnapshot {
+  const contract = asRecord(payload.contract);
+  const projectQuestion = asRecord(contract.project_question);
+  const researchGap = asRecord(contract.research_gap);
+  const contributionClaims = asRecord(contract.contribution_claims);
+  const fuzzyLogicPosition = asRecord(contract.fuzzy_logic_position);
+  const conservative = asRecord(payload.conservative_interpretation);
+
+  return {
+    readOnly: readBoolean(payload, "read_only", true),
+    available: readBoolean(payload, "available", false),
+    contractPath: readString(
+      payload,
+      "contract_path",
+      "platform/contracts/research_method_contract.json",
+    ),
+    framingPath: readString(
+      payload,
+      "framing_path",
+      "platform/research_framing.md",
+    ),
+    framingMarkdown: readString(payload, "framing_markdown", ""),
+    interpretation: {
+      doesNotClaimFinalScientificValidity: readBoolean(
+        conservative,
+        "does_not_claim_final_scientific_validity",
+        true,
+      ),
+      fuzzyLogicIsOptional: readBoolean(
+        conservative,
+        "fuzzy_logic_is_optional",
+        true,
+      ),
+      practicalEquivalenceMustBeHandled: readBoolean(
+        conservative,
+        "practical_equivalence_must_be_handled",
+        true,
+      ),
+      realCompanyDataRequiresValidationBeforeDecisionSupport: readBoolean(
+        conservative,
+        "real_company_data_requires_validation_before_decision_support",
+        true,
+      ),
+    },
+    contractSummary: {
+      status: readString(contract, "status", "draft"),
+      scientificMaturity: readString(
+        contract,
+        "scientific_maturity",
+        "diagnostic_foundation",
+      ),
+      projectQuestion: readString(
+        projectQuestion,
+        "summary",
+        "How can a field service operation choose an appropriate replanning policy when operational disruptions occur during execution?",
+      ),
+      researchGap: readString(
+        researchGap,
+        "specific_gap",
+        "A replicable experimental and decision framework for comparing replanning policies under controlled dynamic disruptions.",
+      ),
+      primaryDynamicFocus: readStringArray(researchGap, "primary_dynamic_focus", [
+        "delay_propagation",
+      ]),
+      secondaryDynamicFocus: readStringArray(
+        researchGap,
+        "secondary_dynamic_focus",
+        [],
+      ),
+      completedFoundation: readStringArray(
+        contract,
+        "current_completed_foundation",
+        [],
+      ),
+      missingMajorWork: readStringArray(contract, "missing_major_work", []),
+      preferredBaselineAlternatives: readStringArray(
+        fuzzyLogicPosition,
+        "preferred_baseline_alternatives",
+        [],
+      ),
+      claimsPolicyDecisionFramework: readBoolean(
+        contributionClaims,
+        "claims_policy_decision_framework",
+        false,
+      ),
+      claimsReproducibleExperimentalPlatform: readBoolean(
+        contributionClaims,
+        "claims_reproducible_experimental_platform",
+        false,
+      ),
+    },
+  };
+}
+
 async function fetchJson(baseUrl: string, path: string): Promise<JsonRecord> {
   const url = new URL(path, baseUrl).toString();
 
@@ -304,16 +424,19 @@ export class ReadOnlyPlatformApi {
 
   async getHealth(): Promise<ApiHealth> {
     const payload = await fetchJson(this.baseUrl, "/api/v1/health");
+
     return normalizeHealth(payload);
   }
 
   async getProjectStatus(): Promise<PlatformStatus> {
     const payload = await fetchJson(this.baseUrl, "/api/v1/project-status");
+
     return normalizeProjectStatus(payload);
   }
 
   async getReports(): Promise<PlatformReport[]> {
     const payload = await fetchJson(this.baseUrl, "/api/v1/reports");
+
     return normalizeReports(payload);
   }
 
@@ -326,18 +449,34 @@ export class ReadOnlyPlatformApi {
     return normalizeExperimentalDesign(payload);
   }
 
+  async getResearchMethod(): Promise<ResearchMethodSnapshot> {
+    const payload = await fetchJson(this.baseUrl, "/api/v1/research-method");
+
+    return normalizeResearchMethod(payload);
+  }
+
   async getSnapshot(): Promise<PlatformSnapshot> {
-    const [health, status, reports, experimentalDesign] = await Promise.all([
+    const [
+      health,
+      status,
+      reports,
+      experimentalDesign,
+      researchMethod,
+    ] = await Promise.all([
       this.getHealth(),
       this.getProjectStatus(),
       this.getReports(),
       this.getExperimentalDesign(),
+      this.getResearchMethod(),
     ]);
 
     const warnings = [
       status.conservativeNote,
       "Generated artifacts are engineering and diagnostic evidence, not final scientific validation.",
       "Backend execution remains intentionally unavailable from the web interface.",
+      researchMethod.interpretation.practicalEquivalenceMustBeHandled
+        ? "Policy comparisons must handle practical equivalence before recommending a winner."
+        : "Practical equivalence handling is not confirmed by the current research method contract.",
     ];
 
     return {
@@ -345,6 +484,7 @@ export class ReadOnlyPlatformApi {
       status,
       reports,
       experimentalDesign,
+      researchMethod,
       warnings,
       apiBaseUrl: this.baseUrl,
     };

@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
+
 import type { PageId } from "../domain/platform";
 
 interface LayoutProps {
   activePage: PageId;
   onNavigate: (page: PageId) => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const navItems: Array<{ id: PageId; label: string }> = [
@@ -19,6 +21,10 @@ const navItems: Array<{ id: PageId; label: string }> = [
     id: "scientific-validation",
     label: "Scientific validation",
   },
+  {
+    id: "research-method",
+    label: "Research method",
+  },
 ];
 
 export function Layout({ activePage, onNavigate, children }: LayoutProps) {
@@ -30,22 +36,22 @@ export function Layout({ activePage, onNavigate, children }: LayoutProps) {
           <h1>Research platform</h1>
           <p className="sidebar-copy">
             Read-only local interface for inspecting platform status, generated
-            artifacts, and scientific validation risks.
+            artifacts, research framing, and scientific validation risks.
           </p>
-        </div>
 
-        <nav aria-label="Main navigation" className="nav-list">
-          {navItems.map((item) => (
-            <button
-              className={item.id === activePage ? "nav-item active" : "nav-item"}
-              key={item.id}
-              onClick={() => onNavigate(item.id)}
-              type="button"
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
+          <nav className="nav-list" aria-label="FieldOps Lab pages">
+            {navItems.map((item) => (
+              <button
+                className={`nav-item ${activePage === item.id ? "active" : ""}`}
+                key={item.id}
+                onClick={() => onNavigate(item.id)}
+                type="button"
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        </div>
 
         <div className="sidebar-footer">
           <strong>Safety mode</strong>

@@ -1,8 +1,10 @@
 import { useState } from "react";
+
 import { Layout } from "./components/Layout";
 import type { PageId } from "./domain/platform";
 import { DashboardPage } from "./pages/DashboardPage";
 import { ReportsPage } from "./pages/ReportsPage";
+import { ResearchMethodPage } from "./pages/ResearchMethodPage";
 import { ScientificValidationPage } from "./pages/ScientificValidationPage";
 
 function renderPage(page: PageId) {
@@ -12,6 +14,10 @@ function renderPage(page: PageId) {
 
   if (page === "scientific-validation") {
     return <ScientificValidationPage />;
+  }
+
+  if (page === "research-method") {
+    return <ResearchMethodPage />;
   }
 
   return <DashboardPage />;

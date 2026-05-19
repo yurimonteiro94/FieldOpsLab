@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import App from "../App";
 
 const healthPayload = {
@@ -57,6 +58,62 @@ const experimentalDesignPayload = {
   },
 };
 
+const researchMethodPayload = {
+  read_only: true,
+  available: true,
+  contract_path: "platform/contracts/research_method_contract.json",
+  framing_path: "platform/research_framing.md",
+  framing_markdown: "# FieldOps Lab research framing",
+  conservative_interpretation: {
+    does_not_claim_final_scientific_validity: true,
+    fuzzy_logic_is_optional: true,
+    practical_equivalence_must_be_handled: true,
+    real_company_data_requires_validation_before_decision_support: true,
+  },
+  contract: {
+    status: "draft",
+    scientific_maturity: "diagnostic_foundation",
+    project_question: {
+      summary:
+        "How can a field service operation choose an appropriate replanning policy when operational disruptions occur during the execution of a dynamic TRSP or WSRP schedule?",
+    },
+    research_gap: {
+      specific_gap:
+        "A replicable experimental and decision framework for comparing replanning policies under controlled dynamic disruptions and recommending policies by scenario class.",
+      primary_dynamic_focus: [
+        "delay_propagation",
+        "travel_delay",
+        "service_delay",
+      ],
+      secondary_dynamic_focus: [
+        "new_requests",
+        "cancellations",
+        "priority_changes",
+      ],
+    },
+    contribution_claims: {
+      claims_policy_decision_framework: true,
+      claims_reproducible_experimental_platform: true,
+    },
+    fuzzy_logic_position: {
+      preferred_baseline_alternatives: [
+        "statistical_comparison",
+        "practical_equivalence_thresholds",
+        "dominance_rules",
+      ],
+    },
+    current_completed_foundation: [
+      "core_cpp_tests",
+      "read_only_local_http_api",
+      "web_dashboard_connected_to_api",
+    ],
+    missing_major_work: [
+      "statistical_comparison_module",
+      "policy_recommendation_method",
+    ],
+  },
+};
+
 function jsonResponse(payload: unknown): Response {
   return new Response(JSON.stringify(payload), {
     status: 200,
@@ -88,6 +145,10 @@ function installSuccessfulFetchMock() {
         return Promise.resolve(jsonResponse(experimentalDesignPayload));
       }
 
+      if (url.endsWith("/api/v1/research-method")) {
+        return Promise.resolve(jsonResponse(researchMethodPayload));
+      }
+
       return Promise.resolve(
         new Response(JSON.stringify({ error: "not_found" }), {
           status: 404,
@@ -109,7 +170,9 @@ describe("App dashboard", () => {
   it("renders the dashboard with API-backed data", async () => {
     render(<App />);
 
-    expect(await screen.findByText("Experimental platform dashboard")).not.toBeNull();
+    expect(
+      await screen.findByText("Experimental platform dashboard"),
+    ).not.toBeNull();
     expect(screen.getAllByText("46%")).toHaveLength(2);
     expect(screen.getByText("local http api")).not.toBeNull();
     expect(screen.getByText("Project status")).not.toBeNull();
@@ -120,7 +183,9 @@ describe("App dashboard", () => {
   it("navigates to report catalog and scientific validation pages", async () => {
     render(<App />);
 
-    expect(await screen.findByText("Experimental platform dashboard")).not.toBeNull();
+    expect(
+      await screen.findByText("Experimental platform dashboard"),
+    ).not.toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Reports" }));
 
@@ -133,8 +198,26 @@ describe("App dashboard", () => {
 
     expect(await screen.findByText("Evidence and risk control")).not.toBeNull();
     expect(
-      screen.getByText("Generated artifacts are engineering and diagnostic evidence, not final scientific validation."),
+      screen.getByText(
+        "Generated artifacts are engineering and diagnostic evidence, not final scientific validation.",
+      ),
     ).not.toBeNull();
+  });
+
+  it("navigates to the research method page", async () => {
+    render(<App />);
+
+    expect(
+      await screen.findByText("Experimental platform dashboard"),
+    ).not.toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Research method" }));
+
+    expect(await screen.findByText("Decision method framing")).not.toBeNull();
+    expect(screen.getByText("Research gap")).not.toBeNull();
+    expect(screen.getByText("Delay propagation")).not.toBeNull();
+    expect(screen.getByText("optional")).not.toBeNull();
+    expect(screen.getByText("Practical equivalence")).not.toBeNull();
   });
 
   it("shows a conservative error state when the API fails", async () => {

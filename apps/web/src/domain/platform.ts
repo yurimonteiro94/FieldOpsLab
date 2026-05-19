@@ -1,4 +1,8 @@
-export type PageId = "dashboard" | "reports" | "scientific-validation";
+export type PageId =
+  | "dashboard"
+  | "reports"
+  | "scientific-validation"
+  | "research-method";
 
 export interface PlatformRoute {
   method: string;
@@ -45,11 +49,43 @@ export interface ExperimentalDesignSummary {
   reproducibleFromExplicitFactors: boolean;
 }
 
+export interface ResearchMethodInterpretation {
+  doesNotClaimFinalScientificValidity: boolean;
+  fuzzyLogicIsOptional: boolean;
+  practicalEquivalenceMustBeHandled: boolean;
+  realCompanyDataRequiresValidationBeforeDecisionSupport: boolean;
+}
+
+export interface ResearchMethodContractSummary {
+  status: string;
+  scientificMaturity: string;
+  projectQuestion: string;
+  researchGap: string;
+  primaryDynamicFocus: string[];
+  secondaryDynamicFocus: string[];
+  completedFoundation: string[];
+  missingMajorWork: string[];
+  preferredBaselineAlternatives: string[];
+  claimsPolicyDecisionFramework: boolean;
+  claimsReproducibleExperimentalPlatform: boolean;
+}
+
+export interface ResearchMethodSnapshot {
+  readOnly: boolean;
+  available: boolean;
+  contractPath: string;
+  framingPath: string;
+  framingMarkdown: string;
+  interpretation: ResearchMethodInterpretation;
+  contractSummary: ResearchMethodContractSummary;
+}
+
 export interface PlatformSnapshot {
   health: ApiHealth;
   status: PlatformStatus;
   reports: PlatformReport[];
   experimentalDesign: ExperimentalDesignSummary;
+  researchMethod: ResearchMethodSnapshot;
   warnings: string[];
   apiBaseUrl: string;
 }
