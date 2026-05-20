@@ -1,0 +1,248 @@
+{
+  "schema": "fieldops_lab.deployment_readiness_contract",
+  "version": "0.1.0",
+  "read_only": true,
+  "execution_enabled": false,
+  "write_operations_supported": false,
+  "browser_triggered_execution_enabled": false,
+  "deployment_execution_enabled": false,
+  "current_status": {
+    "status": "contract_only",
+    "summary": "FieldOps Lab has a local web application, read-only HTTP API, static platform contracts, tested reports, and quality gates. This contract defines the deployment path but does not perform deployment.",
+    "is_live_production_system": false,
+    "can_be_deployed_now": false,
+    "reason_not_live_yet": "Cloud project configuration, Firebase Hosting target, Cloud Run service definition, environment variables, deployment scripts, smoke tests, and production safety gates still need to be added and validated.",
+    "honesty_note": "Passing local tests means the repository is internally consistent. It does not mean the site is already hosted, reachable by users, or connected to a production backend."
+  },
+  "target_architecture": {
+    "frontend": {
+      "platform": "Firebase Hosting",
+      "source_directory": "apps/web",
+      "build_command": "npm --prefix apps/web run build",
+      "test_command": "npm --prefix apps/web run test:run",
+      "output_directory": "apps/web/dist",
+      "responsibility": "Serve the FieldOps Lab web interface and read-only research/diagnostic views.",
+      "must_not_do": [
+        "run solvers in the browser",
+        "write experiment results directly",
+        "mutate backend state without an explicit safe API",
+        "claim that static samples are real experiment results"
+      ]
+    },
+    "api": {
+      "platform": "Cloud Run",
+      "source_entrypoint": "services/api/fieldops_http_server.py",
+      "local_self_test_command": "py -3 services/api/fieldops_http_server.py --self-test",
+      "responsibility": "Expose read-only project status, reports, platform contracts, solver integration plans, comparative analysis contracts, and static samples.",
+      "current_api_mode": "read_only",
+      "future_api_mode": "read_only_plus_controlled_job_submission",
+      "must_not_do_now": [
+        "execute optimization jobs directly from public browser requests",
+        "run OR-Tools from unauthenticated endpoints",
+        "run Gurobi from unauthenticated endpoints",
+        "write experiment outputs without job IDs and audit trail",
+        "accept destructive operations"
+      ]
+    },
+    "future_job_execution_layer": {
+      "status": "future_required_layer",
+      "preferred_solver_family": "OR-Tools",
+      "optional_solver_family": "Gurobi",
+      "execution_model": "controlled_backend_jobs",
+      "expected_platform_options": [
+        "Cloud Run Jobs",
+        "Cloud Run service with authenticated job queue",
+        "local controlled execution during research phase"
+      ],
+      "required_before_enabling": [
+        "job request contract",
+        "job result contract",
+        "job status endpoint",
+        "input validation",
+        "resource limits",
+        "timeout limits",
+        "storage policy",
+        "audit trail",
+        "authentication or restricted access",
+        "rollback and cleanup plan"
+      ]
+    },
+    "storage": {
+      "static_contracts": "repository_tracked_json_files",
+      "future_experiment_outputs": "Cloud Storage or Firestore, not browser local state",
+      "future_large_outputs": "Cloud Storage",
+      "future_metadata": "Firestore"
+    }
+  },
+  "deployment_targets": [
+    {
+      "target_id": "local_development",
+      "status": "currently_supported",
+      "purpose": "Development, testing, quality gate validation, and local demonstrations.",
+      "required_commands": [
+        "npm --prefix apps/web run build",
+        "npm --prefix apps/web run test:run",
+        "py -3 services/api/fieldops_http_server.py --self-test",
+        "py -3 analysis/scripts/run_project_quality_gate.py --quick"
+      ]
+    },
+    {
+      "target_id": "firebase_hosting_frontend",
+      "status": "planned",
+      "purpose": "Host the web UI.",
+      "required_before_deploy": [
+        "firebase project selection",
+        "firebase.json validation",
+        "hosting public directory points to apps/web/dist or equivalent build output",
+        "SPA rewrite policy if React routing is used",
+        "production API base URL configuration"
+      ]
+    },
+    {
+      "target_id": "cloud_run_read_only_api",
+      "status": "planned",
+      "purpose": "Host the read-only FieldOps Lab API.",
+      "required_before_deploy": [
+        "container definition",
+        "port binding through environment variable or platform-compatible port",
+        "health endpoint smoke test",
+        "self-test in deployment pipeline",
+        "CORS policy review",
+        "public/private access decision",
+        "log visibility"
+      ]
+    },
+    {
+      "target_id": "cloud_run_solver_jobs",
+      "status": "future_blocked",
+      "purpose": "Run solver-backed experiments and policy comparisons.",
+      "blocked_until": [
+        "solver adapter contract is implemented",
+        "OR-Tools integration is validated",
+        "comparative experiment runner exists",
+        "statistical pipeline consumes real outputs",
+        "resource and cost controls are explicit"
+      ]
+    }
+  ],
+  "required_environment_variables": [
+    {
+      "name": "FIELDOPS_API_BASE_URL",
+      "required_for": "frontend_production",
+      "status": "planned",
+      "description": "Base URL used by the web app to read the deployed API."
+    },
+    {
+      "name": "PORT",
+      "required_for": "cloud_run_api",
+      "status": "planned",
+      "description": "Port provided by Cloud Run and used by the API server."
+    },
+    {
+      "name": "FIELDOPS_RUNTIME_MODE",
+      "required_for": "api_safety",
+      "status": "planned",
+      "description": "Runtime mode such as local, staging, or production."
+    }
+  ],
+  "quality_gate_requirements": {
+    "local_quality_gate_must_pass_before_deploy": true,
+    "required_local_checks": [
+      "C++ tests",
+      "Python unit tests",
+      "web build",
+      "web unit tests",
+      "read-only API self-test",
+      "report generation and verification",
+      "scientific validation plan verification"
+    ],
+    "deployment_smoke_tests_required": [
+      "frontend loads",
+      "API health endpoint returns 200",
+      "project status endpoint returns 200",
+      "comparative analysis contract endpoint returns 200",
+      "comparative analysis sample endpoint returns 200",
+      "solver integration contract endpoint returns 200",
+      "POST to read-only endpoints remains blocked"
+    ],
+    "must_not_skip": [
+      "git status before commit",
+      "quality gate",
+      "API self-test",
+      "web build",
+      "web tests"
+    ]
+  },
+  "research_alignment": {
+    "system_goal": "Provide a web-based experimental platform for dynamic TRSP/WSRP field operations.",
+    "dissertation_focus": "Delay propagation and comparative evaluation of re-planning policies.",
+    "deployment_role_in_research": "Deployment is useful for demonstration, reproducibility, advisor review, and future company validation, but the academic contribution remains the experimental method and decision framework.",
+    "solver_plan": {
+      "preferred": "OR-Tools",
+      "optional": "Gurobi",
+      "current_internal_baselines": [
+        "no_replanning",
+        "threshold_delay_replanning",
+        "greedy_replanning"
+      ],
+      "future_solver_backed_methods": [
+        "OR-Tools VRP reoptimization",
+        "rolling horizon reoptimization",
+        "repair-based reoptimization",
+        "hybrid heuristic plus solver polishing"
+      ]
+    },
+    "comparative_analysis_plan": {
+      "status": "contract_and_sample_defined",
+      "must_compare_multiple_policies": true,
+      "must_use_controlled_experiments": true,
+      "must_include_replications": true,
+      "must_report_tradeoffs": true,
+      "must_not_claim_single_run_evidence": true
+    }
+  },
+  "safety_requirements": {
+    "default_public_mode": "read_only",
+    "require_authentication_before_write_or_execution": true,
+    "require_job_queue_before_solver_execution": true,
+    "require_resource_limits_before_solver_execution": true,
+    "require_cost_controls_before_solver_execution": true,
+    "require_input_validation_before_solver_execution": true,
+    "require_audit_trail_before_solver_execution": true,
+    "forbidden_current_behaviors": [
+      "browser-triggered solver execution",
+      "public unauthenticated experiment execution",
+      "silent file writes from web requests",
+      "destructive operations from public endpoints",
+      "claims that static samples are real experiment results"
+    ]
+  },
+  "next_implementation_steps": [
+    {
+      "step": 1,
+      "title": "Expose deployment readiness through the read-only API",
+      "status": "next"
+    },
+    {
+      "step": 2,
+      "title": "Render deployment readiness and solver/comparative status in the web UI",
+      "status": "planned"
+    },
+    {
+      "step": 3,
+      "title": "Add Firebase Hosting configuration",
+      "status": "planned"
+    },
+    {
+      "step": 4,
+      "title": "Add Cloud Run API container configuration",
+      "status": "planned"
+    },
+    {
+      "step": 5,
+      "title": "Add deployment smoke test script",
+      "status": "planned"
+    }
+  ],
+  "conservative_note": "This contract intentionally separates local correctness, deployment readiness, and real runtime execution. The project is progressing, but the deployed site and production solver-backed experiment engine should not be claimed until deployment configuration, smoke tests, authentication decisions, and execution controls exist."
+}
