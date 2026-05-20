@@ -51,6 +51,32 @@ docker run --rm -p 8080:8080 -e PORT=8080 fieldops-read-only-api
 
 This command starts the read-only API locally on port 8080. It does not run solvers, does not start experiments, does not mutate schedules, does not write files, does not deploy resources, and does not trigger backend jobs.
 
+## Automated local smoke test command
+
+Prefer this command instead of manually running `docker run`:
+
+```cmd
+py -3 deploy\cloud-run\smoke_test_read_only_api_container.py
+```
+
+The automated local smoke test command builds the image, starts the container, checks the read-only HTTP endpoints, validates the endpoint catalog, validates the unknown-report 404 behavior, validates that POST requests still return HTTP 405, verifies the safety flags, stops existing containers publishing port 8080, stops the container at the end, and stops the container in a cleanup step.
+
+## Stop containers using port 8080
+
+Use this before starting another local container on port 8080:
+
+```cmd
+for /f "tokens=1" %i in ('docker ps --filter "publish=8080" --format "{{.ID}}"') do docker stop %i
+```
+
+Then inspect whether the port is still in use:
+
+```cmd
+netstat -ano | findstr ":8080"
+```
+
+If nothing is listed as `LISTENING`, port 8080 is free. Entries such as `TIME_WAIT` usually mean closed TCP connections still being held briefly by Windows, not an active server.
+
 ## Local smoke test command
 
 Use another terminal while the container is running:
@@ -70,10 +96,10 @@ The future deploy command will use `gcloud run deploy`, but this README does not
 Do not run it until the Google Cloud project, billing, region, container registry, service visibility, and post-deploy smoke tests are explicitly confirmed and the image has been smoke-tested successfully.
 
 ```cmd
-gcloud run deploy fieldops-read-only-api --image REGION-docker.pkg.dev/PROJECT_ID/REPOSITORY/fieldops-read-only-api:TAG --platform managed --region REGION --allow-unauthenticated
+gcloud run deploy fieldops-read-only-api --image region-docker.pkg.dev/project_id/repository/fieldops-read-only-api:tag --platform managed --region region --allow-unauthenticated
 ```
 
-Before using a real command, replace `REGION`, `PROJECT_ID`, `REPOSITORY`, and `TAG`, confirm the Google Cloud project, confirm billing, confirm the deployment region, and confirm whether unauthenticated public access is acceptable.
+Before using a real command, replace `region`, `project_id`, `repository`, and `tag`, confirm the Google Cloud project, confirm billing, confirm the deployment region, and confirm whether unauthenticated public access is acceptable.
 
 ## Required smoke tests after deploy
 
