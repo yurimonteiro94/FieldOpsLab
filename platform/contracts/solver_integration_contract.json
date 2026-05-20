@@ -1,0 +1,150 @@
+{
+  "contract_id": "fieldops_solver_integration_contract_v1",
+  "status": "read_only_contract",
+  "read_only": true,
+  "execution_enabled": false,
+  "browser_execution_enabled": false,
+  "operational_use_enabled": false,
+  "primary_research_scope": "dynamic TRSP/WSRP re-planning under delay propagation",
+  "solver_strategy": {
+    "preferred_solver_family": "OR-Tools",
+    "preferred_solver_reason": "OR-Tools is the preferred future integration path because it supports C++ integration, routing and constraint programming workflows, and avoids immediate dependence on commercial licensing.",
+    "gurobi_role": "optional_future_benchmark_or_mip_backend",
+    "gurobi_not_required_reason": "Gurobi is not required for the current platform stage because licensing, environment, and deployment constraints should not block the research system architecture.",
+    "custom_solver_role": "baseline_heuristics_and_research_control_code",
+    "custom_solver_warning": "The project must not depend on implementing a complete industrial-grade TRSP/WSRP solver from scratch before the experimental platform is useful."
+  },
+  "solver_candidates": [
+    {
+      "id": "ortools_routing_or_cp_sat_adapter",
+      "label": "OR-Tools adapter",
+      "priority": "primary",
+      "planned_language_binding": "C++",
+      "planned_role": "main future solver backend for routing, assignment, scheduling, and constrained re-planning experiments",
+      "enabled_now": false,
+      "requires_external_dependency": true,
+      "license_dependency": "open_source",
+      "deployment_risk": "moderate",
+      "notes": "This is the preferred integration target once the read-only contracts, experiments, and API boundary are stable."
+    },
+    {
+      "id": "internal_greedy_and_threshold_baselines",
+      "label": "Internal baseline heuristics",
+      "priority": "current",
+      "planned_language_binding": "C++",
+      "planned_role": "baseline policies, sanity checks, fast deterministic comparisons, and controlled experiments",
+      "enabled_now": true,
+      "requires_external_dependency": false,
+      "license_dependency": "none",
+      "deployment_risk": "low",
+      "notes": "These baselines are useful for validating the experimental pipeline before adding an external solver."
+    },
+    {
+      "id": "gurobi_mip_adapter",
+      "label": "Gurobi adapter",
+      "priority": "optional",
+      "planned_language_binding": "C++ or command-line bridge",
+      "planned_role": "future exact or MIP benchmark when licensing and environment constraints are acceptable",
+      "enabled_now": false,
+      "requires_external_dependency": true,
+      "license_dependency": "commercial_or_academic_license",
+      "deployment_risk": "high",
+      "notes": "This option must remain optional and must not become a blocker for the platform."
+    }
+  ],
+  "adapter_boundary": {
+    "input_contract": {
+      "planned_artifact": "solver_request.json",
+      "required_sections": [
+        "instance",
+        "technicians",
+        "tasks",
+        "travel_matrix",
+        "time_windows",
+        "current_solution",
+        "active_perturbations",
+        "policy_configuration",
+        "objective_weights"
+      ],
+      "must_include_delay_context": true
+    },
+    "output_contract": {
+      "planned_artifact": "solver_response.json",
+      "required_sections": [
+        "solver_status",
+        "recommended_solution",
+        "objective_value",
+        "feasibility_summary",
+        "delay_propagation_summary",
+        "route_stability_summary",
+        "computational_cost",
+        "warnings"
+      ],
+      "must_be_comparable_across_policies": true
+    },
+    "execution_boundary": {
+      "planned_backend_only": true,
+      "browser_must_not_trigger_solver_directly": true,
+      "future_execution_requires_api_gate": true,
+      "future_execution_requires_job_id": true,
+      "future_execution_requires_persisted_input_snapshot": true,
+      "future_execution_requires_persisted_output_snapshot": true
+    }
+  },
+  "research_alignment": {
+    "why_solver_is_needed": "TRSP and WSRP variants are commonly solved with optimization and constraint-based methods. The platform should therefore integrate mature solvers instead of relying only on hand-written ad hoc algorithms.",
+    "why_internal_baselines_still_matter": "Internal baselines provide reproducible lower-complexity policies for comparison, regression tests, and sanity checks.",
+    "comparative_analysis_role": "The solver adapter must support repeated experiments so policies and techniques can be compared by performance, robustness, stability, and computational cost.",
+    "statistical_analysis_role": "Solver outputs must be exportable to the analysis pipeline for ranking sensitivity, scenario grouping, quality checks, and future statistical comparison."
+  },
+  "policy_comparison_requirements": [
+    "same instance must be reusable across multiple policies",
+    "same perturbation set must be reusable across multiple policies",
+    "solver output must include feasibility and delay propagation metrics",
+    "solver output must include computational time or effort proxy",
+    "solver output must include route stability or disruption indicators",
+    "solver output must not claim statistical superiority from a single run"
+  ],
+  "safety_requirements": [
+    "Do not expose solver execution from the browser in the current stage.",
+    "Do not claim operational readiness before persisted jobs, validation, rollback, and audit logs exist.",
+    "Do not require Gurobi for the project to run.",
+    "Do not treat OR-Tools integration as already implemented.",
+    "Do not hide licensing or deployment constraints behind the solver abstraction.",
+    "Keep the dissertation focus narrow on delay propagation even if the platform remains extensible."
+  ],
+  "future_milestones": [
+    {
+      "id": "solver_request_contract",
+      "label": "Define solver request contract",
+      "status": "planned"
+    },
+    {
+      "id": "solver_response_contract",
+      "label": "Define solver response contract",
+      "status": "planned"
+    },
+    {
+      "id": "internal_adapter_cli",
+      "label": "Create internal CLI adapter for baseline policies",
+      "status": "planned"
+    },
+    {
+      "id": "ortools_adapter_spike",
+      "label": "Create isolated OR-Tools C++ adapter spike",
+      "status": "planned"
+    },
+    {
+      "id": "batch_solver_execution_gate",
+      "label": "Add backend-only batch execution gate",
+      "status": "planned"
+    },
+    {
+      "id": "comparative_statistics_pipeline",
+      "label": "Connect solver outputs to comparative and statistical analysis",
+      "status": "planned"
+    }
+  ],
+  "conservative_note": "This contract documents the intended solver integration architecture. It does not execute OR-Tools, Gurobi, or any optimization job.",
+  "safety_note": "The current platform remains read-only at the web/API boundary for this artifact."
+}
