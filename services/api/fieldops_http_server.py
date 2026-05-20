@@ -438,6 +438,36 @@ def _comparative_analysis_contract_payload() -> dict[str, Any]:
     }
 
 
+def _comparative_analysis_sample_payload() -> dict[str, Any]:
+    payload = _read_json_file(CONTRACTS_ROOT / "comparative_analysis_sample.json")
+
+    return {
+        "schema": "fieldops_lab.comparative_analysis_sample_endpoint",
+        "version": "0.1.0",
+        "read_only": True,
+        "execution_enabled": False,
+        "write_operations_supported": False,
+        "browser_triggered_execution_enabled": False,
+        "comparative_analysis_sample": payload,
+        "sample_id": payload.get("sample_id"),
+        "runtime_status": payload.get("runtime_status", {}),
+        "research_alignment": payload.get("research_alignment", {}),
+        "comparison_unit": payload.get("comparison_unit", {}),
+        "candidate_policies": payload.get("candidate_policies", []),
+        "metrics": payload.get("metrics", {}),
+        "sample_results": payload.get("sample_results", []),
+        "statistical_analysis_plan": payload.get("statistical_analysis_plan", {}),
+        "sample_ranking": payload.get("sample_ranking", []),
+        "decision_framework_output": payload.get("decision_framework_output", {}),
+        "artifact_path": "platform/contracts/comparative_analysis_sample.json",
+        "safety_note": (
+            "This endpoint exposes a static read-only comparative analysis sample. "
+            "It does not execute experiments, run solvers, run statistical scripts, "
+            "mutate schedules, write files, or claim real experimental evidence."
+        ),
+    }
+
+
 def _health_payload() -> dict[str, Any]:
     return {
         "schema": "fieldops_lab.read_only_api_health",
@@ -463,6 +493,7 @@ def _health_payload() -> dict[str, Any]:
             "/api/v1/simulation-playback-control-contract",
             "/api/v1/solver-integration-contract",
             "/api/v1/comparative-analysis-contract",
+            "/api/v1/comparative-analysis-sample",
             ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
         ],
     }
@@ -611,6 +642,13 @@ class FieldOpsReadOnlyRequestHandler(BaseHTTPRequestHandler):
             )
             return
 
+
+        if path == "/api/v1/comparative-analysis-sample":
+            self._send_json(
+                HTTPStatus.OK,
+                _comparative_analysis_sample_payload(),
+            )
+            return
         self._send_error_payload(HTTPStatus.NOT_FOUND, "Endpoint not found.")
 
     def _handle_report_detail(self, path: str) -> None:
@@ -673,6 +711,7 @@ def run_self_test() -> int:
         ("/api/v1/simulation-playback-control-contract", HTTPStatus.OK),
         ("/api/v1/solver-integration-contract", HTTPStatus.OK),
         ("/api/v1/comparative-analysis-contract", HTTPStatus.OK),
+        ("/api/v1/comparative-analysis-sample", HTTPStatus.OK),
         ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
     ]
 
