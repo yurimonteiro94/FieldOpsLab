@@ -468,6 +468,32 @@ def _comparative_analysis_sample_payload() -> dict[str, Any]:
     }
 
 
+def _deployment_readiness_contract_payload() -> dict[str, Any]:
+    payload = _read_json_file(CONTRACTS_ROOT / "deployment_readiness_contract.json")
+    return {
+        "schema": "fieldops_lab.deployment_readiness_contract_endpoint",
+        "version": "0.1.0",
+        "read_only": True,
+        "execution_enabled": False,
+        "write_operations_supported": False,
+        "browser_triggered_execution_enabled": False,
+        "deployment_execution_enabled": False,
+        "deployment_readiness_contract": payload,
+        "target_architecture": payload.get("target_architecture", {}),
+        "deployment_targets": payload.get("deployment_targets", []),
+        "quality_gate_requirements": payload.get("quality_gate_requirements", {}),
+        "research_alignment": payload.get("research_alignment", {}),
+        "safety_requirements": payload.get("safety_requirements", {}),
+        "artifact_path": "platform/contracts/deployment_readiness_contract.json",
+        "safety_note": (
+            "This endpoint exposes the deployment readiness contract for inspection. "
+            "It does not deploy the frontend, deploy the API, run solvers, start jobs, "
+            "write files, change cloud resources, or trigger backend execution."
+        ),
+    }
+
+
+
 def _health_payload() -> dict[str, Any]:
     return {
         "schema": "fieldops_lab.read_only_api_health",
@@ -494,6 +520,7 @@ def _health_payload() -> dict[str, Any]:
             "/api/v1/solver-integration-contract",
             "/api/v1/comparative-analysis-contract",
             "/api/v1/comparative-analysis-sample",
+            "/api/v1/deployment-readiness-contract",
             ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
         ],
     }
@@ -649,6 +676,13 @@ class FieldOpsReadOnlyRequestHandler(BaseHTTPRequestHandler):
                 _comparative_analysis_sample_payload(),
             )
             return
+        if path == "/api/v1/deployment-readiness-contract":
+            self._send_json(
+                HTTPStatus.OK,
+                _deployment_readiness_contract_payload(),
+            )
+            return
+
         self._send_error_payload(HTTPStatus.NOT_FOUND, "Endpoint not found.")
 
     def _handle_report_detail(self, path: str) -> None:
@@ -712,6 +746,7 @@ def run_self_test() -> int:
         ("/api/v1/solver-integration-contract", HTTPStatus.OK),
         ("/api/v1/comparative-analysis-contract", HTTPStatus.OK),
         ("/api/v1/comparative-analysis-sample", HTTPStatus.OK),
+        ("/api/v1/deployment-readiness-contract", HTTPStatus.OK),
         ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
     ]
 
