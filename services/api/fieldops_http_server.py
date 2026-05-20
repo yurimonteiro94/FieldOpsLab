@@ -417,6 +417,27 @@ def _solver_integration_contract_payload() -> dict[str, Any]:
     }
 
 
+
+def _comparative_analysis_contract_payload() -> dict[str, Any]:
+    payload = _read_json_file(CONTRACTS_ROOT / "comparative_analysis_contract.json")
+
+    return {
+        "schema": "fieldops_lab.comparative_analysis_contract_endpoint",
+        "version": "0.1.0",
+        "read_only": True,
+        "execution_enabled": False,
+        "write_operations_supported": False,
+        "browser_triggered_execution_enabled": False,
+        "comparative_analysis_contract": payload,
+        "artifact_path": "platform/contracts/comparative_analysis_contract.json",
+        "safety_note": (
+            "This endpoint exposes the comparative analysis contract for inspection. "
+            "It does not execute campaigns, run solvers, compute statistical tests, "
+            "write files, mutate schedules, or trigger backend jobs."
+        ),
+    }
+
+
 def _health_payload() -> dict[str, Any]:
     return {
         "schema": "fieldops_lab.read_only_api_health",
@@ -441,6 +462,7 @@ def _health_payload() -> dict[str, Any]:
             ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
             "/api/v1/simulation-playback-control-contract",
             "/api/v1/solver-integration-contract",
+            "/api/v1/comparative-analysis-contract",
             ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
         ],
     }
@@ -582,6 +604,13 @@ class FieldOpsReadOnlyRequestHandler(BaseHTTPRequestHandler):
             )
             return
 
+        if path == "/api/v1/comparative-analysis-contract":
+            self._send_json(
+                HTTPStatus.OK,
+                _comparative_analysis_contract_payload(),
+            )
+            return
+
         self._send_error_payload(HTTPStatus.NOT_FOUND, "Endpoint not found.")
 
     def _handle_report_detail(self, path: str) -> None:
@@ -643,6 +672,7 @@ def run_self_test() -> int:
         ("/api/v1/replanning-decision-response-sample", HTTPStatus.OK),
         ("/api/v1/simulation-playback-control-contract", HTTPStatus.OK),
         ("/api/v1/solver-integration-contract", HTTPStatus.OK),
+        ("/api/v1/comparative-analysis-contract", HTTPStatus.OK),
         ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
     ]
 
