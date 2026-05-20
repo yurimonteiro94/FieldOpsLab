@@ -2,6 +2,7 @@ import { ReportCard } from "../components/ReportCard";
 import { StatusCard } from "../components/StatusCard";
 import { formatPercent, formatToken } from "../domain/platform";
 import { useDashboardViewModel } from "../viewModels/useDashboardViewModel";
+import { DeploymentReadinessPanel } from "../components/DeploymentReadinessPanel";
 
 function LoadingState() {
   return (
@@ -140,7 +141,9 @@ export function DashboardPage() {
           {mainReports.map((report) => (
             <ReportCard key={report.id} report={report} />
           ))}
-        </div>
+        
+      <DeploymentReadinessPanel />
+</div>
       </section>
     </>
   );
