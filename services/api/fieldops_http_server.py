@@ -15,6 +15,7 @@ from urllib.parse import unquote, urlparse
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+SIMULATION_PLAYBACK_STATE_SAMPLE_PATH = REPOSITORY_ROOT / "platform" / "contracts" / "simulation_playback_state_sample.json"
 REPORTS_ROOT = REPOSITORY_ROOT / "analysis" / "reports"
 CONTRACTS_ROOT = REPOSITORY_ROOT / "platform" / "contracts"
 
@@ -417,7 +418,9 @@ def _health_payload() -> dict[str, Any]:
             "/api/v1/delay-injection-request-contract",
             "/api/v1/replanning-decision-response-contract",
             "/api/v1/replanning-decision-response-sample",
+            ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
             "/api/v1/simulation-playback-control-contract",
+            ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
         ],
     }
 
@@ -543,6 +546,13 @@ class FieldOpsReadOnlyRequestHandler(BaseHTTPRequestHandler):
             )
             return
 
+        if path == "/api/v1/simulation-playback-state-sample":
+            self._send_json(
+                HTTPStatus.OK,
+                _simulation_playback_control_contract_payload(),
+            )
+            return
+
         self._send_error_payload(HTTPStatus.NOT_FOUND, "Endpoint not found.")
 
     def _handle_report_detail(self, path: str) -> None:
@@ -603,6 +613,7 @@ def run_self_test() -> int:
         ("/api/v1/replanning-decision-response-contract", HTTPStatus.OK),
         ("/api/v1/replanning-decision-response-sample", HTTPStatus.OK),
         ("/api/v1/simulation-playback-control-contract", HTTPStatus.OK),
+        ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
     ]
 
     try:
