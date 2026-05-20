@@ -1,0 +1,194 @@
+{
+  "schema": "fieldops_lab.comparative_analysis_contract",
+  "version": "0.1.0",
+  "read_only": true,
+  "execution_enabled": false,
+  "browser_execution_enabled": false,
+  "operational_use_enabled": false,
+  "contract_id": "comparative_analysis_contract",
+  "purpose": "Define the future comparative and statistical analysis layer for evaluating re-planning policies, solver-backed techniques, internal baselines, and delay propagation behavior under controlled dynamic TRSP and WSRP experiments.",
+  "research_alignment": {
+    "problem_family": [
+      "dynamic TRSP",
+      "dynamic WSRP",
+      "field operations with technicians, tasks, routes, time windows, and operational disruptions"
+    ],
+    "dissertation_scope": "Delay propagation remains the first dissertation focus. Other perturbations may be supported later by the platform, but they are not required for the first defensible academic contribution.",
+    "central_question": "Given a problem class and a delay scenario, compare which re-planning policy or technique is more appropriate considering performance, robustness, stability, feasibility, service level, and computational cost.",
+    "decision_framework_goal": "Convert repeated experimental evidence into a replicable recommendation method for selecting a re-planning policy or technique."
+  },
+  "comparison_unit": {
+    "paired_design_required": true,
+    "same_instance_required": true,
+    "same_initial_solution_required": true,
+    "same_perturbation_scenario_required": true,
+    "same_random_seed_required_when_randomness_exists": true,
+    "reason": "Policies must be compared under equivalent conditions. A single isolated run is not enough to support a scientific conclusion."
+  },
+  "candidate_policy_families": [
+    {
+      "id": "no_replanning",
+      "label": "No re-planning baseline",
+      "current_status": "implemented baseline",
+      "role": "Reference policy used to quantify the damage caused by delays when no corrective action is taken."
+    },
+    {
+      "id": "threshold_delay_replanning",
+      "label": "Threshold-based delay re-planning",
+      "current_status": "implemented baseline",
+      "role": "Simple interpretable policy for triggering re-planning only when delay impact crosses predefined thresholds."
+    },
+    {
+      "id": "solver_backed_replanning",
+      "label": "Solver-backed re-planning",
+      "current_status": "future adapter",
+      "preferred_solver_family": "OR-Tools",
+      "role": "Future optimization-backed policy family. It should use an adapter boundary instead of hardcoding one solver into the research workflow."
+    },
+    {
+      "id": "hybrid_or_metaheuristic_replanning",
+      "label": "Hybrid or metaheuristic re-planning",
+      "current_status": "future extension",
+      "role": "Future technique family for larger or time-constrained scenarios where exact or constraint-based approaches may be too costly."
+    }
+  ],
+  "required_input_dimensions": [
+    "instance_id",
+    "instance_class",
+    "technician_count",
+    "task_count",
+    "time_window_tightness",
+    "travel_time_profile",
+    "service_time_profile",
+    "delay_type",
+    "delay_magnitude",
+    "delay_location",
+    "delay_start_time",
+    "perturbation_seed",
+    "policy_id",
+    "policy_parameters",
+    "solver_or_technique_id",
+    "computational_budget"
+  ],
+  "required_metric_families": [
+    {
+      "id": "delay_propagation",
+      "metrics": [
+        "initial_delay_minutes",
+        "propagated_delay_minutes",
+        "affected_task_count",
+        "affected_technician_count",
+        "downstream_time_window_violation_count"
+      ]
+    },
+    {
+      "id": "service_quality",
+      "metrics": [
+        "completed_task_count",
+        "unserved_task_count",
+        "late_task_count",
+        "total_tardiness_minutes",
+        "maximum_tardiness_minutes"
+      ]
+    },
+    {
+      "id": "route_stability",
+      "metrics": [
+        "changed_assignment_count",
+        "changed_sequence_count",
+        "route_edit_distance_proxy",
+        "technician_plan_change_count"
+      ]
+    },
+    {
+      "id": "feasibility_and_robustness",
+      "metrics": [
+        "feasible_after_replanning",
+        "constraint_violation_count",
+        "recovery_success",
+        "failure_reason"
+      ]
+    },
+    {
+      "id": "computational_cost",
+      "metrics": [
+        "runtime_ms",
+        "solver_status",
+        "iteration_count",
+        "time_limit_reached",
+        "memory_or_resource_warning"
+      ]
+    },
+    {
+      "id": "objective_tradeoff",
+      "metrics": [
+        "objective_value",
+        "weighted_delay_penalty",
+        "weighted_stability_penalty",
+        "weighted_service_penalty",
+        "weighted_computational_penalty"
+      ]
+    }
+  ],
+  "statistical_analysis_plan": {
+    "descriptive_statistics": [
+      "mean",
+      "median",
+      "standard_deviation",
+      "minimum",
+      "maximum",
+      "interquartile_range"
+    ],
+    "paired_comparisons": [
+      "paired_difference_by_instance_and_scenario",
+      "confidence_interval_for_mean_difference",
+      "nonparametric_signed_rank_option_when_distribution_is_not_safe"
+    ],
+    "ranking_analysis": [
+      "rank_policies_per_scenario",
+      "rank_policies_per_instance_class",
+      "detect_ranking_sensitive_scenarios",
+      "summarize tradeoffs instead of hiding them behind one score"
+    ],
+    "robustness_analysis": [
+      "sensitivity_to_delay_magnitude",
+      "sensitivity_to_time_window_tightness",
+      "sensitivity_to_policy_parameters",
+      "sensitivity_to_computational_budget"
+    ],
+    "minimum_scientific_rule": "Do not claim one policy is globally better from a single run, a single instance, or a single metric."
+  },
+  "expected_outputs": [
+    "comparative_summary_json",
+    "comparative_summary_csv",
+    "policy_ranking_table",
+    "scenario_sensitivity_table",
+    "statistical_validation_report",
+    "decision_framework_candidate_rules",
+    "limitations_and_scope_notes"
+  ],
+  "quality_requirements": [
+    "Every comparison must identify the instance, perturbation scenario, policy, and metric set.",
+    "Every policy ranking must preserve the metrics that caused the ranking.",
+    "Every statistical conclusion must state whether it is descriptive, paired, sensitivity-based, or only exploratory.",
+    "Every future solver-backed result must report solver status and computational cost.",
+    "Every recommendation must remain tied to a scenario class instead of pretending to be universal."
+  ],
+  "safety_requirements": [
+    "Do not expose comparative experiment execution from the browser yet.",
+    "Do not claim operational deployment readiness from static samples or contracts.",
+    "Do not hide failed runs, infeasible results, timeout cases, or solver warnings.",
+    "Do not mix policies tested under different perturbations as if they were paired comparisons.",
+    "Do not use statistical output as proof of real company performance before external validation."
+  ],
+  "current_platform_status": {
+    "internal_baselines_exist": true,
+    "batch_ranking_exists": true,
+    "ranking_sensitivity_reports_exist": true,
+    "scientific_validation_reports_exist": true,
+    "solver_adapter_exists": false,
+    "full_statistical_engine_exists": false,
+    "browser_execution_enabled": false
+  },
+  "conservative_note": "This contract defines the future comparative analysis layer. It does not execute experiments, run solvers, perform statistical tests, mutate schedules, write results, or trigger backend jobs from the web interface."
+}

@@ -10,7 +10,7 @@ This report audits the structural organization of C++ and Python tests.
 | problem_count | 0 |
 | warning_count | 0 |
 | analysis_script_count | 54 |
-| python_test_count | 50 |
+| python_test_count | 51 |
 | cpp_test_source_count | 45 |
 | cpp_test_support_header_count | 1 |
 | script_with_direct_python_test_count | 54 |
@@ -61,7 +61,7 @@ This report audits the structural organization of C++ and Python tests.
 | `analysis\scripts\run_full_campaign_pipeline.py` | 5 | 11 | 4 | direct_test_found |
 | `analysis\scripts\run_local_platform_smoke_check.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\run_project_quality_gate.py` | 8 | 8 | 4 | direct_test_found |
-| `analysis\scripts\run_ranking_sensitivity.py` | 1 | 11 | 4 | direct_test_found |
+| `analysis\scripts\run_ranking_sensitivity.py` | 1 | 12 | 4 | direct_test_found |
 | `analysis\scripts\summarize_batch_result.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\verify_analysis_outputs.py` | 1 | 1 | 4 | direct_test_found |
 | `analysis\scripts\verify_campaign_batch_blueprints.py` | 3 | 3 | 4 | direct_test_found |
