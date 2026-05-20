@@ -515,13 +515,12 @@ def _health_payload() -> dict[str, Any]:
             "/api/v1/delay-injection-request-contract",
             "/api/v1/replanning-decision-response-contract",
             "/api/v1/replanning-decision-response-sample",
-            ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
             "/api/v1/simulation-playback-control-contract",
+            "/api/v1/simulation-playback-state-sample",
             "/api/v1/solver-integration-contract",
             "/api/v1/comparative-analysis-contract",
             "/api/v1/comparative-analysis-sample",
             "/api/v1/deployment-readiness-contract",
-            ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
         ],
     }
 
