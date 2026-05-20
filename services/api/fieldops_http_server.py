@@ -397,6 +397,26 @@ def _simulation_playback_control_contract_payload() -> dict[str, Any]:
         ),
     }
 
+def _solver_integration_contract_payload() -> dict[str, Any]:
+    payload = _read_json_file(CONTRACTS_ROOT / "solver_integration_contract.json")
+
+    return {
+        "schema": "fieldops_lab.solver_integration_contract_endpoint",
+        "version": "0.1.0",
+        "read_only": True,
+        "execution_enabled": False,
+        "write_operations_supported": False,
+        "browser_triggered_execution_enabled": False,
+        "solver_integration_contract": payload,
+        "artifact_path": "platform/contracts/solver_integration_contract.json",
+        "safety_note": (
+            "This endpoint exposes the solver integration contract for inspection. "
+            "It does not execute OR-Tools, Gurobi, optimization jobs, simulation jobs, "
+            "policy comparison jobs, scripts, commands, file writes, or backend mutations."
+        ),
+    }
+
+
 def _health_payload() -> dict[str, Any]:
     return {
         "schema": "fieldops_lab.read_only_api_health",
@@ -420,6 +440,7 @@ def _health_payload() -> dict[str, Any]:
             "/api/v1/replanning-decision-response-sample",
             ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
             "/api/v1/simulation-playback-control-contract",
+            "/api/v1/solver-integration-contract",
             ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
         ],
     }
@@ -546,6 +567,14 @@ class FieldOpsReadOnlyRequestHandler(BaseHTTPRequestHandler):
             )
             return
 
+        if path == "/api/v1/solver-integration-contract":
+            self._send_json(
+                HTTPStatus.OK,
+                _solver_integration_contract_payload(),
+            )
+            return
+
+
         if path == "/api/v1/simulation-playback-state-sample":
             self._send_json(
                 HTTPStatus.OK,
@@ -613,6 +642,7 @@ def run_self_test() -> int:
         ("/api/v1/replanning-decision-response-contract", HTTPStatus.OK),
         ("/api/v1/replanning-decision-response-sample", HTTPStatus.OK),
         ("/api/v1/simulation-playback-control-contract", HTTPStatus.OK),
+        ("/api/v1/solver-integration-contract", HTTPStatus.OK),
         ("/api/v1/simulation-playback-state-sample", HTTPStatus.OK),
     ]
 

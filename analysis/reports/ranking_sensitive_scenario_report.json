@@ -1,6 +1,6 @@
 {
   "report_type": "ranking_sensitive_scenario_report",
-  "generated_at_local": "2026-05-19T21:53:14",
+  "generated_at_local": "2026-05-19T21:59:47",
   "input_status": {
     "all_required_inputs_available": true,
     "source_path": "analysis\\reports\\campaign_ranking_profile_sensitivity.json",
