@@ -1,0 +1,254 @@
+{
+  "schema": "fieldops_lab.comparative_analysis_sample",
+  "version": "0.1.0",
+  "sample_id": "delay_propagation_policy_comparison_sample_001",
+  "read_only": true,
+  "execution_enabled": false,
+  "write_operations_supported": false,
+  "browser_triggered_execution_enabled": false,
+  "runtime_status": {
+    "is_real_experiment_result": false,
+    "is_static_sample": true,
+    "purpose": "Show the intended shape of a future comparative analysis output before enabling runtime experiment execution."
+  },
+  "research_alignment": {
+    "problem_family": [
+      "TRSP",
+      "WSRP"
+    ],
+    "dissertation_focus": "Delay propagation in dynamic field operations.",
+    "main_question": "Given a scenario class and a delay profile, which re-planning policy gives the best trade-off among performance, robustness, stability, feasibility, service quality, and computational cost?",
+    "scope_note": "This sample keeps the academic focus on delays while leaving the platform extensible to new requests, cancellations, priority changes, and other operational disruptions."
+  },
+  "comparison_unit": {
+    "unit_type": "paired controlled experiment",
+    "pairing_rule": "Every candidate policy must be evaluated on the same instance, technician set, time horizon, initial schedule, perturbation script, and random seed.",
+    "single_run_claims_allowed": false,
+    "minimum_replications_required": 30,
+    "blocking_dimensions": [
+      "instance_group",
+      "delay_profile",
+      "technician_count",
+      "task_count",
+      "time_window_tightness",
+      "random_seed"
+    ]
+  },
+  "scenario": {
+    "scenario_id": "SAMPLE_DELAY_PROPAGATION_10T_48J",
+    "instance_group": "synthetic_dynamic_trsp_small_medium",
+    "technicians": 10,
+    "jobs": 48,
+    "time_horizon_minutes": 480,
+    "delay_profile": {
+      "type": "travel_and_service_delay",
+      "severity": "moderate",
+      "delay_distribution": "sample placeholder",
+      "affected_entities": [
+        "travel_arcs",
+        "service_durations"
+      ],
+      "propagation_focus": [
+        "downstream task start times",
+        "time window violations",
+        "technician route stability",
+        "missed service risk"
+      ]
+    }
+  },
+  "candidate_policies": [
+    {
+      "policy_id": "no_replanning",
+      "policy_family": "baseline",
+      "description": "Keep the original schedule and only measure the consequences of delay propagation.",
+      "current_platform_status": "implemented baseline"
+    },
+    {
+      "policy_id": "threshold_delay_replanning",
+      "policy_family": "rule_based",
+      "description": "Trigger re-planning only when accumulated delay exceeds a defined threshold.",
+      "current_platform_status": "implemented baseline"
+    },
+    {
+      "policy_id": "periodic_replanning",
+      "policy_family": "rolling_horizon",
+      "description": "Re-plan at fixed decision epochs using the current state of the day.",
+      "current_platform_status": "future policy"
+    },
+    {
+      "policy_id": "ortools_vrp_reoptimization",
+      "policy_family": "solver_backed",
+      "preferred_solver_family": "OR-Tools",
+      "description": "Use an OR-Tools backed adapter for future VRP/TRSP/WSRP re-optimization experiments.",
+      "current_platform_status": "future integration"
+    },
+    {
+      "policy_id": "gurobi_mip_reoptimization",
+      "policy_family": "solver_backed_optional",
+      "preferred_solver_family": "Gurobi",
+      "description": "Optional MIP-backed comparison path, not required by the platform baseline.",
+      "current_platform_status": "optional future integration"
+    }
+  ],
+  "metrics": {
+    "performance": [
+      "total_travel_time_minutes",
+      "total_service_delay_minutes",
+      "total_completion_time_minutes",
+      "makespan_minutes"
+    ],
+    "service_quality": [
+      "late_jobs",
+      "missed_jobs",
+      "time_window_violation_minutes",
+      "priority_weighted_delay"
+    ],
+    "stability": [
+      "changed_assignments",
+      "changed_task_order_count",
+      "route_edit_distance",
+      "technician_schedule_disruption_score"
+    ],
+    "robustness": [
+      "mean_score",
+      "median_score",
+      "worst_case_score",
+      "interquartile_range",
+      "sensitivity_to_delay_severity"
+    ],
+    "computational_cost": [
+      "runtime_ms",
+      "solver_time_ms",
+      "memory_estimate_mb",
+      "timeout_count"
+    ],
+    "feasibility": [
+      "feasible_solution_rate",
+      "hard_constraint_violation_count",
+      "infeasible_replications"
+    ]
+  },
+  "sample_results": [
+    {
+      "policy_id": "no_replanning",
+      "replications": 30,
+      "mean_composite_score": 0.48,
+      "median_composite_score": 0.50,
+      "late_jobs_mean": 9.6,
+      "time_window_violation_minutes_mean": 184.2,
+      "route_disruption_score_mean": 0.00,
+      "runtime_ms_mean": 2.1,
+      "interpretation": "Stable but weak under delay propagation because it absorbs delays without corrective action."
+    },
+    {
+      "policy_id": "threshold_delay_replanning",
+      "replications": 30,
+      "mean_composite_score": 0.71,
+      "median_composite_score": 0.73,
+      "late_jobs_mean": 4.1,
+      "time_window_violation_minutes_mean": 82.4,
+      "route_disruption_score_mean": 0.28,
+      "runtime_ms_mean": 7.8,
+      "interpretation": "Better service recovery with moderate schedule disruption and low computational cost."
+    },
+    {
+      "policy_id": "periodic_replanning",
+      "replications": 30,
+      "mean_composite_score": 0.69,
+      "median_composite_score": 0.70,
+      "late_jobs_mean": 4.4,
+      "time_window_violation_minutes_mean": 88.9,
+      "route_disruption_score_mean": 0.36,
+      "runtime_ms_mean": 18.5,
+      "interpretation": "Competitive but may introduce unnecessary schedule changes when delays are localized."
+    },
+    {
+      "policy_id": "ortools_vrp_reoptimization",
+      "replications": 30,
+      "mean_composite_score": 0.78,
+      "median_composite_score": 0.79,
+      "late_jobs_mean": 3.0,
+      "time_window_violation_minutes_mean": 61.7,
+      "route_disruption_score_mean": 0.44,
+      "runtime_ms_mean": 125.0,
+      "interpretation": "Best sample service recovery, but with higher computational cost and more route changes."
+    }
+  ],
+  "statistical_analysis_plan": {
+    "design": "paired repeated experiment over the same scenario seeds",
+    "primary_test": "Friedman test or repeated-measures alternative depending on distributional assumptions",
+    "post_hoc_tests": [
+      "paired Wilcoxon signed-rank tests with correction",
+      "effect size estimation",
+      "confidence interval comparison"
+    ],
+    "distribution_checks": [
+      "normality diagnostics",
+      "outlier inspection",
+      "variance and ranking sensitivity checks"
+    ],
+    "minimum_reporting_requirements": [
+      "mean",
+      "median",
+      "standard deviation",
+      "interquartile range",
+      "effect size",
+      "confidence interval",
+      "ranking stability",
+      "practical interpretation"
+    ],
+    "blocks_single_run_claims": true
+  },
+  "sample_ranking": [
+    {
+      "rank": 1,
+      "policy_id": "ortools_vrp_reoptimization",
+      "reason": "Best sample service recovery under moderate delay propagation, with acceptable but higher computational cost."
+    },
+    {
+      "rank": 2,
+      "policy_id": "threshold_delay_replanning",
+      "reason": "Strong practical trade-off with low runtime and moderate stability loss."
+    },
+    {
+      "rank": 3,
+      "policy_id": "periodic_replanning",
+      "reason": "Useful future baseline, but may overreact when delay propagation is localized."
+    },
+    {
+      "rank": 4,
+      "policy_id": "no_replanning",
+      "reason": "Important baseline, but weak operational performance when delays propagate."
+    }
+  ],
+  "decision_framework_output": {
+    "recommended_policy_for_sample_scenario": "threshold_delay_replanning",
+    "best_pure_performance_policy": "ortools_vrp_reoptimization",
+    "best_low_cost_policy": "threshold_delay_replanning",
+    "baseline_policy": "no_replanning",
+    "recommendation_logic": "Although OR-Tools backed re-optimization has the best sample performance, threshold-based re-planning is the recommended practical policy for this sample because it gives a strong balance among service recovery, route stability, implementation simplicity, and computational cost.",
+    "future_framework_goal": "Convert repeated comparative results into a reproducible rule or decision method for selecting re-planning policies by scenario class."
+  },
+  "related_contracts": [
+    "platform/contracts/comparative_analysis_contract.json",
+    "platform/contracts/solver_integration_contract.json",
+    "platform/contracts/replanning_decision_response_contract.json",
+    "platform/contracts/replanning_decision_response_sample.json",
+    "platform/contracts/simulation_playback_state_sample.json"
+  ],
+  "quality_requirements": [
+    "Never rank policies from a single run.",
+    "Always compare candidate policies on paired scenarios.",
+    "Always report service, stability, feasibility, robustness, and computational cost trade-offs.",
+    "Always separate current implemented baselines from future solver-backed methods.",
+    "Always state that sample values are placeholders until generated by the experimental pipeline."
+  ],
+  "safety_requirements": [
+    "The browser must not execute solvers.",
+    "The browser must not start experiments.",
+    "The browser must not mutate schedules.",
+    "The sample must not be described as a real experiment result.",
+    "Solver-backed policies must remain future integration items until actual execution infrastructure exists."
+  ],
+  "conservative_note": "This file is a static read-only sample. It documents the intended comparative analysis output shape. It does not prove that any policy is superior, does not execute OR-Tools or Gurobi, and does not represent real experimental evidence yet."
+}
